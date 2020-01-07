@@ -1,13 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.960
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Clases", "Clases\Clases.vbproj", "{9F8EC586-133B-485E-97F6-5B6717240C78}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WebSite", "WebSite\WebSite.vbproj", "{29BDF376-AA5C-467E-84D0-95358EC81EF5}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F8EC586-133B-485E-97F6-5B6717240C78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F8EC586-133B-485E-97F6-5B6717240C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F8EC586-133B-485E-97F6-5B6717240C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F8EC586-133B-485E-97F6-5B6717240C78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29BDF376-AA5C-467E-84D0-95358EC81EF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29BDF376-AA5C-467E-84D0-95358EC81EF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29BDF376-AA5C-467E-84D0-95358EC81EF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29BDF376-AA5C-467E-84D0-95358EC81EF5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {C125A3A2-FD72-4F2F-BFF9-1A1E794EA865}
+		SolutionGuid = {AD12FB33-B7B4-4EE0-B62B-EA45D33DD871}
 	EndGlobalSection
 EndGlobal
