@@ -27,6 +27,7 @@
         $("#LblRec05").text('48536,15');
         $("#LblRec06").text('6805,68');
         $("#LblRec07").text('1560,58');
+        $("#LblRec08").text('200,26');
     } catch (e) {
         spinnerClose();
         alertAlerta(e);

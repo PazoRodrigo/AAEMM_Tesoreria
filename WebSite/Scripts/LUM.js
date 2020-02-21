@@ -1,13 +1,13 @@
 ﻿// Funciones
 function jsSoloNumeros(e) {
     var keynum = window.event ? window.event.keyCode : e.which;
-    if ((keynum == 8) || (keynum == 46))
+    if ((keynum === 8) || (keynum === 46))
         return true;
     return /\d/.test(String.fromCharCode(keynum));
 }
 function jsSoloNumerosSinPuntos(e) {
     var keynum = window.event ? window.event.keyCode : e.which;
-    if (keynum == 8)
+    if (keynum === 8)
         return true;
     return /\d/.test(String.fromCharCode(keynum));
 }
@@ -32,10 +32,10 @@ function Left(str, n) {
 }
 function limpiarTextos() {
     $('input[type=text]').val('');
-};
+}
 function limpiarCheckBoxs() {
     $('input[type=checkbox]').attr('checked', false);
-};
+}
 if (!String.format) {
     String.format = function (format) {
         var args = Array.prototype.slice.call(arguments, 1);
@@ -89,19 +89,19 @@ function CantCaracteresRestantes(CantTotal, Texto) {
 // Validaciones
 function validarTelefono(nroIngresado1, nroIngresado2, nroIngresado3) {
     var result = true;
-    if (nroIngresado1.length == 0 && nroIngresado1.length == 0 && nroIngresado3.length == 0) {
+    if (nroIngresado1.length === 0 && nroIngresado1.length === 0 && nroIngresado3.length === 0) {
         result = false;
         alertAlerta('Ingrese un nro. de Teléfono Completo (DDN/Área/Número)');
     } else {
-        if (nroIngresado1.length == 0) {
+        if (nroIngresado1.length === 0) {
             result = false;
             alertAlerta('Ingrese el DDN del nro. de Teléfono');
         } else {
-            if (nroIngresado2.length == 0) {
+            if (nroIngresado2.length === 0) {
                 result = false;
                 alertAlerta('Ingrese el Área del nro. de Teléfono');
             } else {
-                if (nroIngresado3.length == 0) {
+                if (nroIngresado3.length === 0) {
                     result = false;
                     alertAlerta('Ingrese el número del nro. de Teléfono');
                 }
@@ -112,7 +112,7 @@ function validarTelefono(nroIngresado1, nroIngresado2, nroIngresado3) {
 }
 function validarVacio(busqueda) {
     var result = true;
-    if (busqueda.length == 0) {
+    if (busqueda.length === 0) {
         result = false;
     }
     return result;
@@ -136,14 +136,14 @@ async function BuscarTextoXCantCaracteres(Caracteres, TextoBuscado, ListaTodo, L
     let ListaResultado = [];
     if (TextoBuscado.length >= Caracteres) {
         let Resultado = $.grep(Lista, function (element, index) {
-            return element.Nombre.toLowerCase().indexOf(TextoBuscado.toLowerCase()) != -1;
+            return element.Nombre.toLowerCase().indexOf(TextoBuscado.toLowerCase()) !== -1;
         });
         ListaResultado = Resultado;
     } else {
         ListaResultado = ListaTodo;
     }
     return ListaResultado;
-};
+}
 
 
 // Alertas
@@ -178,13 +178,13 @@ function alertConfirmarEliminarLinea(codNomenclador, descripcion) {
 }
 function PopUpConfirmarSinCancelar(tipoAlerta, objeto, titulo, texto, evento, strBtnSi, strBtnNo, colorBtnSi, colorBtnNo) {
     let event = new CustomEvent(evento, { detail: objeto });
-    if (strBtnNo == '') {
+    if (strBtnNo === '') {
         strBtnNo = 'Cancelar';
     }
-    if (colorBtnNo == '') {
+    if (colorBtnNo === '') {
         colorBtnNo = "#DD6B55";
     }
-    if (colorBtnSi == '') {
+    if (colorBtnSi === '') {
         colorBtnSi = '#1ACB4D';
     }
     Swal.fire({
@@ -200,17 +200,17 @@ function PopUpConfirmarSinCancelar(tipoAlerta, objeto, titulo, texto, evento, st
         if (result.value) {
             document.dispatchEvent(event);
         }
-    })
+    });
 }
 function PopUpConfirmarConCancelar(tipoAlerta, objeto, titulo, texto, evento, strBtnSi, strBtnNo, colorBtnSi, colorBtnNo) {
     let event = new CustomEvent(evento, { detail: objeto });
-    if (strBtnNo == '') {
+    if (strBtnNo === '') {
         strBtnNo = 'Cancelar';
     }
-    if (colorBtnNo == '') {
+    if (colorBtnNo === '') {
         colorBtnNo = "#DD6B55";
     }
-    if (colorBtnSi == '') {
+    if (colorBtnSi === '') {
         colorBtnSi = '#1ACB4D';
     }
     Swal.fire({
@@ -226,7 +226,7 @@ function PopUpConfirmarConCancelar(tipoAlerta, objeto, titulo, texto, evento, st
         if (result.value) {
             document.dispatchEvent(event);
         }
-    })
+    });
 }
 
 // Fechas
@@ -237,19 +237,19 @@ function fechaHoy() {
     return hoy;
 }
 function FechaHoyLng() {
-    let FechaHoy = new Date()
-    let result = FechaHoy.getFullYear() + '' + Right('00' + FechaHoy.getMonth(), 2) + '' + Right('00' + FechaHoy.getDay(), 2)
+    let FechaHoy = new Date();
+    let result = FechaHoy.getFullYear() + '' + Right('00' + FechaHoy.getMonth(), 2) + '' + Right('00' + FechaHoy.getDay(), 2);
     return result;
 }
 function Date_LongToDate(lng) {
     let fecha = '';
-    if (lng != '') {
+    if (lng !== '') {
         if (lng > 0) {
             let str = lng.toString();
             if (str.length === 8) {
-                let ano = (str.substring(0, 4));
-                let mes = (str.substring(4, 6));
-                let dia = (str.substring(6));
+                let ano = str.substring(0, 4);
+                let mes = str.substring(4, 6);
+                let dia = str.substring(6);
                 fecha = ano + '/' + Right('00' + mes, 2) + '/' + Right('00' + dia, 2);
             }
         }
@@ -258,7 +258,7 @@ function Date_LongToDate(lng) {
 }
 function LongToDateString(lng) {
     let fecha = '';
-    if (lng != '') {
+    if (lng !== '') {
         let str = lng.toString();
         if (str.length === 8) {
             let dia = str.substring(6);
@@ -298,12 +298,12 @@ function dateToLong(fecha) {
 function GrabarValorEnSesion(clave, valor) {
     Storage.prototype.setObject = function (clave, valor) {
         this.setItem(clave, JSON.stringify(valor));
-    }
+    };
 }
 function ObtenerValorEnSesion(clave) {
     Storage.prototype.getObject = function (clave) {
         return JSON.parse(this.getItem(clave));
-    }
+    };
 }
 
 // Ordenar
@@ -330,12 +330,12 @@ function TraerPeriodosActualMenos(cantMeses, desde) {
     var ano = fecha.getFullYear();
     var mes = fecha.getMonth() + 1;
     var anoMes = '';
-    if (desde == 0) {
+    if (desde === 0) {
         for (ind = 0; ind < cantMeses; ind++) {
             anoMes = ano + '' + Right("00" + mes, 2);
             result.push(anoMes);
             mes -= 1;
-            if (mes == 0) {
+            if (mes === 0) {
                 ano -= 1;
                 mes = 12;
             }
@@ -356,9 +356,7 @@ function lum_TraerProvincias() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             wsTransfer = data.d;
-            if (wsTransfer.todoOk == true) {
-            }
-            else {
+            if (wsTransfer.todoOk !== true) {
                 alertAlerta(wsTransfer.mensaje);
             }
         },

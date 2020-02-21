@@ -10,7 +10,7 @@
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             var wsTranfer = data.d;
-            if (wsTranfer.todoOk == true) {
+            if (wsTranfer.todoOk === true) {
                 ret = wsTranfer.data;
             }
             else {
@@ -24,7 +24,7 @@
             mess = "Se ha producido un error!!!";
         }
     });
-    if (mess != "") {
+    if (mess !== "") {
         alert(mess);
     }
     else {
@@ -34,7 +34,7 @@
 async function ejecutarAsync(url, params) {
     var data = await ejecutarAjax(url, params);
     wsTranfer = data.d;
-    if (wsTranfer.todoOk == true) {
+    if (wsTranfer.todoOk === true) {
         return wsTranfer.data;
     }
     else {
@@ -54,9 +54,7 @@ async function ejecutarAjax(url, params) {
                 console.log(params);
                 console.log(xhr);
                 console.log(textStatus);
-                //alertAlerta(xhr.responseJSON.Message);
             }
-
         });
     } catch (error) {
         console.error(error);

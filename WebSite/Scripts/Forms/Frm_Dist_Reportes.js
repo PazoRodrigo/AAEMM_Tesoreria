@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     try {
-        $("#NombreFormulario").text('Reportes');
+        $("#SpanNombreFormulario").text('Reportes');
     } catch (e) {
         alertAlerta(e);
     }

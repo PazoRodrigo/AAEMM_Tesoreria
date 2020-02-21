@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     try {
-        $("#NombreFormulario").text('Configuración');
+        $("#SpanNombreFormulario").text('Configuración');
     } catch (e) {
         alertAlerta(e);
     }
-})
+});

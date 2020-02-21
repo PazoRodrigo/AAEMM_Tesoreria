@@ -186,16 +186,22 @@
                                         <div class="LblValorIndicador" id="LblRec05"></div>
                                     </a>
                                 </li>
+                                <li class="BtnIndicador">
+                                    <a href="#">
+                                        <div class="LblIndicador">Deuda > 6 Meses</div>
+                                        <div class="LblValorIndicador" id="LblRec06"></div>
+                                    </a>
+                                </li>
                                 <li class="BtnIndicadorDanger">
                                     <a href="#">
                                         <div class="LblIndicador">Inactivos</div>
-                                        <div class="LblValorIndicador" id="LblRec06"></div>
+                                        <div class="LblValorIndicador" id="LblRec07"></div>
                                     </a>
                                 </li>
                                 <li class="BtnIndicadorWarning">
                                     <a href="#">
                                         <div class="LblIndicador">Fuera Término</div>
-                                        <div class="LblValorIndicador" id="LblRec07"></div>
+                                        <div class="LblValorIndicador" id="LblRec08"></div>
                                     </a>
                                 </li>
                             </ul>
@@ -208,9 +214,9 @@
         <div id="DivContenedor20">
             <nav>
                 <ul id="UlDistribuidorIndicadores">
-                    <li class="BtnDistribuidorIndicadores"><a href="Frm_Dist_Configuracion.aspx">Configuración</a></li>
-                    <li class="BtnDistribuidorIndicadores"><a href="Frm_Dist_Administracion.aspx">Administración</a></li>
-                    <li class="BtnDistribuidorIndicadores"><a href="Frm_Dist_Reportes.aspx">Reportes</a></li>
+                    <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Configuracion.aspx")%>'>Configuración</a></li>
+                    <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Administracion.aspx")%>'>Administración</a></li>
+                    <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Reportes.aspx")%>'>Reportes</a></li>
                     <li class="BtnDistribuidorIndicadores"><a href="#">Ingresos</a></li>
                     <li class="BtnDistribuidorIndicadores"><a href="#">Gastos</a></li>
                     <li class="BtnDistribuidorIndicadoresDanger">
@@ -221,8 +227,8 @@
             <div id="Inferior" style="width: 100%; background-color: transparent; margin-top: 50px; height: 140px; border: 1px solid blue; border-radius: 8px;">
                 <div style="width: 90%; margin-left: auto; margin-right: auto; text-align: center; padding-top: 10px;">
                     <span id="SpanIngresoArchivos" class="AAEMM" style="font-size: 15px; color: #fff;">Ingreso de Archivos</span>
-                    <input type="text" style="width: 90%; height: 25px; margin-top: 15px; text-align: left; padding-left: 8px; margin-bottom: 10px;" placeholder="Archivo..." readonly="true" />
-                    <div style="width:95%; margin-right:auto;margin-left:auto;">
+                    <input type="text" style="width: 90%; height: 25px; margin-top: 15px; text-align: left; padding-left: 8px; margin-bottom: 10px;" placeholder="Archivo..." readonly="readonly" />
+                    <div style="width: 95%; margin-right: auto; margin-left: auto;">
                         <a href="#" id="BtnExaminar" title="Indicadores">
                             <div class="Btn">
                                 <span title="Examinar....">Examinar ...</span>

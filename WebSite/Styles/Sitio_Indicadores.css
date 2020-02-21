@@ -1,0 +1,280 @@
+﻿/* ***** Botones *****************************************************************************************/
+
+.DivDistribuidor {
+    float: left;
+    width: 33%;
+}
+
+nav ul.Menu {
+    margin: 0px;
+    padding: 0px;
+}
+
+nav li.BtnDistribuidor a {
+    text-decoration: none;
+    width: 85%;
+    display: block;
+    background-color: rgba(15, 108, 130, 0.4);
+    font-size: 17px;
+    height: 50px;
+    line-height: 50px;
+    margin-top: 10px;
+    color: #fff;
+    box-shadow: lightblue 10px 5px;
+    border-radius: 15px;
+    padding-left: 5px;
+    font-family: 'Anton', sans-serif;
+}
+
+    nav li.BtnDistribuidor a:hover {
+        background-color: #fff;
+        font-size: 19px;
+        color: blue;
+        box-shadow: rgba(15, 108, 130, 0.4) 10px 5px;
+        padding-left: 10px;
+    }
+
+nav ul#UlDistribuidorIndicadores {
+    margin: 0px;
+    padding: 0px;
+}
+
+nav li.BtnDistribuidorIndicadores a {
+    text-decoration: none;
+    width: 90%;
+    display: block;
+    background-color: rgba(15, 108, 130, 0.4);
+    font-size: 14px;
+    height: 25px;
+    line-height: 25px;
+    margin-top: 15px;
+    color: #fff;
+    box-shadow: lightblue 5px 3px;
+    border-radius: 5px;
+    padding-left: 5px;
+    font-family: 'Anton', sans-serif;
+}
+
+    nav li.BtnDistribuidorIndicadores a:hover {
+        background-color: #fff;
+        font-size: 15px;
+        color: blue;
+        box-shadow: rgba(15, 108, 130, 0.4) 5px 3px;
+        padding-left: 10px;
+    }
+
+nav li.BtnDistribuidorIndicadoresDanger a {
+    text-decoration: none;
+    width: 90%;
+    display: block;
+    background-color: red;
+    font-size: 14px;
+    height: 25px;
+    line-height: 25px;
+    margin-top: 15px;
+    color: #fff;
+    box-shadow: lightblue 5px 3px;
+    border-radius: 5px;
+    padding-left: 5px;
+    font-family: 'Anton', sans-serif;
+}
+
+nav li.BtnDistribuidorIndicadores Danger a:hover {
+    background-color: #fff;
+    color: red;
+    box-shadow: gray 3px 3px;
+    padding-left: 10px;
+}
+
+nav li.MenuIndicador a {
+    width: 85%;
+    display: block;
+    background-color: rgba(15, 108, 130, 0.4);
+    font-size: 12px;
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+    border-radius: 5px;
+    padding-left: 5px;
+    font-family: 'Karla', sans-serif;
+}
+
+    nav li.MenuIndicador a:hover {
+        background-color: #fff;
+        color: blue;
+        box-shadow: gray 3px 3px;
+        padding-left: 10px;
+    }
+
+nav li.BtnIndicador a {
+    width: 85%;
+    margin-top: 5px;
+    display: block;
+    background-color: rgba(15, 108, 130, 0.4);
+    font-size: 12px;
+    height: 25px;
+    line-height: 25px;
+    color: #fff;
+    border-radius: 15px;
+    padding-left: 5px;
+    font-family: 'Karla', sans-serif;
+}
+
+    nav li.BtnIndicador a:hover {
+        background-color: #fff;
+        font-size: 13px;
+        color: blue;
+        box-shadow: gray 3px 3px;
+        padding-left: 7px;
+    }
+
+nav li.BtnIndicadorDanger a {
+    width: 85%;
+    margin-top: 5px;
+    display: block;
+    background-color: red;
+    font-size: 12px;
+    height: 25px;
+    line-height: 25px;
+    color: #fff;
+    border-radius: 15px;
+    padding-left: 5px;
+    font-family: 'Karla', sans-serif;
+}
+
+    nav li.BtnIndicadorDanger a:hover {
+        background-color: #fff;
+        color: red;
+        font-size: 13px;
+        box-shadow: gray 3px 3px;
+        padding-left: 7px;
+    }
+
+nav li.BtnIndicadorWarning a {
+    width: 85%;
+    margin-top: 5px;
+    display: block;
+    background-color: orange;
+    font-size: 12px;
+    height: 25px;
+    line-height: 25px;
+    color: #fff;
+    border-radius: 15px;
+    padding-left: 5px;
+    font-family: 'Karla', sans-serif;
+}
+
+    nav li.BtnIndicadorWarning a:hover {
+        background-color: #fff;
+        color: orange;
+        font-size: 13px;
+        box-shadow: gray 3px 3px;
+        padding-left: 7px;
+    }
+
+nav ul.SubMenuInidicador {
+    display: none;
+}
+
+nav li.MenuIndicador:hover ul.SubMenuInidicador {
+    display: block;
+}
+
+.LblIndicador {
+    float: left;
+}
+
+.LblValorIndicador {
+    float: right;
+    margin-right: 15px;
+}
+
+
+/*
+#DivHeaderTituloInstitucion {
+    height: 55px;
+    line-height: 55px;
+    text-align: center;
+}
+
+#DivHeaderTituloFormulario {
+    height: 55px;
+    line-height: 55px;
+    text-align: left;
+    padding-left: 2px;
+}
+
+
+
+
+
+
+
+
+
+#ContenedorFormularios {
+    margin-top: 120px;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+#NombreFormulario {
+    font-size: 28px;
+    color: darkblue;
+    text-shadow: 20px 10px 2px gray;
+}
+
+#SpanFecha {
+    font-size: 20px;
+}
+
+
+
+
+
+#BtnSalir {
+    margin-top: 55px;
+    background: powderblue;
+    color: white;
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+    border: 2px solid white;
+    border-radius: 5px 5px 5px 5px;
+}
+
+
+
+#BtnVolver {
+    position: fixed;
+    top: 90%;
+    left: 85%;
+    background: gray;
+    color: white;
+    width: 130px;
+    text-align: center;
+    font-size: 22px;
+    height: 40px;
+    line-height: 40px;
+    border: 2px solid white;
+    border-radius: 80px 20px 20px 80px;
+}
+
+
+
+*/
+
+
+/* ***** Textos *****************************************************************************************/
+
+.TituloDimensional {
+    text-align: center;
+    font-size: 20px;
+    font-family: 'Anton', sans-serif;
+    color: #fff;
+}
