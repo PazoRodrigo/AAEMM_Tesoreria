@@ -1,11 +1,17 @@
 ﻿Public Class Enumeradores
-    Public Enum EstadoCheque
+    Public Enum EstadoChequePropios
         Emitido = 1
-        Rechazado = 2
-        Vencido = 3
-        Debitado = 4
-        Salvado = 5
-        Anulado = 6
-        DeBaja = 10
+        Vigente = 2
+        Suspendido = 3
+        Anulado = 4
+    End Enum
+    Public Enum EstadoChequeTerceros
+        Recibido = 11
+        Debitado = 12
+        Rechazado = 13
+        Vencido = 14
+        Salvado = 15     ' Cheque que ha sido salvado por otro
+        Salvador = 16    ' Cheque que ha salvado a otro, informa el cheque salvado
+        DeBaja = 20
     End Enum
 End Class

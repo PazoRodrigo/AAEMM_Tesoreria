@@ -3,7 +3,7 @@
 $(document).ready(function () {
     try {
         $("#SpanNombreFormulario").text('Chequeras');
-        //$("#SpanTituloGrillaDimensional").text('Centros de Costo Registrados');
+        $("#SpanTituloGrillaDimensional").text('Buscador de cheques');
         //$("#SpanTituloDimensional").text('Centros de Costo');
         //$("#SpanBtnImprimir").text('Imprimir Centros de Costo');
         //$("#SpanBtnNuevo").text('Nuevo');
@@ -13,3 +13,7 @@ $(document).ready(function () {
         alertAlerta(e);
     }
 });
+async function Inicio() {
+    Nuevo_CentroCosto();
+    await LlenarGrilla_CentroCosto();
+}

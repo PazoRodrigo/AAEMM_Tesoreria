@@ -13,7 +13,6 @@ Namespace Entidad
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
         Public Property IdBanco() As Integer = 0
-        Public Property IdEstado() As Enumeradores.EstadoCheque = Nothing
         Public Property Numero() As Long = 0
         Public Property Importe() As Decimal = 0
         Public Property Observaciones() As String = ""
@@ -34,6 +33,7 @@ Namespace DTO
         Public Property Importe() As Decimal = 0
         Public Property Observaciones() As String = ""
 #End Region
+
     End Class ' DTO_CentroCosto
 End Namespace ' DTO
 

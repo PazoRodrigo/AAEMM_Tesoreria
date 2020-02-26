@@ -6,7 +6,7 @@
         document.onkeyup = function (e) {
             let redirect = '';
             if (e.which == 27) {
-                redirect = '<%= ResolveClientUrl("~/Forms/Frm_Dist_Administracion.aspx")%>';
+                redirect = '<%= ResolveClientUrl("~/Forms/Frm_Dist_Configuracion.aspx")%>';
                 window.location = redirect;
             }
         };
@@ -24,63 +24,120 @@
             </div>
         </li>
         <li class="linea">
-            <div class="Porc60_L">
-               <%-- <ul>
-                    <li>
-                        <div class="TituloDimensional" style="">
-                            <span id="SpanTituloGrillaDimensional"></span>
+            <div class="container-fluid">
+                <div class="row mt-1">
+                    <div class="col-lg-7">
+                        <div class="row mt-1">
+                            <div class="col-12 text-center">
+                                <div class="TituloDimensional">
+                                    <span id="SpanTituloGrillaDimensional"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="row mt-1">
+                                    <div class="col-lg-2"><span class="SpanDatoFormulario">Desde :</span></div>
+                                    <div class="col-lg-3">
+                                        <input id="TxtBuscadorDesde" class="InputDatoFormulario" type="text" placeholder="Número" maxlength="10" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                                    </div>
+                                    <div class="col-lg-2"><span class="SpanDatoFormulario">Hasta :</span></div>
+                                    <div class="col-lg-3">
+                                        <input id="TxtBuscadorHasta" class="InputDatoFormulario" type="text" placeholder="Número" maxlength="10" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-2"><span class="SpanDatoFormulario">Estado :</span></div>
+                                    <div class="col-lg-9"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="row mt-5">
+                                    <div class="col-12">
+                                        <a href="#" type="button" class="btn btn-primary btn-md btn-block">
+                                            <span class="glyphicon glyphicon-search"></span>Buscar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </li>
-                    <li>
-                        <div id="DivGrillaRegistrados" style="margin-top: 10px; width: 90%; margin-left: auto; margin-right: auto; height: 350px; overflow-y: scroll;">
-                            <div id="GrillaRegistrados"></div>
+                        <div class="row mt-1 text-center" style="height: 200px;">
+                            <div class="col-12 mh-100" id="GrillaRegistrados"></div>
                         </div>
-                    </li>
-                </ul>--%>
-            </div>
-            <div class="Porc40_L">
-              <%--  <ul>
-                    <li>
-                        <div class="TituloDimensional">
-                            <span id="SpanTituloDimensional"></span>
+                        <div class="row mt-1">
+                            <div class="col-12 text-center">
+                                <div class="TituloDimensional">
+                                    <span id="">Modificar de Estado de Cheque</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-10">
+                                <div class="row mt-1">
+                                    <div class="col-lg-2"><span class="SpanDatoFormulario">Desde :</span></div>
+                                    <div class="col-lg-3">
+                                        <input id="TxtModificadorDesde" class="InputDatoFormulario" type="text" placeholder="Número" maxlength="10" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                                    </div>
+                                    <div class="col-lg-2"><span class="SpanDatoFormulario">Hasta :</span></div>
+                                    <div class="col-lg-3">
+                                        <input id="TxtModificadorHasta" class="InputDatoFormulario" type="text" placeholder="Número" maxlength="10" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-2"><span class="SpanDatoFormulario">Estado :</span></div>
+                                    <div class="col-lg-9"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <a href="#" type="button" class="btn btn-primary btn-md btn-block">
+                                            <span class="glyphicon glyphicon-search"></span>Modificar Estado
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </li>
-                    <li class="Formulario">
-                        <div class="Boton BtnNuevo" style="float: left; margin-left: 30px; margin-bottom: 15px;">
-                            <a id="LinkBtnNuevo" href="#"><span id="SpanBtnNuevo"></span></a>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="row mt-1">
+                            <div class="col-12 text-center">
+                                <div class="TituloDimensional">
+                                    <span id="">Próximo Cheque Disponible</span>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <span id="SpanProximoCheque" style="font-size: 25px;">Próximo cheque</span>
+                            </div>
+                            <div class="row" style="margin-top: 120px;">
+                                <div class="col-12 text-center">
+                                    <div class="TituloDimensional">
+                                        <span id="">Crear Chequera</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-10">
+                                        <div class="row mt-1">
+                                            <div class="col-lg-4"><span class="SpanDatoFormulario">Desde :</span></div>
+                                            <div class="col-lg-8">
+                                                <input id="TxtCrearDesde" class="InputDatoFormulario" type="text" placeholder="Número" maxlength="10" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                                            </div>
+                                            <div class="col-lg-4"><span class="SpanDatoFormulario">Hasta :</span></div>
+                                            <div class="col-lg-8">
+                                                <input id="TxtCrearHasta" class="InputDatoFormulario" type="text" placeholder="Número" maxlength="10" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-1"></div>
+                                            <div class="col-10">
+                                                <a href="#" type="button" class="btn btn-primary btn-md btn-block">
+                                                    <span class="glyphicon glyphicon-search"></span>Crear Chequera
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </li>
-                    <li class="Formulario">
-                        <span class="SpanDatoFormulario">Nombre :</span>
-                        <input id="TxtNombre" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Nombre" autocomplete="off">
-                    </li>
-                    <li class="Formulario">
-                        <span class="SpanDatoFormulario">Observaciones :</span>
-                        <textarea id="TxtObservaciones" class="DatoFormulario TextareaDatoFormulario" placeholder="Observaciones"></textarea>
-                    </li>
-                </ul>--%>
-            </div>
-        </li>
-        <li>
-            <div class="Porc60_L">
-               <%-- <ul>
-                    <li>
-                        <div class="Boton BtnImprimir">
-                            <a id="LinkBtnImprimir" href="#"><span id="SpanBtnImprimir"></span></a>
-                        </div>
-                    </li>
-                </ul>--%>
-            </div>
-            <div class="Porc40_L">
-            <%--    <ul>
-                    <li class="Formulario">
-                        <div class="Boton BtnGuardar" style="float: right; margin-right: 30px;">
-                            <a id="LinkBtnGuardar" href="#"><span id="SpanBtnGuardar"></span></a>
-                        </div>
-                    </li>
-                </ul>--%>
+                    </div>
+                </div>
             </div>
         </li>
     </ul>
 </asp:Content>
-

@@ -26,6 +26,7 @@ Namespace Entidad
 #Region " Atributos / Propiedades "
         Public Property FechaEmision() As Date? = Nothing
         Public Property FechaDebito() As Date? = Nothing
+        Public Property IdEstado() As Enumeradores.EstadoChequePropios = Nothing
 #End Region
 #Region " Lazy Load "
         Public ReadOnly Property LngFechaEmision() As Long
@@ -62,10 +63,12 @@ Namespace Entidad
             ' Entidad
             IdEntidad = objImportar.IdEntidad
             IdBanco = objImportar.IdBanco
-            IdEstado = objImportar.IdEstado
-            numero = objImportar.numero
+            Numero = objImportar.Numero
             Importe = objImportar.Importe
+            IdEstado = objImportar.IdEstado
             Observaciones = objImportar.Observaciones
+            FechaEmision = objImportar.FechaEmision
+            FechaDebito = objImportar.FechaDebito
         End Sub
         Sub New(ByVal DtODesde As DTO.DTO_ChequePropio)
             ' DBE
@@ -83,26 +86,20 @@ Namespace Entidad
             ' Entidad
             IdEntidad = DtODesde.IdEntidad
             IdBanco = DtODesde.IdBanco
-            Select Case DtODesde.IdEstado
-                Case 1
-                    IdEstado = Enumeradores.EstadoCheque.Emitido
-                Case 2
-                    IdEstado = Enumeradores.EstadoCheque.Rechazado
-                Case 3
-                    IdEstado = Enumeradores.EstadoCheque.Vencido
-                Case 4
-                    IdEstado = Enumeradores.EstadoCheque.Debitado
-                Case 5
-                    IdEstado = Enumeradores.EstadoCheque.Salvado
-                Case 6
-                    IdEstado = Enumeradores.EstadoCheque.Anulado
-                Case 10
-                    IdEstado = Enumeradores.EstadoCheque.DeBaja
-                Case Else
-
-            End Select
             Numero = DtODesde.Numero
             Importe = DtODesde.Importe
+            Select Case DtODesde.IdEstado
+                Case 1
+                    IdEstado = Enumeradores.EstadoChequePropios.Emitido
+                Case 2
+                    IdEstado = Enumeradores.EstadoChequePropios.Vigente
+                Case 3
+                    IdEstado = Enumeradores.EstadoChequePropios.Suspendido
+                Case 4
+                    IdEstado = Enumeradores.EstadoChequePropios.Anulado
+                Case Else
+                    Throw New Exception("Error")
+            End Select
             Observaciones = DtODesde.Observaciones
             If DtODesde.FechaEmision > 0 Then
                 Dim TempFecha As String = Right(DtODesde.FechaEmision.ToString, 2) + "/" + Left(Right(DtODesde.FechaEmision.ToString, 4), 2) + "/" + Left(DtODesde.FechaEmision.ToString, 4)
@@ -169,10 +166,10 @@ Namespace Entidad
                 .FechaBaja = LngFechaBaja,
                 .IdEntidad = IdEntidad,
                 .IdBanco = IdBanco,
-                .Observaciones = Observaciones,
-                .IdEstado = IdEstado,
                 .Numero = Numero,
                 .Importe = Importe,
+                .Observaciones = Observaciones,
+                .IdEstado = IdEstado,
                 .FechaEmision = LngFechaEmision,
                 .FechaDebito = LngFechaDebito
             }
@@ -264,11 +261,11 @@ Namespace DataAccessLibrary
     Public Class DAL_ChequePropio
 
 #Region " Stored "
-        Const storeAlta As String = "DIM.p_ChequePropio_Alta"
-        Const storeBaja As String = "DIM.p_ChequePropio_Baja"
-        Const storeModifica As String = "DIM.p_ChequePropio_Modifica"
-        Const storeTraerUnoXId As String = "DIM.p_ChequePropio_TraerUnoXId"
-        Const storeTraerTodos As String = "DIM.p_ChequePropio_TraerTodos"
+        Const storeAlta As String = "ADM.p_ChequePropio_Alta"
+        Const storeBaja As String = "ADM.p_ChequePropio_Baja"
+        Const storeModifica As String = "ADM.p_ChequePropio_Modifica"
+        Const storeTraerUnoXId As String = "ADM.p_ChequePropio_TraerUnoXId"
+        Const storeTraerTodos As String = "ADM.p_ChequePropio_TraerTodos"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
@@ -396,11 +393,6 @@ Namespace DataAccessLibrary
                     entidad.IdBanco = CInt(dr.Item("IdBanco"))
                 End If
             End If
-            If dr.Table.Columns.Contains("IdEstado") Then
-                If dr.Item("IdEstado") IsNot DBNull.Value Then
-                    entidad.IdEstado = CType(dr.Item("IdEstado"), Enumeradores.EstadoCheque)
-                End If
-            End If
             If dr.Table.Columns.Contains("Numero") Then
                 If dr.Item("Numero") IsNot DBNull.Value Then
                     entidad.Numero = CLng(dr.Item("Numero"))
@@ -411,9 +403,24 @@ Namespace DataAccessLibrary
                     entidad.Importe = CDec(dr.Item("Importe"))
                 End If
             End If
+            If dr.Table.Columns.Contains("IdEstado") Then
+                If dr.Item("IdEstado") IsNot DBNull.Value Then
+                    entidad.IdEstado = CType(dr.Item("IdEstado"), Enumeradores.EstadoChequePropios)
+                End If
+            End If
             If dr.Table.Columns.Contains("Observaciones") Then
                 If dr.Item("Observaciones") IsNot DBNull.Value Then
                     entidad.Observaciones = dr.Item("Observaciones").ToString.ToUpper.Trim
+                End If
+            End If
+            If dr.Table.Columns.Contains("FechaEmision") Then
+                If dr.Item("FechaEmision") IsNot DBNull.Value Then
+                    entidad.FechaEmision = CDate(dr.Item("FechaEmision"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("FechaDebito") Then
+                If dr.Item("FechaDebito") IsNot DBNull.Value Then
+                    entidad.FechaDebito = CDate(dr.Item("FechaDebito"))
                 End If
             End If
             Return entidad

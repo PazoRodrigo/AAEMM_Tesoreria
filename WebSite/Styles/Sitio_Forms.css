@@ -172,22 +172,23 @@ li.Formulario {
 
 span.SpanDatoFormulario {
     float: left;
-    width: 30%;
     padding-left: 15px;
     font-family: 'Karla', sans-serif;
     text-align: left;
+    width: 100%;
 }
 
 input.InputDatoFormulario {
-    float: left;
+    width: 100%;
     font-family: 'Karla', sans-serif;
     background-color: transparent;
     border: none;
     border-bottom: 1px double;
     font-size: 20px;
-    padding-left: 5px;
+    padding-left: 2px;
+    padding-bottom: 5px;
     color: #fff;
-    margin-bottom: 5px;
+    text-align: center;
 }
 
 input.InputDatoFormularioPorc {
