@@ -1,4 +1,8 @@
 ﻿Public Class Enumeradores
+    Public Enum TipoCheque
+        Propio = 1
+        Tercero = 2
+    End Enum
     Public Enum EstadoChequePropios
         Emitido = 1
         Vigente = 2

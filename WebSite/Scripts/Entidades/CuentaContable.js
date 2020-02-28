@@ -127,7 +127,8 @@ class CuentaContable extends DBE {
         let str = '';
         lista.sort(SortXNombre);
         if (lista.length > 0) {
-            str += '<ul class="ListaGrilla">';
+            str += '<div style="' + estilo + '">';
+            str += '    <ul class="ListaGrilla">';
             let estiloItem = '';
             for (let item of lista) {
                 estiloItem = 'LinkListaGrillaObjeto';

@@ -160,6 +160,7 @@ Namespace Entidad
             ValidarUsuario(Me.IdUsuarioAlta)
             ValidarCampos()
             ValidarNoDuplicados()
+            ValidarSumatoriaPorcentajes()
         End Sub
         Private Sub ValidarBaja()
             ValidarUsuario(Me.IdUsuarioBaja)
@@ -168,6 +169,7 @@ Namespace Entidad
             ValidarUsuario(Me.IdUsuarioModifica)
             ValidarCampos()
             ValidarNoDuplicados()
+            ValidarSumatoriaPorcentajes()
         End Sub
         ' Validaciones
         Private Sub ValidarUsuario(ByVal idUsuario As Integer)
@@ -210,9 +212,19 @@ Namespace Entidad
         End Sub
         Private Sub ValidarNoDuplicados()
             Convenio.Refresh()
-            Dim result As Convenio = Todos.Find(Function(x) x.Nombre.ToUpper = Nombre)
-            If Not result Is Nothing Then
-                Throw New Exception("El Nombre a ingresar ya existe")
+            If Not Todos Is Nothing AndAlso Todos.Count > 0 Then
+                Dim result As Convenio = Todos.Find(Function(x) x.Nombre.ToUpper = Nombre AndAlso x.IdEntidad <> IdEntidad)
+                If Not result Is Nothing Then
+                    Throw New Exception("El Nombre a ingresar ya existe")
+                End If
+            End If
+        End Sub
+        Private Sub ValidarSumatoriaPorcentajes()
+            Dim sumatoria = PorcEmpresa + PorcAfiliado + PorcNoAfiliado + PorcOtro
+            If sumatoria > 0 Then
+                If sumatoria <> 100 Then
+                    Throw New Exception("La Sumatoria de los porcentajes debe ser igual a 100")
+                End If
             End If
         End Sub
 #End Region

@@ -36,7 +36,7 @@ function Llenar_TipoPago(Obj_TipoPago) {
 }
 async function LlenarGrilla_TipoPago() {
     let lista = await TipoPago.TraerTodos();
-    TipoPago.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarTipoPago', 'EliminarTipoPago', '');
+    TipoPago.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarTipoPago', 'EliminarTipoPago', 'height:350px; overflow-y: scroll');
 }
 
 $('body').on('click', '#LinkBtnGuardar', async function (e) {

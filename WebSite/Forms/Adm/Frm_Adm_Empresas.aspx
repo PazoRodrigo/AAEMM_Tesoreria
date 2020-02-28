@@ -51,11 +51,11 @@
                         </div>
                     </li>
                     <li class="Formulario">
-                        <span class="SpanDatoFormulario">Nombre :</span>
+                        <span class="SpanDatoFormulario">Nombre</span>
                         <input id="TxtNombre" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Nombre" autocomplete="off">
                     </li>
                     <li class="Formulario">
-                        <span class="SpanDatoFormulario">Observaciones :</span>
+                        <span class="SpanDatoFormulario">Observaciones</span>
                         <textarea id="TxtObservaciones" class="DatoFormulario TextareaDatoFormulario" placeholder="Observaciones"></textarea>
                     </li>
                 </ul>--%>

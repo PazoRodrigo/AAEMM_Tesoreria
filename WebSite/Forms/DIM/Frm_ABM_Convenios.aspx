@@ -24,77 +24,105 @@
             </div>
         </li>
         <li class="linea">
-            <div class="Porc60_L">
-                <ul>
-                    <li>
-                        <div class="TituloDimensional" style="">
-                            <span id="SpanTituloGrillaDimensional"></span>
+            <div class="container-fluid">
+                <div class="row mt-1">
+                    <%--Buscador--%>
+                    <div class="col-lg-7">
+                        <div class="row mt-1">
+                            <div class="col-12 text-center">
+                                <div class="TituloDimensional">
+                                    <span id="SpanTituloGrillaDimensional"></span>
+                                </div>
+                            </div>
                         </div>
-                    </li>
-                    <li>
-                        <div id="DivGrillaRegistrados" style="margin-top: 10px; width: 90%; margin-left: auto; margin-right: auto; height: 350px; overflow-y: scroll;">
-                            <div id="GrillaRegistrados"></div>
+                        <div class="row mt-1 text-center mh-100" style="height: 350px;">
+                            <div class="col-12 mh-100" id="GrillaRegistrados"></div>
                         </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="Porc40_L">
-                <ul>
-                    <li>
-                        <div class="TituloDimensional">
-                            <span id="SpanTituloDimensional"></span>
+                        <div class="row mt-1">
+                            <div class="col-12 text-center">
+                                <div class="Boton BtnImprimir">
+                                    <a id="LinkBtnImprimir" href="#"><span id="SpanBtnImprimir"></span></a>
+                                </div>
+                            </div>
                         </div>
-                    </li>
-                    <li class="Formulario">
-                        <div class="Boton BtnNuevo" style="float: left; margin-left: 30px; margin-bottom: 15px;">
-                            <a id="LinkBtnNuevo" href="#"><span id="SpanBtnNuevo"></span></a>
+                    </div>
+                    <%--Entidad--%>
+                    <div class="col-lg-5">
+                        <div class="row mt-1">
+                            <div class="col-12 text-center">
+                                <div class="TituloDimensional">
+                                    <span id="SpanTituloDimensional"></span>
+                                </div>
+                            </div>
                         </div>
-                    </li>
-                    <li class="Formulario">
-                        <span class="SpanDatoFormulario">Nombre :</span>
-                        <input id="TxtNombre" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Nombre" autocomplete="off">
-                    </li>
-                    <li class="Formulario">
-                        <span class="SpanDatoFormulario">Observaciones :</span>
-                        <textarea id="TxtObservaciones" class="DatoFormulario TextareaDatoFormulario" placeholder="Observaciones"></textarea>
-                    </li>
-                    <li class="Formulario">
-                        <span class="SpanDatoFormulario">Porc. Empresa :</span>
-                        <input id="TxtPorcEmpresa" class="DatoFormulario InputDatoFormularioPorc" type="text" placeholder="%" maxlength="5" onkeypress="return jsSoloNumeros(event);">
-                    </li>
-                    <li class="Formulario">
-                        <span class="SpanDatoFormulario">Porc. Afiliado :</span>
-                        <input id="TxtPorcAfiliado" class="DatoFormulario InputDatoFormularioPorc" type="text" placeholder="%" maxlength="5" onkeypress="return jsSoloNumeros(event);">
-                    </li>
-                    <li class="Formulario">
-                        <span class="SpanDatoFormulario">Porc. No Afiliado :</span>
-                        <input id="TxtPorcNoAfiliado" class="DatoFormulario InputDatoFormularioPorc" type="text" placeholder="%" maxlength="5" onkeypress="return jsSoloNumeros(event);">
-                    </li>
-                    <li class="Formulario">
-                        <span class="SpanDatoFormulario">Porc. Otro :</span>
-                        <input id="TxtPorcOtro" class="DatoFormulario InputDatoFormularioPorc" type="text" placeholder="%" maxlength="5" onkeypress="return jsSoloNumeros(event);">
-                    </li>
-                </ul>
-            </div>
-        </li>
-        <li>
-            <div class="Porc60_L">
-                <ul>
-                    <li>
-                        <div class="Boton BtnImprimir">
-                            <a id="LinkBtnImprimir" href="#"><span id="SpanBtnImprimir"></span></a>
+                       <div id="DatosEntidad" style="height: 365px;">
+                            <div class="row mt-1">
+                                <div class="col-1"></div>
+                                <div class="col-4">
+                                    <div class="Boton BtnNuevo">
+                                        <a id="LinkBtnNuevo" href="#"><span id="SpanBtnNuevo"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-4">
+                                    <span class="SpanDatoFormulario">Nombre</span>
+                                </div>
+                                <div class="col-7">
+                                    <input id="TxtNombre" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Nombre" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <span class="SpanDatoFormulario">Observaciones</span>
+                                </div>
+                                <div class="col-8">
+                                    <textarea id="TxtObservaciones" class="DatoFormulario TextareaDatoFormulario" placeholder="Observaciones"></textarea>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">
+                                    <span class="SpanDatoFormulario">%. Empresa</span>
+                                </div>
+                                <div class="col-2">
+                                    <input id="TxtPorcEmpresa" class="DatoFormulario InputDatoFormulario_C" type="text" placeholder="%" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">
+                                    <span class="SpanDatoFormulario">%. Afiliado</span>
+                                </div>
+                                <div class="col-2">
+                                    <input id="TxtPorcAfiliado" class="DatoFormulario InputDatoFormulario_C" type="text" placeholder="%" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">
+                                    <span class="SpanDatoFormulario">%. No Afiliado</span>
+                                </div>
+                                <div class="col-2">
+                                    <input id="TxtPorcNoAfiliado" class="DatoFormulario InputDatoFormulario_C" type="text" placeholder="%" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">
+                                    <span class="SpanDatoFormulario">%. Otro</span>
+                                </div>
+                                <div class="col-2">
+                                    <input id="TxtPorcOtro" class="DatoFormulario InputDatoFormulario_C" type="text" placeholder="%" autocomplete="off">
+                                </div>
+                            </div>
                         </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="Porc40_L">
-                <ul>
-                    <li class="Formulario">
-                        <div class="Boton BtnGuardar" style="float: right; margin-right: 30px;">
-                            <a id="LinkBtnGuardar" href="#"><span id="SpanBtnGuardar"></span></a>
+                        <div class="row mt-1">
+                            <div class="col-lg-7"></div>
+                            <div class="col-lg-4">
+                                <div class="Boton BtnGuardar">
+                                    <a id="LinkBtnGuardar" href="#"><span id="SpanBtnGuardar"></span></a>
+                                </div>
+                            </div>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
         </li>
     </ul>

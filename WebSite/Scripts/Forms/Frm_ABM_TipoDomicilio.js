@@ -36,7 +36,7 @@ function Llenar_TipoDomicilio(Obj_TipoDomicilio) {
 }
 async function LlenarGrilla_TipoDomicilio() {
     let lista = await TipoDomicilio.TraerTodos();
-    TipoDomicilio.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarTipoDomicilio', 'EliminarTipoDomicilio', '');
+    TipoDomicilio.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarTipoDomicilio', 'EliminarTipoDomicilio', 'height:350px; overflow-y: scroll');
 }
 
 $('body').on('click', '#LinkBtnGuardar', async function (e) {

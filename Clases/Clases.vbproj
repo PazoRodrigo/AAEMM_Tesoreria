@@ -80,6 +80,7 @@
     <Compile Include="Entidad\Convenio.vb" />
     <Compile Include="Entidad\CuentaContable.vb" />
     <Compile Include="Entidad\Abstractas\DTO_DBE.vb" />
+    <Compile Include="Entidad\EstadoCheque.vb" />
     <Compile Include="Entidad\OriginarioGasto.vb" />
     <Compile Include="Entidad\Proveedor.vb" />
     <Compile Include="Entidad\TipoContacto.vb" />

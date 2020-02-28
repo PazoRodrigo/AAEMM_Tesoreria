@@ -36,7 +36,7 @@ function Llenar_Proveedor(Obj_Proveedor) {
 }
 async function LlenarGrilla_Proveedor() {
     let lista = await Proveedor.TraerTodos();
-    Proveedor.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarProveedor', 'EliminarProveedor', '');
+    Proveedor.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarProveedor', 'EliminarProveedor', 'height:350px; overflow-y: scroll');
 }
 
 $('body').on('click', '#LinkBtnGuardar', async function (e) {

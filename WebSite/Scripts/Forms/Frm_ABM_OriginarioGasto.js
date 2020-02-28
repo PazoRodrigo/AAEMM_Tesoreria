@@ -36,7 +36,7 @@ function Llenar_OriginarioGasto(Obj_OriginarioGasto) {
 }
 async function LlenarGrilla_OriginarioGasto() {
     let lista = await OriginarioGasto.TraerTodos();
-    OriginarioGasto.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarOriginarioGasto', 'EliminarOriginarioGasto', '');
+    OriginarioGasto.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarOriginarioGasto', 'EliminarOriginarioGasto', 'height:350px; overflow-y: scroll');
 }
 
 $('body').on('click', '#LinkBtnGuardar', async function (e) {

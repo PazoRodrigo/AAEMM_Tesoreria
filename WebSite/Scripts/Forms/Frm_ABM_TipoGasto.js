@@ -36,7 +36,7 @@ function Llenar_TipoGasto(Obj_TipoGasto) {
 }
 async function LlenarGrilla_TipoGasto() {
     let lista = await TipoGasto.TraerTodos();
-    TipoGasto.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarTipoGasto', 'EliminarTipoGasto', '');
+    TipoGasto.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarTipoGasto', 'EliminarTipoGasto', 'height:350px; overflow-y: scroll');
 }
 
 $('body').on('click', '#LinkBtnGuardar', async function (e) {

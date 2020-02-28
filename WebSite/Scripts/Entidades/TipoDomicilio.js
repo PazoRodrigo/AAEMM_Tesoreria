@@ -127,7 +127,8 @@ class TipoDomicilio extends DBE {
         let str = '';
         lista.sort(SortXNombre);
         if (lista.length > 0) {
-            str += '<ul class="ListaGrilla">';
+            str += '<div style="' + estilo + '">';
+            str += '    <ul class="ListaGrilla">';
             let estiloItem = '';
             for (let item of lista) {
                 estiloItem = 'LinkListaGrillaObjeto';
@@ -138,7 +139,8 @@ class TipoDomicilio extends DBE {
                 let aEliminar = '<a href="#" class="mibtn-EliminarTipoDomicilio" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
                 str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
             }
-            str += '</ul>';
+            str += '    </ul>';
+            str += '</div>';
         }
         return $('#' + div + '').html(str);
     }

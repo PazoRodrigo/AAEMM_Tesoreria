@@ -115,7 +115,7 @@
 /* Dimensionales ***************************************************************************************/
 
 .ListaGrilla {
-    width: 98%;
+    width: 95%;
     display: inline-block;
 }
 
@@ -170,7 +170,7 @@ li.Formulario {
     clear: both;
 }
 
-span.SpanDatoFormulario {
+SpanDatoFormulario {
     float: left;
     padding-left: 15px;
     font-family: 'Karla', sans-serif;
@@ -178,42 +178,42 @@ span.SpanDatoFormulario {
     width: 100%;
 }
 
-input.InputDatoFormulario {
+input {
+    width: 100%;
+    font-family: 'Karla', sans-serif;
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    border-bottom: 1px double;
+    padding-bottom: 5px;
+    color: #fff;
+    margin-bottom: 3px;
+}
+
+    InputDatoFormulario {
+        padding-left: 2px;
+    }
+
+    InputDatoFormulario_C {
+        text-align: center;
+    }
+
+    InputDatoFormularioPorc {
+        padding-left: 5px;
+    }
+
+TextareaDatoFormulario {
     width: 100%;
     font-family: 'Karla', sans-serif;
     background-color: transparent;
     border: none;
     border-bottom: 1px double;
-    font-size: 20px;
-    padding-left: 2px;
-    padding-bottom: 5px;
-    color: #fff;
-    text-align: center;
-}
-
-input.InputDatoFormularioPorc {
-    width: 70px;
-    float: left;
-    font-family: 'Karla', sans-serif;
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px double;
-    font-size: 20px;
+    font-size: 18px;
     padding-left: 5px;
     color: #fff;
-    margin-bottom: 5px;
-}
-
-textarea.TextareaDatoFormulario {
-    float: left;
-    font-family: 'Karla', sans-serif;
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px double;
-    font-size: 20px;
-    padding-left: 5px;
-    color: #fff;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
+    vertical-align: bottom;
+    height: 50px;
 }
 /* Botones *********************************************************************************************/
 #DivBtnIndicadores {
@@ -315,10 +315,15 @@ div.Porc80_R {
         color: red;
     }
 
-.Boton {
-    display: block;
+.Boton a {
     text-decoration: none;
     text-align: center;
+    height: 35px;
+    line-height: 35px;
+    font-size: 17px;
+    border: 1px solid;
+    border-radius: 10px;
+    width: 100%;
 }
 
     .Boton a:hover {
@@ -326,17 +331,25 @@ div.Porc80_R {
         text-decoration: none;
     }
 
-.BtnNuevo a {
-    border: 1px solid;
-    display: block;
+.BtnGuardar a {
     color: #fff;
-    width: 125px;
-    margin-top: 5px;
+    background-color: darkblue;
+    border: 1px solid;
+    border-radius: 10px;
+    display: block;
+}
+
+    .BtnGuardar a:hover {
+        background-color: #fff;
+        color: darkblue;
+    }
+
+.BtnNuevo a {
+    color: #fff;
     background-color: darkgreen;
-    height: 35px;
-    line-height: 35px;
-    border-radius: 15px;
-    font-size: 15px;
+    border: 1px solid;
+    border-radius: 10px;
+    display: block;
 }
 
     .BtnNuevo a:hover {
@@ -344,12 +357,23 @@ div.Porc80_R {
         color: darkgreen;
     }
 
+.BtnBuscar a {
+    color: #fff;
+    background-color: darkmagenta;
+    border: 1px solid;
+    border-radius: 10px;
+    display: block;
+}
+
+    .BtnBuscar a:hover {
+        background-color: #fff;
+        color: darkmagenta;
+    }
+
 .LinkBtn {
     display: block;
     font-size: 25px;
 }
-
-
 
 a .BtnIndicadores {
     display: block;
@@ -361,13 +385,10 @@ a .BtnIndicadores {
     font-size: 15px;
 }
 
-
     a.BtnIndicadores :hover {
         background-color: blue;
         text-decoration: none;
     }
-
-
 
 .BtnImprimir a {
     border: 1px solid;
@@ -387,22 +408,4 @@ a .BtnIndicadores {
     .BtnImprimir a:hover {
         background-color: gray;
         color: #fff;
-    }
-
-.BtnGuardar a {
-    border: 1px solid;
-    display: block;
-    color: #fff;
-    width: 125px;
-    margin-top: 5px;
-    background-color: darkblue;
-    height: 35px;
-    line-height: 35px;
-    border-radius: 15px;
-    font-size: 15px;
-}
-
-    .BtnGuardar a:hover {
-        background-color: #fff;
-        color: darkblue;
     }

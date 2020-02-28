@@ -36,7 +36,7 @@ function Llenar_CuentaContable(Obj_CuentaContable) {
 }
 async function LlenarGrilla_CuentaContable() {
     let lista = await CuentaContable.TraerTodos();
-    CuentaContable.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarCuentaContable', 'EliminarCuentaContable', '');
+    CuentaContable.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarCuentaContable', 'EliminarCuentaContable', 'height:350px; overflow-y: scroll');
 }
 
 $('body').on('click', '#LinkBtnGuardar', async function (e) {

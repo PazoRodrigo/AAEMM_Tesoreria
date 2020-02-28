@@ -36,7 +36,7 @@ function Llenar_CentroCosto(Obj_CentroCosto) {
 }
 async function LlenarGrilla_CentroCosto() {
     let lista = await CentroCosto.TraerTodos();
-    CentroCosto.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarCentroCosto', 'EliminarCentroCosto', '');
+    CentroCosto.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarCentroCosto', 'EliminarCentroCosto', 'height:350px; overflow-y: scroll');
 }
 
 $('body').on('click', '#LinkBtnGuardar', async function (e) {

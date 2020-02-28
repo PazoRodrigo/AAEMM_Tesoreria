@@ -51,11 +51,11 @@
                     <ul class="Menu">
                         <li class="BtnDistribuidor">
                             <ul class="SubMenu">
-                                <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empresas.aspx")%>'>(Alt + E)  - Empresas</a></li>
-                                <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empleados.aspx")%>'>(Alt + M)  - Empleados</a></li>
+                               <%-- <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empresas.aspx")%>'>(Alt + E)  - Empresas</a></li>
+                                <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empleados.aspx")%>'>(Alt + M)  - Empleados</a></li>--%>
                                 <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Chequera.aspx")%>'>(Alt + H)  - Chequera</a></li>
-                                <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesPropios.aspx")%>'>(Alt + P)  - Cheques Propios</a></li>
-                                <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesTerceros.aspx")%>'>(Alt + T)  - Cheques Terceros</a></li>
+                                <%--<li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesPropios.aspx")%>'>(Alt + P)  - Cheques Propios</a></li>
+                                <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesTerceros.aspx")%>'>(Alt + T)  - Cheques Terceros</a></li>--%>
                             </ul>
                         </li>
                     </ul>

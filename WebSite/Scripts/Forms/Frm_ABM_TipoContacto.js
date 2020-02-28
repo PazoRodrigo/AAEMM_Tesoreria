@@ -36,7 +36,7 @@ function Llenar_TipoContacto(Obj_TipoContacto) {
 }
 async function LlenarGrilla_TipoContacto() {
     let lista = await TipoContacto.TraerTodos();
-    TipoContacto.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarTipoContacto', 'EliminarTipoContacto', '');
+    TipoContacto.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarTipoContacto', 'EliminarTipoContacto', 'height:350px; overflow-y: scroll');
 }
 
 $('body').on('click', '#LinkBtnGuardar', async function (e) {
