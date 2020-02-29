@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="row mt-1">
                                     <div class="col-lg-2"><span class="SpanDatoFormulario">Estado :</span></div>
-                                    <div class="col-lg-7" id="CboBuscador"></div>
+                                    <div class="col-lg-7" id="CboBusca"></div>
                                     <div class="col-lg-3">
                                         <div class="Boton BtnBuscar">
                                             <a id="LinkBtnBuscar" href="#"><span id="SpanBuscar"></span></a>
@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="row mt-1">
                                     <div class="col-lg-2"><span class="SpanDatoFormulario">Estado :</span></div>
-                                    <div class="col-lg-7"></div>
+                                    <div class="col-lg-7" id="CboModifica"></div>
                                     <div class="col-lg-3">
                                         <div class="Boton BtnBuscar">
                                             <a id="LinkModificarEstado" href="#"><span id="SpanModificar"></span></a>

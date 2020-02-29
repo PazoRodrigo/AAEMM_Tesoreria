@@ -95,7 +95,7 @@ class EstadoCheque {
             str += '        </thead>';
             str += '        <tbody>';
             for (let item of lista) {
-                let radioSeleccion = '<input type="radio" class="mibtn-seleccionArea"  name="rblArea" data-Evento="' + evento + '" data-Id="' + item.IdEntidad + '" value="' + item.IdEntidad + '">';
+                let radioSeleccion = '<input type="radio" class="mibtn-seleccionArea"  name="rblArea" data-Evento="' + evento + '"  data-Id="' + item.IdEntidad + '" value="' + item.IdEntidad + '">';
                 str += String.format('<tr><td align="center" valign="middle" style="width: 5%;">{0}</td><td align="left">{1}</td></tr>', radioSeleccion, item.Nombre);
             }
             str += '        </tbody>';
@@ -105,7 +105,6 @@ class EstadoCheque {
         return $('#' + div + '').html(str);
     }
     static async ArmarCombo(lista, div, selector, evento, ventana, Cbo) {
-        console.log(lista);
         let cbo = "";
         cbo += '<div id="' + Cbo + '" class="dropdown">';
         cbo += '    <button id="' + selector + '" class="btn btn-primary dropdown-toggle btn-md btn-block" type="button" data-toggle="dropdown">' + ventana;
@@ -113,11 +112,10 @@ class EstadoCheque {
         cbo += '    </button>';
         cbo += '<ul class="dropdown-menu">';
         $(lista).each(function () {
-            cbo += '<li><a href="#" class="mibtn-seleccionEstadoCheque" data-Id="' + this.IdEntidad + '" data-Nombre="' + this.Estado + '" data-Evento="' + evento + '" > ' + this.Estado + '</a></li>';
+            cbo += '<li><a href="#" class="mibtn-seleccionEstadoCheque" data-Id="' + this.IdEntidad + '" data-IdTipoCheque="' + this.IdTipoCheque + '" data-Nombre="' + this.Estado + '" data-Evento="' + evento + '" > ' + this.Estado + '</a></li>';
         });
         cbo += '</ul>';
         cbo += '</div>';
-        console.log(cbo);
         return $('#' + div + '').html(cbo);
     }
 }
@@ -132,6 +130,18 @@ function LlenarEntidadEstadoCheque(entidad) {
 $('body').on('click', ".mibtn-seleccionEstadoCheque", async function () {
     try {
         $this = $(this);
+        let _Lista_EstadoCheque = [];
+        let TipoCheque = $this.attr("data-IdTipoCheque");
+        switch (parseInt(TipoCheque)) {
+            case 1:
+                _Lista_EstadoCheque = _Lista_EstadoCheque_Propios;
+                break;
+            case 2:
+                _Lista_EstadoCheque = _Lista_EstadoCheque_Terceros;
+                break;
+            default:
+                throw "Error En tipo de Cheque"
+        }
         let buscado = $.grep(_Lista_EstadoCheque, function (entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });

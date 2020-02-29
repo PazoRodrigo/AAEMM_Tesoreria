@@ -113,6 +113,13 @@ Namespace Entidad
 #End Region
 #Region " Métodos Estáticos"
         ' Traer
+        Public Shared Function TraerProximoVigente() As ChequePropio
+            Dim result As ChequePropio = DAL_ChequePropio.TraerProximoVigente()
+            If result Is Nothing Then
+                Throw New Exception("No existen un nuvo cheque Vigente. Cree una nueva chequera.")
+            End If
+            Return result
+        End Function
         Public Shared Function TraerUno(ByVal Id As Integer) As ChequePropio
             Dim result As ChequePropio = Todos.Find(Function(x) x.IdEntidad = Id)
             If result Is Nothing Then
@@ -141,9 +148,25 @@ Namespace Entidad
 #End Region
 #Region " Métodos Públicos"
         ' ABM
-        Public Sub Alta(Desde As Long, Hasta As Long)
+        Public Shared Function AltaChequera(IdUsuario As Integer, Desde As Long, Hasta As Long) As List(Of ChequePropio)
+            Dim ListaResult As New List(Of ChequePropio)
+            Dim obj As ChequePropio
+            For index = Desde To Hasta
+                obj = New ChequePropio
+                obj.IdUsuarioAlta = IdUsuario
+                obj.Numero = Desde
+                obj.Alta()
+                Desde += 1
+                If obj.IdEntidad > 0 Then
+                    ListaResult.Add(obj)
+                End If
+            Next
+            Return ListaResult
+        End Function
+        Public Sub Alta()
             ValidarAlta()
-            DAL_ChequePropio.Alta(Me, Desde, Hasta)
+            Me.IdEstado = Enumeradores.EstadoChequePropios.Vigente
+            DAL_ChequePropio.Alta(Me)
             Refresh()
         End Sub
         'Public Sub Baja()
@@ -265,17 +288,18 @@ Namespace DataAccessLibrary
         Const storeBaja As String = "ADM.p_ChequePropio_Baja"
         Const storeModifica As String = "ADM.p_ChequePropio_Modifica"
         Const storeTraerUnoXId As String = "ADM.p_ChequePropio_TraerUnoXId"
+        Const storeTraerProximoVigente As String = "ADM.p_ChequePropio_TraerProximoVigente"
         Const storeTraerTodos As String = "ADM.p_ChequePropio_TraerTodos"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
-        Public Shared Sub Alta(entidad As ChequePropio, desde As Long, hasta As Long)
+        Public Shared Sub Alta(entidad As ChequePropio)
             Dim store As String = storeAlta
             Dim pa As New parametrosArray
             pa.add("@idUsuarioAlta", entidad.IdUsuarioAlta)
             pa.add("@IdBanco", entidad.IdBanco)
-            pa.add("@desde", desde)
-            pa.add("@hasta", hasta)
+            pa.add("@IdEstado", entidad.IdEstado)
+            pa.add("@Numero", entidad.Numero)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
@@ -346,6 +370,21 @@ Namespace DataAccessLibrary
                 End If
             End Using
             Return listaResult
+        End Function
+        Public Shared Function TraerProximoVigente() As ChequePropio
+            Dim store As String = storeTraerProximoVigente
+            Dim result As New ChequePropio
+            Dim pa As New parametrosArray
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        result = LlenarEntidad(dt.Rows(0))
+                    ElseIf dt.Rows.Count = 0 Then
+                        result = Nothing
+                    End If
+                End If
+            End Using
+            Return result
         End Function
 #End Region
 #Region " Métodos Privados "
