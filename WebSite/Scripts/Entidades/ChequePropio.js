@@ -4,10 +4,19 @@ class ChequePropio extends DBE {
     constructor() {
         super();
         this.IdEntidad = 0;
-        this.Nombre = '';
+        this.IdBanco = 0;
+        this.Numero = 0;
+        this.Importe = 0;
+        this.LngFechaEmision = 0;
+        this.LngFechaDebito = 0;
+        this.IdEstado = 0;
+        this.Estado = '';
         this.Observaciones = '';
     }
 
+    NumeroStr() {
+        return Right('0000000000' + this.Numero, 10);
+    }
     // ABM
     static async  AltaChequera(Desde, Hasta) {
         //await ValidarChequera();
@@ -22,6 +31,7 @@ class ChequePropio extends DBE {
             if (id !== undefined)
                 this.IdEntidad = id;
             _Lista_ChequePropio.push(this);
+            ChequePropio.Refresh();
             return;
         } catch (e) {
             throw e;
@@ -81,7 +91,6 @@ class ChequePropio extends DBE {
 
     // Todos
     static async Todos() {
-        console.log('_Lista_ChequePropio');
         if (_Lista_ChequePropio === undefined) {
             _Lista_ChequePropio = await ChequePropio.TraerTodas();
         }
@@ -119,11 +128,59 @@ class ChequePropio extends DBE {
         _Lista_ChequePropio = result;
         return _Lista_ChequePropio;
     }
+    static async TraerTodosXEstado(IdEstado, Desde, Hasta) {
+        _Lista_ChequePropio = await ChequePropio.TraerTodos();
+        let buscado = [];
+        if (Desde.length === 0 && Hasta.length === 0) {
+            buscado = $.grep(_Lista_ChequePropio, function (entidad, index) {
+                return entidad.IdEstado === IdEstado;
+            });
+        } else {
+            if (Desde.length > 0 && Hasta.length > 0) {
+                buscado = $.grep(_Lista_ChequePropio, function (entidad, index) {
+                    return entidad.IdEstado === IdEstado && entidad.Numero >= Desde && entidad.Numero <= Hasta;
+                });
+            } else {
+                if (Desde.length > 0) {
+                    buscado = $.grep(_Lista_ChequePropio, function (entidad, index) {
+                        return entidad.IdEstado === IdEstado && entidad.Numero >= Desde;
+                    });
+                } else {
+                    buscado = $.grep(_Lista_ChequePropio, function (entidad, index) {
+                        return entidad.IdEstado === IdEstado && entidad.Numero <= Hasta;
+                    });
+                }
+            }
+        }
+        return buscado;
+    }
     // Otros
     static async Refresh() {
         _Lista_ChequePropio = await ChequePropio.TraerTodas();
     }
     // Herramientas
+    static async ArmarGrillaChequera(lista, div, estilo) {
+        $('#' + div + '').html('');
+        let str = '';
+        if (lista.length > 0) {
+            str += '<div style="' + estilo + '">';
+            str += '    <ul class="ListaGrilla">';
+            let estiloItem = '';
+            for (let item of lista) {
+                estiloItem = 'LinkListaGrillaObjeto';
+                //if (item.IdEstado === 1) {
+                //    estiloItem = 'LinkListaGrillaObjetoEliminado';
+                //}
+                let aItem = '<a href="#" data-Id="' + item.IdEntidad + '">' + item.NumeroStr() + '  ' + item.Estado + '</a>';
+
+                str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div>', aItem);
+                //str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
+            }
+            str += '    </ul>';
+            str += '</div>';
+        }
+        return $('#' + div + '').html(str);
+    }
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -192,9 +249,14 @@ function LlenarEntidadChequePropio(entidad) {
     Res.FechaBaja = entidad.FechaBaja;
     Res.IdMotivoBaja = entidad.IdMotivoBaja;
     Res.IdEntidad = entidad.IdEntidad;
-    Res.Nombre = entidad.Nombre;
+    Res.IdBanco = entidad.IdBanco;
+    Res.Numero = entidad.Numero;
+    Res.Importe = entidad.Importe;
+    Res.LngFechaEmision = entidad.LngFechaEmision;
+    Res.LngFechaDebito = entidad.LngFechaDebito;
     Res.Observaciones = entidad.Observaciones;
     Res.IdEstado = entidad.IdEstado;
+    Res.Estado = entidad.Estado;
     return Res;
 }
 $('body').on('click', ".mibtn-seleccionChequePropio", async function () {

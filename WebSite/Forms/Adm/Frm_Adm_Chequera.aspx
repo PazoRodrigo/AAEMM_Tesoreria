@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                         </div>
-                         <div class="row mt-1 text-center mh-100" style="height: 220px;">
+                         <div class="row mt-1 text-center mh-100" style="height: 250px;">
                             <div class="col-12 mh-100" id="GrillaRegistrados"></div>
                         </div>
                         <div class="row mt-1">
@@ -66,7 +66,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <div class="row mt-1">
+                                <%--<div class="row mt-1">
                                     <div class="col-lg-2"><span class="SpanDatoFormulario">Desde :</span></div>
                                     <div class="col-lg-2">
                                         <input id="TxtModificadorDesde" class="InputDatoFormulario" type="text" placeholder="Nro. Inicio" maxlength="10" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
@@ -75,7 +75,7 @@
                                     <div class="col-lg-2">
                                         <input id="TxtModificadorHasta" class="InputDatoFormulario" type="text" placeholder="Nro. Final" maxlength="10" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
                                     </div>
-                                </div>
+                                </div>--%>
                                 <div class="row mt-1">
                                     <div class="col-lg-2"><span class="SpanDatoFormulario">Estado :</span></div>
                                     <div class="col-lg-7" id="CboModifica"></div>

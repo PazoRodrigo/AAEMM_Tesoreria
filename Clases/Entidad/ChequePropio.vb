@@ -47,6 +47,26 @@ Namespace Entidad
                 Return result
             End Get
         End Property
+        Public ReadOnly Property Estado() As String
+            Get
+                Dim result As String = ""
+                If IdEstado <> Nothing Then
+                    Select Case IdEstado
+                        Case Enumeradores.EstadoChequePropios.Emitido
+                            result = "Emitido"
+                        Case Enumeradores.EstadoChequePropios.Vigente
+                            result = "Vigente"
+                        Case Enumeradores.EstadoChequePropios.Suspendido
+                            result = "Suspendido"
+                        Case Enumeradores.EstadoChequePropios.Anulado
+                            result = "Anulado"
+                        Case Else
+                    End Select
+                    Return result
+                End If
+                Return result
+            End Get
+        End Property
 #End Region
 #Region " Constructores "
         Sub New()
@@ -193,6 +213,7 @@ Namespace Entidad
                 .Importe = Importe,
                 .Observaciones = Observaciones,
                 .IdEstado = IdEstado,
+                .Estado = Estado,
                 .FechaEmision = LngFechaEmision,
                 .FechaDebito = LngFechaDebito
             }

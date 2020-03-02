@@ -31,6 +31,7 @@ Namespace DTO
         Public Property IdBanco() As Integer = 0
         Public Property Numero() As Long = 0
         Public Property Importe() As Decimal = 0
+        Public Property Estado() As String = ""
         Public Property Observaciones() As String = ""
 #End Region
 
