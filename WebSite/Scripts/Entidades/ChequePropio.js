@@ -128,6 +128,16 @@ class ChequePropio extends DBE {
         _Lista_ChequePropio = result;
         return _Lista_ChequePropio;
     }
+    static async TraerChequeProximo() {
+        let lista = await ejecutarAsync(urlWsChequePropio + "/TraerChequeProximo");
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadChequePropio(value));
+            });
+        }
+        return result[0];
+    }
     static async TraerTodosXEstado(IdEstado, Desde, Hasta) {
         _Lista_ChequePropio = await ChequePropio.TraerTodos();
         let buscado = [];
@@ -167,14 +177,8 @@ class ChequePropio extends DBE {
             str += '    <ul class="ListaGrilla">';
             let estiloItem = '';
             for (let item of lista) {
-                estiloItem = 'LinkListaGrillaObjeto';
-                //if (item.IdEstado === 1) {
-                //    estiloItem = 'LinkListaGrillaObjetoEliminado';
-                //}
                 let aItem = '<a href="#" data-Id="' + item.IdEntidad + '">' + item.NumeroStr() + '  ' + item.Estado + '</a>';
-
-                str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div>', aItem);
-                //str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
+                str += String.format('<li><div class="LinkListaGrilla LinkListaGrillaObjeto">{0}</div>', aItem);
             }
             str += '    </ul>';
             str += '</div>';

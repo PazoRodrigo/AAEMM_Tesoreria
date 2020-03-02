@@ -357,6 +357,19 @@ div.Porc80_R {
         color: darkgreen;
     }
 
+.BtnEliminar a {
+    color: #fff;
+    background-color: red;
+    border: 1px solid;
+    border-radius: 10px;
+    display: block;
+}
+
+    .BtnEliminar a:hover {
+        background-color: #fff;
+        color: red;
+    }
+
 .BtnBuscar a {
     color: #fff;
     background-color: darkmagenta;

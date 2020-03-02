@@ -99,7 +99,7 @@
                         </div>
                         <div id="DatosEntidad" style="height: 365px;">
                             <div class="col-12 text-center">
-                                <span id="SpanProximoCheque" style="font-size: 25px;">0123456789</span>
+                                <span id="SpanProximoCheque" style="font-size: 25px;"></span>
                             </div>
                             <div class="row mt-4">
                                 <div class="col-12 text-center">

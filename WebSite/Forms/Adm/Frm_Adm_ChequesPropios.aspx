@@ -26,76 +26,103 @@
         <li class="linea">
             <div class="container-fluid">
                 <div class="row mt-1">
+                    <%--Buscador--%>
                     <div class="col-lg-7">
-                        <div class="col-12 text-center">
-                            <div class="TituloDimensional">
-                                <span id="SpanTituloGrillaDimensional"></span>
+                        <div class="row mt-1">
+                            <div class="col-12 text-center">
+                                <div class="TituloDimensional">
+                                    <span id="SpanTituloGrillaDimensional"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="row mt-1">
+                                    <div class="col-lg-9">
+                                        <input id="TxtBuscador" class="InputDatoFormulario" type="text" placeholder="Nro. Cheque / Importe / Fecha (dd/MM/aaaa)" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-2"><span class="SpanDatoFormulario">Estado :</span></div>
+                                    <div class="col-lg-7" id="CboBusca"></div>
+                                    <div class="col-lg-3">
+                                        <div class="Boton BtnBuscar">
+                                            <a id="LinkBtnBuscar" href="#"><span id="SpanBuscar"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-9">
-                                <input id="TxtBuscadorCheque" class="InputDatoFormulario" type="text" placeholder="Número / Importe / Fecha (dd/MM/aaaa)" autocomplete="off" />
-                            </div>
-                            <div class="col-lg-2">
-                                <a href="#" type="button" class="btn btn-primary btn-md btn-block">
-                                    <span class="glyphicon glyphicon-search"></span>Buscar
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row mt-1 text-center" style="height: 350px; overflow-y: scroll;">
-                            <div class="col-11 mh-100" id="GrillaRegistrados"></div>
+                        <div class="row mt-1 text-center mh-100" style="height: 250px;">
+                            <div class="col-12 mh-100" id="GrillaRegistrados"></div>
                         </div>
                     </div>
+                    <%--Entidad--%>
                     <div class="col-lg-5">
                         <div class="row mt-1">
                             <div class="col-12 text-center">
                                 <div class="TituloDimensional">
-                                    <span id="">Cheque Propio</span>
+                                    <span id="">Cheque</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-3">
-                                Lista de Estados
+                        <div id="DatosEntidad" style="height: 365px;">
+                            <div class="row mt-1">
+                                <div class="col-1"></div>
+                                <div class="col-4">
+                                   <%-- <div class="Boton BtnNuevo">
+                                        <a id="LinkBtnNuevo" href="#"><span id="SpanBtnNuevo"></span></a>
+                                    </div>--%>
+                                </div>
                             </div>
-                            <div class="col-lg-9">
-                                <div class="row">
-                                    <div class="col-lg-5"><span class="SpanDatoFormulario">Número :</span></div>
-                                    <div class="col-7">
-                                        <input id="TxtNumero" class="InputDatoFormulario" type="text" placeholder="Número" maxlength="10" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
-                                    </div>
+                            <div class="row mt-4">
+                                <div class="col-4">
+                                    <span class="SpanDatoFormulario">Número</span>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-5"><span class="SpanDatoFormulario">Importe :</span></div>
-                                    <div class="col-7">
-                                        <input id="TxtImporte" class="InputDatoFormulario" type="text" placeholder="Importe" maxlength="10" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
-                                    </div>
+                                <div class="col-3">
+                                    <input id="TxtNombre" class="DatoFormulario InputDatoFormulario" type="text" readonly="readonly" placeholder="Número" autocomplete="off">
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-5"><span class="SpanDatoFormulario">Fecha Emisión :</span></div>
-                                    <div class="col-7">
-                                        <input id="lblFechaEmision" class="InputDatoFormulario" type="text" placeholder="Emisión" autocomplete="off" readonly="readonly">
-                                    </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <span class="SpanDatoFormulario">Importe</span>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-5"><span class="SpanDatoFormulario">Fecha Débito :</span></div>
-                                    <div class="col-7">
-                                        <input id="lblFechaDebito" class="InputDatoFormulario datepicker" type="text" placeholder="Débito" autocomplete="off">
-                                    </div>
+                                <div class="col-4">
+                                    <input id="TxtImporte" class="DatoFormulario InputDatoFormulario" type="text" readonly="readonly" placeholder="Importe" autocomplete="off">
                                 </div>
-
-                                <%--                                
-                                <div class="col-4">Fecha Emisión</div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <span class="SpanDatoFormulario">Fecha Emisión</span>
+                                </div>
+                                <div class="col-4">
+                                    <input id="TxtFechaEmision" class="DatoFormulario InputDatoFormulario" type="text" readonly="readonly" placeholder="Emisión" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <span class="SpanDatoFormulario">Fecha Débito</span>
+                                </div>
+                                <div class="col-4">
+                                    <input id="TxtFechaDebito" class="DatoFormulario InputDatoFormulario" type="text" readonly="readonly" placeholder="Débito" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <span class="SpanDatoFormulario">Observaciones</span>
+                                </div>
                                 <div class="col-8">
-                                    <input id="lblFechaEmision" class="InputDatoFormulario" type="text" placeholder="Número" maxlength="10" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                                    <textarea id="TxtObservaciones" class="DatoFormulario TextareaDatoFormulario" placeholder="Observaciones"></textarea>
                                 </div>
-                                <div class="col-4">fecha Débito</div>
-                                <div class="col-8">
-                                    <input id="TxtFechaDebito" class="InputDatoFormulario" type="text" placeholder="Número" maxlength="10" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
-                                </div>--%>
+                            </div>
+                             <div class="row mt-1">
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-10">
+                                <div class="Boton BtnEliminar">
+                                    <a id="LinkAnularCheque" href="#"><span id="SpanAnularCheque"></span></a>
+                                </div>
                             </div>
                         </div>
-                        <%--     --%>
+                        </div>
+                       
                     </div>
                 </div>
             </div>

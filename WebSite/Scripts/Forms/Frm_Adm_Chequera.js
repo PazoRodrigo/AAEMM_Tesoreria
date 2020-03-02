@@ -5,8 +5,6 @@ $(document).ready(function () {
     try {
         $("#SpanNombreFormulario").text('Chequeras');
         $("#SpanTituloGrillaDimensional").text('Buscador de cheques');
-        //$("#SpanTituloDimensional").text('Centros de Costo');
-        //$("#SpanBtnImprimir").text('Imprimir Centros de Costo');
         $("#SpanBuscar").text('Buscar');
         $("#SpanModificar").text('Modificar');
         $("#SpanCrearChequera").text('Crear Chequera');
@@ -16,13 +14,13 @@ $(document).ready(function () {
     }
 });
 async function Inicio() {
-    _EstadoBusca = 0;
     _EstadoModifica = 0;
     await ComboBusca();
     await ComboModifica();
     _EstadoBusca = 1;
     let objSeleccionado = await EstadoCheque.TraerUno(1, 1);
     $("#SelectornBuscaEstadoCheque").text(objSeleccionado.Estado);
+    await MostrarChequeProximo();
     Nueva_Chequera();
     await LlenarGrilla();
 }
@@ -37,6 +35,12 @@ async function ComboModifica() {
 async function Nueva_Chequera() {
     $("TxtCrearDesde").val();
     $("TxtCrearHasta").val();
+}
+async function MostrarChequeProximo() {
+    let proximo = await ChequePropio.TraerChequeProximo();
+    console.log(proximo);
+
+    $("#SpanProximoCheque").text(proximo.NumeroStr());
 }
 function LimpiarGrilla() {
     $("#GrillaRegistrados").html('');

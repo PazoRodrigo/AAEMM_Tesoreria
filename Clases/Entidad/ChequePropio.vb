@@ -90,6 +90,7 @@ Namespace Entidad
             FechaEmision = objImportar.FechaEmision
             FechaDebito = objImportar.FechaDebito
         End Sub
+
         Sub New(ByVal DtODesde As DTO.DTO_ChequePropio)
             ' DBE
             IdUsuarioAlta = DtODesde.IdUsuarioAlta
@@ -133,8 +134,8 @@ Namespace Entidad
 #End Region
 #Region " Métodos Estáticos"
         ' Traer
-        Public Shared Function TraerProximoVigente() As ChequePropio
-            Dim result As ChequePropio = DAL_ChequePropio.TraerProximoVigente()
+        Public Shared Function TraerChequeProximo() As ChequePropio
+            Dim result As ChequePropio = DAL_ChequePropio.TraerChequeProximo()
             If result Is Nothing Then
                 Throw New Exception("No existen un nuvo cheque Vigente. Cree una nueva chequera.")
             End If
@@ -309,7 +310,7 @@ Namespace DataAccessLibrary
         Const storeBaja As String = "ADM.p_ChequePropio_Baja"
         Const storeModifica As String = "ADM.p_ChequePropio_Modifica"
         Const storeTraerUnoXId As String = "ADM.p_ChequePropio_TraerUnoXId"
-        Const storeTraerProximoVigente As String = "ADM.p_ChequePropio_TraerProximoVigente"
+        Const storeTraerChequeProximo As String = "ADM.p_ChequePropio_TraerChequeProximo"
         Const storeTraerTodos As String = "ADM.p_ChequePropio_TraerTodos"
 #End Region
 #Region " Métodos Públicos "
@@ -392,8 +393,8 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
-        Public Shared Function TraerProximoVigente() As ChequePropio
-            Dim store As String = storeTraerProximoVigente
+        Public Shared Function TraerChequeProximo() As ChequePropio
+            Dim store As String = storeTraerChequeProximo
             Dim result As New ChequePropio
             Dim pa As New parametrosArray
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
