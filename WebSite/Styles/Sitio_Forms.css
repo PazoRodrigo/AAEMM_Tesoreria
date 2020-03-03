@@ -357,6 +357,18 @@ div.Porc80_R {
         color: darkgreen;
     }
 
+.BtnInfo a {
+    color: #fff;
+    background-color: lightseagreen;
+    border: 1px solid;
+    border-radius: 10px;
+    display: block;
+}
+
+    .BtnInfo a:hover {
+        background-color: #fff;
+        color: lightseagreen;
+    }
 .BtnEliminar a {
     color: #fff;
     background-color: red;

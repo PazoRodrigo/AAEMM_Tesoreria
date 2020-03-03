@@ -80,7 +80,6 @@ class CentroCosto extends DBE {
 
     // Todos
     static async Todos() {
-        console.log('_Lista_CentroCosto');
         if (_Lista_CentroCosto === undefined) {
             _Lista_CentroCosto = await CentroCosto.TraerTodas();
         }
@@ -180,6 +179,20 @@ class CentroCosto extends DBE {
         }
         str += '</div>';
         return $('#' + div + '').html(str);
+    }
+    static async ArmarCombo(lista, div, selector, evento, ventana, Cbo) {
+        let cbo = "";
+        cbo += '<div id="' + Cbo + '" class="dropdown">';
+        cbo += '    <button id="' + selector + '" class="btn btn-primary dropdown-toggle btn-md btn-block" type="button" data-toggle="dropdown">' + ventana;
+        cbo += '        <span class="caret"></span>';
+        cbo += '    </button>';
+        cbo += '<ul class="dropdown-menu">';
+        $(lista).each(function () {
+            cbo += '<li><a href="#" class="mibtn-seleccionCentroCosto" data-Id="' + this.IdEntidad + '" data-IdTipoCheque="' + this.IdTipoCheque + '" data-Nombre="' + this.Estado + '" data-Evento="' + evento + '" > ' + this.Nombre + '</a></li>';
+        });
+        cbo += '</ul>';
+        cbo += '</div>';
+        return $('#' + div + '').html(cbo);
     }
 }
 function LlenarEntidadCentroCosto(entidad) {

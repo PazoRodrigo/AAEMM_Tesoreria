@@ -32,6 +32,8 @@
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ChequePropio.js")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ChequeTercero.js")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/CuentaContable.js")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Empleado.js")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Empresa.js")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/EstadoCheque.js")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/OriginarioGasto.js")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Proveedor.js")%>' type="text/javascript"></script>
@@ -46,6 +48,8 @@
         var urlWsChequePropio = '<%= ResolveClientUrl("~/WebServices/WsChequePropio.asmx")%>';
         var urlWsChequeTercero = '<%= ResolveClientUrl("~/WebServices/WsChequeTercero.asmx")%>';
         var urlWsCuentaContable = '<%= ResolveClientUrl("~/WebServices/WsCuentaContable.asmx")%>';
+        var urlWsEmpleado = '<%= ResolveClientUrl("~/WebServices/WsEmpleado.asmx")%>';
+        var urlWsEmpresa = '<%= ResolveClientUrl("~/WebServices/WsEmpresa.asmx")%>';
         var urlWsEstadoCheque = '<%= ResolveClientUrl("~/WebServices/WsEstadoCheque.asmx")%>';
         var urlWsOriginarioGasto = '<%= ResolveClientUrl("~/WebServices/WsOriginarioGasto.asmx")%>';
         var urlWsProveedor = '<%= ResolveClientUrl("~/WebServices/WsProveedor.asmx")%>';

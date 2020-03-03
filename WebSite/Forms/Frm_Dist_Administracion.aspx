@@ -10,13 +10,13 @@
                 redirect = '<%= ResolveClientUrl("~/Forms/Frm_Indicadores.aspx")%>';
             } else if (e.ctrlKey && e.altKey && (e.which == 69 || e.which == 101)) {
                 // Ctrol + Alt + E
-                redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empresas.aspx")%>';
+                redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empresa.aspx")%>';
             } else if (e.ctrlKey && e.altKey && (e.which == 72 || e.which == 104)) {
                 // Ctrol + Alt + H
                 redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Chequera.aspx")%>';
             } else if (e.ctrlKey && e.altKey && (e.which == 77 || e.which == 109)) {
                 // Ctrol + Alt + M
-                redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empleados.aspx")%>';
+                redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empleado.aspx")%>';
             } else if (e.ctrlKey && e.altKey && (e.which == 80 || e.which == 112)) {
                 // Ctrol + Alt + P
                 redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesPropios.aspx")%>';
@@ -51,8 +51,8 @@
                     <ul class="Menu">
                         <li class="BtnDistribuidor">
                             <ul class="SubMenu">
-                               <%-- <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empresas.aspx")%>'>(Alt + E)  - Empresas</a></li>
-                                <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empleados.aspx")%>'>(Alt + M)  - Empleados</a></li>--%>
+                                <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empresa.aspx")%>'>(Alt + E)  - Empresas</a></li>
+                                <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empleado.aspx")%>'>(Alt + M)  - Empleados</a></li>
                                 <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Chequera.aspx")%>'>(Alt + H)  - Chequera</a></li>
                                 <%--<li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesPropios.aspx")%>'>(Alt + P)  - Cheques Propios</a></li>
                                 <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesTerceros.aspx")%>'>(Alt + T)  - Cheques Terceros</a></li>--%>

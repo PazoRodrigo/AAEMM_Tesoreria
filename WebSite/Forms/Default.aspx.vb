@@ -4,8 +4,7 @@ Partial Class Forms_Default
 
     Private Sub Forms_Default_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Not Page.IsPostBack Then
-            ' Entidad.ChequePropio.AltaChequera(1, 10001, 10003)
-
+            Dim indicador As DTO.DTO_Indicadores = Entidad.Indicadores.TraerTodos.ToDTO
         End If
     End Sub
 End Class

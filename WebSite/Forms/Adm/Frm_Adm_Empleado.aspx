@@ -1,7 +1,7 @@
-﻿<%@ Page Title="AAEMM. Empresas"  Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_Empresas.aspx.vb" Inherits="Forms_Adm_Frm_Adm_Empresas" %>
+﻿<%@ Page Title="AAEMM. Empleados"  Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_Empleado.aspx.vb" Inherits="Forms_Adm_Frm_Adm_Empleado" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Adm_Empresas.js")%>'></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Adm_Empleado.js")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
