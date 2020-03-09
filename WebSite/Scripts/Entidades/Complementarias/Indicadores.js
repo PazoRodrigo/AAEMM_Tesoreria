@@ -30,6 +30,8 @@ class Indicadores {
         this.RecaudacionDeudaMayor6Meses = 0;
         this.RecaudacionInactivos = 0;
         this.RecaudacionFueraTermino = 0;
+
+        this.ChequesRechazados = 0;
     }
     // Todos
     static async Todos() {
@@ -40,14 +42,10 @@ class Indicadores {
     }
     // Traer
     static async TraerTodas() {
-        let lista = await ejecutarAsync(urlWsIndicadores + "/TraerTodos");
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadIndicadores(value));
-            });
+        let obj = await ejecutarAsync(urlWsIndicadores + "/TraerTodos");
+        if (obj !== undefined) {
+            _ObjIndicadores = LlenarEntidadIndicadores(obj);
         }
-        _ObjIndicadores = result;
         return _ObjIndicadores;
     }
 }
@@ -81,5 +79,7 @@ function LlenarEntidadIndicadores(entidad) {
     Res.RecaudacionDeudaMayor6Meses = entidad.RecaudacionDeudaMayor6Meses;
     Res.RecaudacionInactivos = entidad.RecaudacionInactivos;
     Res.RecaudacionFueraTermino = entidad.RecaudacionFueraTermino;
+
+    Res.ChequesRechazados = entidad.ChequesRechazados;
     return Res;
 }

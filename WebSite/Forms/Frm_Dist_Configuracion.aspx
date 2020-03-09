@@ -47,46 +47,41 @@
                 <span id="SpanNombreFormulario"></span>
             </div>
         </li>
-        <li>
-            <div class="DivDistribuidor">
-                <nav>
-                    <ul class="Menu">
-                        <li class="BtnDistribuidor">
-                            <ul class="SubMenu">
-                                <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_CentroCostos.aspx")%>'>(Alt + C)  - Centro de Costos</a></li>
-                                <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_Convenios.aspx")%>'>(Alt + V)  - Convenio</a></li>
-                                <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_CuentaContable.aspx")%>'>(Alt + U)  - Cuenta Contable</a></li>
-                                <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_OriginarioGasto.aspx")%>'>(Alt + O)  - Originario de Gasto</a></li>
+        <li class="linea">
+            <div class="container-fluid">
+                <div class="row mt-1">
+                    <div class="col-lg-4">
+                        <nav>
+                            <ul class="Menu">
+                                <li class="BtnDistribuidor">
+                                    <ul class="SubMenu">
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_CentroCostos.aspx")%>'>(Alt + C)  - Centro de Costos</a></li>
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_Convenios.aspx")%>'>(Alt + V)  - Convenio</a></li>
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_CuentaContable.aspx")%>'>(Alt + U)  - Cuenta Contable</a></li>
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_OriginarioGasto.aspx")%>'>(Alt + O)  - Originario de Gasto</a></li>
+                                    </ul>
+                                </li>
                             </ul>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="DivDistribuidor">
-                <nav>
-                    <ul>
-                        <li class="BtnDistribuidor">
-                            <ul class="SubMenu">
-                                <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_TipoContacto.aspx")%>'>(Alt + T)  - Tipo de Contacto</a></li>
-                                <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_TipoDomicilio.aspx")%>'>(Alt + D)  - Tipo de Domicilio</a></li>
-                                <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_TipoPago.aspx")%>'>(Alt + P)  - Tipo de Pago</a></li>
-                                <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_Proveedores.aspx")%>'>(Alt + R)  - Proveedores</a></li>
+                        </nav>
+                    </div>
+                    <div class="col-lg-4">
+                        <nav>
+                            <ul>
+                                <li class="BtnDistribuidor">
+                                    <ul class="SubMenu">
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_TipoContacto.aspx")%>'>(Alt + T)  - Tipo de Contacto</a></li>
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_TipoDomicilio.aspx")%>'>(Alt + D)  - Tipo de Domicilio</a></li>
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_TipoPago.aspx")%>'>(Alt + P)  - Tipo de Pago</a></li>
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_Proveedores.aspx")%>'>(Alt + R)  - Proveedores</a></li>
+                                    </ul>
+                                </li>
                             </ul>
-                        </li>
-                    </ul>
-                </nav>
+                        </nav>
+                    </div>
+                    <div class="col-lg-4">
+                    </div>
+                </div>
             </div>
-            <div class="DivDistribuidor">
-                <nav>
-                    <ul>
-                        <li class="BtnDistribuidor">
-                            <ul class="SubMenu">
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-
         </li>
     </ul>
 </asp:Content>

@@ -1,11 +1,16 @@
 ﻿var _Lista_Empresa;
+var _IdCentroCosto;
 
 class Empresa extends DBE {
     constructor() {
         super();
         this.IdEntidad = 0;
-        this.Nombre = '';
-        this.Observaciones = '';
+        this.RazonSocial = '';
+        this.CUIT = 0;
+        this.CorreoElectronico = '';
+        this.IdEstado = 0;
+
+        this.Domicilio;
     }
 
     // ABM
@@ -118,15 +123,59 @@ class Empresa extends DBE {
         _Lista_Empresa = result;
         return _Lista_Empresa;
     }
+    static async TraerTodasXCUIT(CUIT) {
+        let data = {
+            'CUIT': CUIT
+        };
+        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosXCUIT", data);
+        _Lista_Empresa = [];
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpresa(value));
+            });
+        }
+        _Lista_Empresa = result;
+        return _Lista_Empresa;
+    }
+    static async TraerTodasXRazonSocial(RazonSocial) {
+        let data = {
+            'RazonSocial': RazonSocial
+        };
+        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosXRazonSocial", data);
+        _Lista_Empresa = [];
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpresa(value));
+            });
+        }
+        _Lista_Empresa = result;
+        return _Lista_Empresa;
+    }
+    static async TraerTodasXCentroCosto(IdCentroCosto) {
+        let data = {
+            'IdCentroCosto': IdCentroCosto
+        };
+        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosXCentroCosto", data);
+        _Lista_Empresa = [];
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpresa(value));
+            });
+        }
+        _Lista_Empresa = result;
+        return _Lista_Empresa;
+    }
     // Otros
     static async Refresh() {
         _Lista_Empresa = await Empresa.TraerTodas();
     }
     // Herramientas
-    static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
+    static async ArmarGrillaSinEliminar(lista, div, eventoSeleccion, estilo) {
         $('#' + div + '').html('');
         let str = '';
-        lista.sort(SortXNombre);
         if (lista.length > 0) {
             str += '<div style="' + estilo + '">';
             str += '    <ul class="ListaGrilla">';
@@ -136,7 +185,28 @@ class Empresa extends DBE {
                 if (item.IdEstado === 1) {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
                 }
-                let aItem = '<a href="#" class="mibtn-seleccionEmpresa" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.Nombre + '</a>';
+                let aItem = '<a href="#" class="mibtn-seleccionEmpresa" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.RazonSocial + '</a>';
+                str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div></li>', aItem);
+            }
+            str += '    </ul>';
+            str += '</div>';
+        }
+        return $('#' + div + '').html(str);
+    }
+    static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
+        $('#' + div + '').html('');
+        let str = '';
+        console.log(lista);
+        if (lista.length > 0) {
+            str += '<div style="' + estilo + '">';
+            str += '    <ul class="ListaGrilla">';
+            let estiloItem = '';
+            for (let item of lista) {
+                estiloItem = 'LinkListaGrillaObjeto';
+                if (item.IdEstado === 1) {
+                    estiloItem = 'LinkListaGrillaObjetoEliminado';
+                }
+                let aItem = '<a href="#" class="mibtn-seleccionEmpresa" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.RazonSocial + '</a>';
                 let aEliminar = '<a href="#" class="mibtn-EliminarEmpresa" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
                 str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
             }
@@ -181,7 +251,6 @@ class Empresa extends DBE {
         str += '</div>';
         return $('#' + div + '').html(str);
     }
-
     static async armarUC() {
         $("#grilla").html("");
         let control = "";
@@ -228,7 +297,9 @@ class Empresa extends DBE {
             control += '                            </div>';
             control += '                        </div>';
             control += '                        <div class="row mt-2">';
-            control += '                            <div id="grilla" style="height: 180px;overflow-y: scroll;"></div>';
+            control += '                            <div class="col-md-12">';
+            control += '                                <div id="grillaBuscador" style="height: 180px;overflow-y: scroll;"></div>';
+            control += '                            </div>';
             control += '                        </div>';
             control += '                    </div>';
             control += '                </div>';
@@ -242,8 +313,9 @@ class Empresa extends DBE {
             $("body").append(control);
         }
         let lista = await CentroCosto.TraerTodosActivos();
-        await CentroCosto.ArmarCombo(lista, 'CboBuscadorCentroCosto', 'SelectorBuscadorCentroCosto', 'EventoBuscadorCentroCosto', 'Centro de Costo', 'CboBuscadorCC' )
-        $("#Modal-PopUpEmpresa").modal({ show: true });
+        await CentroCosto.ArmarCombo(lista, 'CboBuscadorCentroCosto', 'SelectorBuscadorCentroCosto', 'EventoBuscadorCentroCosto', 'Centro de Costo', 'CboBuscadorCC')
+        _IdCentroCosto = 0;
+        $("#Modal-PopUpEmpresa").modal('show');
         $("#txtBuscaCUIT").focus();
     }
 }
@@ -256,26 +328,69 @@ function LlenarEntidadEmpresa(entidad) {
     Res.FechaBaja = entidad.FechaBaja;
     Res.IdMotivoBaja = entidad.IdMotivoBaja;
     Res.IdEntidad = entidad.IdEntidad;
-    Res.Nombre = entidad.Nombre;
-    Res.Observaciones = entidad.Observaciones;
+    Res.RazonSocial = entidad.RazonSocial;
+    Res.CUIT = entidad.CUIT;
+    Res.CorreoElectronico = entidad.CorreoElectronico;
     Res.IdEstado = entidad.IdEstado;
+    Res.Domicilio = LlenarEntidadDomicilio(entidad.Domicilio);
     return Res;
 }
 
 document.addEventListener('EventoBuscadorCentroCosto', async function (e) {
     try {
         let objSeleccionado = e.detail;
-        _EstadoBusca = objSeleccionado.IdEntidad;
+        console.log(objSeleccionado);
+        _IdCentroCosto = objSeleccionado.IdEntidad;
         $("#SelectorBuscadorCentroCosto").text(objSeleccionado.Nombre);
-        spinner();
-        //await LlenarGrilla();
-        spinnerClose();
     } catch (e) {
         spinnerClose();
         alertAlerta(e);
     }
 }, false);
-
+$('body').on('click', '#LinkBtnBuscar', async function (e) {
+    try {
+        spinner()
+        let buscaCUIT = $("#txtBuscaCUIT").val();
+        let buscaRazonSocial = $("#txtRazonSocial").val();
+        let TipoBuscador = '';
+        if (parseInt(buscaCUIT.length) === 11 || parseInt(buscaRazonSocial.length) > 3 || parseInt(_IdCentroCosto) > 0) {
+            if (parseInt(buscaCUIT.length) === 11) {
+                TipoBuscador = 'xCUIT';
+                await LlenarGrillaBuscador(TipoBuscador);
+            } else {
+                if (parseInt(buscaRazonSocial.length) > 3) {
+                    TipoBuscador = 'xRazonSocial';
+                    await LlenarGrillaBuscador(TipoBuscador);
+                } else {
+                    if (parseInt(_IdCentroCosto) > 0) {
+                        TipoBuscador = 'xIdCentroCosto';
+                        await LlenarGrillaBuscador(TipoBuscador);
+                    }
+                }
+            }
+        }
+        spinnerClose();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
+async function LlenarGrillaBuscador(TipoBuscador) {
+    _Lista_Empresa = [];
+    switch (TipoBuscador) {
+        case 'xCUIT':
+            _Lista_Empresa = await Empresa.TraerTodasXCUIT($("#txtBuscaCUIT").val());
+            break;
+        case 'xRazonSocial':
+            _Lista_Empresa = await Empresa.TraerTodasXRazonSocial($("#txtRazonSocial").val());
+            break;
+        case 'xIdCentroCosto':
+            _Lista_Empresa = await Empresa.TraerTodasXCentroCosto(_IdCentroCosto);
+            break;
+        default:
+    }
+    Empresa.ArmarGrillaSinEliminar(_Lista_Empresa, 'grillaBuscador', 'EventoSeleccionarEmpresa', '');
+}
 
 $('body').on('click', ".mibtn-seleccionEmpresa", async function () {
     try {
@@ -285,6 +400,7 @@ $('body').on('click', ".mibtn-seleccionEmpresa", async function () {
         });
         let Seleccionado = buscado[0];
         let evento = $this.attr("data-Evento");
+        $("#Modal-PopUpEmpresa").modal('hide');
         let event = new CustomEvent(evento, { detail: Seleccionado });
         document.dispatchEvent(event);
     } catch (e) {

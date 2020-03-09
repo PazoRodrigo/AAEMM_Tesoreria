@@ -18,4 +18,26 @@
         Salvador = 16    ' Cheque que ha salvado a otro, informa el cheque salvado
         DeBaja = 20
     End Enum
+    Public Enum EstadoEmpresa
+        Activa = 1
+        Inactiva = 2
+        DeBaja = 3
+        SinDeudaConBoleta = 11
+        SinDeudaSinBoleta = 12
+        Deuda1Mes = 13
+        Deuda3Meses = 14
+        Deuda6Meses = 15
+        DeudaMayor6Meses = 16
+        ConPagosIntercalados = 17
+    End Enum
+    Public Enum EstadoEmpleado
+        Activo = 1
+        Inactivo = 2
+        SinDeudaConBoleta = 11
+        SinDeudaSinBoleta = 12
+        Deuda1Mes = 13
+        Deuda3Meses = 14
+        Deuda6Meses = 15
+        DeudaMayor6Meses = 16
+    End Enum
 End Class

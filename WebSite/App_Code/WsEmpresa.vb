@@ -11,9 +11,92 @@ Imports Clases
 Public Class WsEmpresa
     Inherits System.Web.Services.WebService
 
-    <WebMethod()> _
-    Public Function HelloWorld() As String
-        Return "Hello World"
+    <WebMethod()>
+    Public Function TraerTodos() As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Empresa)
+            Entidad.Empresa.Refresh()
+            Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodos()
+            If Not lista Is Nothing Then
+                For Each item As Entidad.Empresa In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
     End Function
-
+    <WebMethod()>
+    Public Function TraerTodosXCUIT(CUIT As Long) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Empresa)
+            Entidad.Empresa.Refresh()
+            Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXCUIT(CUIT)
+            If Not lista Is Nothing Then
+                For Each item As Entidad.Empresa In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
+    Public Function TraerTodosXIdCentroCosto(IdCentroCosto As Integer) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Empresa)
+            Entidad.Empresa.Refresh()
+            Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXCentroCosto(IdCentroCosto)
+            If Not lista Is Nothing Then
+                For Each item As Entidad.Empresa In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
+    Public Function TraerTodosXRazonSocial(RazonSocial As String) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Empresa)
+            Entidad.Empresa.Refresh()
+            Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXRazonSocial(RazonSocial)
+            If Not lista Is Nothing Then
+                For Each item As Entidad.Empresa In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
 End Class

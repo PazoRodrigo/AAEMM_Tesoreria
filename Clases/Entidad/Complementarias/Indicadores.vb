@@ -38,6 +38,7 @@ Namespace Entidad
         Public Property RecaudacionInactivos() As Decimal = 0
         Public Property RecaudacionFueraTermino() As Decimal = 0
 
+        Public Property ChequesRechazados() As Integer = 0
 #End Region
 #Region " Lazy Load "
 
@@ -67,6 +68,7 @@ Namespace Entidad
                 .EmpresasDeudaMayor6Meses = EmpresasDeudaMayor6Meses,
                 .EmpresasPagosIntercalados = EmpresasPagosIntercalados,
                 .EmpresasInactivas = EmpresasInactivas,
+                .Empleados = Empleados,
                 .EmpleadosSinDeudaSinBoleta = EmpleadosSinDeudaSinBoleta,
                 .EmpleadosSinDeudaConBoleta = EmpleadosSinDeudaConBoleta,
                 .EmpleadosDeuda1Mes = EmpleadosDeuda1Mes,
@@ -82,7 +84,8 @@ Namespace Entidad
                 .RecaudacionDeuda6Meses = RecaudacionDeuda6Meses,
                 .RecaudacionDeudaMayor6Meses = RecaudacionDeudaMayor6Meses,
                 .RecaudacionInactivos = RecaudacionInactivos,
-                .RecaudacionFueraTermino = RecaudacionFueraTermino
+                .RecaudacionFueraTermino = RecaudacionFueraTermino,
+                .ChequesRechazados = ChequesRechazados
             }
             Return result
         End Function
@@ -122,6 +125,9 @@ Namespace DTO
         Public Property RecaudacionDeudaMayor6Meses() As Decimal = 0
         Public Property RecaudacionInactivos() As Decimal = 0
         Public Property RecaudacionFueraTermino() As Decimal = 0
+
+        Public Property ChequesRechazados() As Integer = 0
+
 #End Region
     End Class ' DTO_Indicadores
 End Namespace ' DTO
@@ -243,47 +249,54 @@ Namespace DataAccessLibrary
             ' Recaudacion
             If dr.Table.Columns.Contains("Recaudacion") Then
                 If dr.Item("Recaudacion") IsNot DBNull.Value Then
-                    entidad.Recaudacion = CInt(dr.Item("Recaudacion"))
+                    entidad.Recaudacion = CDec(dr.Item("Recaudacion"))
                 End If
             End If
             If dr.Table.Columns.Contains("RecaudacionXCobrarSinBoleta") Then
                 If dr.Item("RecaudacionXCobrarSinBoleta") IsNot DBNull.Value Then
-                    entidad.RecaudacionXCobrarSinBoleta = CInt(dr.Item("RecaudacionXCobrarSinBoleta"))
+                    entidad.RecaudacionXCobrarSinBoleta = CDec(dr.Item("RecaudacionXCobrarSinBoleta"))
                 End If
             End If
             If dr.Table.Columns.Contains("RecaudacionXCobrarConBoleta") Then
                 If dr.Item("RecaudacionXCobrarConBoleta") IsNot DBNull.Value Then
-                    entidad.RecaudacionXCobrarConBoleta = CInt(dr.Item("RecaudacionXCobrarConBoleta"))
+                    entidad.RecaudacionXCobrarConBoleta = CDec(dr.Item("RecaudacionXCobrarConBoleta"))
                 End If
             End If
             If dr.Table.Columns.Contains("RecaudacionDeuda1Mes") Then
                 If dr.Item("RecaudacionDeuda1Mes") IsNot DBNull.Value Then
-                    entidad.RecaudacionDeuda1Mes = CInt(dr.Item("RecaudacionDeuda1Mes"))
+                    entidad.RecaudacionDeuda1Mes = CDec(dr.Item("RecaudacionDeuda1Mes"))
                 End If
             End If
             If dr.Table.Columns.Contains("RecaudacionDeuda3Meses") Then
                 If dr.Item("RecaudacionDeuda3Meses") IsNot DBNull.Value Then
-                    entidad.RecaudacionDeuda3Meses = CInt(dr.Item("RecaudacionDeuda3Meses"))
+                    entidad.RecaudacionDeuda3Meses = CDec(dr.Item("RecaudacionDeuda3Meses"))
                 End If
             End If
             If dr.Table.Columns.Contains("RecaudacionDeuda6Meses") Then
                 If dr.Item("RecaudacionDeuda6Meses") IsNot DBNull.Value Then
-                    entidad.RecaudacionDeuda6Meses = CInt(dr.Item("RecaudacionDeuda6Meses"))
+                    entidad.RecaudacionDeuda6Meses = CDec(dr.Item("RecaudacionDeuda6Meses"))
                 End If
             End If
             If dr.Table.Columns.Contains("RecaudacionDeudaMayor6Meses") Then
                 If dr.Item("RecaudacionDeudaMayor6Meses") IsNot DBNull.Value Then
-                    entidad.RecaudacionDeudaMayor6Meses = CInt(dr.Item("RecaudacionDeudaMayor6Meses"))
+                    entidad.RecaudacionDeudaMayor6Meses = CDec(dr.Item("RecaudacionDeudaMayor6Meses"))
                 End If
             End If
             If dr.Table.Columns.Contains("RecaudacionInactivos") Then
                 If dr.Item("RecaudacionInactivos") IsNot DBNull.Value Then
-                    entidad.RecaudacionInactivos = CInt(dr.Item("RecaudacionInactivos"))
+                    entidad.RecaudacionInactivos = CDec(dr.Item("RecaudacionInactivos"))
                 End If
             End If
             If dr.Table.Columns.Contains("RecaudacionFueraTermino") Then
                 If dr.Item("RecaudacionFueraTermino") IsNot DBNull.Value Then
-                    entidad.RecaudacionFueraTermino = CInt(dr.Item("RecaudacionFueraTermino"))
+                    entidad.RecaudacionFueraTermino = CDec(dr.Item("RecaudacionFueraTermino"))
+                End If
+            End If
+
+            ' Otros
+            If dr.Table.Columns.Contains("ChequesRechazados") Then
+                If dr.Item("ChequesRechazados") IsNot DBNull.Value Then
+                    entidad.ChequesRechazados = CInt(dr.Item("ChequesRechazados"))
                 End If
             End If
             Return entidad

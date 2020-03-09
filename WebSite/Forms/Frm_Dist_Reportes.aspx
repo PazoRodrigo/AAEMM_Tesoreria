@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Dist_Reportes.js")%>'></script>
-        <script>
+    <script>
         document.onkeyup = function (e) {
             let redirect = '';
             if (e.which == 27) {
@@ -38,34 +38,36 @@
     <ul>
         <li>
             <div id="BtnIndicadores" class="Cabecera Porc10_L">
-                <a id="LinkBtnInidicadores"  href='<%= ResolveClientUrl("~/Forms/Frm_Indicadores.aspx")%>' class="LinkBtn" title="Indicadores" ><span class="icon-stats-dots"></span></a>
+                <a id="LinkBtnInidicadores" href='<%= ResolveClientUrl("~/Forms/Frm_Indicadores.aspx")%>' class="LinkBtn" title="Indicadores"><span class="icon-stats-dots"></span></a>
             </div>
             <div id="DivNombreFormulario" class="Cabecera Porc90_L">
                 <span id="SpanNombreFormulario"></span>
             </div>
         </li>
-    </ul>
-    <%--    <div id="Contenido">
-        <div>
-           <a href="Frm_Indicadores.aspx" id="IcIndicadores" title="Indicadores">
-                <div id="DivBtnIndicadores">
-                    <span class="icon-stats-dots"></span>
+        <li>
+            <li class="linea">
+                <div class="container-fluid">
+                    <div class="row mt-1">
+                        <div class="col-lg-4">
+                            <nav>
+                                <ul class="Menu">
+                                    <li class="BtnDistribuidor">
+                                        <ul class="SubMenu">
+                                            <%--<li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesPropios.aspx")%>'>(Alt + P)  - Cheques Propios</a></li>
+                                             <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesTerceros.aspx")%>'>(Alt + T)  - Cheques Terceros</a></li>--%>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-4">
+                        </div>
+                    </div>
                 </div>
-            </a>
-            <div id="DivNombreFormulario90"><span id="NombreFormulario"></span></div>
-        </div>
-        <div class="DivDistribuidor">
-            <nav>
-                <ul class="Menu">
-                    <li class="BtnDistribuidor">
-                        <ul class="SubMenu">
-                            <li><a href="#">Familiares hasta 5 Años</a></li>
-                            <li><a href="#">Familiares hasta 18 Años</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>--%>
+            </li>
+        </li>
+    </ul>
 </asp:Content>
 

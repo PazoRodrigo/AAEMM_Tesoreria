@@ -1,35 +1,46 @@
 ﻿$(document).ready(function () {
     try {
         $("#NombreFormulario").text('Indicadores');
-        $("#LblCantidadEmpresas").text('3026');
-        $("#LblCtEmpr01").text('1500');
-        $("#LblCtEmpr02").text('1250');
-        $("#LblCtEmpr03").text('10');
-        $("#LblCtEmpr04").text('200');
-        $("#LblCtEmpr05").text('20');
-        $("#LblCtEmpr06").text('30');
-        $("#LblCtEmpr07").text('12');
-        $("#LblCtEmpr08").text('4');
-        $("#LblCantidadEmpleados").text('4322');
-        $("#LblCtEmpl01").text('2301');
-        $("#LblCtEmpl02").text('1550');
-        $("#LblCtEmpl03").text('300');
-        $("#LblCtEmpl04").text('95');
-        $("#LblCtEmpl05").text('12');
-        $("#LblCtEmpl06").text('0');
-        $("#LblCtEmpl07").text('58');
-        $("#LblCtEmpl08").text('6');
-        $("#LblRecaudacion").text('150536,35');
-        $("#LblRec01").text('26840,45');
-        $("#LblRec02").text('19200,35');
-        $("#LblRec03").text('30650,65');
-        $("#LblRec04").text('6598,00');
-        $("#LblRec05").text('48536,15');
-        $("#LblRec06").text('6805,68');
-        $("#LblRec07").text('1560,58');
-        $("#LblRec08").text('200,26');
+        Inicio();
+
+
     } catch (e) {
         spinnerClose();
         alertAlerta(e);
     }
 })
+async function Inicio() {
+    spinner();
+    let ObjInidicadores = await Indicadores.Todos();
+    $("#LblEmpresas").text(ObjInidicadores.Empresas);
+    $("#LblEmpresasSinDeudaSinBoleta").text(ObjInidicadores.EmpresasSinDeudaSinBoleta);
+    $("#LblEmpresasSinDeudaConBoleta").text(ObjInidicadores.EmpresasSinDeudaConBoleta);
+    $("#LblEmpresasDeuda1Mes").text(ObjInidicadores.EmpresasDeuda1Mes);
+    $("#LblEmpresasDeuda3Meses").text(ObjInidicadores.EmpresasDeuda3Meses);
+    $("#LblEmpresasDeuda6Meses").text(ObjInidicadores.EmpresasDeuda6Meses);
+    $("#LblEmpresasDeudaMayor6Meses").text(ObjInidicadores.EmpresasDeudaMayor6Meses);
+    $("#LblEmpresasPagosIntercalados").text(ObjInidicadores.EmpresasPagosIntercalados);
+    $("#LblEmpresasInactivas").text(ObjInidicadores.EmpresasInactivas);
+
+    $("#LblEmpleados").text(ObjInidicadores.Empleados);
+    $("#LblEmpleadosSinDeudaSinBoleta").text(ObjInidicadores.EmpleadosSinDeudaSinBoleta);
+    $("#LblEmpleadosSinDeudaConBoleta").text(ObjInidicadores.EmpleadosSinDeudaConBoleta);
+    $("#LblEmpleadosDeuda1Mes").text(ObjInidicadores.EmpleadosDeuda1Mes);
+    $("#LblEmpleadosDeuda3Meses").text(ObjInidicadores.EmpleadosDeuda3Meses);
+    $("#LblEmpleadosDeuda6Meses").text(ObjInidicadores.EmpleadosDeuda6Meses);
+    $("#LblEmpleadosDeudaMayor6Meses").text(ObjInidicadores.EmpleadosDeudaMayor6Meses);
+    $("#LblEmpleadosInactivos").text(ObjInidicadores.EmpleadosInactivos);
+
+    $("#LblRecaudacion").text(ObjInidicadores.Recaudacion);
+    $("#LblRecaudacionXCobrarSinBoleta").text(ObjInidicadores.RecaudacionXCobrarSinBoleta);
+    $("#LblRecaudacionXCobrarConBoleta").text(ObjInidicadores.RecaudacionXCobrarConBoleta);
+    $("#LblRecaudacionDeuda1Mes").text(ObjInidicadores.RecaudacionDeuda1Mes);
+    $("#LblRecaudacionDeuda3Meses").text(ObjInidicadores.RecaudacionDeuda3Meses);
+    $("#LblRecaudacionDeuda6Meses").text(ObjInidicadores.RecaudacionDeuda6Meses);
+    $("#LblRecaudacionDeudaMayor6Meses").text(ObjInidicadores.RecaudacionDeudaMayor6Meses);
+    $("#LblRecaudacionInactivos").text(ObjInidicadores.RecaudacionInactivos);
+    $("#LblRecaudacionFueraTermino").text(ObjInidicadores.RecaudacionFueraTermino);
+
+    $("#LblChequesRechazados").text(ObjInidicadores.ChequesRechazados);
+    spinnerClose();
+}

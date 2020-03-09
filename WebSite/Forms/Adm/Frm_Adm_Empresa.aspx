@@ -57,7 +57,7 @@
                                 <span class="SpanDatoFormulario">CUIT</span>
                             </div>
                             <div class="col-5">
-                                <input id="TxtCUIT" class="DatoFormulario InputDatoFormulario" type="text" placeholder="CUIT" maxlength="11" style="width: 160px" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                                <input id="TxtCUIT" class="DatoFormulario InputDatoFormulario" type="text" placeholder="CUIT" maxlength="11" style="width: 140px" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -87,12 +87,33 @@
                                 <input id="TxtEmail" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Email" autocomplete="off">
                             </div>
                         </div>
+                        <div class="row mt-2">
+                            <div class="col-1"></div>
+                            <div class="col-3">
+                                <span class="SpanDatoFormulario">Dirección</span>
+                            </div>
+                            <div class="col-8">
+                                <input id="TxtDireccion" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Dirección" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-1"></div>
+                            <div class="col-3">
+                                <span class="SpanDatoFormulario">CP :</span>
+                            </div>
+                            <div class="col-2">
+                                <input id="TxtCP" class="DatoFormulario InputDatoFormulario" type="text" placeholder="CP" maxlength="4" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                            </div>
+                            <div class="col-6">
+                                <input id="TxtLocalidad" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Localidad" autocomplete="off" readonly="readonly">
+                            </div>
+                        </div>
                         <div class="row mt-4">
                             <div class="col-1"></div>
                             <div class="col-3">
-                                <div class="Boton BtnInfo">
+                               <%-- <div class="Boton BtnInfo">
                                     <a id="LinkBtnDomicilios" href="#"><span id="SpanBtnDomicilios"></span></a>
-                                </div>
+                                </div>--%>
                             </div>
                             <div class="col-1"></div>
                             <div class="col-3">
@@ -109,7 +130,7 @@
 
                         </div>
 
-                         <div class="row mt-3">
+                        <div class="row mt-3">
                             <div class="col-1 text-center"></div>
                             <div class="col-10 text-center">
                                 <div class="Boton BtnGuardar">
@@ -181,7 +202,7 @@
                                     </div>
                                 </div>
                             </div>
-                             <div class="row mt-2">
+                            <div class="row mt-2">
                                 <div class="col-12 text-center">
                                     <div class="Boton BtnImprimir">
                                         <a id="LinkBtnImprimir" href="#"><span id="SpanBtnImprimir"></span></a>

@@ -73,22 +73,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entidad\Abstractas\Cheque.vb" />
-    <Compile Include="Entidad\Banco.vb" />
-    <Compile Include="Entidad\CentroCosto.vb" />
-    <Compile Include="Entidad\ChequePropio.vb" />
-    <Compile Include="Entidad\ChequeTercero.vb" />
-    <Compile Include="Entidad\Convenio.vb" />
-    <Compile Include="Entidad\CuentaContable.vb" />
+    <Compile Include="Entidad\DIM\Banco.vb" />
+    <Compile Include="Entidad\DIM\CentroCosto.vb" />
+    <Compile Include="Entidad\ADM\ChequePropio.vb" />
+    <Compile Include="Entidad\ADM\ChequeTercero.vb" />
+    <Compile Include="Entidad\DIM\Convenio.vb" />
+    <Compile Include="Entidad\DIM\CuentaContable.vb" />
     <Compile Include="Entidad\Abstractas\DTO_DBE.vb" />
-    <Compile Include="Entidad\EstadoCheque.vb" />
-    <Compile Include="Entidad\Indicadores.vb" />
-    <Compile Include="Entidad\OriginarioGasto.vb" />
-    <Compile Include="Entidad\Proveedor.vb" />
-    <Compile Include="Entidad\TipoContacto.vb" />
-    <Compile Include="Entidad\TipoDomicilio.vb" />
-    <Compile Include="Entidad\TipoGasto.vb" />
-    <Compile Include="Entidad\TipoPago.vb" />
-    <Compile Include="Enumeradores.vb" />
+    <Compile Include="Entidad\ADM\Empresa.vb" />
+    <Compile Include="Entidad\Complementarias\Domicilio.vb" />
+    <Compile Include="Entidad\Estados\EstadoCheque.vb" />
+    <Compile Include="Entidad\Complementarias\Indicadores.vb" />
+    <Compile Include="Entidad\DIM\OriginarioGasto.vb" />
+    <Compile Include="Entidad\DIM\Proveedor.vb" />
+    <Compile Include="Entidad\DIM\TipoContacto.vb" />
+    <Compile Include="Entidad\DIM\TipoDomicilio.vb" />
+    <Compile Include="Entidad\DIM\TipoGasto.vb" />
+    <Compile Include="Entidad\DIM\TipoPago.vb" />
+    <Compile Include="Entidad\Complementarias\Enumeradores.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
