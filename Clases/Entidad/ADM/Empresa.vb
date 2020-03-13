@@ -32,7 +32,6 @@ Namespace Entidad
         Public Property IdEstado() As Enumeradores.EstadoEmpresa = Nothing
         Public Property FechaReactivacion() As Date? = Nothing
         Public Property ObjDomicilio() As Domicilio = Nothing
-
 #End Region
 #Region " Lazy Load "
         Public ReadOnly Property LngFechaReactivacion() As Long
@@ -42,6 +41,22 @@ Namespace Entidad
                     result = CLng(Year(FechaReactivacion.Value).ToString & Right("00" & Month(FechaReactivacion.Value).ToString, 2) & Right("00" & Day(FechaReactivacion.Value).ToString, 2))
                 End If
                 Return result
+            End Get
+        End Property
+        Public ReadOnly Property SaldoCuentaCorriente() As Decimal
+            Get
+                Dim result As Decimal = 0
+
+                Return result
+            End Get
+        End Property
+        Private _DatosCalculados As DatosCalculados
+        Public ReadOnly Property DatosCalculados() As DatosCalculados
+            Get
+                If _DatosCalculados Is Nothing Then
+                    _DatosCalculados = DatosCalculados.TraerUno(IdEntidad)
+                End If
+                Return _DatosCalculados
             End Get
         End Property
 #End Region

@@ -254,7 +254,7 @@ class Empresa extends DBE {
     static async armarUC() {
         $("#grilla").html("");
         let control = "";
-        if ($("#Modal-PopUpEmpresa").length == 0) {
+        if (parseInt($("#Modal-PopUpEmpresa").length) === 0) {
             control += '<div id="Modal-PopUpEmpresa" class="modal" tabindex="-1" role="dialog" >';
             control += '    <div class="modal-dialog modal-lg">';
             control += '        <div class="modal-content">';
@@ -269,7 +269,7 @@ class Empresa extends DBE {
             control += '                                <h6> CUIT </h6>';
             control += '                            </div>';
             control += '                            <div class="col-md-5">';
-            control += '                                <input class="form-control input-sm" maxlength="11" style="width:160px" id="txtBuscaCUIT" type="text" placeholder="CUIT (11 números)" onkeypress="return jsSoloNumeros(event);" maxlength="10" autocomplete="off"/>';
+            control += '                                <input class="form-control input-sm TxtBuscadores" maxlength="11" style="width:160px" id="txtBuscaCUIT" type="text" placeholder="CUIT (11 números)" onkeypress="return jsSoloNumeros(event);" maxlength="10" autocomplete="off"/>';
             control += '                           </div>';
             control += '                        </div>';
             control += '                        <div class="row mt-1">';
@@ -277,7 +277,7 @@ class Empresa extends DBE {
             control += '                                <h6> Razón Social </h6>';
             control += '                            </div>';
             control += '                            <div class="col-md-9">';
-            control += '                                <input class="form-control input-sm txtAfi" id="txtRazonSocial" type="text" placeholder="Razón Social" autocomplete="off"/>';
+            control += '                                <input class="form-control input-sm TxtBuscadores" id="txtRazonSocial" type="text" placeholder="Razón Social" autocomplete="off"/>';
             control += '                            </div>';
             control += '                        </div>';
             control += '                        <div class="row mt-1">';
@@ -312,6 +312,7 @@ class Empresa extends DBE {
             control += '</div>';
             $("body").append(control);
         }
+        LimpiarBuscador();
         let lista = await CentroCosto.TraerTodosActivos();
         await CentroCosto.ArmarCombo(lista, 'CboBuscadorCentroCosto', 'SelectorBuscadorCentroCosto', 'EventoBuscadorCentroCosto', 'Centro de Costo', 'CboBuscadorCC')
         _IdCentroCosto = 0;
@@ -335,7 +336,9 @@ function LlenarEntidadEmpresa(entidad) {
     Res.Domicilio = LlenarEntidadDomicilio(entidad.Domicilio);
     return Res;
 }
-
+function LimpiarBuscador() {
+        $(".TxtBuscadores").val('');
+}
 document.addEventListener('EventoBuscadorCentroCosto', async function (e) {
     try {
         let objSeleccionado = e.detail;
@@ -421,4 +424,5 @@ $('body').on('click', ".mibtn-EliminarEmpresa", async function () {
         alertAlerta(e);
     }
 });
+
 

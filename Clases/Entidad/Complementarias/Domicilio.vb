@@ -18,7 +18,7 @@ Namespace Entidad
         Public ReadOnly Property ObjLocalidad() As Object
             Get
                 If _ObjLocalidad Is Nothing Then
-                    '_ObjLocalidad = ObjLocalidad.TraerUno(IdLocalidad)
+                    _ObjLocalidad = Localidad.TraerUno(IdLocalidad)
                 End If
                 Return _ObjLocalidad
             End Get
@@ -47,13 +47,12 @@ Namespace Entidad
             Dim result As New DTO.DTO_Domicilio With {
                 .Direccion = Direccion,
                 .CodigoPostal = CodigoPostal,
-                .IdLocalidad = IdLocalidad
+                .IdLocalidad = IdLocalidad,
+                .Localidad = Localidad.TraerTodosXCP(CodigoPostal)(0).ToDTO
             }
             Return result
         End Function
 #End Region
-
-
 
     End Class ' Domicilio
 End Namespace ' Entidad
@@ -65,6 +64,7 @@ Namespace DTO
         Public Property Direccion() As String = ""
         Public Property CodigoPostal() As Integer = 0
         Public Property IdLocalidad() As Integer = 0
+        Public Property Localidad() As DTO_Localidad = Nothing
 #End Region
     End Class ' DTO_Domicilio
 End Namespace ' DTO
@@ -95,11 +95,6 @@ Public Class DAL_Domicilio
         If dr.Table.Columns.Contains("CodigoPostal") Then
             If dr.Item("CodigoPostal") IsNot DBNull.Value Then
                 entidad.CodigoPostal = CInt(dr.Item("CodigoPostal"))
-            End If
-        End If
-        If dr.Table.Columns.Contains("IdLocalidad") Then
-            If dr.Item("IdLocalidad") IsNot DBNull.Value Then
-                entidad.IdLocalidad = CInt(dr.Item("IdLocalidad"))
             End If
         End If
         Return entidad

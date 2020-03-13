@@ -184,7 +184,7 @@ class Empleado extends DBE {
     static async armarUC() {
         $("#grilla").html("");
         let control = "";
-        if ($("#Modal-PopUpEmpleado").length == 0) {
+        if (parseInt($("#Modal-PopUpEmpleado").length) === 0) {
             control += '<div id="Modal-PopUpEmpleado" class="modal" tabindex="-1" role="dialog" >';
             control += '    <div class="modal-dialog modal-lg">';
             control += '        <div class="modal-content">';
@@ -199,7 +199,7 @@ class Empleado extends DBE {
             control += '                                <h6> Nombre </h6>';
             control += '                            </div>';
             control += '                            <div class="col-md-9">';
-            control += '                                <input class="form-control input-sm txtAfi" id="txtBuscadorNombre" type="text" placeholder="Nombre" autocomplete="off"/>';
+            control += '                                <input class="form-control input-sm TxtBuscador" id="txtBuscadorNombre" type="text" placeholder="Nombre" autocomplete="off"/>';
             control += '                            </div>';
             control += '                        </div>';
             control += '                        <div class="row">';
@@ -207,17 +207,25 @@ class Empleado extends DBE {
             control += '                                <h6> CUIL </h6>';
             control += '                            </div>';
             control += '                            <div class="col-md-5">';
-            control += '                                <input class="form-control input-sm" maxlength="11" style="width:160px" id="txtBuscadorCUIL" type="text" placeholder="CUIL (11 números)" onkeypress="return jsSoloNumeros(event);" maxlength="10" autocomplete="off"/>';
+            control += '                                <input class="form-control input-sm TxtBuscador" maxlength="11" style="width:160px" id="txtBuscadorCUIL" type="text" placeholder="CUIL (11 números)" onkeypress="return jsSoloNumeros(event);" maxlength="10" autocomplete="off"/>';
             control += '                           </div>';
             control += '                        </div>';
-            control += '                        <div class="row mt-1">';
+            control += '                        <div class="row">';
             control += '                            <div class="col-md-2">';
-            control += '                                <h6>Empresa</h6>';
+            control += '                                <h6> DNI </h6>';
             control += '                            </div>';
-            control += '                            <div class="col-md-8">';
-            control += '                                <div id="CboBuscadorEmpresa"> </div>';
-            control += '                            </div>';
+            control += '                            <div class="col-md-5">';
+            control += '                                <input class="form-control input-sm TxtBuscador" maxlength="8" style="width:160px" id="txtBuscadorDNI" type="text" placeholder="CUIL (8 números)" onkeypress="return jsSoloNumeros(event);" maxlength="10" autocomplete="off"/>';
+            control += '                           </div>';
             control += '                        </div>';
+            //control += '                        <div class="row mt-1">';
+            //control += '                            <div class="col-md-2">';
+            //control += '                                <h6>Empresa</h6>';
+            //control += '                            </div>';
+            //control += '                            <div class="col-md-8">';
+            //control += '                                <div id="CboBuscadorEmpresa"> </div>';
+            //control += '                            </div>';
+            //control += '                        </div>';
             control += '                        <div class="row mt-2">';
             control += '                            <div class="col-md-9"></div>';
             control += '                            <div class="col-md-3">';
@@ -248,8 +256,9 @@ class Empleado extends DBE {
             control += '</div>';
             $("body").append(control);
         }
+        LimpiarBuscador();
         let lista = await CentroCosto.TraerTodosActivos();
-        await CentroCosto.ArmarCombo(lista, 'CboBuscadorCentroCosto', 'SelectorBuscadorCentroCosto', 'EventoBuscadorCentroCosto', 'Centro de Costo', 'CboBuscadorCC')
+        await CentroCosto.ArmarCombo(lista, 'CboBuscadorCentroCosto', 'SelectorBuscadorCentroCosto', 'EventoBuscadorCentroCosto', 'Centro de Costo', 'CboBuscadorCC');
         $("#Modal-PopUpEmpleado").modal({ show: true });
         $("#txtBuscaCUIT").focus();
     }
@@ -267,6 +276,9 @@ function LlenarEntidadEmpleado(entidad) {
     Res.Observaciones = entidad.Observaciones;
     Res.IdEstado = entidad.IdEstado;
     return Res;
+}
+function LimpiarBuscador() {
+    $(".TxtBuscadores").val('');
 }
 
 document.addEventListener('EventoBuscadorCentroCosto', async function (e) {

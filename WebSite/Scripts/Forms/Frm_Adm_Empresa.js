@@ -28,6 +28,14 @@ async function Inicio() {
 function Limpiar_Empresa() {
     $(".DatoFormulario").val('');
 }
+async function LlenarEmpresa() {
+    $("#TxtRazonSocial").val(_ObjEmpresa.RazonSocial);
+    $("#TxtCUIT").val(_ObjEmpresa.CUIT);
+    $("#TxtEmail").val(_ObjEmpresa.CorreoElectronico);
+    $("#TxtDireccion").val(_ObjEmpresa.Domicilio.Direccion);
+    $("#TxtCP").val(_ObjEmpresa.Domicilio.CodigoPostal);
+    $("#TxtLocalidad").val(_ObjEmpresa.Domicilio.Localidad.Descripcion);
+}
 function Nuevo_Empresa() {
     Limpiar_Empresa();
     _ObjEmpresa = new Empresa;
@@ -39,16 +47,23 @@ async function ArmarComboCentroCosto() {
 }
 async function ArmarComboConvenio() {
     let lista = await Convenio.Todos();
-    //await Convenio.ArmarCombo(lista, 'CboConvenio', 'SelectorConvenio', 'EventoSeleccionConvenio', 'Convenio', 'CboConvenio');
+    await Convenio.ArmarCombo(lista, 'CboConvenio', 'SelectorConvenio', 'EventoSeleccionConvenio', 'Convenio', 'CboConvenio');
 }
 
 document.addEventListener('EventoSeleccionarEmpresa', async function (e) {
     try {
         let objSeleccionado = e.detail;
         _ObjEmpresa = objSeleccionado;
-        console.log(_ObjEmpresa);
+        await LlenarEmpresa();
     } catch (e) {
         alertAlerta(e);
     }
 }, false);
+$('body').on('click', '#LinkBtnArmarUC', async function (e) {
+    try {
+        Inicio();
+    } catch (e) {
+        alertAlerta(e);
+    }
+});
 

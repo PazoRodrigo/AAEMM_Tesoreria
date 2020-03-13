@@ -1,11 +1,11 @@
-﻿
-class Domicilio {
+﻿class Domicilio {
     constructor() {
         this.Direccion = '';
         this.CodigoPostal = 0;
         this.IdLocalidad = 0;
 
         this._ObjLocalidad;
+        this.Localidad;
     }
     // Todos
     async ObjLocalidad() {
@@ -20,5 +20,6 @@ function LlenarEntidadDomicilio(entidad) {
     Res.Direccion = entidad.Direccion;
     Res.CodigoPostal = entidad.CodigoPostal;
     Res.IdLocalidad = entidad.IdLocalidad;
-    return Res;
+    Res.Localidad = entidad.Localidad;
+    return Res; 
 }

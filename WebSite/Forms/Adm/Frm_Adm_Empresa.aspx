@@ -38,7 +38,7 @@
                             <div class="col-1"></div>
                             <div class="col-4">
                                 <div class="Boton BtnBuscar">
-                                    <a id="LinkBtnBuscar" href="#"><span id="SpanBtnBuscar"></span></a>
+                                    <a id="LinkBtnArmarUC" href="#"><span id="SpanBtnBuscar"></span></a>
                                 </div>
                             </div>
                         </div>

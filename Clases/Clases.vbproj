@@ -73,6 +73,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entidad\Abstractas\Cheque.vb" />
+    <Compile Include="Entidad\Complementarias\CuentaCorriente.vb" />
+    <Compile Include="Entidad\Complementarias\DatosCalculados.vb" />
     <Compile Include="Entidad\DIM\Banco.vb" />
     <Compile Include="Entidad\DIM\CentroCosto.vb" />
     <Compile Include="Entidad\ADM\ChequePropio.vb" />
@@ -82,6 +84,8 @@
     <Compile Include="Entidad\Abstractas\DTO_DBE.vb" />
     <Compile Include="Entidad\ADM\Empresa.vb" />
     <Compile Include="Entidad\Complementarias\Domicilio.vb" />
+    <Compile Include="Entidad\Complementarias\Localidad.vb" />
+    <Compile Include="Entidad\Complementarias\Provincia.vb" />
     <Compile Include="Entidad\Estados\EstadoCheque.vb" />
     <Compile Include="Entidad\Complementarias\Indicadores.vb" />
     <Compile Include="Entidad\DIM\OriginarioGasto.vb" />
