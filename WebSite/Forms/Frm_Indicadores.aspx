@@ -225,7 +225,7 @@
                                         <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Administracion.aspx")%>'>Administración</a></li>
                                         <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Reportes.aspx")%>'>Reportes</a></li>
                                         <li class="BtnDistribuidorIndicadores"><a href="#">Ingresos</a></li>
-                                        <li class="BtnDistribuidorIndicadores"><a href="#">Gastos</a></li>
+                                        <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Gasto.aspx")%>'>Gastos</a></li>
                                         <li class="BtnDistribuidorIndicadoresDanger">
                                             <a href="#">
                                                 <div>Ch. Rechazados <span id="LblChequesRechazados" style="float:right; padding-right:10px;"></span> </div>

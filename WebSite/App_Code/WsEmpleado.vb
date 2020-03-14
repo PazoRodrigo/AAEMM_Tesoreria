@@ -12,8 +12,70 @@ Public Class WsEmpleado
     Inherits System.Web.Services.WebService
 
     <WebMethod()>
-    Public Function HelloWorld() As String
-        Return "Hello World"
+    Public Function TraerTodosXCUIL(CUIL As Long) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Empleado)
+            Entidad.Empleado.Refresh()
+            Dim lista As List(Of Entidad.Empleado) = Entidad.Empleado.TraerTodosXCUIL(CUIL)
+            If Not lista Is Nothing Then
+                For Each item As Entidad.Empleado In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
+    Public Function TraerTodosXNroDocumento(NroDocumento As Long) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Empleado)
+            Entidad.Empleado.Refresh()
+            Dim lista As List(Of Entidad.Empleado) = Entidad.Empleado.TraerTodosXNroDocumento(NroDocumento)
+            If Not lista Is Nothing Then
+                For Each item As Entidad.Empleado In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
+    Public Function TraerTodosXNombre(Nombre As String) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Empleado)
+            Entidad.Empleado.Refresh()
+            Dim lista As List(Of Entidad.Empleado) = Entidad.Empleado.TraerTodosXNombre(Nombre)
+            If Not lista Is Nothing Then
+                For Each item As Entidad.Empleado In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
     End Function
 
 End Class

@@ -26,22 +26,34 @@
         <li class="linea">
             <div class="container-fluid">
                 <div class="row mt-1">
-                    <%--Buscador--%>
-                    <div class="col-lg-7">
+                    <div class="col-lg-12">
                         <div class="row mt-1">
                             <div class="col-1"></div>
-                            <div class="col-4">
+                            <div class="col-2">
                                 <div class="Boton BtnNuevo">
                                     <a id="LinkBtnNuevo" href="#"><span id="SpanBtnNuevo"></span></a>
                                 </div>
                             </div>
                             <div class="col-1"></div>
-                            <div class="col-4">
+                            <div class="col-2">
                                 <div class="Boton BtnBuscar">
                                     <a id="LinkBtnArmarUC" href="#"><span id="SpanBtnBuscar"></span></a>
                                 </div>
                             </div>
+                            <div class="col-2"></div>
+                            <div class="col-2">
+                                <div class="Boton BtnEliminar">
+                                    <a id="LinkBtnEliminar" href="#"><span id="SpanBtnEliminar"></span></a>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="Boton BtnGuardar">
+                                    <a id="LinkBtnGuardar" href="#"><span id="SpanBtnGuardar"></span></a>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="col-lg-7">
                         <div class="row mt-4">
                             <div class="col-1"></div>
                             <div class="col-3">
@@ -111,7 +123,7 @@
                         <div class="row mt-4">
                             <div class="col-1"></div>
                             <div class="col-3">
-                               <%-- <div class="Boton BtnInfo">
+                                <%-- <div class="Boton BtnInfo">
                                     <a id="LinkBtnDomicilios" href="#"><span id="SpanBtnDomicilios"></span></a>
                                 </div>--%>
                             </div>
@@ -129,84 +141,65 @@
                             </div>
 
                         </div>
-
-                        <div class="row mt-3">
-                            <div class="col-1 text-center"></div>
-                            <div class="col-10 text-center">
-                                <div class="Boton BtnGuardar">
-                                    <a id="LinkBtnReactivar" href="#"><span id="SpanBtnReactivar"></span></a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <%--Entidad--%>
                     <div class="col-lg-5">
-                        <div class="row mt-1">
+                        <div class="row mt-4">
                             <div class="col-12 text-center">
                                 <div class="TituloDimensional">
                                     <span id="SpanTituloDimensional"></span>
                                 </div>
                             </div>
                         </div>
-                        <div id="DatosEntidad" style="height: 365px;">
-                            <div class="row mt-1">
-                                <div class="col-5">
-                                    <span class="SpanDatoFormulario">Saldo Cuenta Corriente</span>
-                                </div>
-                                <div class="col-7">
-                                    <input id="TxtSaldoCuentaCorriente" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Saldo" autocomplete="off" readonly="readonly">
+                        <div class="row mt-1">
+                            <div class="col-5">
+                                <span class="SpanDatoFormulario">Saldo Cuenta Corriente</span>
+                            </div>
+                            <div class="col-7">
+                                <input id="TxtSaldoCuentaCorriente" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Saldo" autocomplete="off" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-5">
+                                <span class="SpanDatoFormulario">Empleados</span>
+                            </div>
+                            <div class="col-2">
+                                <input id="TxtEmpleados" class="DatoFormulario InputDatoFormulario" type="text" placeholder="0" autocomplete="off" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-5">
+                                <span class="SpanDatoFormulario">Afiliados</span>
+                            </div>
+                            <div class="col-2">
+                                <input id="TxtEAfiliados" class="DatoFormulario InputDatoFormulario" type="text" placeholder="0" autocomplete="off" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-5">
+                                <span class="SpanDatoFormulario">No Afiliados</span>
+                            </div>
+                            <div class="col-2">
+                                <input id="TxtNoAfiliados" class="DatoFormulario InputDatoFormulario" type="text" placeholder="0" autocomplete="off" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12 text-center">
+                                <div class="Boton BtnImprimir">
+                                    <a id="LinkBtnImprimirNomina" href="#"><span id="SpanBtnImprimirNomina"></span></a>
                                 </div>
                             </div>
-                            <div class="row mt-1">
-                                <div class="col-5">
-                                    <span class="SpanDatoFormulario">Empleados</span>
-                                </div>
-                                <div class="col-2">
-                                    <input id="TxtEmpleados" class="DatoFormulario InputDatoFormulario" type="text" placeholder="0" autocomplete="off" readonly="readonly">
-                                </div>
-                            </div>
-                            <div class="row mt-1">
-                                <div class="col-5">
-                                    <span class="SpanDatoFormulario">Afiliados</span>
-                                </div>
-                                <div class="col-2">
-                                    <input id="TxtEAfiliados" class="DatoFormulario InputDatoFormulario" type="text" placeholder="0" autocomplete="off" readonly="readonly">
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12 text-center">
+                                <div class="Boton BtnImprimir">
+                                    <a id="LinkBtnImprimir" href="#"><span id="SpanBtnImprimir"></span></a>
                                 </div>
                             </div>
-                            <div class="row mt-1">
-                                <div class="col-5">
-                                    <span class="SpanDatoFormulario">No Afiliados</span>
-                                </div>
-                                <div class="col-2">
-                                    <input id="TxtNoAfiliados" class="DatoFormulario InputDatoFormulario" type="text" placeholder="0" autocomplete="off" readonly="readonly">
-                                </div>
-                            </div>
-                            <div class="row mt-2">
-                                <div class="col-12 text-center">
-                                    <div class="Boton BtnImprimir">
-                                        <a id="LinkBtnImprimirNomina" href="#"><span id="SpanBtnImprimirNomina"></span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mt-5">
-                                <div class="col-1"></div>
-                                <div class="col-3 text-center">
-                                    <div class="Boton BtnEliminar">
-                                        <a id="LinkBtnEliminar" href="#"><span id="SpanBtnEliminar"></span></a>
-                                    </div>
-                                </div>
-                                <div class="col-1"></div>
-                                <div class="col-5">
-                                    <div class="Boton BtnGuardar">
-                                        <a id="LinkBtnGuardar" href="#"><span id="SpanBtnGuardar"></span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mt-2">
-                                <div class="col-12 text-center">
-                                    <div class="Boton BtnImprimir">
-                                        <a id="LinkBtnImprimir" href="#"><span id="SpanBtnImprimir"></span></a>
-                                    </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12 text-center">
+                                <div class="Boton BtnGuardar">
+                                    <a id="LinkBtnReactivar" href="#"><span id="SpanBtnReactivar"></span></a>
                                 </div>
                             </div>
                         </div>

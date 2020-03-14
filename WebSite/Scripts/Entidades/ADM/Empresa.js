@@ -269,7 +269,7 @@ class Empresa extends DBE {
             control += '                                <h6> CUIT </h6>';
             control += '                            </div>';
             control += '                            <div class="col-md-5">';
-            control += '                                <input class="form-control input-sm TxtBuscadores" maxlength="11" style="width:160px" id="txtBuscaCUIT" type="text" placeholder="CUIT (11 números)" onkeypress="return jsSoloNumeros(event);" maxlength="10" autocomplete="off"/>';
+            control += '                                <input class="form-control input-sm TxtBuscadores" maxlength="11" style="width:160px" id="txtBuscaCUIT" type="text" placeholder="CUIT (11 números)" onkeypress="return jsSoloNumeros(event);" autocomplete="off"/>';
             control += '                           </div>';
             control += '                        </div>';
             control += '                        <div class="row mt-1">';
@@ -292,13 +292,13 @@ class Empresa extends DBE {
             control += '                            <div class="col-md-9"></div>';
             control += '                            <div class="col-md-3">';
             control += '                                <div class="Boton BtnBuscar">';
-            control += '                                    <a id="LinkBtnBuscar" href="#"><span>Buscar Empresa</span></a>';
+            control += '                                    <a id="LinkBtnBuscarEmpresa" href="#"><span>Buscar Empresa</span></a>';
             control += '                                </div>';
             control += '                            </div>';
             control += '                        </div>';
             control += '                        <div class="row mt-2">';
             control += '                            <div class="col-md-12">';
-            control += '                                <div id="grillaBuscador" style="height: 180px;overflow-y: scroll;"></div>';
+            control += '                                <div id="grillaBuscadorEmpresa" style="height: 180px;overflow-y: scroll;"></div>';
             control += '                            </div>';
             control += '                        </div>';
             control += '                    </div>';
@@ -314,7 +314,7 @@ class Empresa extends DBE {
         }
         LimpiarBuscador();
         let lista = await CentroCosto.TraerTodosActivos();
-        await CentroCosto.ArmarCombo(lista, 'CboBuscadorCentroCosto', 'SelectorBuscadorCentroCosto', 'EventoBuscadorCentroCosto', 'Centro de Costo', 'CboBuscadorCC')
+        await CentroCosto.ArmarCombo(lista, 'CboBuscadorCentroCosto', 'SelectorBuscadorCentroCosto', 'EventoBuscadorCentroCosto', 'Centro de Costo', 'CboBuscadorCC');
         _IdCentroCosto = 0;
         $("#Modal-PopUpEmpresa").modal('show');
         $("#txtBuscaCUIT").focus();
@@ -337,7 +337,7 @@ function LlenarEntidadEmpresa(entidad) {
     return Res;
 }
 function LimpiarBuscador() {
-        $(".TxtBuscadores").val('');
+    $(".TxtBuscadores").val('');
 }
 document.addEventListener('EventoBuscadorCentroCosto', async function (e) {
     try {
@@ -350,27 +350,25 @@ document.addEventListener('EventoBuscadorCentroCosto', async function (e) {
         alertAlerta(e);
     }
 }, false);
-$('body').on('click', '#LinkBtnBuscar', async function (e) {
+$('body').on('click', '#LinkBtnBuscarEmpresa', async function (e) {
     try {
-        spinner()
+        spinner();
         let buscaCUIT = $("#txtBuscaCUIT").val();
         let buscaRazonSocial = $("#txtRazonSocial").val();
         let TipoBuscador = '';
         if (parseInt(buscaCUIT.length) === 11 || parseInt(buscaRazonSocial.length) > 3 || parseInt(_IdCentroCosto) > 0) {
             if (parseInt(buscaCUIT.length) === 11) {
                 TipoBuscador = 'xCUIT';
-                await LlenarGrillaBuscador(TipoBuscador);
             } else {
                 if (parseInt(buscaRazonSocial.length) > 3) {
                     TipoBuscador = 'xRazonSocial';
-                    await LlenarGrillaBuscador(TipoBuscador);
                 } else {
                     if (parseInt(_IdCentroCosto) > 0) {
                         TipoBuscador = 'xIdCentroCosto';
-                        await LlenarGrillaBuscador(TipoBuscador);
                     }
                 }
             }
+            await LlenarGrillaBuscadorEmpresa(TipoBuscador);
         }
         spinnerClose();
     } catch (e) {
@@ -378,7 +376,7 @@ $('body').on('click', '#LinkBtnBuscar', async function (e) {
         alertAlerta(e);
     }
 });
-async function LlenarGrillaBuscador(TipoBuscador) {
+async function LlenarGrillaBuscadorEmpresa(TipoBuscador) {
     _Lista_Empresa = [];
     switch (TipoBuscador) {
         case 'xCUIT':
@@ -392,7 +390,7 @@ async function LlenarGrillaBuscador(TipoBuscador) {
             break;
         default:
     }
-    Empresa.ArmarGrillaSinEliminar(_Lista_Empresa, 'grillaBuscador', 'EventoSeleccionarEmpresa', '');
+    Empresa.ArmarGrillaSinEliminar(_Lista_Empresa, 'grillaBuscadorEmpresa', 'EventoSeleccionarEmpresa', '');
 }
 
 $('body').on('click', ".mibtn-seleccionEmpresa", async function () {

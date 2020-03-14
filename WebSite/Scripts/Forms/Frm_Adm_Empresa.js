@@ -6,13 +6,13 @@ $(document).ready(function () {
         $("#SpanTituloDimensional").text('Estado Empresa. ACTIVA');
         $("#SpanBtnImprimirNomina").text('Imprimir Nómina');
         $("#SpanBtnImprimir").text('Imprimir Empresa');
-        $("#SpanBtnEliminar").text('Eliminar');
         $("#SpanBtnNuevo").text('Nueva Empresa');
         $("#SpanBtnBuscar").text('Buscar Empresa');
+        $("#SpanBtnEliminar").text('Eliminar');
+        $("#SpanBtnGuardar").text('Guardar');
         $("#SpanBtnDomicilios").text('Domicilios (1)');
         $("#SpanBtnContactos").text('Contactos (2)');
         $("#SpanBtnTelefonos").text('Teléfonos (1)');
-        $("#SpanBtnGuardar").text('Guardar');
         $("#SpanBtnReactivar").text('Reactivando Empresa');
         Inicio();
     } catch (e) {

@@ -71,6 +71,18 @@
             $('body').on('keyup', 'textarea', function (e) {
                 $(this).val($(this).val().toUpperCase());
             });
+            //window.onload = function () {
+            //    const InputTxtCUIT = document.getElementById('txtBuscaCUIT');
+            //    InputTxtCUIT.onpaste = function (e) {
+            //        e.preventDefault();
+            //    };
+            //};
+            //window.onload = function () {
+            //    const InputTxtCUIT = document.getElementById('txtBuscaCUIL');
+            //    InputTxtCUIT.onpaste = function (e) {
+            //        e.preventDefault();
+            //    };
+            //};
             $("#SpanFecha").text(fechaHoy());
             let getURL = window.location.pathname
             let partes = getURL.split("/")

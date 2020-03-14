@@ -118,11 +118,80 @@ class Empleado extends DBE {
         _Lista_Empleado = result;
         return _Lista_Empleado;
     }
+    static async TraerTodasXCUIL(CUIL) {
+        let data = {
+            'CUIL': CUIL
+        };
+        let lista = await ejecutarAsync(urlWsEmpleado + "/TraerTodosXCUIL", data);
+        _Lista_Empleado = [];
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpleado(value));
+            });
+        }
+        _Lista_Empleado = result;
+        return _Lista_Empleado;
+    }
+    static async TraerTodasXNroDocumento(NroDocumento) {
+        let data = {
+            'NroDocumento': NroDocumento
+        };
+        let lista = await ejecutarAsync(urlWsEmpleado + "/TraerTodosXNroDocumento", data);
+        console.log(lista);
+        alert('1000');
+        _Lista_Empleado = [];
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpleado(value));
+            });
+        }
+        _Lista_Empleado = result;
+        console.log(_Lista_Empleado);
+        alert(11);
+        return _Lista_Empleado;
+    }
+    static async TraerTodasXNombre(Nombre) {
+        let data = {
+            'Nombre': Nombre
+        };
+        let lista = await ejecutarAsync(urlWsEmpleado + "/TraerTodosXNombre", data);
+        _Lista_Empleado = [];
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpleado(value));
+            });
+        }
+        _Lista_Empleado = result;
+        return _Lista_Empleado;
+    }
     // Otros
     static async Refresh() {
         _Lista_Empleado = await Empleado.TraerTodas();
     }
     // Herramientas
+    static async ArmarGrillaSinEliminar(lista, div, eventoSeleccion, estilo) {
+        $('#' + div + '').html('');
+        let str = '';
+        if (lista.length > 0) {
+            str += '<div style="' + estilo + '">';
+            str += '    <ul class="ListaGrilla">';
+            let estiloItem = '';
+            for (let item of lista) {
+                estiloItem = 'LinkListaGrillaObjeto';
+                if (item.IdEstado === 1) {
+                    estiloItem = 'LinkListaGrillaObjetoEliminado';
+                }
+                let aItem = '<a href="#" class="mibtn-seleccionEmpleado" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.Nombre + '</a>';
+                str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div></li>', aItem);
+            }
+            str += '    </ul>';
+            str += '</div>';
+        }
+        return $('#' + div + '').html(str);
+    }
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -194,57 +263,43 @@ class Empleado extends DBE {
             control += '            <div class="row">';
             control += '                <div class="modal-body">';
             control += '                    <div class="container col-md-12">';
-            control += '                        <div class="row mt-1">';
-            control += '                            <div class="col-md-2">';
-            control += '                                <h6> Nombre </h6>';
-            control += '                            </div>';
-            control += '                            <div class="col-md-9">';
-            control += '                                <input class="form-control input-sm TxtBuscador" id="txtBuscadorNombre" type="text" placeholder="Nombre" autocomplete="off"/>';
-            control += '                            </div>';
-            control += '                        </div>';
             control += '                        <div class="row">';
-            control += '                            <div class="col-md-2">';
+            control += '                            <div class="col-md-3">';
             control += '                                <h6> CUIL </h6>';
             control += '                            </div>';
             control += '                            <div class="col-md-5">';
-            control += '                                <input class="form-control input-sm TxtBuscador" maxlength="11" style="width:160px" id="txtBuscadorCUIL" type="text" placeholder="CUIL (11 números)" onkeypress="return jsSoloNumeros(event);" maxlength="10" autocomplete="off"/>';
+            control += '                                <input class="form-control input-sm TxtBuscadores" id="txtBuscaCUIL" style="width:160px"  type="text" placeholder="CUIL (11 números)" onkeypress="return jsSoloNumeros(event);" maxlength="11" autocomplete="off"/>';
             control += '                           </div>';
             control += '                        </div>';
-            control += '                        <div class="row">';
-            control += '                            <div class="col-md-2">';
+            control += '                        <div class="row mt-1">';
+            control += '                            <div class="col-md-3">';
+            control += '                                <h6> Nombre / Apellido </h6>';
+            control += '                            </div>';
+            control += '                            <div class="col-md-8">';
+            control += '                                <input class="form-control input-sm TxtBuscadores" id="txtBuscaNombre" type="text" placeholder="Nombre / Apellido" autocomplete="off"/>';
+            control += '                            </div>';
+            control += '                        </div>';
+            control += '                        <div class="row mt-1">';
+            control += '                            <div class="col-md-3">';
             control += '                                <h6> DNI </h6>';
             control += '                            </div>';
-            control += '                            <div class="col-md-5">';
-            control += '                                <input class="form-control input-sm TxtBuscador" maxlength="8" style="width:160px" id="txtBuscadorDNI" type="text" placeholder="CUIL (8 números)" onkeypress="return jsSoloNumeros(event);" maxlength="10" autocomplete="off"/>';
-            control += '                           </div>';
+            control += '                            <div class="col-md-9">';
+            control += '                                <input class="form-control input-sm TxtBuscadores" style="width:160px" id="txtBuscaNroDocumento" type="text" placeholder="DNI (7/8 números)" onkeypress="return jsSoloNumeros(event);" maxlength="8" autocomplete="off"/>';
+            control += '                            </div>';
             control += '                        </div>';
-            //control += '                        <div class="row mt-1">';
-            //control += '                            <div class="col-md-2">';
-            //control += '                                <h6>Empresa</h6>';
-            //control += '                            </div>';
-            //control += '                            <div class="col-md-8">';
-            //control += '                                <div id="CboBuscadorEmpresa"> </div>';
-            //control += '                            </div>';
-            //control += '                        </div>';
             control += '                        <div class="row mt-2">';
             control += '                            <div class="col-md-9"></div>';
             control += '                            <div class="col-md-3">';
             control += '                                <div class="Boton BtnBuscar">';
-            control += '                                    <a id="LinkBtnBuscar" href="#"><span>Buscar Empleado</span></a>';
+            control += '                                    <a id="LinkBtnBuscarEmpleado" href="#"><span>Buscar Empleado</span></a>';
             control += '                                </div>';
             control += '                            </div>';
             control += '                        </div>';
             control += '                        <div class="row mt-2">';
-            control += '                            <div id="grilla" style="height: 180px;overflow-y: scroll;"></div>';
+            control += '                            <div class="col-md-12">';
+            control += '                                <div id="grillaBuscadorEmpleado" style="height: 180px;overflow-y: scroll;"></div>';
+            control += '                            </div>';
             control += '                        </div>';
-            //control += '                        <div class="row mt-2">';
-            //control += '                            <div class="col-md-9"></div>';
-            //control += '                            <div class="col-md-3">';
-            //control += '                                <div class="Boton BtnNuevo">';
-            //control += '                                    <a id="LinkBtnNuevo" href="#"><span>Nueva Empleado</span></a>';
-            //control += '                                </div>';
-            //control += '                            </div>';
-            //control += '                        </div>';
             control += '                    </div>';
             control += '                </div>';
             control += '            </div>';
@@ -259,8 +314,9 @@ class Empleado extends DBE {
         LimpiarBuscador();
         let lista = await CentroCosto.TraerTodosActivos();
         await CentroCosto.ArmarCombo(lista, 'CboBuscadorCentroCosto', 'SelectorBuscadorCentroCosto', 'EventoBuscadorCentroCosto', 'Centro de Costo', 'CboBuscadorCC');
-        $("#Modal-PopUpEmpleado").modal({ show: true });
-        $("#txtBuscaCUIT").focus();
+        _IdCentroCosto = 0;
+        $("#Modal-PopUpEmpleado").modal('show');
+        $("#txtBuscaCUIL").focus();
     }
 }
 function LlenarEntidadEmpleado(entidad) {
@@ -280,22 +336,49 @@ function LlenarEntidadEmpleado(entidad) {
 function LimpiarBuscador() {
     $(".TxtBuscadores").val('');
 }
-
-document.addEventListener('EventoBuscadorCentroCosto', async function (e) {
+$('body').on('click', '#LinkBtnBuscarEmpleado', async function (e) {
     try {
-        let objSeleccionado = e.detail;
-        _EstadoBusca = objSeleccionado.IdEntidad;
-        $("#SelectorBuscadorCentroCosto").text(objSeleccionado.Nombre);
         spinner();
-        //await LlenarGrilla();
+        let buscaCUIL = $("#txtBuscaCUIL").val();
+        let buscaNroDocumento = $("#txtBuscaNroDocumento").val();
+        let buscaNombre = $("#txtBuscaNombre").val();
+        let TipoBuscador = '';
+        if (parseInt(buscaCUIL.length) === 11 || parseInt(buscaNombre.length) > 3 || (parseInt(buscaNroDocumento.length) >= 7 && parseInt(buscaNroDocumento.length) <= 8)) {
+            if (parseInt(buscaCUIL.length) === 11) {
+                TipoBuscador = 'xCUIL';
+            } else {
+                if (parseInt(buscaNombre.length) > 3) {
+                    TipoBuscador = 'xNombre';
+                } else {
+                    if (parseInt(buscaNroDocumento.length) > 0) {
+                        TipoBuscador = 'xNroDocumento';
+                    }
+                }
+            }
+            await LlenarGrillaBuscadorEmpleado(TipoBuscador);
+        }
         spinnerClose();
     } catch (e) {
         spinnerClose();
         alertAlerta(e);
     }
-}, false);
-
-
+});
+async function LlenarGrillaBuscadorEmpleado(TipoBuscador) {
+    _Lista_Empleado = [];
+    switch (TipoBuscador) {
+        case 'xCUIL':
+            _Lista_Empleado = await Empleado.TraerTodasXCUIL($("#txtBuscaCUIL").val());
+            break;
+        case 'xNombre':
+            _Lista_Empleado = await Empleado.TraerTodasXNombre($("#txtBuscaNombre").val());
+            break;
+        case 'xNroDocumento':
+            _Lista_Empleado = await Empleado.TraerTodasXNroDocumento($("#txtBuscaNroDocumento").val());
+            break;
+        default:
+    }
+    await Empleado.ArmarGrillaSinEliminar(_Lista_Empleado, 'grillaBuscadorEmpleado', 'EventoSeleccionarEmpleado', '');
+}
 $('body').on('click', ".mibtn-seleccionEmpleado", async function () {
     try {
         $this = $(this);

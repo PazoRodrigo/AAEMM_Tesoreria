@@ -119,7 +119,6 @@ class Convenio extends DBE {
             });
         }
         _Lista_Convenio = result;
-        console.log(_Lista_Convenio);
         return _Lista_Convenio;
     }
     // Otros

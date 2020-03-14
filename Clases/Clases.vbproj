@@ -73,8 +73,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entidad\Abstractas\Cheque.vb" />
+    <Compile Include="Entidad\ADM\Empleado.vb" />
     <Compile Include="Entidad\Complementarias\CuentaCorriente.vb" />
     <Compile Include="Entidad\Complementarias\DatosCalculados.vb" />
+    <Compile Include="Entidad\Complementarias\Sexo.vb" />
     <Compile Include="Entidad\DIM\Banco.vb" />
     <Compile Include="Entidad\DIM\CentroCosto.vb" />
     <Compile Include="Entidad\ADM\ChequePropio.vb" />
