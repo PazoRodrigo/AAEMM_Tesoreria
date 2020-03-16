@@ -40,4 +40,9 @@
         Deuda6Meses = 15
         DeudaMayor6Meses = 16
     End Enum
+    Public Enum EstadoGasto
+        Abierto = 1
+        Pagado = 2
+        Anulado = 11
+    End Enum
 End Class

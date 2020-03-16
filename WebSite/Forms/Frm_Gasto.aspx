@@ -67,16 +67,21 @@
                                     <a id="LinkBuscar" href="#"><span id="SpanBtnBuscar"></span></a>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="row mt-1 text-center" style="height: 200px;">
+                            <div class="col-12 mh-100" id="GrillaGastosRegistrados"></div>
+                        </div>
+                         <div class="row mt-1 text-center" style="height: 200px;">
+                            <div class="col-12 mh-100" id="GrillaComprobantesRegistrados"></div>
                         </div>
                     </div>
                     <div class="col-lg-7">
                         <div class="row mt-1">
                             <div class="col-lg-1"></div>
-                            <div class="col-lg-3">Origina</div>
-                            <div class="col-lg-3"></div>
+                            <div class="col-lg-2">Originario</div>
+                            <div class="col-lg-3"><div id="CboOriginarioGasto"></div></div>
                             <div class="col-lg-3">Proveedor</div>
-                            <div class="col-lg-3"></div>
+                            <div class="col-lg-3"><div id="CboProveedor"></div></div>
                         </div>
                         <div class="row mt-1">
                             <div class="col-lg-1"></div>

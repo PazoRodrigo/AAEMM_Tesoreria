@@ -6,9 +6,11 @@ Partial Class Forms_Default
         If Not Page.IsPostBack Then
             'Dim lista As Entidad.Empresa = Entidad.Empresa.TraerUno(5)
             'Dim lista0 As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodos
-            Dim lista1 As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXCUIT(0)
-            Dim lista2 As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXRazonSocial("NAVEGAC")
-            Dim lista3 As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXCentroCosto(2)
+            'Dim lista As List(Of Entidad.Gasto) = Entidad.Gasto.TraerTodos()
+            'Dim lista1 As List(Of Entidad.Comprobante) = Entidad.Comprobante.TraerTodosXGasto(1)
+            'Dim lista1 As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXCUIT(0)
+            'Dim lista2 As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXRazonSocial("NAVEGAC")
+            'Dim lista3 As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXCentroCosto(2)
 
             'Const storeTraerTodosXCUIT As String = "ADM.p_Empresa_TraerTodosXCUIT"
             'Const storeTraerTodosXRazonSocial As String = "ADM.p_Empresa_TraerTodosXRazonSocial"

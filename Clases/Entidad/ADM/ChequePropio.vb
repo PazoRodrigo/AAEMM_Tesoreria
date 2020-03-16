@@ -173,9 +173,10 @@ Namespace Entidad
             Dim ListaResult As New List(Of ChequePropio)
             Dim obj As ChequePropio
             For index = Desde To Hasta
-                obj = New ChequePropio
-                obj.IdUsuarioAlta = IdUsuario
-                obj.Numero = Desde
+                obj = New ChequePropio With {
+                    .IdUsuarioAlta = IdUsuario,
+                    .Numero = Desde
+                }
                 obj.Alta()
                 Desde += 1
                 If obj.IdEntidad > 0 Then
