@@ -99,6 +99,7 @@
     <Compile Include="Entidad\DIM\TipoGasto.vb" />
     <Compile Include="Entidad\DIM\TipoPago.vb" />
     <Compile Include="Entidad\Complementarias\Enumeradores.vb" />
+    <Compile Include="Entidad\Estados\EstadoGasto.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

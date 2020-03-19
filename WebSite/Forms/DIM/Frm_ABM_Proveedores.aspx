@@ -38,15 +38,16 @@
                         <div class="row mt-1 text-center mh-100" style="height: 350px;">
                             <div class="col-12 mh-100" id="GrillaRegistrados"></div>
                         </div>
-                        <div class="row mt-1">
-                            <div class="col-12 text-center">
+                        <div class="row mt-3">
+                            <div class="col-1"></div>
+                            <div class="col-10 text-center">
                                 <div class="Boton BtnImprimir">
                                     <a id="LinkBtnImprimir" href="#"><span id="SpanBtnImprimir"></span></a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                  <%--Entidad--%>
+                    <%--Entidad--%>
                     <div class="col-lg-5">
                         <div class="row mt-1">
                             <div class="col-12 text-center">

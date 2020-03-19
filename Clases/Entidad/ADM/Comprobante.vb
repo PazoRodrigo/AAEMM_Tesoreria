@@ -137,11 +137,7 @@ Namespace Entidad
             Return result
         End Function
         Public Shared Function TraerTodosXGasto(IdGasto As Integer) As List(Of Comprobante)
-            Dim result As List(Of Comprobante) = DAL_Comprobante.TraerTodosXGasto(IdGasto)
-            If result Is Nothing Then
-                Throw New Exception("No existen Comprobantes para la búsqueda")
-            End If
-            Return result
+            Return DAL_Comprobante.TraerTodosXGasto(IdGasto)
         End Function
         ' Nuevos
 #End Region

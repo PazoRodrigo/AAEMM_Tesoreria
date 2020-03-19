@@ -183,14 +183,16 @@
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-12 text-center">
+                            <div class="col-1"></div>
+                            <div class="col-10 text-center">
                                 <div class="Boton BtnImprimir">
                                     <a id="LinkBtnImprimirNomina" href="#"><span id="SpanBtnImprimirNomina"></span></a>
                                 </div>
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-12 text-center">
+                            <div class="col-1"></div>
+                            <div class="col-10 text-center">
                                 <div class="Boton BtnImprimir">
                                     <a id="LinkBtnImprimir" href="#"><span id="SpanBtnImprimir"></span></a>
                                 </div>

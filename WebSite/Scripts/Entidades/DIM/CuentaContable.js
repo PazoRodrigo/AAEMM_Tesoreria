@@ -179,6 +179,20 @@ class CuentaContable extends DBE {
         str += '</div>';
         return $('#' + div + '').html(str);
     }
+    static async ArmarCombo(lista, div, selector, evento, ventana, Cbo) {
+        let cbo = "";
+        cbo += '<div id="' + Cbo + '" class="dropdown">';
+        cbo += '    <button id="' + selector + '" class="btn btn-primary dropdown-toggle btn-md btn-block" type="button" data-toggle="dropdown">' + ventana;
+        cbo += '        <span class="caret"></span>';
+        cbo += '    </button>';
+        cbo += '<ul class="dropdown-menu">';
+        $(lista).each(function () {
+            cbo += '<li><a href="#" class="mibtn-seleccionCuentaContable" data-Id="' + this.IdEntidad + '" data-Nombre="' + this.Nombre + '" data-Evento="' + evento + '" > ' + this.Nombre + '</a></li>';
+        });
+        cbo += '</ul>';
+        cbo += '</div>';
+        return $('#' + div + '').html(cbo);
+    }
 }
 function LlenarEntidadCuentaContable(entidad) {
     let Res = new CuentaContable;

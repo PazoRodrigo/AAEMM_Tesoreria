@@ -118,7 +118,6 @@ class Gasto extends DBE {
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
         let str = '';
-        lista.sort(SortXNombre);
         if (lista.length > 0) {
             str += '<div style="' + estilo + '">';
             str += '    <ul class="ListaGrilla">';
@@ -128,7 +127,7 @@ class Gasto extends DBE {
                 if (item.IdEstado === 1) {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
                 }
-                let aItem = '<a href="#" class="mibtn-seleccionGasto" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.Nombre + '</a>';
+                let aItem = '<a href="#" class="mibtn-seleccionGasto" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + LongToDateString(item.FechaAlta) + ' </a>';
                 let aEliminar = '<a href="#" class="mibtn-EliminarGasto" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
                 str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
             }
@@ -183,11 +182,6 @@ function LlenarEntidadGasto(entidad) {
     Res.FechaBaja = entidad.FechaBaja;
     Res.IdMotivoBaja = entidad.IdMotivoBaja;
     Res.IdEntidad = entidad.IdEntidad;
-    Res.IdBanco = entidad.IdBanco;
-    Res.Numero = entidad.Numero;
-    Res.Importe = entidad.Importe;
-    Res.LngFechaEmision = entidad.LngFechaEmision;
-    Res.LngFechaDebito = entidad.LngFechaDebito;
     Res.Observaciones = entidad.Observaciones;
     Res.IdEstado = entidad.IdEstado;
     Res.Estado = entidad.Estado;

@@ -126,7 +126,7 @@
                                 <input id="TxtFechaINgresoEntidad" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Ing. Entidad" autocomplete="off">
                             </div>
                         </div>
-                       
+
                     </div>
                     <div class="col-lg-5">
                         <div class="row mt-4">
@@ -173,13 +173,14 @@
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-12 text-center">
+                            <div class="col-1"></div>
+                            <div class="col-10 text-center">
                                 <div class="Boton BtnImprimir">
                                     <a id="LinkBtnImprimir" href="#"><span id="SpanBtnImprimir"></span></a>
                                 </div>
                             </div>
                         </div>
-                         <div class="row mt-2">
+                        <div class="row mt-2">
                             <div class="col-3">
                                 <span class="SpanDatoFormulario">Fecha Baja</span>
                             </div>

@@ -188,7 +188,7 @@ class OriginarioGasto extends DBE {
         cbo += '    </button>';
         cbo += '<ul class="dropdown-menu">';
         $(lista).each(function () {
-            cbo += '<li><a href="#" class="mibtn-seleccionOriginarioGasto" data-Id="' + this.IdEntidad + '"  data-Nombre="' + this.Estado + '" data-Evento="' + evento + '" > ' + this.Nombre + '</a></li>';
+            cbo += '<li><a href="#" class="mibtn-seleccionOriginarioGasto" data-Id="' + this.IdEntidad + '"  data-Evento="' + evento + '" > ' + this.Nombre + '</a></li>';
         });
         cbo += '</ul>';
         cbo += '</div>';

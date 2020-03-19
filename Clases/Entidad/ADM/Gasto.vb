@@ -153,7 +153,8 @@ Namespace Entidad
                 .Importe = Importe,
                 .CantidadComprobantes = CantidadComprobantes,
                 .Estado = Estado,
-                .Observaciones = Observaciones
+                .Observaciones = Observaciones,
+                .FechaAlta = LngFechaAlta
             }
             Return result
         End Function

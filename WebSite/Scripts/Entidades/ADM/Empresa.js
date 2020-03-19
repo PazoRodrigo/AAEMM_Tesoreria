@@ -342,11 +342,9 @@ function LimpiarBuscador() {
 document.addEventListener('EventoBuscadorCentroCosto', async function (e) {
     try {
         let objSeleccionado = e.detail;
-        console.log(objSeleccionado);
         _IdCentroCosto = objSeleccionado.IdEntidad;
         $("#SelectorBuscadorCentroCosto").text(objSeleccionado.Nombre);
     } catch (e) {
-        spinnerClose();
         alertAlerta(e);
     }
 }, false);
