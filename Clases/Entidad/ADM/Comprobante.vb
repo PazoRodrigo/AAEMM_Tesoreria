@@ -216,13 +216,13 @@ Namespace Entidad
             '	If Me.VariableString = "" Then
             '		sError &= "<b>VariableString</b> Debe ingresar VariableString. <br />"
             '	ElseIf Me.apellido.Length > 50 Then
-            '		sError &= "<b>VariableString</b> El campo debe tener como máximo 50 caracteres. <br />"
+            '		sError &= "<b>VariableString</b>Debe tener como máximo 50 caracteres. <br />"
             '	End If
 
             ' Campo Date
-            '	If Not Me.VariableFecha.has value Then
-            '		sError &= "<b>VariableFecha</b> Debe ingresar VariableFecha. <br />"
-            '	End If
+            If Not Me.FechaGasto.HasValue Then
+                sError &= "<b>Fecha Gasto</b> Debe ingresar la Fecha. <br />"
+            End If
             If sError <> "" Then
                 sError = "<b>Debe corregir los siguientes errores</b> <br /> <br />" & sError
                 Throw New Exception(sError)

@@ -18,26 +18,11 @@ $(document).ready(function () {
 });
 async function Inicio() {
     Nuevo_Gasto();
+    _ObjGasto = await Gasto.TraerGastoAbierto();
+    await LlenarGasto();
     await LlenarGrilla_Gasto();
     await MostrarSolapaGasto();
     await LimpiarComprobante();
-}
-
-function Limpiar_Gasto() {
-    $(".DatoFormulario").val('');
-}
-function Nuevo_Gasto() {
-    Limpiar_Gasto();
-    _ObjGasto = new Gasto;
-    $("#TxtNombre").focus();
-}
-function Llenar_Gasto(Obj_Gasto) {
-    Nuevo_Gasto();
-    _ObjGasto.IdEntidad = Obj_Gasto.IdEntidad;
-    _ObjGasto.Nombre = Obj_Gasto.Nombre;
-    _ObjGasto.Observaciones = Obj_Gasto.Observaciones;
-    $("#TxtNombre").val(_ObjGasto.Nombre);
-    $("#TxtObservaciones").val(_ObjGasto.Observaciones);
 }
 async function LlenarGrilla_Gasto() {
     let lista = await Gasto.TraerTodos();
@@ -105,7 +90,31 @@ $('body').on('click', '#LinkBtnNuevoGasto', async function (e) {
         alertAlerta(e);
     }
 });
+function Limpiar_Gasto() {
+    $(".DatoFormulario").val('');
+}
+function Nuevo_Gasto() {
+    Limpiar_Gasto();
+    _ObjGasto = new Gasto;
+    $("#TxtNombre").focus();
+}
+function Llenar_Gasto(Obj_Gasto) {
+    //Nuevo_Gasto();
+    //_ObjGasto.IdEntidad = Obj_Gasto.IdEntidad;
+    //_ObjGasto.Nombre = Obj_Gasto.Nombre;
+    //_ObjGasto.Observaciones = Obj_Gasto.Observaciones;
+    //$("#TxtNombre").val(_ObjGasto.Nombre);
+    //$("#TxtObservaciones").val(_ObjGasto.Observaciones);
+}
+async function LlenarGasto() {
+    $("#SpanNroGasto").text(_ObjGasto.IdEntidad);
+    //let listaC = await _ObjGasto.ListaComprobantes();
+    //if (_) {
 
+    //}
+    //await LlenarGrilla_Comprobante();
+
+}
 // Comprobante
 $('body').on('click', '#LinkBtnNuevoComprobante', async function (e) {
     try {

@@ -7,38 +7,39 @@ Imports LUM
 Imports Connection
 
 Namespace Entidad
-    Public Class TipoGasto
+    Public Class Permiso
         Inherits DBE
 
-        Private Shared _Todos As List(Of TipoGasto)
-        Public Shared Property Todos() As List(Of TipoGasto)
+        Private Shared _Todos As List(Of Permiso)
+        Public Shared Property Todos() As List(Of Permiso)
             Get
-                If _Todos Is Nothing Then
-                    _Todos = DAL_TipoGasto.TraerTodos
-                End If
-                Return _Todos
+                Return DAL_Permiso.TraerTodos
+                'If _Todos Is Nothing Then
+                '    _Todos = DAL_Permiso.TraerTodos
+                'End If
+                'Return _Todos
             End Get
-            Set(ByVal value As List(Of TipoGasto))
+            Set(ByVal value As List(Of Permiso))
                 _Todos = value
             End Set
         End Property
 
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
+        Public Property IdTipoPermiso() As Enumeradores.TipoPermiso = Enumeradores.TipoPermiso.Pagina
         Public Property Nombre() As String = ""
         Public Property Observaciones() As String = ""
 #End Region
 #Region " Lazy Load "
-        'Public Property IdLazy() As Integer
-        'Private _ObjLazy As Lazy
-        'Public ReadOnly Property ObjLazy() As Lazy
-        '    Get
-        '        If _ObjLazy Is Nothing Then
-        '            _ObjLazy = Lazy.TraerUno(IdLazy)
-        '        End If
-        '        Return _ObjLazy
-        '    End Get
-        'End Property
+        Private _ObjFormulario As Formulario
+        Public ReadOnly Property ObjFormulario() As Formulario
+            Get
+                If _ObjFormulario Is Nothing Then
+                    _ObjFormulario = Formulario.TraerUnoXPermiso(IdEntidad)
+                End If
+                Return _ObjFormulario
+            End Get
+        End Property
         Public ReadOnly Property IdEstado() As Integer
             Get
                 Dim result As Integer = 0
@@ -54,7 +55,7 @@ Namespace Entidad
 
         End Sub
         Sub New(ByVal id As Integer)
-            Dim objImportar As TipoGasto = TraerUno(id)
+            Dim objImportar As Permiso = TraerUno(id)
             ' DBE
             IdUsuarioAlta = objImportar.IdUsuarioAlta
             IdUsuarioBaja = objImportar.IdUsuarioBaja
@@ -63,10 +64,11 @@ Namespace Entidad
             FechaBaja = objImportar.FechaBaja
             ' Entidad
             IdEntidad = objImportar.IdEntidad
-            Nombre = objImportar.Nombre
+            IdTipoPermiso = objImportar.IdTipoPermiso
+            IdTipoPermiso = objImportar.IdTipoPermiso
             Observaciones = objImportar.Observaciones
         End Sub
-        Sub New(ByVal DtODesde As DTO.DTO_TipoGasto)
+        Sub New(ByVal DtODesde As DTO.DTO_Permiso)
             ' DBE
             IdUsuarioAlta = DtODesde.IdUsuarioAlta
             IdUsuarioBaja = DtODesde.IdUsuarioBaja
@@ -81,66 +83,90 @@ Namespace Entidad
             End If
             ' Entidad
             IdEntidad = DtODesde.IdEntidad
+            IdTipoPermiso = DtODesde.IdTipoPermiso
             Nombre = DtODesde.Nombre
             Observaciones = DtODesde.Observaciones
         End Sub
 #End Region
 #Region " Métodos Estáticos"
         ' Traer
-        Public Shared Function TraerUno(ByVal Id As Integer) As TipoGasto
-            Dim result As TipoGasto = Todos.Find(Function(x) x.IdEntidad = Id)
+        Public Shared Function TraerUno(ByVal Id As Integer) As Permiso
+            Dim result As Permiso = Todos.Find(Function(x) x.IdEntidad = Id)
             If result Is Nothing Then
-                Throw New Exception("No existen resultados para la búsqueda")
+                Throw New Exception("No existen permisos para la búsqueda")
             End If
             Return result
         End Function
-        Public Shared Function TraerTodos() As List(Of TipoGasto)
+        Public Shared Function TraerTodos() As List(Of Permiso)
             Return Todos
         End Function
-        'Public Shared Function TraerUno(ByVal Id As Integer) As TipoGasto
-        '    Dim result As TipoGasto= DAL_TipoGasto.TraerUno(Id)
+        'Public Shared Function TraerUno(ByVal Id As Integer) As Permiso
+        '    Dim result As Permiso= DAL_Permiso.TraerUno(Id)
         '    If result Is Nothing Then
-        '        Throw New Exception("No existen resultados para la búsqueda")
+        '        Throw New Exception("No existen permisos para la búsqueda")
         '    End If
         '    Return result
         'End Function
-        'Public Shared Function TraerTodos() As List(Of TipoGasto)
-        '    Dim result As List(Of TipoGasto) = DAL_TipoGasto.TraerTodos()
+        'Public Shared Function TraerTodos() As List(Of Permiso)
+        '    Dim result As List(Of Permiso) = DAL_Permiso.TraerTodos()
         '    If result Is Nothing Then
-        '        Throw New Exception("No existen resultados para la búsqueda")
+        '        Throw New Exception("No existen permisos para la búsqueda")
         '    End If
         '    Return result
         'End Function
         ' Nuevos
+        Public Shared Function TraerTodosXPerfil(IdPerfil As Integer) As List(Of Permiso)
+            Return DAL_Permiso.TraerTodosXPerfil(IdPerfil)
+            'Dim result As List(Of Permiso) = DAL_Permiso.TraerTodos()
+            'If result Is Nothing Then
+            '    Throw New Exception("No existen permisos para la búsqueda")
+            'End If
+            'Return result
+        End Function
 #End Region
 #Region " Métodos Públicos"
         ' ABM
         Public Sub Alta()
             ValidarAlta()
-            DAL_TipoGasto.Alta(Me)
+            DAL_Permiso.Alta(Me)
+            Refresh()
         End Sub
         Public Sub Baja()
             ValidarBaja()
-            DAL_TipoGasto.Baja(Me)
+            DAL_Permiso.Baja(Me)
+            Refresh()
         End Sub
         Public Sub Modifica()
             ValidarModifica()
-            DAL_TipoGasto.Modifica(Me)
+            DAL_Permiso.Modifica(Me)
+            Refresh()
         End Sub
         ' Otros
-        Public Function ToDTO() As DTO.DTO_TipoGasto
-            Dim result As New DTO.DTO_TipoGasto With {
+        Public Function ToDTO() As DTO.DTO_Permiso
+            Dim result As New DTO.DTO_Permiso With {
                 .IdEntidad = IdEntidad,
+                .IdTipoPermiso = IdTipoPermiso,
                 .Nombre = Nombre,
                 .Observaciones = Observaciones,
+                .ObjFormulario = ObjFormulario.ToDTO,
                 .IdEstado = IdEstado
             }
             Return result
         End Function
         Public Shared Sub Refresh()
-            _Todos = DAL_TipoGasto.TraerTodos
+            _Todos = DAL_Permiso.TraerTodos
         End Sub
         ' Nuevos
+        Friend Sub AltaPermisoEnPerfil(idUsuarioAlta As Integer, IdPerfil As Integer)
+            DAL_Permiso.AltaPermisoEnPerfil(idUsuarioAlta, IdPerfil, Me.IdEntidad)
+        End Sub
+        Friend Sub ModificarPermisoEnPerfil(idUsuarioModifica As Integer, IdPerfil As Integer)
+            DAL_Permiso.ModificarPermisoEnPerfil(idUsuarioModifica, IdPerfil, Me.IdEntidad)
+        End Sub
+
+        Friend Sub BajaPermisoEnPerfil(idUsuarioBaja As Integer, IdPerfil As Integer)
+            DAL_Permiso.BajaPermisoEnPerfil(idUsuarioBaja, IdPerfil, Me.IdEntidad)
+        End Sub
 #End Region
 #Region " Métodos Privados "
         ' ABM
@@ -197,47 +223,67 @@ Namespace Entidad
             End If
         End Sub
         Private Sub ValidarNoDuplicados()
-            TipoGasto.Refresh()
-            Dim result As TipoGasto = Todos.Find(Function(x) x.Nombre.ToUpper = Nombre)
-            If Not result Is Nothing Then
-                Throw New Exception("El Nombre a ingresar ya existe")
+            Permiso.Refresh()
+            If Not Todos Is Nothing AndAlso Todos.Count > 0 Then
+                Dim result As Permiso = Todos.Find(Function(x) x.IdTipoPermiso = IdTipoPermiso)
+                If Not result Is Nothing Then
+                    If IdEntidad = 0 Then
+                        ' Alta
+                        Throw New Exception("El Nombre a ingresar ya existe")
+                    Else
+                        ' Modifica
+                        If IdEntidad <> result.IdEntidad Then
+                            Throw New Exception("El Nombre a ingresar ya existe")
+                        End If
+                    End If
+                End If
             End If
         End Sub
 #End Region
-    End Class ' TipoGasto
+    End Class ' Permiso
 End Namespace ' Entidad
 
 Namespace DTO
-    Public Class DTO_TipoGasto
+    Public Class DTO_Permiso
         Inherits DTO_DBE
 
 
 #Region " Atributos / Propiedades"
         Public Property IdEntidad() As Integer = 0
+        Public Property IdTipoPermiso() As Enumeradores.TipoPermiso = Enumeradores.TipoPermiso.Pagina
         Public Property Nombre() As String = ""
         Public Property Observaciones() As String = ""
+        Public Property ObjFormulario() As DTO_Formulario
 #End Region
-    End Class ' DTO_TipoGasto
+    End Class ' DTO_Permiso
 End Namespace ' DTO
 
 Namespace DataAccessLibrary
-    Public Class DAL_TipoGasto
+    Public Class DAL_Permiso
 
 #Region " Stored "
-        Const storeAlta As String = "DIM.p_TipoGasto_Alta"
-        Const storeBaja As String = "DIM.p_TipoGasto_Baja"
-        Const storeModifica As String = "DIM.p_TipoGasto_Modifica"
-        Const storeTraerUnoXId As String = "DIM.p_TipoGasto_TraerUnoXId"
-        Const storeTraerTodos As String = "DIM.p_TipoGasto_TraerTodos"
+        ' ABM
+        Const storeAlta As String = "USUARIO.p_Permiso_Alta"
+        Const storeBaja As String = "USUARIO.p_Permiso_Baja"
+        Const storeModifica As String = "USUARIO.p_Permiso_Modifica"
+        ' Traer
+        Const storeTraerUnoXId As String = "USUARIO.p_Permiso_TraerUnoXId"
+        Const storeTraerTodos As String = "USUARIO.p_Permiso_TraerTodos"
+        ' Otros
+        Const storeTraerTodosXPerfil As String = "USUARIO.p_Permiso_TraerTodosXPerfil"
+        Const storeAltaPermisoEnPerfil As String = "USUARIO.p_Permiso_PermisoEnPerfilAlta"
+        Const storeModificarPermisoEnPerfil As String = "USUARIO.p_Permiso_PermisoEnPerfilModifica"
+        Const storeBajaPermisoEnPerfil As String = "USUARIO.p_Permiso_PermisoEnPerfilBaja"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
-        Public Shared Sub Alta(ByVal entidad As TipoGasto)
+        Public Shared Sub Alta(ByVal entidad As Permiso)
             Dim store As String = storeAlta
             Dim pa As New parametrosArray
             pa.add("@idUsuarioAlta", entidad.IdUsuarioAlta)
-            pa.add("@Nombre", entidad.Nombre)
-            pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
+            pa.add("@Nombre", entidad.IdTipoPermiso)
+            pa.add("@IdTipoPermiso", entidad.IdTipoPermiso)
+            pa.add("@Observaciones", entidad.Observaciones.ToUpper.Trim)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
@@ -246,27 +292,40 @@ Namespace DataAccessLibrary
                 End If
             End Using
         End Sub
-        Public Shared Sub Baja(ByVal entidad As TipoGasto)
+        Public Shared Sub Baja(ByVal entidad As Permiso)
             Dim store As String = storeBaja
             Dim pa As New parametrosArray
             pa.add("@idUsuarioBaja", entidad.IdUsuarioBaja)
             pa.add("@id", entidad.IdEntidad)
             pa.add("@IdMotivoBaja", entidad.IdMotivoBaja)
-            Connection.Connection.Ejecutar(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
         End Sub
-        Public Shared Sub Modifica(ByVal entidad As TipoGasto)
+        Public Shared Sub Modifica(ByVal entidad As Permiso)
             Dim store As String = storeModifica
             Dim pa As New parametrosArray
             pa.add("@idUsuarioModifica", entidad.IdUsuarioModifica)
             pa.add("@id", entidad.IdEntidad)
-            pa.add("@Nombre", entidad.Nombre)
-            pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
-            Connection.Connection.Ejecutar(store, pa)
+            pa.add("@Nombre", entidad.IdTipoPermiso)
+            pa.add("@IdTipoPermiso", entidad.IdTipoPermiso)
+            pa.add("@Observaciones", entidad.Observaciones.ToUpper.Trim)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
         End Sub
         ' Traer
-        Public Shared Function TraerUno(ByVal id As Integer) As TipoGasto
+        Public Shared Function TraerUno(ByVal id As Integer) As Permiso
             Dim store As String = storeTraerUnoXId
-            Dim result As New TipoGasto
+            Dim result As New Permiso
             Dim pa As New parametrosArray
             pa.add("@id", id)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
@@ -280,10 +339,10 @@ Namespace DataAccessLibrary
             End Using
             Return result
         End Function
-        Public Shared Function TraerTodos() As List(Of TipoGasto)
+        Public Shared Function TraerTodos() As List(Of Permiso)
             Dim store As String = storeTraerTodos
             Dim pa As New parametrosArray
-            Dim listaResult As New List(Of TipoGasto)
+            Dim listaResult As New List(Of Permiso)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
@@ -295,10 +354,72 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
+        ' Otros
+        Public Shared Function TraerTodosXPerfil(IdPerfil As Integer) As List(Of Permiso)
+            Dim store As String = storeTraerTodosXPerfil
+            Dim pa As New parametrosArray
+            pa.add("IdPerfil", IdPerfil)
+            Dim listaResult As New List(Of Permiso)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                Else
+                    listaResult = Nothing
+                End If
+            End Using
+            Return listaResult
+        End Function
+        Friend Shared Sub AltaPermisoEnPerfil(idUsuarioAlta As Integer, IdPerfil As Integer, idEntidad As Integer)
+            Dim store As String = storeAltaPermisoEnPerfil
+            Dim pa As New parametrosArray
+            pa.add("@idUsuarioAlta", idUsuarioAlta)
+            pa.add("@IdPermiso", idEntidad)
+            pa.add("@idPerfil", IdPerfil)
+            Dim result As Integer = 0
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        result = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
+        End Sub
+        Friend Shared Sub ModificarPermisoEnPerfil(idUsuarioModifica As Integer, IdPerfil As Integer, idEntidad As Integer)
+            Dim store As String = storeModificarPermisoEnPerfil
+            Dim pa As New parametrosArray
+            pa.add("@idUsuarioModifica", idUsuarioModifica)
+            pa.add("@IdPermiso", idEntidad)
+            pa.add("@idPerfil", IdPerfil)
+            Dim result As Integer = 0
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        result = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
+        End Sub
+        Friend Shared Sub BajaPermisoEnPerfil(idUsuarioBaja As Integer, IdPerfil As Integer, idEntidad As Integer)
+            Dim store As String = storeBajaPermisoEnPerfil
+            Dim pa As New parametrosArray
+            pa.add("@idUsuarioBaja", idUsuarioBaja)
+            pa.add("@IdPermiso", idEntidad)
+            pa.add("@idPerfil", IdPerfil)
+            Dim result As Integer = 0
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        result = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
+        End Sub
 #End Region
 #Region " Métodos Privados "
-        Private Shared Function LlenarEntidad(ByVal dr As DataRow) As TipoGasto
-            Dim entidad As New TipoGasto
+        Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Permiso
+            Dim entidad As New Permiso
             ' DBE
             If dr.Table.Columns.Contains("idUsuarioAlta") Then
                 If dr.Item("idUsuarioAlta") IsNot DBNull.Value Then
@@ -341,6 +462,11 @@ Namespace DataAccessLibrary
                     entidad.Nombre = dr.Item("Nombre").ToString.ToUpper.Trim
                 End If
             End If
+            If dr.Table.Columns.Contains("IdTipoPermiso") Then
+                If dr.Item("IdTipoPermiso") IsNot DBNull.Value Then
+                    entidad.IdTipoPermiso = CType(CInt(dr.Item("IdTipoPermiso")), Enumeradores.TipoPermiso)
+                End If
+            End If
             If dr.Table.Columns.Contains("Observaciones") Then
                 If dr.Item("Observaciones") IsNot DBNull.Value Then
                     entidad.Observaciones = dr.Item("Observaciones").ToString.ToUpper.Trim
@@ -349,5 +475,5 @@ Namespace DataAccessLibrary
             Return entidad
         End Function
 #End Region
-    End Class ' DAL_TipoGasto
-End Namespace ' DataAccessLibrary
+    End Class ' DAL_Permiso
+End Namespace ' DataAccessLibraryPublic Class Permiso

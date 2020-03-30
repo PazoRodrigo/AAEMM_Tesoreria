@@ -191,7 +191,7 @@ Namespace Entidad
             '	If Me.VariableString = "" Then
             '		sError &= "<b>VariableString</b> Debe ingresar VariableString. <br />"
             '	ElseIf Me.apellido.Length > 50 Then
-            '		sError &= "<b>VariableString</b> El campo debe tener como máximo 50 caracteres. <br />"
+            '		sError &= "<b>VariableString</b>Debe tener como máximo 50 caracteres. <br />"
             '	End If
 
             ' Campo Date

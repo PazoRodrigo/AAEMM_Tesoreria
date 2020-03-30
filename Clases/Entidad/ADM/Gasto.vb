@@ -113,6 +113,13 @@ Namespace Entidad
         Public Shared Function TraerTodos() As List(Of Gasto)
             Return Todos
         End Function
+        Public Shared Function TraerGastoAbierto() As Gasto
+            Dim result As Gasto = Todos.Find(Function(x) CInt(x.IdEstado) = CInt(Enumeradores.EstadoGasto.Abierto))
+            If result Is Nothing Then
+                Throw New Exception("No existen resultados para la búsqueda")
+            End If
+            Return result
+        End Function
         'Public Shared Function TraerUno(ByVal Id As Integer) As Gasto
         '    Dim result As Gasto= DAL_Gasto.TraerUno(Id)
         '    If result Is Nothing Then
@@ -131,11 +138,11 @@ Namespace Entidad
 #End Region
 #Region " Métodos Públicos"
         ' ABM
-        'Public Sub Alta()
-        '    ValidarAlta()
-        '    DAL_Gasto.Alta(Me)
-        '    Refresh()
-        'End Sub
+        Public Sub Alta()
+            ValidarAlta()
+            DAL_Gasto.Alta(Me)
+            Refresh()
+        End Sub
         'Public Sub Baja()
         '    ValidarBaja()
         '    DAL_Gasto.Baja(Me)
@@ -198,7 +205,7 @@ Namespace Entidad
             '	If Me.VariableString = "" Then
             '		sError &= "<b>VariableString</b> Debe ingresar VariableString. <br />"
             '	ElseIf Me.apellido.Length > 50 Then
-            '		sError &= "<b>VariableString</b> El campo debe tener como máximo 50 caracteres. <br />"
+            '		sError &= "<b>VariableString</b>Debe tener como máximo 50 caracteres. <br />"
             '	End If
 
             ' Campo Date

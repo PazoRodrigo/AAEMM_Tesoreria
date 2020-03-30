@@ -7,38 +7,30 @@ Imports LUM
 Imports Connection
 
 Namespace Entidad
-    Public Class TipoGasto
+    Public Class Formulario
         Inherits DBE
 
-        Private Shared _Todos As List(Of TipoGasto)
-        Public Shared Property Todos() As List(Of TipoGasto)
+        Private Shared _Todos As List(Of Formulario)
+        Public Shared Property Todos() As List(Of Formulario)
             Get
-                If _Todos Is Nothing Then
-                    _Todos = DAL_TipoGasto.TraerTodos
-                End If
-                Return _Todos
+                Return DAL_Formulario.TraerTodos
+                'If _Todos Is Nothing Then
+                '    _Todos = DAL_Formulario.TraerTodos
+                'End If
+                'Return _Todos
             End Get
-            Set(ByVal value As List(Of TipoGasto))
+            Set(ByVal value As List(Of Formulario))
                 _Todos = value
             End Set
         End Property
 
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
-        Public Property Nombre() As String = ""
+        Public Property IdPermiso() As Integer = 0
+        Public Property ASPX() As String = ""
         Public Property Observaciones() As String = ""
 #End Region
 #Region " Lazy Load "
-        'Public Property IdLazy() As Integer
-        'Private _ObjLazy As Lazy
-        'Public ReadOnly Property ObjLazy() As Lazy
-        '    Get
-        '        If _ObjLazy Is Nothing Then
-        '            _ObjLazy = Lazy.TraerUno(IdLazy)
-        '        End If
-        '        Return _ObjLazy
-        '    End Get
-        'End Property
         Public ReadOnly Property IdEstado() As Integer
             Get
                 Dim result As Integer = 0
@@ -54,7 +46,7 @@ Namespace Entidad
 
         End Sub
         Sub New(ByVal id As Integer)
-            Dim objImportar As TipoGasto = TraerUno(id)
+            Dim objImportar As Formulario = TraerUno(id)
             ' DBE
             IdUsuarioAlta = objImportar.IdUsuarioAlta
             IdUsuarioBaja = objImportar.IdUsuarioBaja
@@ -63,10 +55,11 @@ Namespace Entidad
             FechaBaja = objImportar.FechaBaja
             ' Entidad
             IdEntidad = objImportar.IdEntidad
-            Nombre = objImportar.Nombre
+            IdPermiso = objImportar.IdPermiso
+            ASPX = objImportar.ASPX
             Observaciones = objImportar.Observaciones
         End Sub
-        Sub New(ByVal DtODesde As DTO.DTO_TipoGasto)
+        Sub New(ByVal DtODesde As DTO.DTO_Formulario)
             ' DBE
             IdUsuarioAlta = DtODesde.IdUsuarioAlta
             IdUsuarioBaja = DtODesde.IdUsuarioBaja
@@ -81,33 +74,41 @@ Namespace Entidad
             End If
             ' Entidad
             IdEntidad = DtODesde.IdEntidad
-            Nombre = DtODesde.Nombre
+            IdPermiso = DtODesde.IdPermiso
+            ASPX = DtODesde.ASPX
             Observaciones = DtODesde.Observaciones
         End Sub
 #End Region
 #Region " Métodos Estáticos"
         ' Traer
-        Public Shared Function TraerUno(ByVal Id As Integer) As TipoGasto
-            Dim result As TipoGasto = Todos.Find(Function(x) x.IdEntidad = Id)
+        Public Shared Function TraerUno(ByVal Id As Integer) As Formulario
+            Dim result As Formulario = Todos.Find(Function(x) x.IdEntidad = Id)
             If result Is Nothing Then
-                Throw New Exception("No existen resultados para la búsqueda")
+                Throw New Exception("No existen formularios para la búsqueda")
             End If
             Return result
         End Function
-        Public Shared Function TraerTodos() As List(Of TipoGasto)
+        Public Shared Function TraerUnoXPermiso(ByVal IdPermiso As Integer) As Formulario
+            Dim result As Formulario = Todos.Find(Function(x) x.IdPermiso = IdPermiso)
+            If result Is Nothing Then
+                Throw New Exception("No existen formularios para la búsqueda")
+            End If
+            Return result
+        End Function
+        Public Shared Function TraerTodos() As List(Of Formulario)
             Return Todos
         End Function
-        'Public Shared Function TraerUno(ByVal Id As Integer) As TipoGasto
-        '    Dim result As TipoGasto= DAL_TipoGasto.TraerUno(Id)
+        'Public Shared Function TraerUno(ByVal Id As Integer) As Formulario
+        '    Dim result As Formulario= DAL_Formulario.TraerUno(Id)
         '    If result Is Nothing Then
-        '        Throw New Exception("No existen resultados para la búsqueda")
+        '        Throw New Exception("No existen formularios para la búsqueda")
         '    End If
         '    Return result
         'End Function
-        'Public Shared Function TraerTodos() As List(Of TipoGasto)
-        '    Dim result As List(Of TipoGasto) = DAL_TipoGasto.TraerTodos()
+        'Public Shared Function TraerTodos() As List(Of Formulario)
+        '    Dim result As List(Of Formulario) = DAL_Formulario.TraerTodos()
         '    If result Is Nothing Then
-        '        Throw New Exception("No existen resultados para la búsqueda")
+        '        Throw New Exception("No existen formularios para la búsqueda")
         '    End If
         '    Return result
         'End Function
@@ -115,30 +116,42 @@ Namespace Entidad
 #End Region
 #Region " Métodos Públicos"
         ' ABM
+        ''' <summary>
+        ''' CU.Formulario.01 - Creando Formulario
+        ''' </summary>
         Public Sub Alta()
             ValidarAlta()
-            DAL_TipoGasto.Alta(Me)
+            DAL_Formulario.Alta(Me)
+            Refresh()
         End Sub
+        ''' <summary>
+        ''' CU. Formulario.03 - Eliminando Formulario
+        ''' </summary>
         Public Sub Baja()
             ValidarBaja()
-            DAL_TipoGasto.Baja(Me)
+            DAL_Formulario.Baja(Me)
+            Refresh()
         End Sub
+        ''' <summary>
+        ''' CU. Formulario.02 - Modificando Formulario
+        ''' </summary>
         Public Sub Modifica()
             ValidarModifica()
-            DAL_TipoGasto.Modifica(Me)
+            DAL_Formulario.Modifica(Me)
+            Refresh()
         End Sub
         ' Otros
-        Public Function ToDTO() As DTO.DTO_TipoGasto
-            Dim result As New DTO.DTO_TipoGasto With {
+        Public Function ToDTO() As DTO.DTO_Formulario
+            Dim result As New DTO.DTO_Formulario With {
                 .IdEntidad = IdEntidad,
-                .Nombre = Nombre,
+                .ASPX = ASPX,
                 .Observaciones = Observaciones,
                 .IdEstado = IdEstado
             }
             Return result
         End Function
         Public Shared Sub Refresh()
-            _Todos = DAL_TipoGasto.TraerTodos
+            _Todos = DAL_Formulario.TraerTodos
         End Sub
         ' Nuevos
 #End Region
@@ -166,24 +179,25 @@ Namespace Entidad
         Private Sub ValidarCampos()
             Dim sError As String = ""
             ValidarCaracteres()
-            ' Campo Integer/Decimal
-            '	If Me.VariableNumero.toString = "" Then
-            '   	sError &= "<b>VariableNumero</b> Debe ingresar VariableNumero. <br />"
-            '	ElseIf Not isnumeric(Me.VariableNumero) Then
-            '   	sError &= "<b>VariableNumero</b> Debe ser numérico. <br />"
-            '	End If
-
-            ' Campo String
-            '	If Me.VariableString = "" Then
-            '		sError &= "<b>VariableString</b> Debe ingresar VariableString. <br />"
-            '	ElseIf Me.apellido.Length > 50 Then
-            '		sError &= "<b>VariableString</b>Debe tener como máximo 50 caracteres. <br />"
-            '	End If
-
-            ' Campo Date
-            '	If Not Me.VariableFecha.has value Then
-            '		sError &= "<b>VariableFecha</b> Debe ingresar VariableFecha. <br />"
-            '	End If
+            If Me.IdPermiso.ToString = "" Then
+                sError &= "<b>Permiso</b> Debe ingresar el Permiso. <br />"
+            ElseIf Not IsNumeric(Me.IdPermiso) Then
+                sError &= "<b>Permiso</b> Debe ser numérico. <br />"
+            Else
+                If Me.IdPermiso = 0 Then
+                    sError &= "<b>Permiso</b> Debe ingresar el Permiso. <br />"
+                End If
+            End If
+            If Me.ASPX = "" Then
+                sError &= "<b>ASPX</b> Debe ingresar el Formulario ASPX. <br />"
+            ElseIf Me.ASPX.Length > 50 Then
+                sError &= "<b>ASPX</b>Debe tener como máximo 50 caracteres. <br />"
+            ElseIf ASPX.Contains(" ") Then
+                sError &= "<b>ASPX</b> No debe contener espacios. <br />"
+            End If
+            If Me.Observaciones <> "" AndAlso Me.Observaciones.Length > 500 Then
+                sError &= "<b>Observaciones</b> Debe tener como máximo 500 caracteres. <br />"
+            End If
             If sError <> "" Then
                 sError = "<b>Debe corregir los siguientes errores</b> <br /> <br />" & sError
                 Throw New Exception(sError)
@@ -197,47 +211,59 @@ Namespace Entidad
             End If
         End Sub
         Private Sub ValidarNoDuplicados()
-            TipoGasto.Refresh()
-            Dim result As TipoGasto = Todos.Find(Function(x) x.Nombre.ToUpper = Nombre)
-            If Not result Is Nothing Then
-                Throw New Exception("El Nombre a ingresar ya existe")
+            Formulario.Refresh()
+            If Not Todos Is Nothing AndAlso Todos.Count > 0 Then
+                Dim result As Formulario = Todos.Find(Function(x) x.ASPX.ToUpper = ASPX.ToUpper)
+                If Not result Is Nothing Then
+                    If IdEntidad = 0 Then
+                        ' Alta
+                        Throw New Exception("El Nombre a ingresar ya existe")
+                    Else
+                        ' Modifica
+                        If IdEntidad <> result.IdEntidad Then
+                            Throw New Exception("El Nombre a ingresar ya existe")
+                        End If
+                    End If
+                End If
             End If
         End Sub
 #End Region
-    End Class ' TipoGasto
+    End Class ' Formulario
 End Namespace ' Entidad
 
 Namespace DTO
-    Public Class DTO_TipoGasto
+    Public Class DTO_Formulario
         Inherits DTO_DBE
 
 
 #Region " Atributos / Propiedades"
         Public Property IdEntidad() As Integer = 0
-        Public Property Nombre() As String = ""
+        Public Property IdPermiso() As Integer = 0
+        Public Property ASPX() As String = ""
         Public Property Observaciones() As String = ""
 #End Region
-    End Class ' DTO_TipoGasto
+    End Class ' DTO_Formulario
 End Namespace ' DTO
 
 Namespace DataAccessLibrary
-    Public Class DAL_TipoGasto
+    Public Class DAL_Formulario
 
 #Region " Stored "
-        Const storeAlta As String = "DIM.p_TipoGasto_Alta"
-        Const storeBaja As String = "DIM.p_TipoGasto_Baja"
-        Const storeModifica As String = "DIM.p_TipoGasto_Modifica"
-        Const storeTraerUnoXId As String = "DIM.p_TipoGasto_TraerUnoXId"
-        Const storeTraerTodos As String = "DIM.p_TipoGasto_TraerTodos"
+        Const storeAlta As String = "USUARIO.p_Formulario_Alta"
+        Const storeBaja As String = "USUARIO.p_Formulario_Baja"
+        Const storeModifica As String = "USUARIO.p_Formulario_Modifica"
+        'Const storeTraerUnoXId As String = "USUARIO.p_Formulario_TraerUnoXId"
+        Const storeTraerTodos As String = "USUARIO.p_Formulario_TraerTodos"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
-        Public Shared Sub Alta(ByVal entidad As TipoGasto)
+        Public Shared Sub Alta(ByVal entidad As Formulario)
             Dim store As String = storeAlta
             Dim pa As New parametrosArray
             pa.add("@idUsuarioAlta", entidad.IdUsuarioAlta)
-            pa.add("@Nombre", entidad.Nombre)
-            pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
+            pa.add("@ASPX", entidad.ASPX.ToUpper.Trim)
+            pa.add("@IdPermiso", entidad.IdPermiso)
+            pa.add("@Observaciones", entidad.Observaciones.ToUpper.Trim)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
@@ -246,44 +272,57 @@ Namespace DataAccessLibrary
                 End If
             End Using
         End Sub
-        Public Shared Sub Baja(ByVal entidad As TipoGasto)
+        Public Shared Sub Baja(ByVal entidad As Formulario)
             Dim store As String = storeBaja
             Dim pa As New parametrosArray
             pa.add("@idUsuarioBaja", entidad.IdUsuarioBaja)
             pa.add("@id", entidad.IdEntidad)
             pa.add("@IdMotivoBaja", entidad.IdMotivoBaja)
-            Connection.Connection.Ejecutar(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
         End Sub
-        Public Shared Sub Modifica(ByVal entidad As TipoGasto)
+        Public Shared Sub Modifica(ByVal entidad As Formulario)
             Dim store As String = storeModifica
             Dim pa As New parametrosArray
             pa.add("@idUsuarioModifica", entidad.IdUsuarioModifica)
             pa.add("@id", entidad.IdEntidad)
-            pa.add("@Nombre", entidad.Nombre)
-            pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
-            Connection.Connection.Ejecutar(store, pa)
-        End Sub
-        ' Traer
-        Public Shared Function TraerUno(ByVal id As Integer) As TipoGasto
-            Dim store As String = storeTraerUnoXId
-            Dim result As New TipoGasto
-            Dim pa As New parametrosArray
-            pa.add("@id", id)
+            pa.add("@ASPX", entidad.ASPX.ToUpper.Trim)
+            pa.add("@IdPermiso", entidad.IdPermiso)
+            pa.add("@Observaciones", entidad.Observaciones.ToUpper.Trim)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
-                        result = LlenarEntidad(dt.Rows(0))
-                    ElseIf dt.Rows.Count = 0 Then
-                        result = Nothing
+                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
                     End If
                 End If
             End Using
-            Return result
-        End Function
-        Public Shared Function TraerTodos() As List(Of TipoGasto)
+        End Sub
+        ' Traer
+        'Public Shared Function TraerUno(ByVal id As Integer) As Formulario
+        '    Dim store As String = storeTraerUnoXId
+        '    Dim result As New Formulario
+        '    Dim pa As New parametrosArray
+        '    pa.add("@id", id)
+        '    Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+        '        If Not dt Is Nothing Then
+        '            If dt.Rows.Count = 1 Then
+        '                result = LlenarEntidad(dt.Rows(0))
+        '            ElseIf dt.Rows.Count = 0 Then
+        '                result = Nothing
+        '            End If
+        '        End If
+        '    End Using
+        '    Return result
+        'End Function
+        Public Shared Function TraerTodos() As List(Of Formulario)
             Dim store As String = storeTraerTodos
             Dim pa As New parametrosArray
-            Dim listaResult As New List(Of TipoGasto)
+            Dim listaResult As New List(Of Formulario)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
@@ -297,8 +336,8 @@ Namespace DataAccessLibrary
         End Function
 #End Region
 #Region " Métodos Privados "
-        Private Shared Function LlenarEntidad(ByVal dr As DataRow) As TipoGasto
-            Dim entidad As New TipoGasto
+        Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Formulario
+            Dim entidad As New Formulario
             ' DBE
             If dr.Table.Columns.Contains("idUsuarioAlta") Then
                 If dr.Item("idUsuarioAlta") IsNot DBNull.Value Then
@@ -336,9 +375,14 @@ Namespace DataAccessLibrary
                     entidad.IdEntidad = CInt(dr.Item("id"))
                 End If
             End If
-            If dr.Table.Columns.Contains("Nombre") Then
-                If dr.Item("Nombre") IsNot DBNull.Value Then
-                    entidad.Nombre = dr.Item("Nombre").ToString.ToUpper.Trim
+            If dr.Table.Columns.Contains("IdPermiso") Then
+                If dr.Item("IdPermiso") IsNot DBNull.Value Then
+                    entidad.IdPermiso = CInt(dr.Item("IdPermiso"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("ASPX") Then
+                If dr.Item("ASPX") IsNot DBNull.Value Then
+                    entidad.ASPX = dr.Item("ASPX").ToString.ToUpper.Trim
                 End If
             End If
             If dr.Table.Columns.Contains("Observaciones") Then
@@ -349,5 +393,5 @@ Namespace DataAccessLibrary
             Return entidad
         End Function
 #End Region
-    End Class ' DAL_TipoGasto
-End Namespace ' DataAccessLibrary
+    End Class ' DAL_Formulario
+End Namespace ' DataAccessLibraryPublic Class Formulario

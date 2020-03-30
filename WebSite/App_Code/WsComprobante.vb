@@ -34,12 +34,13 @@ Public Class WsComprobante
         Return ws
     End Function
     <WebMethod()>
-    Public Function Alta(entidad As Entidad.Comprobante) As Transfer
+    Public Function Alta(entidad As DTO.DTO_Comprobante) As Transfer
         Dim ws As New Transfer
         Try
             entidad.IdUsuarioAlta = 1
-            entidad.Alta()
-            ws.data = entidad.IdEntidad
+            Dim objGuardar As New Entidad.Comprobante(entidad)
+            objGuardar.Alta()
+            ws.data = objGuardar.IdEntidad
             ws.todoOk = True
             ws.mensaje = ""
         Catch ex As Exception

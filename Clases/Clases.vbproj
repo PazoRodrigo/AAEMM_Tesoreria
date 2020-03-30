@@ -53,6 +53,7 @@
       <HintPath>..\..\..\..\..\..\Desktop\DLL\LUM.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -100,6 +101,10 @@
     <Compile Include="Entidad\DIM\TipoPago.vb" />
     <Compile Include="Entidad\Complementarias\Enumeradores.vb" />
     <Compile Include="Entidad\Estados\EstadoGasto.vb" />
+    <Compile Include="Entidad\USUARIO\Perfil.vb" />
+    <Compile Include="Entidad\USUARIO\Formulario.vb" />
+    <Compile Include="Entidad\USUARIO\Permiso.vb" />
+    <Compile Include="Entidad\USUARIO\Usuario.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

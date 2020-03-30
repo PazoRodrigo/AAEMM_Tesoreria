@@ -62,6 +62,7 @@ class Comprobante extends DBE {
     }
     async Baja() {
         try {
+
             let data = {
                 'entidad': this
             };
@@ -81,9 +82,9 @@ class Comprobante extends DBE {
     }
 
     async ValidarCampos() {
-        if (this.Fec) {
+        //if (this.Fec) {
 
-        }
+        //}
     }
     // Todos
     static async Todos() {

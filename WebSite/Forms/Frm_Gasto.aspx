@@ -109,7 +109,7 @@
                         <div class="row mt-1">
                             <div class="col-1" title="Nro. Gasto">
                                 <div class="SpanGastoCabecera" style="font-size: 3em; color: #fff; font-weight: bold;">
-                                    <span id="SpanNroGasto">131</span>
+                                    <span id="SpanNroGasto"></span>
                                 </div>
                             </div>
                             <div class="col-1"></div>
@@ -178,7 +178,7 @@
                         <div class="row mt-1">
                             <div class="col-lg-2">Fecha Gasto</div>
                             <div class="col-lg-4">
-                                <input id="TxtFechaGasto" class="DatoFormulario InputDatoFormulario datepicker" type="text" placeholder="Fecha Gasto" autocomplete="off">
+                                <input id="TxtFechaGasto" class="DatoFormulario InputDatoFormulario datepicker" type="text" placeholder="Fecha Gasto" autocomplete="off">                              
                             </div>
                             <div class="col-lg-2">Cuenta</div>
                             <div class="col-lg-4">

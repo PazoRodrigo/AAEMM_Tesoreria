@@ -45,4 +45,7 @@
         Pagado = 2
         Anulado = 11
     End Enum
+    Public Enum TipoPermiso
+        Pagina = 1
+    End Enum
 End Class

@@ -33,5 +33,22 @@ Public Class WsGasto
         End Try
         Return ws
     End Function
+    <WebMethod()>
+    Public Function TraerGastoAbierto() As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Gasto)
+            Entidad.Gasto.Refresh()
+            result.Add(Entidad.Gasto.TraerGastoAbierto.ToDTO)
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
 
 End Class

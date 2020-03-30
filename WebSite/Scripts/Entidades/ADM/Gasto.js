@@ -8,8 +8,20 @@ class Gasto extends DBE {
         this.CantidadComprobantes = 0;
         this.Estado = '';
         this.Observaciones = '';
+
+        this._ListaComprobantes
     }
 
+    async ListaComprobante() {
+        try {
+            if (this.ListaComprobante === undefined) {
+                this.ListaComprobante = await Comprobante.TraerTodasXGasto(this.IdEntidad);
+            }
+            return this.ListaComprobante;
+        } catch (e) {
+            return new Comprobante;
+        }       
+    }
     // ABM
     async Alta() {
         //try {
@@ -90,6 +102,16 @@ class Gasto extends DBE {
     }
     static async TraerTodos() {
         return await Gasto.Todos();
+    }
+    static async TraerGastoAbierto() {
+        let lista = await ejecutarAsync(urlWsGasto + "/TraerGastoAbierto");
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadGasto(value));
+            });
+        }
+        return result[0];
     }
     static async TraerTodosActivos() {
         _Lista_Gasto = await Gasto.TraerTodos();
