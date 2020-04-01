@@ -151,20 +151,13 @@ Namespace Entidad
         ''' CU.Usuario.06 – Accediendo al Sistema
         ''' </summary>
         Public Shared Function AccederAlSistema(ByVal UserName As String, ByVal Password As String) As Usuario
-            Dim result As Usuario = Todos.Find(Function(x) x.UserName.ToUpper = UserName.ToUpper And x.Password.ToUpper = Password.ToUpper)
+            Dim result As Usuario = Todos.Find(Function(x) x.UserName.Trim.ToUpper = UserName.Trim.ToUpper And x.Password.Trim = Password.Trim)
             If result Is Nothing Then
-                Throw New Exception("Valide Usuario y Contraseña")
+                Throw New Exception("Usuario y Contraseña inválido. Intente nuevamente.")
             End If
             result.RegistrarAccesoSistema()
             Return result
         End Function
-        'Private Shared Function TraerUno(ByVal UserName As String, ByVal Password As String) As Usuario
-        '    Dim result As Usuario = Todos.Find(Function(x) x.UserName.ToUpper = UserName.ToUpper And x.Password.ToUpper = Password.ToUpper)
-        '    If result Is Nothing Then
-        '        Throw New Exception("Valide Usuario y Contraseña")
-        '    End If
-        '    Return result
-        'End Function
         ''' <summary>
         ''' CU.Usuario.09 – Registrando Accesos al Sistema
         ''' </summary>
@@ -222,6 +215,25 @@ Namespace Entidad
         Public Shared Sub AlmacenarAccesoFormulario(IdUsuario As Integer, IdFormulario As Integer)
             DAL_Usuario.AccesoFormulario(IdUsuario, IdFormulario)
         End Sub
+        Public Shared Sub EnviarPassword(identificador As String)
+            Dim result As Usuario = Todos.Find(Function(x) x.UserName.Trim.ToUpper = identificador.Trim.ToUpper Or x.CorreoElectronico.Trim.ToUpper = identificador.Trim.ToUpper)
+            If result Is Nothing Then
+                Throw New Exception("No Existen Usuarios con ese Identificador.")
+            End If
+            result.MailEnviarPassword()
+        End Sub
+        Public Shared Sub ModificaPassword(idUsuario As Integer, anterior As String, nueva As String)
+            Dim ObjU As New Usuario(idUsuario)
+            If Not ObjU Is Nothing Then
+                If ObjU.Password.Trim.ToUpper = anterior.Trim.ToUpper Then
+                    ValidarPassword(nueva)
+                    ObjU.Password = nueva.Trim
+                End If
+            End If
+            ObjU.IdUsuarioModifica = idUsuario
+            DAL_Usuario.ModificaPassword(ObjU)
+            ObjU.MailCambioPassword()
+        End Sub
 #End Region
 #Region " Métodos Públicos"
         ' ABM
@@ -247,6 +259,7 @@ Namespace Entidad
         Public Sub Modifica()
             ValidarModifica()
             DAL_Usuario.Modifica(Me)
+            Me.MailNotificarCambios()
             Refresh()
         End Sub
         ''' <summary>
@@ -274,11 +287,97 @@ Namespace Entidad
                 Smtp.Send(Mail)
             End Using
         End Sub
+        ''' <summary>
+        ''' Mails
+        ''' </summary>
+        Private Sub MailEnviarPassword()
+            Dim fromSecAdm As String = ConfigurationManager.AppSettings("smtpFrom").ToString
+            Dim smtpPasswordSecAdm As String = ConfigurationManager.AppSettings("smtpPassword").ToString
+            Dim smtpFromSecAdm As String = ConfigurationManager.AppSettings("smtpFrom").ToString
+            Using Mail As New MailMessage()
+                Dim men As String = ""
+                men = "Usted ha solicitado un recupero de Contraseña." & vbCrLf & vbCrLf &
+                    "Usuario: " & Me.UserName & vbCrLf &
+                    "Contraseña: " & Me.Password & vbCrLf &
+                    vbCrLf & "Saludos !!" & vbCrLf & vbCrLf & vbCrLf & vbCrLf &
+                    "Ingreso al Sistema: http://localhost:14162/Forms/Login/Frm_Login.aspx"
+                Dim Smtp = New SmtpClient
+                Mail.From = New MailAddress(smtpFromSecAdm, fromSecAdm)
+                Mail.To.Add(New MailAddress(CorreoElectronico))
+                Mail.Subject = "Sistema AAEMM. Recupero de Contraseña"
+                Mail.Body = men
+                Mail.IsBodyHtml = False
+                Mail.Priority = MailPriority.Normal
+                Smtp.Host = "smtp.gmail.com"
+                Smtp.Port = 587
+                Smtp.UseDefaultCredentials = False
+                Smtp.Credentials = New System.Net.NetworkCredential(smtpFromSecAdm, smtpPasswordSecAdm)
+                Smtp.EnableSsl = True
+                Smtp.Send(Mail)
+            End Using
+        End Sub
+        Private Sub MailNotificarCambios()
+            Dim fromSecAdm As String = ConfigurationManager.AppSettings("smtpFrom").ToString
+            Dim smtpPasswordSecAdm As String = ConfigurationManager.AppSettings("smtpPassword").ToString
+            Dim smtpFromSecAdm As String = ConfigurationManager.AppSettings("smtpFrom").ToString
+            Using Mail As New MailMessage()
+                Dim men As String = ""
+                men = "Usted ha modificado los datos de Usuario." & vbCrLf & vbCrLf &
+                    "Nombre: " & Me.Nombre & vbCrLf &
+                    "Apellido: " & Me.Apellido & vbCrLf &
+                    "Usuario: " & Me.UserName & vbCrLf &
+                    "Correo Electrónico: " & Me.CorreoElectronico & vbCrLf &
+                    "Nro. Interno: " & Me.NroInterno & vbCrLf &
+                    vbCrLf & "Saludos !!" & vbCrLf & vbCrLf & vbCrLf & vbCrLf &
+                    "Ingreso al Sistema: http://localhost:14162/Forms/Login/Frm_Login.aspx"
+                Dim Smtp = New SmtpClient
+                Mail.From = New MailAddress(smtpFromSecAdm, fromSecAdm)
+                Mail.To.Add(New MailAddress(CorreoElectronico))
+                Mail.Subject = "Sistema AAEMM. Cambios de Usuario"
+                Mail.Body = men
+                Mail.IsBodyHtml = False
+                Mail.Priority = MailPriority.Normal
+                Smtp.Host = "smtp.gmail.com"
+                Smtp.Port = 587
+                Smtp.UseDefaultCredentials = False
+                Smtp.Credentials = New System.Net.NetworkCredential(smtpFromSecAdm, smtpPasswordSecAdm)
+                Smtp.EnableSsl = True
+                Smtp.Send(Mail)
+            End Using
+        End Sub
+        Private Sub MailCambioPassword()
+            Dim fromSecAdm As String = ConfigurationManager.AppSettings("smtpFrom").ToString
+            Dim smtpPasswordSecAdm As String = ConfigurationManager.AppSettings("smtpPassword").ToString
+            Dim smtpFromSecAdm As String = ConfigurationManager.AppSettings("smtpFrom").ToString
+            Using Mail As New MailMessage()
+                Dim men As String = ""
+                men = "Usted ha modificado su contraseña." & vbCrLf & vbCrLf &
+                    "Usuario: " & Me.UserName & vbCrLf &
+                    "Correo Electrónico: " & Me.CorreoElectronico & vbCrLf &
+                    "Contraseña: " & Me.Password & vbCrLf &
+                    vbCrLf & "Saludos !!" & vbCrLf & vbCrLf & vbCrLf & vbCrLf &
+                    "Ingreso al Sistema: http://localhost:14162/Forms/Login/Frm_Login.aspx"
+                Dim Smtp = New SmtpClient
+                Mail.From = New MailAddress(smtpFromSecAdm, fromSecAdm)
+                Mail.To.Add(New MailAddress(CorreoElectronico))
+                Mail.Subject = "Sistema AAEMM. Cambio de Contaseña"
+                Mail.Body = men
+                Mail.IsBodyHtml = False
+                Mail.Priority = MailPriority.Normal
+                Smtp.Host = "smtp.gmail.com"
+                Smtp.Port = 587
+                Smtp.UseDefaultCredentials = False
+                Smtp.Credentials = New System.Net.NetworkCredential(smtpFromSecAdm, smtpPasswordSecAdm)
+                Smtp.EnableSsl = True
+                Smtp.Send(Mail)
+            End Using
+        End Sub
         ' Otros
         Public Function ToDTO() As DTO.DTO_Usuario
             Dim result As New DTO.DTO_Usuario With {
                 .IdEntidad = IdEntidad,
                 .Nombre = Nombre,
+                .Apellido = Apellido,
                 .UserName = UserName,
                 .Password = Password,
                 .CorreoElectronico = CorreoElectronico,
@@ -287,7 +386,7 @@ Namespace Entidad
                 .IdEstado = IdEstado
             }
             Dim DTO_ListaPerfiles As New List(Of DTO.DTO_Perfil)
-            If Not ListaPerfiles Is Nothing And ListaPerfiles.Count > 0 Then
+            If Not ListaPerfiles Is Nothing AndAlso ListaPerfiles.Count > 0 Then
                 For Each item As Perfil In ListaPerfiles
                     DTO_ListaPerfiles.Add(item.ToDTO)
                 Next
@@ -349,11 +448,11 @@ Namespace Entidad
                     sError &= "<b>Usuario</b> No debe contener espacios. <br />"
                 End If
             End If
-            If Me.Password = "" Then
-                sError &= "<b>Contraseña</b> Debe ingresar su Contraseña. <br />"
-            ElseIf Me.Password.Length > 10 Then
-                sError &= "<b>Contraseña</b> Debe tener como máximo 10 caracteres. <br />"
-            End If
+            'If Me.Password = "" Then
+            '    sError &= "<b>Contraseña</b> Debe ingresar su Contraseña. <br />"
+            'ElseIf Me.Password.Length > 10 Then
+            '    sError &= "<b>Contraseña</b> Debe tener como máximo 10 caracteres. <br />"
+            'End If
             If Me.CorreoElectronico = "" Then
                 sError &= "<b>Correo Electrónico</b> Debe ingresar su Correo Electrónico. <br />"
             Else
@@ -406,6 +505,18 @@ Namespace Entidad
                 End If
             End If
         End Sub
+        Private Shared Sub ValidarPassword(PasswordNueva As String)
+            Dim sError As String = ""
+            If PasswordNueva = "" Then
+                sError &= "<b>Contraseña</b> Debe ingresar la Contraseña. <br />"
+            ElseIf PasswordNueva.Length > 10 Then
+                sError &= "<b>Contraseña</b> Debe tener como máximo 10 caracteres. <br />"
+            End If
+            If sError <> "" Then
+                sError = "<b>Debe corregir los siguientes errores</b> <br /> <br />" & sError
+                Throw New Exception(sError)
+            End If
+        End Sub
 #End Region
     End Class ' Usuario
 End Namespace ' Entidad
@@ -436,6 +547,7 @@ Namespace DataAccessLibrary
         Const storeAlta As String = "USUARIO.p_Usuario_Alta"
         Const storeBaja As String = "USUARIO.p_Usuario_Baja"
         Const storeModifica As String = "USUARIO.p_Usuario_Modifica"
+        Const storeModificaPassword As String = "USUARIO.p_Usuario_ModificaPassword"
         Const storeTraerTodos As String = "USUARIO.p_Usuario_TraerTodos"
         ' Otros
         Const storeRegistrarAccesoSistema As String = "USUARIO.p_Usuario_RegistrarAccesoSistema"
@@ -485,10 +597,23 @@ Namespace DataAccessLibrary
             pa.add("@Nombre", entidad.Nombre.ToUpper.Trim)
             pa.add("@Apellido", entidad.Apellido.ToString.ToUpper.Trim)
             pa.add("@UserName", entidad.UserName.ToString.ToUpper.Trim)
-            pa.add("@Password", entidad.Password.ToString.Trim)
             pa.add("@NroInterno", entidad.NroInterno)
             pa.add("@CorreoElectronico", entidad.CorreoElectronico.ToString.ToUpper.Trim)
             pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
+        End Sub
+        Friend Shared Sub ModificaPassword(ByVal entidad As Usuario)
+            Dim store As String = storeModificaPassword
+            Dim pa As New parametrosArray
+            pa.add("@idUsuarioModifica", entidad.IdUsuarioModifica)
+            pa.add("@id", entidad.IdEntidad)
+            pa.add("@Password", entidad.Password.ToString.Trim)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
@@ -615,7 +740,7 @@ Namespace DataAccessLibrary
             End If
             If dr.Table.Columns.Contains("Password") Then
                 If dr.Item("Password") IsNot DBNull.Value Then
-                    entidad.Password = dr.Item("Password").ToString.ToUpper.Trim
+                    entidad.Password = dr.Item("Password").ToString.Trim
                 End If
             End If
             If dr.Table.Columns.Contains("CorreoElectronico") Then

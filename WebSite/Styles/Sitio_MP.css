@@ -1,5 +1,7 @@
 ﻿/* De Sitio *****************************************************************************************/
 
+/*@import url('https://fonts.googleapis.com/css?family=Anton|Karla&display=swap');*/
+
 body {
     margin: 0px;
     padding: 0px;
@@ -27,7 +29,6 @@ ul {
     padding: 0px;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Anton|Karla&display=swap');
 
 
 .Anton {
@@ -107,8 +108,10 @@ footer {
 }
 
 #SpanUsuario {
-    font-size: 22px;
-    color: rgb(38, 179, 197);
+    font-size: 15px;
+    color: greenyellow;
+    /*color: rgb(38, 179, 197);*/
+    font-weight: bold;
 }
 
 #DivHeaderFecha {
@@ -178,4 +181,3 @@ footer {
     #IcIndicadores :hover {
         color: red;
     }
-

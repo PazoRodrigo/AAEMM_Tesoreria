@@ -45,33 +45,30 @@
                 <span id="SpanNombreFormulario"></span>
             </div>
         </li>
-        <li>
-            <li class="linea">
-                <div class="container-fluid">
-                    <div class="row mt-1">
-                        <div class="col-lg-4">
-                            <nav>
-                                <ul class="Menu">
-                                    <li class="BtnDistribuidor">
-                                        <ul class="SubMenu">
-                                            <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empresa.aspx")%>'>(Alt + E)  - Empresas</a></li>
-                                            <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empleado.aspx")%>'>(Alt + M)  - Empleados</a></li>
-                                            <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Chequera.aspx")%>'>(Alt + H)  - Chequera</a></li>
-                                            <%--<li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesPropios.aspx")%>'>(Alt + P)  - Cheques Propios</a></li>
+        <li class="linea">
+            <div class="container-fluid">
+                <div class="row mt-1">
+                    <div class="col-lg-4">
+                        <nav>
+                            <ul class="Menu">
+                                <li class="BtnDistribuidor">
+                                    <ul class="SubMenu">
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empresa.aspx")%>'>(Alt + E)  - Empresas</a></li>
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empleado.aspx")%>'>(Alt + M)  - Empleados</a></li>
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Chequera.aspx")%>'>(Alt + H)  - Chequera</a></li>
+                                        <%--<li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesPropios.aspx")%>'>(Alt + P)  - Cheques Propios</a></li>
                                              <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesTerceros.aspx")%>'>(Alt + T)  - Cheques Terceros</a></li>--%>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <div class="col-lg-4">
-                           
-                        </div>
-                        <div class="col-lg-4">
-                        </div>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-lg-4">
+                    </div>
+                    <div class="col-lg-4">
                     </div>
                 </div>
-            </li>
+            </div>
         </li>
     </ul>
 </asp:Content>

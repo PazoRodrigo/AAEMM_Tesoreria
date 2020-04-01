@@ -16,7 +16,7 @@
     <link href="~/Styles/datepicker.css" rel="stylesheet" type="text/css" />
 
 </head>
-<body style="display: none">
+<body style="display: none;">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/LUM.js")%>' type="text/javascript"></script>
@@ -52,6 +52,9 @@
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoPago.js")%>' type="text/javascript"></script>
 
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Estados/EstadoCheque.js")%>' type="text/javascript"></script>
+
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/USUARIO/Usuario.js")%>' type="text/javascript"></script>
+
     <!-- WebServices-->
     <script type="text/javascript">
         var urlWsCentroCosto = '<%= ResolveClientUrl("~/WebServices/WsCentroCosto.asmx")%>';
@@ -71,15 +74,17 @@
         var urlWsTipoDomicilio = '<%= ResolveClientUrl("~/WebServices/WsTipoDomicilio.asmx")%>';
         var urlWsTipoGasto = '<%= ResolveClientUrl("~/WebServices/WsTipoGasto.asmx")%>';
         var urlWsTipoPago = '<%= ResolveClientUrl("~/WebServices/WsTipoPago.asmx")%>';
+        var urlWsUsuario = '<%= ResolveClientUrl("~/WebServices/WsUsuario.asmx")%>';
     </script>
     <script>
         $(document).ready(function () {
-            let temp = JSON.parse(sessionStorage.getItem("ObjUsuario"));
+            let temp = JSON.parse(sessionStorage.getItem("User"));
             if (temp == null) {
-                $("body").css('display', 'block');
-                //window.location.href = 'http://aplicativosaaemm.dyndns.org/SitioTesoreria/Forms/Login/Frm_Login.aspx';
+                window.location.href = 'http://localhost:14162/Forms/Login/Frm_Login.aspx';
             } else {
                 $("body").css('display', 'block');
+                let str = temp.Apellido + ', ' + temp.Nombre
+                $("#SpanUsuario").text(str.substring(0, 20));
             }
         });
         $(function () {
@@ -104,15 +109,15 @@
             //    };
             //};
             $("#SpanFecha").text(fechaHoy());
-            let getURL = window.location.pathname
-            let partes = getURL.split("/")
-            if (partes[partes.length - 1] !== 'Frm_Login.aspx') {
-                let ctlLogin = document.getElementById("ctlLogin");
-                ctlLogin.style.visibility = "visible";
-                let ctlUsuario = document.getElementById("DivHeaderUsuario");
-                ctlUsuario.style.visibility = "visible";
-                $("#SpanUsuario").text('Quattrocchi, Eduardo');
-            }
+            //let getURL = window.location.pathname
+            //let partes = getURL.split("/")
+            //if (partes[partes.length - 1] !== 'Frm_Login.aspx') {
+            //    let ctlLogin = document.getElementById("ctlLogin");
+            //    ctlLogin.style.visibility = "visible";
+            //    let ctlUsuario = document.getElementById("DivHeaderUsuario");
+            //    ctlUsuario.style.visibility = "visible";
+            //    $("#SpanUsuario").text('Quattrocchi, Eduardo');
+            //}
             $('body').on('keydown', 'input, select', function (e) {
                 if (e.key === "Enter") {
                     let self = $(this), form = self.parents('form:eq(0)'), focusable, next;
@@ -127,12 +132,12 @@
                     return false;
                 }
             });
-            Inicio();
-            function Inicio() {
-                if (location.protocol != 'https:') {
-                    //location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
-                }
-            }
+            //Inicio();
+            //function Inicio() {
+            //    if (location.protocol != 'https:') {
+            //        //location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+            //    }
+            //}
             $.datepicker.regional['es'] = {
                 inline: true,
                 showOtherMonths: true,
@@ -186,14 +191,14 @@
             <span id="SpanNombreInstitucion">AAEMM - ASOCIACION ARGENTINA DE EMPLEADOS DE LA MARINA MERCANTE</span>
         </div>
         <div id="DivHeaderUsuarioFecha">
-            <div id="DivHeaderUsuario" style="visibility: hidden;">
-                <a href='<%= ResolveClientUrl("~/Forms/Usuario/Frm_Usu_ABMUsuario.aspx") %>'>
+            <div id="DivHeaderUsuario">
+                <a href='<%= ResolveClientUrl("~/Forms/Usuario/Frm_Usu_Usuario.aspx") %>'>
                     <span id="SpanUsuario"></span>
                 </a>
             </div>
             <div id="DivHeaderFecha"><span id="SpanFecha"></span></div>
         </div>
-        <div id="ctlLogin" style="visibility: hidden;" class="iconos">
+        <div id="ctlLogin" class="iconos">
             <a href='<%= ResolveClientUrl("~/Forms/Login/Frm_Login.aspx") %>' id="IcSalir" title="Salir">
                 <div id="DivHeaderSalir">
                     <span class="icon-exit"></span>

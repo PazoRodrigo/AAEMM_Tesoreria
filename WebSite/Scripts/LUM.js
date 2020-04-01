@@ -176,25 +176,14 @@ function alertConfirmarEliminarLinea(codNomenclador, descripcion) {
             }
         });
 }
-function PopUpConfirmarSinCancelar(tipoAlerta, objeto, titulo, texto, evento, strBtnSi, strBtnNo, colorBtnSi, colorBtnNo) {
-    let event = new CustomEvent(evento, { detail: objeto });
-    if (strBtnNo === '') {
-        strBtnNo = 'Cancelar';
-    }
-    if (colorBtnNo === '') {
-        colorBtnNo = "#DD6B55";
-    }
-    if (colorBtnSi === '') {
-        colorBtnSi = '#1ACB4D';
-    }
+function PopUpConfirmarSinCancelar(tipoAlerta, titulo, texto, evento, strBtnSi) {
+    let event = new CustomEvent(evento, { detail: undefined });
     Swal.fire({
         title: titulo,
-        text: texto,
+        html: texto,
         type: tipoAlerta,
         showCancelButton: false,
-        cancelButtonColor: colorBtnNo,
-        cancelButtonText: strBtnNo,
-        confirmButtonColor: colorBtnSi,
+        confirmButtonColor: '#1ACB4D',
         confirmButtonText: strBtnSi
     }).then((result) => {
         if (result.value) {
@@ -204,18 +193,18 @@ function PopUpConfirmarSinCancelar(tipoAlerta, objeto, titulo, texto, evento, st
 }
 function PopUpConfirmarConCancelar(tipoAlerta, objeto, titulo, texto, evento, strBtnSi, strBtnNo, colorBtnSi, colorBtnNo) {
     let event = new CustomEvent(evento, { detail: objeto });
-    if (strBtnNo === '') {
+    if (strBtnNo == '') {
         strBtnNo = 'Cancelar';
     }
-    if (colorBtnNo === '') {
+    if (colorBtnNo == '') {
         colorBtnNo = "#DD6B55";
     }
-    if (colorBtnSi === '') {
+    if (colorBtnSi == '') {
         colorBtnSi = '#1ACB4D';
     }
     Swal.fire({
         title: titulo,
-        text: texto,
+        html: texto,
         type: tipoAlerta,
         showCancelButton: true,
         cancelButtonColor: colorBtnNo,
@@ -228,6 +217,7 @@ function PopUpConfirmarConCancelar(tipoAlerta, objeto, titulo, texto, evento, st
         }
     });
 }
+
 
 // Fechas
 function fechaHoy() {
