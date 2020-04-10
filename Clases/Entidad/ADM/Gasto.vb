@@ -10,46 +10,14 @@ Namespace Entidad
     Public Class Gasto
         Inherits DBE
 
-        Private Shared _Todos As List(Of Gasto)
-        Public Shared Property Todos() As List(Of Gasto)
-            Get
-                If _Todos Is Nothing Then
-                    _Todos = DAL_Gasto.TraerTodos
-                End If
-                Return _Todos
-            End Get
-            Set(ByVal value As List(Of Gasto))
-                _Todos = value
-            End Set
-        End Property
-
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
-        Public Property IdEstado() As Enumeradores.EstadoGasto = Nothing
+        Public Property IdEstado() As Enumeradores.EstadoGasto = Enumeradores.EstadoGasto.Abierto
+        Public Property Importe() As Decimal = 0
         Public Property CantidadComprobantes() As Integer = 0
         Public Property Observaciones() As String = ""
 #End Region
 #Region " Lazy Load "
-        Public ReadOnly Property Importe() As Decimal
-            Get
-                Dim resultImporte As Decimal = 0
-                Dim resultCantidad As Integer = 0
-                Try
-                    Dim listaComprobantes As List(Of Comprobante) = Comprobante.TraerTodosXGasto(IdEntidad)
-                    If Not listaComprobantes Is Nothing AndAlso listaComprobantes.Count > 0 Then
-                        For Each item As Comprobante In listaComprobantes
-                            If Not item.FechaBaja.HasValue Then
-                                resultImporte += item.Importe
-                                resultCantidad += 1
-                            End If
-                        Next
-                    End If
-                    CantidadComprobantes = resultCantidad
-                Catch ex As Exception
-                End Try
-                Return resultImporte
-            End Get
-        End Property
         Public ReadOnly Property Estado() As String
             Get
                 Dim result As String = ""
@@ -87,6 +55,7 @@ Namespace Entidad
             ' DBE
             IdUsuarioAlta = DtODesde.IdUsuarioAlta
             IdUsuarioBaja = DtODesde.IdUsuarioBaja
+            IdUsuarioModifica = DtODesde.IdUsuarioModifica
             IdMotivoBaja = DtODesde.IdMotivoBaja
             If DtODesde.FechaAlta > 0 Then
                 Dim TempFecha As String = Right(DtODesde.FechaAlta.ToString, 2) + "/" + Left(Right(DtODesde.FechaAlta.ToString, 4), 2) + "/" + Left(DtODesde.FechaAlta.ToString, 4)
@@ -104,36 +73,48 @@ Namespace Entidad
 #Region " Métodos Estáticos"
         ' Traer
         Public Shared Function TraerUno(ByVal Id As Integer) As Gasto
-            Dim result As Gasto = Todos.Find(Function(x) x.IdEntidad = Id)
+            Dim result As Gasto = DAL_Gasto.TraerUno(Id)
             If result Is Nothing Then
-                Throw New Exception("No existen resultados para la búsqueda")
+                Throw New Exception("No existen Gastos para la búsqueda")
             End If
             Return result
         End Function
         Public Shared Function TraerTodos() As List(Of Gasto)
-            Return Todos
-        End Function
-        Public Shared Function TraerGastoAbierto() As Gasto
-            Dim result As Gasto = Todos.Find(Function(x) CInt(x.IdEstado) = CInt(Enumeradores.EstadoGasto.Abierto))
+            Dim result As List(Of Gasto) = DAL_Gasto.TraerTodos()
             If result Is Nothing Then
-                Throw New Exception("No existen resultados para la búsqueda")
+                Throw New Exception("No existen Gastos para la búsqueda")
             End If
             Return result
         End Function
-        'Public Shared Function TraerUno(ByVal Id As Integer) As Gasto
-        '    Dim result As Gasto= DAL_Gasto.TraerUno(Id)
-        '    If result Is Nothing Then
-        '        Throw New Exception("No existen resultados para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
-        'Public Shared Function TraerTodos() As List(Of Gasto)
-        '    Dim result As List(Of Gasto) = DAL_Gasto.TraerTodos()
-        '    If result Is Nothing Then
-        '        Throw New Exception("No existen resultados para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
+        Public Shared Function TraerTodosUltimos5() As List(Of Gasto)
+            'Dim result As List(Of Gasto) = DAL_Gasto.TraerTodosUltimos5()
+            'If result Is Nothing Then
+            '    Throw New Exception("No existen Gastos para la búsqueda")
+            'End If
+            'Return result
+        End Function
+        Private Shared Function TraerTodosXEstado(idEstado As Enumeradores.EstadoGasto) As List(Of Gasto)
+            Dim result As New List(Of Gasto)
+            Dim Todos As List(Of Gasto) = TraerTodos()
+            If Todos.Count > 0 Then
+                result = Todos.FindAll(Function(x) CInt(x.IdEstado) = idEstado)
+                If result Is Nothing Then
+                    Throw New Exception("No existen Gastos para la búsqueda")
+                End If
+            End If
+            Return result
+        End Function
+        Public Shared Function TraerGastosAbiertos() As List(Of Gasto)
+            Dim result As New List(Of Gasto)
+            Dim Todos As List(Of Gasto) = TraerTodos()
+            If Todos.Count > 0 Then
+                result = TraerTodosXEstado(Enumeradores.EstadoGasto.Abierto)
+                If result Is Nothing Then
+                    Throw New Exception("No existen Gastos abiertos")
+                End If
+            End If
+            Return result
+        End Function
         ' Nuevos
 #End Region
 #Region " Métodos Públicos"
@@ -141,13 +122,12 @@ Namespace Entidad
         Public Sub Alta()
             ValidarAlta()
             DAL_Gasto.Alta(Me)
-            Refresh()
         End Sub
-        'Public Sub Baja()
-        '    ValidarBaja()
-        '    DAL_Gasto.Baja(Me)
-        '    Refresh()
-        'End Sub
+        Public Sub Baja()
+            ValidarBaja()
+            IdEstado = Enumeradores.EstadoGasto.Anulado
+            DAL_Gasto.Baja(Me)
+        End Sub
         'Public Sub Modifica()
         '    ValidarModifica()
         '    DAL_Gasto.Modifica(Me)
@@ -159,15 +139,13 @@ Namespace Entidad
                 .IdEntidad = IdEntidad,
                 .Importe = Importe,
                 .CantidadComprobantes = CantidadComprobantes,
+                .IdEstado = IdEstado,
                 .Estado = Estado,
                 .Observaciones = Observaciones,
                 .FechaAlta = LngFechaAlta
             }
             Return result
         End Function
-        Public Shared Sub Refresh()
-            _Todos = DAL_Gasto.TraerTodos
-        End Sub
         ' Nuevos
 #End Region
 #Region " Métodos Privados "
@@ -225,11 +203,11 @@ Namespace Entidad
             End If
         End Sub
         Private Sub ValidarNoDuplicados()
-            Gasto.Refresh()
-            Dim result As Gasto = Todos.Find(Function(x) x.Observaciones.ToUpper = Observaciones)
-            If Not result Is Nothing Then
-                Throw New Exception("El Observaciones a ingresar ya existe")
-            End If
+            'Gasto.Refresh()
+            'Dim result As Gasto = Todos.Find(Function(x) x.Observaciones.ToUpper = Observaciones)
+            'If Not result Is Nothing Then
+            '    Throw New Exception("El Observaciones a ingresar ya existe")
+            'End If
         End Sub
 #End Region
     End Class ' Gasto
@@ -243,6 +221,7 @@ Namespace DTO
 #Region " Atributos / Propiedades"
         Public Property IdEntidad() As Integer = 0
         Public Property Observaciones() As String = ""
+        Public Property IdEstado() As Integer
         Public Property Estado() As String = ""
         Public Property Importe() As Decimal = 0
         Public Property CantidadComprobantes() As Integer = 0
@@ -259,6 +238,8 @@ Namespace DataAccessLibrary
         Const storeModifica As String = "ADM.p_Gasto_Modifica"
         Const storeTraerUnoXId As String = "ADM.p_Gasto_TraerUnoXId"
         Const storeTraerTodos As String = "ADM.p_Gasto_TraerTodos"
+        Const storeTraerTodosXEstado As String = "ADM.p_Gasto_TraerTodosXEstado"
+        Const storeTraerTodosUltimos5 As String = "ADM.p_Gasto_TraerTodosUltimos5"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
@@ -281,6 +262,7 @@ Namespace DataAccessLibrary
             Dim pa As New parametrosArray
             pa.add("@idUsuarioBaja", entidad.IdUsuarioBaja)
             pa.add("@id", entidad.IdEntidad)
+            pa.add("@idEstado", entidad.IdEstado)
             pa.add("@IdMotivoBaja", entidad.IdMotivoBaja)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
@@ -306,22 +288,22 @@ Namespace DataAccessLibrary
             End Using
         End Sub
         '' Traer
-        'Public Shared Function TraerUno(ByVal id As Integer) As Gasto
-        '    Dim store As String = storeTraerUnoXId
-        '    Dim result As New Gasto
-        '    Dim pa As New parametrosArray
-        '    pa.add("@id", id)
-        '    Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
-        '        If Not dt Is Nothing Then
-        '            If dt.Rows.Count = 1 Then
-        '                result = LlenarEntidad(dt.Rows(0))
-        '            ElseIf dt.Rows.Count = 0 Then
-        '                result = Nothing
-        '            End If
-        '        End If
-        '    End Using
-        '    Return result
-        'End Function
+        Public Shared Function TraerUno(ByVal id As Integer) As Gasto
+            Dim store As String = storeTraerUnoXId
+            Dim result As New Gasto
+            Dim pa As New parametrosArray
+            pa.add("@id", id)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        result = LlenarEntidad(dt.Rows(0))
+                    ElseIf dt.Rows.Count = 0 Then
+                        result = Nothing
+                    End If
+                End If
+            End Using
+            Return result
+        End Function
         Public Shared Function TraerTodos() As List(Of Gasto)
             Dim store As String = storeTraerTodos
             Dim pa As New parametrosArray
@@ -331,12 +313,42 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult
         End Function
+        'Public Shared Function TraerTodosXEstado(IdEstado As Integer) As List(Of Gasto)
+        '    Dim store As String = storeTraerTodosXEstado
+        '    Dim pa As New parametrosArray
+        '    pa.add("@IdEstado", IdEstado)
+        '    Dim listaResult As New List(Of Gasto)
+        '    Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+        '        If dt.Rows.Count > 0 Then
+        '            For Each dr As DataRow In dt.Rows
+        '                listaResult.Add(LlenarEntidad(dr))
+        '            Next
+        '        Else
+        '            listaResult = Nothing
+        '        End If
+        '    End Using
+        '    Return listaResult
+        'End Function
+        'Public Shared Function TraerTodosUltimos5() As List(Of Gasto)
+        '    Dim store As String = storeTraerTodosUltimos5
+        '    Dim pa As New parametrosArray
+        '    Dim listaResult As New List(Of Gasto)
+        '    Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+        '        If dt.Rows.Count > 0 Then
+        '            For Each dr As DataRow In dt.Rows
+        '                listaResult.Add(LlenarEntidad(dr))
+        '            Next
+        '        Else
+        '            listaResult = Nothing
+        '        End If
+        '    End Using
+        '    Return listaResult
+        'End Function
+
 #End Region
 #Region " Métodos Privados "
         Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Gasto
@@ -381,6 +393,16 @@ Namespace DataAccessLibrary
             If dr.Table.Columns.Contains("IdEstado") Then
                 If dr.Item("IdEstado") IsNot DBNull.Value Then
                     entidad.IdEstado = CType(dr.Item("IdEstado"), Enumeradores.EstadoGasto)
+                End If
+            End If
+            If dr.Table.Columns.Contains("CantidadComprobantes") Then
+                If dr.Item("CantidadComprobantes") IsNot DBNull.Value Then
+                    entidad.CantidadComprobantes = CInt(dr.Item("CantidadComprobantes"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("importe") Then
+                If dr.Item("importe") IsNot DBNull.Value Then
+                    entidad.Importe = CDec(dr.Item("importe"))
                 End If
             End If
             If dr.Table.Columns.Contains("Observaciones") Then

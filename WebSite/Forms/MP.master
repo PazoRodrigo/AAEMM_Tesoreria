@@ -17,6 +17,9 @@
 
 </head>
 <body style="display: none;">
+    <noscript>
+          <p>El Sistema requiere para su funcionamiento el uso de JavaScript.  Si lo has deshabilitado intencionadamente, por favor vuelve a activarlo.</p> 
+    </noscript>
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/LUM.js")%>' type="text/javascript"></script>
@@ -78,15 +81,27 @@
     </script>
     <script>
         $(document).ready(function () {
-            let temp = JSON.parse(sessionStorage.getItem("User"));
-            if (temp == null) {
-                window.location.href = 'http://localhost:14162/Forms/Login/Frm_Login.aspx';
-            } else {
-                $("body").css('display', 'block');
-                let str = temp.Apellido + ', ' + temp.Nombre
-                $("#SpanUsuario").text(str.substring(0, 20));
-            }
+             $("body").css('display', 'block');
+
+            //let temp = JSON.parse(sessionStorage.getItem("User"));
+            //if (temp == null) {
+            //    window.location.href = 'http://localhost:14162/Forms/Login/Frm_Login.aspx';
+            //} else {
+            //    $("body").css('display', 'block');
+            //    let str = temp.Apellido + ', ' + temp.Nombre
+            //    $("#SpanUsuario").text(str.substring(0, 20));
+            //}
         });
+        function Salir() {
+            PopUpConfirmarConCancelar('info', null, 'Desea Salir del Sistema?', '', 'EventoInicio', 'Salir', 'Cancelar');
+        }
+        document.addEventListener('EventoInicio', async function (e) {
+            try {
+                window.location.href = 'http://localhost:14162/Forms/Login/Frm_Login.aspx';
+            } catch (e) {
+                alertAlerta(e);
+            }
+        }, false);
         $(function () {
             $(".datepicker").datepicker();
             $(".tabs").tabs();
@@ -132,6 +147,7 @@
                     return false;
                 }
             });
+
             //Inicio();
             //function Inicio() {
             //    if (location.protocol != 'https:') {
@@ -199,7 +215,8 @@
             <div id="DivHeaderFecha"><span id="SpanFecha"></span></div>
         </div>
         <div id="ctlLogin" class="iconos">
-            <a href='<%= ResolveClientUrl("~/Forms/Login/Frm_Login.aspx") %>' id="IcSalir" title="Salir">
+            <a id="IcSalir" onclick="Salir()" title="Salir">
+                <%--<a href='<%= ResolveClientUrl("~/Forms/Login/Frm_Login.aspx") %>' id="IcSalir" title="Salir">--%>
                 <div id="DivHeaderSalir">
                     <span class="icon-exit"></span>
                 </div>

@@ -193,13 +193,13 @@ function PopUpConfirmarSinCancelar(tipoAlerta, titulo, texto, evento, strBtnSi) 
 }
 function PopUpConfirmarConCancelar(tipoAlerta, objeto, titulo, texto, evento, strBtnSi, strBtnNo, colorBtnSi, colorBtnNo) {
     let event = new CustomEvent(evento, { detail: objeto });
-    if (strBtnNo == '') {
+    if (strBtnNo === '') {
         strBtnNo = 'Cancelar';
     }
-    if (colorBtnNo == '') {
+    if (colorBtnNo === '') {
         colorBtnNo = "#DD6B55";
     }
-    if (colorBtnSi == '') {
+    if (colorBtnSi === '') {
         colorBtnSi = '#1ACB4D';
     }
     Swal.fire({
@@ -228,7 +228,7 @@ function fechaHoy() {
 }
 function FechaHoyLng() {
     let FechaHoy = new Date();
-    let result = FechaHoy.getFullYear() + '' + Right('00' + FechaHoy.getMonth(), 2) + '' + Right('00' + FechaHoy.getDay(), 2);
+    let result = FechaHoy.getFullYear() + '' + ("0" + (FechaHoy.getMonth() + 1)).slice(-2) + '' + ("0" + FechaHoy.getDate()).slice(-2);
     return result;
 }
 function Date_LongToDate(lng) {

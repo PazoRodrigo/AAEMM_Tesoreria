@@ -10,18 +10,6 @@ Namespace Entidad
     Public Class Comprobante
         Inherits DBE
 
-        Private Shared _Todos As List(Of Comprobante)
-        Public Shared Property Todos(IdGasto As Integer) As List(Of Comprobante)
-            Get
-                If _Todos Is Nothing Then
-                    _Todos = DAL_Comprobante.TraerTodosXGasto(IdGasto)
-                End If
-                Return _Todos
-            End Get
-            Set(ByVal value As List(Of Comprobante))
-                _Todos = value
-            End Set
-        End Property
 
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
@@ -87,6 +75,7 @@ Namespace Entidad
             ' DBE
             IdUsuarioAlta = DtODesde.IdUsuarioAlta
             IdUsuarioBaja = DtODesde.IdUsuarioBaja
+            IdUsuarioModifica = DtODesde.IdUsuarioModifica
             IdMotivoBaja = DtODesde.IdMotivoBaja
             If DtODesde.FechaAlta > 0 Then
                 Dim TempFecha As String = Right(DtODesde.FechaAlta.ToString, 2) + "/" + Left(Right(DtODesde.FechaAlta.ToString, 4), 2) + "/" + Left(DtODesde.FechaAlta.ToString, 4)
@@ -146,17 +135,14 @@ Namespace Entidad
         Public Sub Alta()
             ValidarAlta()
             DAL_Comprobante.Alta(Me)
-            Refresh(IdGasto)
         End Sub
         Public Sub Baja()
             ValidarBaja()
             DAL_Comprobante.Baja(Me)
-            Refresh(IdGasto)
         End Sub
         Public Sub Modifica()
             ValidarModifica()
             DAL_Comprobante.Modifica(Me)
-            Refresh(IdGasto)
         End Sub
         ' Otros
         Public Function ToDTO() As DTO.DTO_Comprobante
@@ -172,13 +158,12 @@ Namespace Entidad
                 .FechaPago = LngFechaPago,
                 .NroComprobante = NroComprobante,
                 .Importe = Importe,
-                .Observaciones = Observaciones
+                .Observaciones = Observaciones,
+                .FechaAlta = LngFechaAlta,
+                .FechaBaja = LngFechaBaja
             }
             Return result
         End Function
-        Public Shared Sub Refresh(IdGasto As Integer)
-            _Todos = DAL_Comprobante.TraerTodosXGasto(IdGasto)
-        End Sub
         ' Nuevos
 #End Region
 #Region " Métodos Privados "
@@ -206,22 +191,94 @@ Namespace Entidad
             Dim sError As String = ""
             ValidarCaracteres()
             ' Campo Integer/Decimal
-            '	If Me.VariableNumero.toString = "" Then
-            '   	sError &= "<b>VariableNumero</b> Debe ingresar VariableNumero. <br />"
-            '	ElseIf Not isnumeric(Me.VariableNumero) Then
-            '   	sError &= "<b>VariableNumero</b> Debe ser numérico. <br />"
-            '	End If
-
-            ' Campo String
-            '	If Me.VariableString = "" Then
-            '		sError &= "<b>VariableString</b> Debe ingresar VariableString. <br />"
-            '	ElseIf Me.apellido.Length > 50 Then
-            '		sError &= "<b>VariableString</b>Debe tener como máximo 50 caracteres. <br />"
-            '	End If
-
-            ' Campo Date
+            If Me.IdGasto.ToString = "" Then
+                sError &= "<b>Gasto</b> Debe ingresar el Gasto. <br />"
+            Else
+                If Not IsNumeric(Me.IdGasto) Then
+                    sError &= "<b>Gasto</b> Debe ser numérico. <br />"
+                Else
+                    If Me.IdOriginario = 0 Then
+                        sError &= "<b>Originario</b> Debe ingresar el Originario. <br />"
+                    End If
+                End If
+            End If
+            If Me.IdOriginario.ToString = "" Then
+                sError &= "<b>Originario</b> Debe ingresar el Originario. <br />"
+            Else
+                If Not IsNumeric(Me.IdOriginario) Then
+                    sError &= "<b>Originario</b> Debe ser numérico. <br />"
+                Else
+                    If Me.IdOriginario = 0 Then
+                        sError &= "<b>Originario</b> Debe ingresar el Originario. <br />"
+                    End If
+                End If
+            End If
+            If Me.IdProveedor.ToString = "" Then
+                sError &= "<b>Proveedor</b> Debe ingresar el Proveedor. <br />"
+            Else
+                If Not IsNumeric(Me.IdProveedor) Then
+                    sError &= "<b>Proveedor</b> Debe ser numérico. <br />"
+                Else
+                    If Me.IdProveedor = 0 Then
+                        sError &= "<b>Proveedor</b> Debe ingresar el Proveedor. <br />"
+                    End If
+                End If
+            End If
+            If Me.IdCentroCosto.ToString = "" Then
+                sError &= "<b>Centro de Costo</b> Debe ingresar el Centro de Costo. <br />"
+            Else
+                If Not IsNumeric(Me.IdCentroCosto) Then
+                    sError &= "<b>Centro de Costo</b> Debe ser numérico. <br />"
+                Else
+                    If Me.IdCentroCosto = 0 Then
+                        sError &= "<b>Centro de Costo</b> Debe ingresar el Centro de Costo. <br />"
+                    End If
+                End If
+            End If
+            If Me.IdCuenta.ToString = "" Then
+                sError &= "<b>Cuenta</b> Debe ingresar el Cuenta. <br />"
+            Else
+                If Not IsNumeric(Me.IdCuenta) Then
+                    sError &= "<b>Cuenta</b> Debe ser numérico. <br />"
+                Else
+                    If Me.IdCuenta = 0 Then
+                        sError &= "<b>Cuenta</b> Debe ingresar el Cuenta. <br />"
+                    End If
+                End If
+            End If
+            If Me.IdTipoPago.ToString = "" Then
+                sError &= "<b>Tipo de Pago</b> Debe ingresar el Tipo de Pago. <br />"
+            Else
+                If Not IsNumeric(Me.IdTipoPago) Then
+                    sError &= "<b>Tipo de Pago</b> Debe ser numérico. <br />"
+                Else
+                    If Me.IdTipoPago = 0 Then
+                        sError &= "<b>Tipo de Pago</b> Debe ingresar el Tipo de Pago. <br />"
+                    End If
+                End If
+            End If
             If Not Me.FechaGasto.HasValue Then
                 sError &= "<b>Fecha Gasto</b> Debe ingresar la Fecha. <br />"
+            End If
+            If Not Me.FechaPago.HasValue Then
+                sError &= "<b>Fecha Pago</b> Debe ingresar la Fecha. <br />"
+            End If
+            If Me.NroComprobante.ToString <> "" AndAlso Not IsNumeric(Me.NroComprobante) Then
+                sError &= "<b>Nro. Comprobante</b> Debe ser numérico. <br />"
+            End If
+            If Me.Importe.ToString = "" Then
+                sError &= "<b>Importe</b> Debe ingresar el Importe. <br />"
+            Else
+                If Not IsNumeric(Me.Importe) Then
+                    sError &= "<b>Importe</b> Debe ser numérico. <br />"
+                Else
+                    If Me.Importe = 0 Then
+                        sError &= "<b>Importe</b> Debe ingresar el Importe. <br />"
+                    End If
+                End If
+            End If
+            If Me.Observaciones.Length > 0 AndAlso Me.Observaciones.Length > 200 Then
+                sError &= "<b>Observaciones</b>Debe tener como máximo 200 caracteres. <br />"
             End If
             If sError <> "" Then
                 sError = "<b>Debe corregir los siguientes errores</b> <br /> <br />" & sError
@@ -461,7 +518,7 @@ Namespace DataAccessLibrary
                 End If
             End If
             If dr.Table.Columns.Contains("NroComprobante") Then
-                If dr.Item("IdTiNroComprobantepoPago") IsNot DBNull.Value Then
+                If dr.Item("NroComprobante") IsNot DBNull.Value Then
                     entidad.NroComprobante = CLng(dr.Item("NroComprobante"))
                 End If
             End If
@@ -475,17 +532,6 @@ Namespace DataAccessLibrary
                     entidad.Observaciones = dr.Item("Observaciones").ToString.ToUpper.Trim
                 End If
             End If
-
-            'Public Property () As Integer = 0
-            'Public Property () As Integer = 0
-            'Public Property IdProveedor() As Integer = 0
-            'Public Property IdCentroCosto() As Integer = 0
-            'Public Property IdCuenta() As Integer = 0
-            'Public Property IdTipoPago() As Integer = 0
-            'Public Property FechaGasto() As Long = 0
-            'Public Property FechaPago() As Long = 0
-            'Public Property NroComprobante() As Long = 0
-            'Public Property Importe() As Decimal = 0
             Return entidad
         End Function
 #End Region

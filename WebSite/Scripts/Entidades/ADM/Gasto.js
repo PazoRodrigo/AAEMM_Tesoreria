@@ -9,54 +9,30 @@ class Gasto extends DBE {
         this.Estado = '';
         this.Observaciones = '';
 
-        this._ListaComprobantes
+        this._ListaComprobantes;
     }
 
-    async ListaComprobante() {
+    async ListaComprobantes() {
         try {
-            if (this.ListaComprobante === undefined) {
-                this.ListaComprobante = await Comprobante.TraerTodasXGasto(this.IdEntidad);
-            }
-            return this.ListaComprobante;
+            return await Comprobante.TraerTodasXGasto(this.IdEntidad);
+
         } catch (e) {
             return new Comprobante;
-        }       
+
+        }
     }
     // ABM
     async Alta() {
-        //try {
-        //    var _Lista_Gasto;
-        //    _Lista_Gasto = [];
-        //    let data = {
-        //        'Desde': Desde,
-        //        'Hasta': Hasta
-        //    };
-        //    let id = await ejecutarAsync(urlWsGasto + "/Alta", data);
-        //    if (id !== undefined)
-        //        this.IdEntidad = id;
-        //    _Lista_Gasto.push(this);
-        //    Gasto.Refresh();
-        //    return;
-        //} catch (e) {
-        //    throw e;
-        //}
-    }
-    async Modifica() {
-        await this.ValidarCamposGasto();
-        this.Nombre = this.Nombre.toUpperCase();
-        this.Observaciones = this.Observaciones.toUpperCase();
         try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            //this.IdUsuarioAlta = ObjU.IdEntidad;
+            this.IdUsuarioAlta = 1;
             let data = {
                 'entidad': this
             };
-            let id = await ejecutarAsync(urlWsGasto + "/Modifica", data);
+            let id = await ejecutarAsync(urlWsGasto + "/Alta", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Gasto, function (entidad, index) {
-                return entidad.IdEntidad !== id;
-            });
-            _Lista_Gasto = buscados;
-            this.IdEstado = 0;
             _Lista_Gasto.push(this);
             return;
         } catch (e) {
@@ -65,6 +41,9 @@ class Gasto extends DBE {
     }
     async Baja() {
         try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            //this.IdUsuarioBaja = ObjU.IdEntidad;
+            this.IdUsuarioBaja = 1;
             let data = {
                 'entidad': this
             };
@@ -84,37 +63,35 @@ class Gasto extends DBE {
     }
 
     // Todos
-    static async Todos() {
-        if (_Lista_Gasto === undefined) {
-            _Lista_Gasto = await Gasto.TraerTodas();
-        }
-        return _Lista_Gasto;
-    }
+    //static async Todos() {
+    //    if (_Lista_Gasto === undefined) {
+    //        _Lista_Gasto = await Gasto.TraerTodas();
+    //    }
+    //    return _Lista_Gasto;
+    //}
 
     // Traer
     static async TraerUno(IdEntidad) {
-        _Lista_Gasto = await Gasto.TraerTodos();
+        _Lista_Gasto = await Gasto.TraerTodas();
         let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
         let Encontrado = buscado[0];
         return Encontrado;
     }
-    static async TraerTodos() {
-        return await Gasto.Todos();
-    }
-    static async TraerGastoAbierto() {
-        let lista = await ejecutarAsync(urlWsGasto + "/TraerGastoAbierto");
+
+    static async TraerGastosAbiertos() {
+        let lista = await ejecutarAsync(urlWsGasto + "/TraerGastosAbiertos");
         let result = [];
         if (lista.length > 0) {
             $.each(lista, function (key, value) {
                 result.push(LlenarEntidadGasto(value));
             });
         }
-        return result[0];
+        return result;
     }
     static async TraerTodosActivos() {
-        _Lista_Gasto = await Gasto.TraerTodos();
+        _Lista_Gasto = await Gasto.TraerTodas();
         let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
             return entidad.IdEstado === 0;
         });
@@ -122,6 +99,18 @@ class Gasto extends DBE {
     }
     static async TraerTodas() {
         let lista = await ejecutarAsync(urlWsGasto + "/TraerTodos");
+        _Lista_Gasto = [];
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadGasto(value));
+            });
+        }
+        _Lista_Gasto = result;
+        return _Lista_Gasto;
+    }
+    static async TraerTodosUltimos5() {
+        let lista = await ejecutarAsync(urlWsGasto + "/TraerTodosUltimos5");
         _Lista_Gasto = [];
         let result = [];
         if (lista.length > 0) {
@@ -146,7 +135,7 @@ class Gasto extends DBE {
             let estiloItem = '';
             for (let item of lista) {
                 estiloItem = 'LinkListaGrillaObjeto';
-                if (item.IdEstado === 1) {
+                if (item.IdEstado === 11) {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
                 }
                 let aItem = '<a href="#" class="mibtn-seleccionGasto" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + LongToDateString(item.FechaAlta) + ' </a>';
@@ -197,16 +186,18 @@ class Gasto extends DBE {
 }
 function LlenarEntidadGasto(entidad) {
     let Res = new Gasto;
+    Res.IdEntidad = entidad.IdEntidad;
+    Res.Observaciones = entidad.Observaciones;
+    Res.Importe = entidad.Importe;
+    Res.CantidadComprobantes = entidad.CantidadComprobantes;
+    Res.IdEstado = entidad.IdEstado;
+    Res.Estado = entidad.Estado;
     Res.IdUsuarioAlta = entidad.IdUsuarioAlta;
     Res.IdUsuarioBaja = entidad.IdUsuarioBaja;
     Res.IdUsuarioModifica = entidad.IdUsuarioModifica;
     Res.FechaAlta = entidad.FechaAlta;
     Res.FechaBaja = entidad.FechaBaja;
     Res.IdMotivoBaja = entidad.IdMotivoBaja;
-    Res.IdEntidad = entidad.IdEntidad;
-    Res.Observaciones = entidad.Observaciones;
-    Res.IdEstado = entidad.IdEstado;
-    Res.Estado = entidad.Estado;
     return Res;
 }
 $('body').on('click', ".mibtn-seleccionGasto", async function () {

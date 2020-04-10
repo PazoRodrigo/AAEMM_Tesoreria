@@ -106,24 +106,35 @@
             <div class="container-fluid">
                 <div class="row mt-1">
                     <div class="col-lg-12">
-                        <div class="row mt-1">
-                            <div class="col-1" title="Nro. Gasto">
+                        <div class="row mt-1" style="height:90px;">
+                            <div class="col-1" title="Nro. Gasto" style="text-align:center;">
+                                Gasto
+                                <br />
                                 <div class="SpanGastoCabecera" style="font-size: 3em; color: #fff; font-weight: bold;">
                                     <span id="SpanNroGasto"></span>
                                 </div>
                             </div>
-                            <div class="col-1"></div>
-                            <div class="col-4" title="Importe">
-                                <div class="SpanGastoCabecera" style="font-size: 3em; color: #fff; font-weight: bold;">
-                                    <span id="SpanGastoImporte">10600.00</span>
+                            <div class="col-2" title="Importe"  style="text-align:center;">
+                                Importe
+                                <br />
+                                <div class="SpanGastoCabecera" style="font-size: 3em; color: #fff;">
+                                    <span id="SpanGastoImporte"></span>
                                 </div>
                             </div>
-                            <div class="col-1" title="Estado Gasto">
+                            <div class="col-2" title="Comprobantes"  style="text-align:center;">
+                                Comprobantes
+                                <br />
+                                <div class="SpanGastoCabecera" style="font-size: 3em; color: #fff;">
+                                    <span id="SpanGastoComprobantes"></span>
+                                </div>
+                            </div>
+                            <div class="col-2" title="Estado Gasto">
+                                 Estado Gasto
+                                <br />
                                 <div class="SpanGastoCabecera" style="font-size: 2em; color: #fff;">
-                                    <span id="SpanGastoEstado">Abierto</span>
+                                    <span id="SpanGastoEstado"></span>
                                 </div>
                             </div>
-                            <div class="col-1"></div>
                             <div class="col-2">
                                 <div class="Boton BtnNuevo">
                                     <a id="LinkBtnNuevoGasto" href="#"><span id="SpanBtnGasto"></span></a>
@@ -143,7 +154,7 @@
                                 <a href="#" class="btnGastoOff" data-ix="tabComprobante">Gasto</a>
                             </div>
                             <div class="col-lg-6">
-                                <a href="#" class="btnComprobanteOn" data-ix="tabComprobante">Comprobantes</a>
+                                <a href="#" class="btnComprobanteOn" data-ix="tabComprobante" style="display:none;">Comprobantes</a>
                                 <a href="#" class="btnComprobanteOff" data-ix="tabComprobante">Comprobantes</a>
                             </div>
                         </div>
@@ -168,7 +179,7 @@
                         <div class="row mt-1">
                             <div class="col-lg-2">Nro. Compr.</div>
                             <div class="col-lg-4">
-                                <input id="TxtNroComprobante" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Nro. Compr." autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                                <input id="TxtNroComprobante" class="DatoFormularioComprobante InputDatoFormulario" type="text" placeholder="Nro. Compr." autocomplete="off" onkeypress="return jsSoloNumeros(event);">
                             </div>
                             <div class="col-lg-2">C. de C.</div>
                             <div class="col-lg-4">
@@ -178,7 +189,7 @@
                         <div class="row mt-1">
                             <div class="col-lg-2">Fecha Gasto</div>
                             <div class="col-lg-4">
-                                <input id="TxtFechaGasto" class="DatoFormulario InputDatoFormulario datepicker" type="text" placeholder="Fecha Gasto" autocomplete="off">                              
+                                <input id="TxtFechaGasto" class="DatoFormularioComprobante InputDatoFormulario datepicker" type="text" placeholder="Fecha Gasto" autocomplete="off">
                             </div>
                             <div class="col-lg-2">Cuenta</div>
                             <div class="col-lg-4">
@@ -188,17 +199,17 @@
                         <div class="row mt-1">
                             <div class="col-lg-2">Fecha Pago</div>
                             <div class="col-lg-4">
-                                <input id="TxtFechaPgo" class="DatoFormulario InputDatoFormulario datepicker" type="text" placeholder="Fecha Pago   " autocomplete="off">
+                                <input id="TxtFechaPago" class="DatoFormularioComprobante InputDatoFormulario datepicker" type="text" placeholder="Fecha Pago" autocomplete="off">
                             </div>
-                            <div class="col-lg-2">Tipo</div>
+                            <div class="col-lg-2">Tipo Pago</div>
                             <div class="col-lg-4">
-                                <div id="CboTipoGasto"></div>
+                                <div id="CboTipoPago"></div>
                             </div>
                         </div>
                         <div class="row mt-4">
                             <div class="col-lg-2">Importe</div>
                             <div class="col-lg-4">
-                                <input id="TxtImporte" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Importe" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                                <input id="TxtImporte" class="DatoFormularioComprobante InputDatoFormulario" type="text" placeholder="Importe" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-5">

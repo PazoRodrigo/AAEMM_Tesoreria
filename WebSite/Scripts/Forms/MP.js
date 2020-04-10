@@ -10,6 +10,7 @@
         TipoDomicilio.Refresh();
         TipoGasto.Refresh();
         TipoPago.Refresh();
+        Gasto.Refresh();
         spinnerClose();
     } catch (e) {
         spinnerClose();

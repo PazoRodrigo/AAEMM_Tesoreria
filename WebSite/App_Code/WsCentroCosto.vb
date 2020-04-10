@@ -37,7 +37,6 @@ Public Class WsCentroCosto
     Public Function Alta(entidad As Entidad.CentroCosto) As Transfer
         Dim ws As New Transfer
         Try
-            entidad.IdUsuarioAlta = 1
             entidad.Alta()
             ws.data = entidad.IdEntidad
             ws.todoOk = True
@@ -53,7 +52,6 @@ Public Class WsCentroCosto
     Public Function Modifica(entidad As Entidad.CentroCosto) As Transfer
         Dim ws As New Transfer
         Try
-            entidad.IdUsuarioModifica = 1
             entidad.Modifica()
             ws.Data = entidad.IdEntidad
             ws.TodoOk = True
@@ -69,7 +67,6 @@ Public Class WsCentroCosto
     Public Function Baja(entidad As Entidad.CentroCosto) As Transfer
         Dim ws As New Transfer
         Try
-            entidad.IdUsuarioBaja = 1
             entidad.Baja()
             ws.Data = entidad.IdEntidad
             ws.TodoOk = True

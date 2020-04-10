@@ -138,8 +138,6 @@ class Empleado extends DBE {
             'NroDocumento': NroDocumento
         };
         let lista = await ejecutarAsync(urlWsEmpleado + "/TraerTodosXNroDocumento", data);
-        console.log(lista);
-        alert('1000');
         _Lista_Empleado = [];
         let result = [];
         if (lista.length > 0) {

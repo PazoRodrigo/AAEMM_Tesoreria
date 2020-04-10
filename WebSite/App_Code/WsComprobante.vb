@@ -16,7 +16,6 @@ Public Class WsComprobante
         Dim ws As New Transfer
         Try
             Dim result As New List(Of DTO.DTO_Comprobante)
-            Entidad.Comprobante.Refresh(IdGasto)
             Dim lista As List(Of Entidad.Comprobante) = Entidad.Comprobante.TraerTodosXGasto(IdGasto)
             If Not lista Is Nothing Then
                 For Each item As Entidad.Comprobante In lista
@@ -37,7 +36,6 @@ Public Class WsComprobante
     Public Function Alta(entidad As DTO.DTO_Comprobante) As Transfer
         Dim ws As New Transfer
         Try
-            entidad.IdUsuarioAlta = 1
             Dim objGuardar As New Entidad.Comprobante(entidad)
             objGuardar.Alta()
             ws.data = objGuardar.IdEntidad
@@ -51,12 +49,12 @@ Public Class WsComprobante
         Return ws
     End Function
     <WebMethod()>
-    Public Function Modifica(entidad As Entidad.Comprobante) As Transfer
+    Public Function Modifica(entidad As DTO.DTO_Comprobante) As Transfer
         Dim ws As New Transfer
         Try
-            entidad.IdUsuarioModifica = 1
-            entidad.Modifica()
-            ws.data = entidad.IdEntidad
+            Dim objGuardar As New Entidad.Comprobante(entidad)
+            objGuardar.Modifica()
+            ws.data = objGuardar.IdEntidad
             ws.todoOk = True
             ws.mensaje = ""
         Catch ex As Exception
@@ -67,12 +65,12 @@ Public Class WsComprobante
         Return ws
     End Function
     <WebMethod()>
-    Public Function Baja(entidad As Entidad.Comprobante) As Transfer
+    Public Function Baja(entidad As DTO.DTO_Comprobante) As Transfer
         Dim ws As New Transfer
         Try
-            entidad.IdUsuarioBaja = 1
-            entidad.Baja()
-            ws.data = entidad.IdEntidad
+            Dim objGuardar As New Entidad.Comprobante(entidad)
+            objGuardar.Baja()
+            ws.data = objGuardar.IdEntidad
             ws.todoOk = True
             ws.mensaje = ""
         Catch ex As Exception

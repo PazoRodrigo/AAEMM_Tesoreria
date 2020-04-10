@@ -152,7 +152,7 @@ Namespace Entidad
                 .IdEstado = IdEstado
             }
             Dim DTO_ListaPermisos As New List(Of DTO.DTO_Permiso)
-            If Not ListaPermisos Is Nothing And ListaPermisos.Count > 0 Then
+            If Not ListaPermisos Is Nothing AndAlso ListaPermisos.Count > 0 Then
                 For Each item As Permiso In ListaPermisos
                     DTO_ListaPermisos.Add(item.ToDTO)
                 Next

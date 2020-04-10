@@ -59,7 +59,7 @@ Public Class WsChequePropio
     Public Function Modifica(entidad As Entidad.ChequePropio) As Transfer
         Dim ws As New Transfer
         Try
-            entidad.IdUsuarioModifica = 1
+
             entidad.Modifica()
             ws.data = entidad.IdEntidad
             ws.todoOk = True

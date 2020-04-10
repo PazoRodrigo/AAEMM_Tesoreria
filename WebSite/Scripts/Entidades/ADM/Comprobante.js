@@ -16,17 +16,74 @@ class Comprobante extends DBE {
         this.Importe = 0;
         this.CantidadComprobantes = 0;
         this.Observaciones = '';
+        this.IdEstado = 0;
         this.Estado = '';
+
+        this._OriginarioGasto;
+        this._Proveedor;
+        this._CentroCosto;
+    }
+
+    // Lazy
+    async ObjOriginarioGasto() {
+        try {
+            if (this._OriginarioGasto === undefined) {
+                this._ObjOriginarioGasto = await OriginarioGasto.TraerUno(this.IdOriginario);
+            }
+            return this._ObjOriginarioGasto;
+        } catch (e) {
+            return new OriginarioGasto;
+        }
+    }
+    async ObjProveedor() {
+        try {
+            if (this._Proveedor === undefined) {
+                this._ObjProveedor = await Proveedor.TraerUno(this.IdProveedor);
+            }
+            return this._ObjProveedor;
+        } catch (e) {
+            return new Proveedor;
+        }
+    }
+    async ObjCentroCosto() {
+        try {
+            if (this._CentroCosto === undefined) {
+                this._ObjCentroCosto = await CentroCosto.TraerUno(this.IdCentroCosto);
+            }
+            return this._ObjCentroCosto;
+        } catch (e) {
+            return new CentroCosto;
+        }
+    }
+    async ObjCuentaContable() {
+        try {
+            if (this._CuentaContable === undefined) {
+                this._ObjCuentaContable = await CuentaContable.TraerUno(this.IdCuenta);
+            }
+            return this._ObjCuentaContable;
+        } catch (e) {
+            return new CuentaContable;
+        }
+    }
+    async ObjTipoPago() {
+        try {
+            if (this._TipoPago === undefined) {
+                this._ObjTipoPago = await TipoPago.TraerUno(this.IdTipoPago);
+            }
+            return this._ObjTipoPago;
+        } catch (e) {
+            return new TipoPago;
+        }
     }
 
     // ABM
     async Alta() {
         await this.ValidarCampos();
-
         this.Observaciones = this.Observaciones.toUpperCase();
-
-        console.log(this);
         try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            //this.IdUsuarioAlta = ObjU.IdEntidad;
+            this.IdUsuarioAlta = 1;
             let data = {
                 'entidad': this
             };
@@ -43,6 +100,9 @@ class Comprobante extends DBE {
         await this.ValidarCampos();
         this.Observaciones = this.Observaciones.toUpperCase();
         try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            //this.IdUsuarioModifica = ObjU.IdEntidad;
+            this.IdUsuarioModifica = 1;
             let data = {
                 'entidad': this
             };
@@ -62,7 +122,9 @@ class Comprobante extends DBE {
     }
     async Baja() {
         try {
-
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            //this.IdUsuarioBaja = ObjU.IdEntidad;
+            this.IdUsuarioBaja = 1;
             let data = {
                 'entidad': this
             };
@@ -82,16 +144,16 @@ class Comprobante extends DBE {
     }
 
     async ValidarCampos() {
-        //if (this.Fec) {
+        if (this.IdCentroCosto === 0) {
+            throw 'Debe Completar todos los campos';
+
+        }//if (this.Fec) {
 
         //}
     }
     // Todos
-    static async Todos() {
-        if (_Lista_Comprobante === undefined) {
-            _Lista_Comprobante = await Comprobante.TraerTodas();
-        }
-        return _Lista_Comprobante;
+    static async TodosXGasto(IdGasto) {
+        return await Comprobante.TraerTodasXGasto(IdGasto);
     }
 
     // Traer
@@ -141,9 +203,6 @@ class Comprobante extends DBE {
         return _Lista_Comprobante;
     }
     // Otros
-    static async Refresh() {
-        _Lista_Comprobante = await Comprobante.TraerTodas();
-    }
     // Herramientas
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
@@ -154,6 +213,7 @@ class Comprobante extends DBE {
             let estiloItem = '';
             for (let item of lista) {
                 estiloItem = 'LinkListaGrillaObjeto';
+                alert(item.IdEstado);
                 if (item.IdEstado === 1) {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
                 }
@@ -206,12 +266,6 @@ class Comprobante extends DBE {
 function LlenarEntidadComprobante(entidad) {
     console.log(entidad);
     let Res = new Comprobante;
-    Res.IdUsuarioAlta = entidad.IdUsuarioAlta;
-    Res.IdUsuarioBaja = entidad.IdUsuarioBaja;
-    Res.IdUsuarioModifica = entidad.IdUsuarioModifica;
-    Res.FechaAlta = entidad.FechaAlta;
-    Res.FechaBaja = entidad.FechaBaja;
-    Res.IdMotivoBaja = entidad.IdMotivoBaja;
     Res.IdEntidad = entidad.IdEntidad;
     Res.IdGasto = entidad.IdGasto;
     Res.IdOriginario = entidad.IdOriginario;
@@ -224,9 +278,15 @@ function LlenarEntidadComprobante(entidad) {
     Res.NroComprobante = entidad.NroComprobante;
     Res.Importe = entidad.Importe;
     Res.Observaciones = entidad.Observaciones;
-    Res.IdEstado = entidad.IdEstado;
-    Res.Estado = entidad.Estado;
-    console.log(Res);
+    if (entidad.FechaBaja > 0) {
+        Res.IdEstado = 1;
+    }
+    Res.IdUsuarioAlta = entidad.IdUsuarioAlta;
+    Res.IdUsuarioBaja = entidad.IdUsuarioBaja;
+    Res.IdUsuarioModifica = entidad.IdUsuarioModifica;
+    Res.FechaAlta = entidad.FechaAlta;
+    Res.FechaBaja = entidad.FechaBaja;
+    Res.IdMotivoBaja = entidad.IdMotivoBaja;
     return Res;
 }
 $('body').on('click', ".mibtn-seleccionComprobante", async function () {

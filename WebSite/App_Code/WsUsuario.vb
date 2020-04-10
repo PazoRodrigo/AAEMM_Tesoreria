@@ -65,9 +65,8 @@ Public Class WsUsuario
     Public Function AccederAlSistema(User As String, Pass As String) As Transfer
         Dim ws As New Transfer
         Try
-            Dim result As New List(Of DTO.DTO_Usuario) From {
-                Entidad.Usuario.AccederAlSistema(User.Trim, Pass.Trim).ToDTO
-            }
+            Dim result As New List(Of DTO.DTO_Usuario)
+            result.Add(Entidad.Usuario.AccederAlSistema(User.Trim, Pass.Trim).ToDTO)
             ws.data = result
             ws.todoOk = True
             ws.mensaje = ""

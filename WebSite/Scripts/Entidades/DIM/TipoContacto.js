@@ -14,6 +14,8 @@ class TipoContacto extends DBE {
         this.Nombre = this.Nombre.toUpperCase();
         this.Observaciones = this.Observaciones.toUpperCase();
         try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioAlta = ObjU.IdEntidad;
             let data = {
                 'entidad': this
             };
@@ -31,6 +33,8 @@ class TipoContacto extends DBE {
         this.Nombre = this.Nombre.toUpperCase();
         this.Observaciones = this.Observaciones.toUpperCase();
         try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioModifica = ObjU.IdEntidad;
             let data = {
                 'entidad': this
             };
@@ -50,6 +54,8 @@ class TipoContacto extends DBE {
     }
     async Baja() {
         try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioBaja = ObjU.IdEntidad;
             let data = {
                 'entidad': this
             };

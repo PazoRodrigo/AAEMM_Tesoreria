@@ -14,7 +14,9 @@ class OriginarioGasto extends DBE {
         this.Nombre = this.Nombre.toUpperCase();
         this.Observaciones = this.Observaciones.toUpperCase();
         try {
-            let data = {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioAlta = ObjU.IdEntidad;
+             let data = {
                 'entidad': this
             };
             let id = await ejecutarAsync(urlWsOriginarioGasto + "/Alta", data);
@@ -31,7 +33,9 @@ class OriginarioGasto extends DBE {
         this.Nombre = this.Nombre.toUpperCase();
         this.Observaciones = this.Observaciones.toUpperCase();
         try {
-            let data = {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioModifica = ObjU.IdEntidad;
+           let data = {
                 'entidad': this
             };
             let id = await ejecutarAsync(urlWsOriginarioGasto + "/Modifica", data);
@@ -50,6 +54,8 @@ class OriginarioGasto extends DBE {
     }
     async Baja() {
         try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioBaja = ObjU.IdEntidad;
             let data = {
                 'entidad': this
             };
@@ -92,8 +98,7 @@ class OriginarioGasto extends DBE {
         let buscado = $.grep(_Lista_OriginarioGasto, function (entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
-        let Encontrado = buscado[0];
-        return Encontrado;
+        return buscado[0];
     }
     static async TraerTodos() {
         return await OriginarioGasto.Todos();
