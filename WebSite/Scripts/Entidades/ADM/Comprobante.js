@@ -10,7 +10,7 @@ class Comprobante extends DBE {
         this.IdCentroCosto = 0;
         this.IdCuenta = 0;
         this.IdTipoPago = 0;
-        this.FechaGasto = 0;
+        this.FechaGasto = fechaHoy();
         this.FechaPago = 0;
         this.NroComprobante = 0;
         this.Importe = 0;
@@ -82,8 +82,7 @@ class Comprobante extends DBE {
         this.Observaciones = this.Observaciones.toUpperCase();
         try {
             let ObjU = JSON.parse(sessionStorage.getItem("User"));
-            //this.IdUsuarioAlta = ObjU.IdEntidad;
-            this.IdUsuarioAlta = 1;
+            this.IdUsuarioAlta = ObjU.IdEntidad;
             let data = {
                 'entidad': this
             };
@@ -101,8 +100,7 @@ class Comprobante extends DBE {
         this.Observaciones = this.Observaciones.toUpperCase();
         try {
             let ObjU = JSON.parse(sessionStorage.getItem("User"));
-            //this.IdUsuarioModifica = ObjU.IdEntidad;
-            this.IdUsuarioModifica = 1;
+            this.IdUsuarioModifica = ObjU.IdEntidad;
             let data = {
                 'entidad': this
             };
@@ -123,8 +121,7 @@ class Comprobante extends DBE {
     async Baja() {
         try {
             let ObjU = JSON.parse(sessionStorage.getItem("User"));
-            //this.IdUsuarioBaja = ObjU.IdEntidad;
-            this.IdUsuarioBaja = 1;
+            this.IdUsuarioBaja = ObjU.IdEntidad;
             let data = {
                 'entidad': this
             };
@@ -213,11 +210,10 @@ class Comprobante extends DBE {
             let estiloItem = '';
             for (let item of lista) {
                 estiloItem = 'LinkListaGrillaObjeto';
-                alert(item.IdEstado);
                 if (item.IdEstado === 1) {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
                 }
-                let aItem = '<a href="#" class="mibtn-seleccionComprobante" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + LongToDateString(item.FechaAlta) + ' </a>';
+                let aItem = '<a href="#" class="mibtn-seleccionComprobante" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + LongToDateString(item.FechaAlta) + ' ' + item.Estado + ' - ' + MonedaDecimales2(item.Importe) + ' </a>';
                 let aEliminar = '<a href="#" class="mibtn-EliminarComprobante" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
                 str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
             }
@@ -264,7 +260,6 @@ class Comprobante extends DBE {
     }
 }
 function LlenarEntidadComprobante(entidad) {
-    console.log(entidad);
     let Res = new Comprobante;
     Res.IdEntidad = entidad.IdEntidad;
     Res.IdGasto = entidad.IdGasto;

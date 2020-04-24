@@ -5,22 +5,53 @@ Imports Clases
 
 ' To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
 <System.Web.Script.Services.ScriptService()>
-<WebService(Namespace:="http://tempuri.org/")> _
-<WebServiceBinding(ConformsTo:=WsiProfiles.BasicProfile1_1)> _
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<WebService(Namespace:="http://tempuri.org/")>
+<WebServiceBinding(ConformsTo:=WsiProfiles.BasicProfile1_1)>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Public Class WsEmpresa
     Inherits System.Web.Services.WebService
 
+    <WebMethod()>
+    Public Function TraerUnoXCUIT(CUIT As Long) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Empresa)
+            result.Add(Entidad.Empresa.TraerUnoXCUIT(CUIT).ToDTO)
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
+    Public Function TraerUno(IdEntidad As Integer) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Empresa)
+            result.Add(Entidad.Empresa.TraerUno(IdEntidad).ToDTO)
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
     <WebMethod()>
     Public Function TraerTodosXCUIT(CUIT As Long) As Transfer
         Dim ws As New Transfer
         Try
             Dim result As New List(Of DTO.DTO_Empresa)
-            Entidad.Empresa.Refresh()
             Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXCUIT(CUIT)
             If Not lista Is Nothing Then
                 For Each item As Entidad.Empresa In lista
-                    result.Add(item.ToDTO)
+                    result.Add(item.ToDTOCabecera)
                 Next
             End If
             ws.data = result
@@ -34,15 +65,14 @@ Public Class WsEmpresa
         Return ws
     End Function
     <WebMethod()>
-    Public Function TraerTodosXIdCentroCosto(IdCentroCosto As Integer) As Transfer
+    Public Function TraerTodosXCentroCosto(IdCentroCosto As Integer) As Transfer
         Dim ws As New Transfer
         Try
             Dim result As New List(Of DTO.DTO_Empresa)
-            Entidad.Empresa.Refresh()
             Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXCentroCosto(IdCentroCosto)
             If Not lista Is Nothing Then
                 For Each item As Entidad.Empresa In lista
-                    result.Add(item.ToDTO)
+                    result.Add(item.ToDTOCabecera)
                 Next
             End If
             ws.data = result
@@ -60,13 +90,49 @@ Public Class WsEmpresa
         Dim ws As New Transfer
         Try
             Dim result As New List(Of DTO.DTO_Empresa)
-            Entidad.Empresa.Refresh()
             Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXRazonSocial(RazonSocial)
             If Not lista Is Nothing Then
                 For Each item As Entidad.Empresa In lista
-                    result.Add(item.ToDTO)
+                    result.Add(item.ToDTOCabecera)
                 Next
             End If
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
+    Public Function TraerTodosXBusqueda(RazonSocial As String, CUIT As Long, IdCentroCosto As Integer) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Empresa)
+            Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXBusqueda(RazonSocial, CUIT, IdCentroCosto)
+            If Not lista Is Nothing Then
+                For Each item As Entidad.Empresa In lista
+                    result.Add(item.ToDTOCabecera)
+                Next
+            End If
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
+    Public Function TraerDatosCalculados(CUIT As Long, IdEstablecimiento As Integer) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_DatosCalculados)
+            result.Add(Entidad.DatosCalculados.TraerUno(CUIT, IdEstablecimiento).ToDTO)
             ws.data = result
             ws.todoOk = True
             ws.mensaje = ""

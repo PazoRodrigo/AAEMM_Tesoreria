@@ -29,6 +29,12 @@ async function Inicio() {
     }
     await LimpiarComprobante();
     MostrarSolapaGasto();
+
+    //let $datepicker = $('#TxtFechaGasto');
+    //$datepicker.datepicker();
+    //$datepicker.datepicker('setDate', new Date());
+
+
 }
 async function LlenarGrillaGasto() {
     Gasto.ArmarGrilla(_ListaG, 'GrillaGastosRegistrados', 'EventoSeleccionarGasto', 'EventoEliminarGasto', 'height:300px; overflow-y: scroll');
@@ -36,25 +42,26 @@ async function LlenarGrillaGasto() {
 async function LlenarGrillaComprobante() {
     Comprobante.ArmarGrilla(_ListaC, 'GrillaComprobantesRegistrados', 'EventoSeleccionarComprobante', 'EventoEliminarComprobante', 'height:300px; overflow-y: scroll');
 }
+async function LlenarCboCuenta() {
+    let lista = await CuentaContable.TraerTodos();
+    CuentaContable.ArmarCombo(lista, 'CboCuenta', 'SelectorCuentaContable', 'EventoSeleccionCuentaContable', 'Seleccione Cuenta', '');
+}
 async function LlenarCboOriginario() {
     let lista = await OriginarioGasto.TraerTodos();
-    OriginarioGasto.ArmarCombo(lista, 'CboOriginarioGasto', 'SelectorOriginarioGasto', 'EventoSeleccionOriginarioGasto', 'Seleccione', '');
+    OriginarioGasto.ArmarCombo(lista, 'CboOriginarioGasto', 'SelectorOriginarioGasto', 'EventoSeleccionOriginarioGasto', 'Seleccione Originario Gasto', '');
 }
 async function LlenarCboProveedor() {
     let lista = await Proveedor.TraerTodos();
-    Proveedor.ArmarCombo(lista, 'CboProveedor', 'SelectorProveedor', 'EventoSeleccionProveedor', 'Seleccione', '');
+    Proveedor.ArmarCombo(lista, 'CboProveedor', 'SelectorProveedor', 'EventoSeleccionProveedor', 'Seleccione Proveedor', '');
 }
 async function LlenarCboCentroCosto() {
     let lista = await CentroCosto.TraerTodos();
-    CentroCosto.ArmarCombo(lista, 'CboCentroCosto', 'SelectorCentroCosto', 'EventoSeleccionCentroCosto', 'Seleccione', '');
+    CentroCosto.ArmarCombo(lista, 'CboCentroCosto', 'SelectorCentroCosto', 'EventoSeleccionCentroCosto', 'Seleccione C. de C.', '');
 }
-async function LlenarCboCuenta() {
-    let lista = await CuentaContable.TraerTodos();
-    CuentaContable.ArmarCombo(lista, 'CboCuenta', 'SelectorCuentaContable', 'EventoSeleccionCuentaContable', 'Seleccione', '');
-}
+
 async function LlenarCboTipoPago() {
     let lista = await TipoPago.TraerTodos();
-    TipoPago.ArmarCombo(lista, 'CboTipoPago', 'SelectorTipoPago', 'EventoSeleccionTipoPago', 'Seleccione', '');
+    TipoPago.ArmarCombo(lista, 'CboTipoPago', 'SelectorTipoPago', 'EventoSeleccionTipoPago', 'Seleccione Tipo Pago', '');
 }
 function MostrarSolapaGasto() {
     $(".btnGastoOn").css("display", "block");
@@ -96,6 +103,7 @@ async function NuevoGasto() {
 async function LlenarGasto() {
     LimpiarGasto();
     if (_ObjGasto !== null) {
+        $("#GastoDetalle").css('display', 'block');
         $("#SpanNroGasto").text(_ObjGasto.IdEntidad);
         $("#SpanGastoImporte").text(_ObjGasto.Importe.toFixed(2));
         $("#SpanGastoComprobantes").text(_ObjGasto.CantidadComprobantes);
@@ -167,6 +175,7 @@ async function LimpiarComprobante() {
     await LlenarCboCentroCosto();
     await LlenarCboTipoPago();
     await LlenarGrillaGasto();
+    $('#TxtFechaGasto').val(fechaHoy);
 }
 function NuevoComprobante() {
     LimpiarComprobante();
@@ -175,22 +184,28 @@ function NuevoComprobante() {
 }
 async function LlenarComprobante() {
     await LimpiarComprobante();
-    $("#SelectorOriginarioGasto").text((await _ObjComprobante.ObjOriginarioGasto()).Nombre);
-    $("#SelectorProveedor").text((await _ObjComprobante.ObjProveedor()).Nombre);
-    $("#SelectorCentroCosto").text((await _ObjComprobante.ObjCentroCosto()).Nombre);
-    $("#SelectorCuentaContable").text((await _ObjComprobante.ObjCuentaContable()).Nombre);
-    $("#SelectorTipoPago").text((await _ObjComprobante.ObjTipoPago()).Nombre);
+    document.getElementById("_CboCuenta").value = _ObjComprobante.IdCuenta;
+    document.getElementById("_CboOriginarioGasto").value = _ObjComprobante.IdOriginario;
+    document.getElementById("_CboCentroCosto").value = _ObjComprobante.IdCentroCosto;
+    document.getElementById("_CboProveedor").value = _ObjComprobante.IdProveedor;
+    if (_ObjComprobante.IdTipoPago > 0) {
+        document.getElementById("_CboTipoPago").value = _ObjComprobante.IdTipoPago;
+    }
     $("#TxtNroComprobante").val(_ObjComprobante.NroComprobante);
-    $("#TxtFechaPago").val(LongToDateString(_ObjComprobante.FechaPago));
-    $("#TxtFechaGasto").val(LongToDateString(_ObjComprobante.FechaGasto));
+    $("#TxtObservaciones").val(_ObjComprobante.Observaciones);
+    if (_ObjComprobante.FechaPago > 0) {
+        $("#TxtFechaPago").val(LongToDateString(_ObjComprobante.FechaPago));
+    }
+    if (_ObjComprobante.FechaGasto) {
+        $("#TxtFechaGasto").val(LongToDateString(_ObjComprobante.FechaGasto));
+    }
     $("#TxtImporte").val(_ObjComprobante.Importe.toFixed(2));
-
-
 }
 $('body').on('click', '#LinkBtnNuevoComprobante', async function (e) {
     try {
-        _ObjComprobante = new Comprobante;
         await LimpiarComprobante();
+        _ObjComprobante = new Comprobante;
+        NuevoComprobante();
     } catch (e) {
         alertAlerta(e);
     }
@@ -199,6 +214,7 @@ document.addEventListener('EventoSeleccionarComprobante', async function (e) {
     try {
         let objSeleccionado = e.detail;
         _ObjComprobante = objSeleccionado;
+
         await LlenarComprobante();
     } catch (e) {
         alertAlerta(e);
@@ -229,8 +245,12 @@ $('body').on('click', '#LinkBtnGuardarComprobante', async function (e) {
         if (_ObjComprobante === undefined) {
             throw 'Debe ingresar los Datos del comprobante';
         }
+        if (typeof (_ObjComprobante.FechaGasto) === "string") {
+            _ObjComprobante.FechaGasto = dateStringToLong(_ObjComprobante.FechaGasto);
+        }
         _ObjComprobante.NroComprobante = $("#TxtNroComprobante").val();
         _ObjComprobante.Importe = $("#TxtImporte").val();
+        _ObjComprobante.Observaciones = $("#TxtObservaciones").val();
         _ObjComprobante.IdGasto = _ObjGasto.IdEntidad;
         if (_ObjComprobante.IdEntidad === 0) {
             await _ObjComprobante.Alta();
@@ -247,7 +267,18 @@ $('body').on('click', '#LinkBtnGuardarComprobante', async function (e) {
 });
 
 
-
+document.addEventListener('EventoSeleccionCuentaContable', async function (e) {
+    try {
+        let objSeleccionado = e.detail;
+        if (_ObjComprobante === undefined) {
+            _ObjComprobante = new Comprobante;
+        }
+        _ObjComprobante.IdCuenta = objSeleccionado.IdEntidad;
+        $("#SelectorCuentaContable").text(objSeleccionado.Nombre);
+    } catch (e) {
+        alertAlerta(e);
+    }
+}, false);
 document.addEventListener('EventoSeleccionOriginarioGasto', async function (e) {
     try {
         let objSeleccionado = e.detail;
@@ -266,7 +297,6 @@ document.addEventListener('EventoSeleccionProveedor', async function (e) {
         if (_ObjComprobante === undefined) {
             _ObjComprobante = new Comprobante;
         }
-        console.log(objSeleccionado);
         _ObjComprobante.IdProveedor = objSeleccionado.IdEntidad;
         $("#SelectorProveedor").text(objSeleccionado.Nombre);
     } catch (e) {
@@ -285,18 +315,6 @@ document.addEventListener('EventoSeleccionCentroCosto', async function (e) {
         alertAlerta(e);
     }
 }, false);
-document.addEventListener('EventoSeleccionCuentaContable', async function (e) {
-    try {
-        let objSeleccionado = e.detail;
-        if (_ObjComprobante === undefined) {
-            _ObjComprobante = new Comprobante;
-        }
-        _ObjComprobante.IdCuenta = objSeleccionado.IdEntidad;
-        $("#SelectorCuentaContable").text(objSeleccionado.Nombre);
-    } catch (e) {
-        alertAlerta(e);
-    }
-}, false);
 document.addEventListener('EventoSeleccionTipoPago', async function (e) {
     try {
         let objSeleccionado = e.detail;
@@ -309,12 +327,13 @@ document.addEventListener('EventoSeleccionTipoPago', async function (e) {
         alertAlerta(e);
     }
 }, false);
-
 $(function () {
     $("#TxtFechaGasto").datepicker();
     $("#TxtFechaGasto").on("change", async function () {
         let selected = $(this).val();
         let seleccionLNG = selected.substr(6, 4) + '' + selected.substr(3, 2) + '' + selected.substr(0, 2);
+        alert(FechaHoyLng());
+        alert(seleccionLNG);
         try {
             if (seleccionLNG > FechaHoyLng()) {
                 $("#TxtFechaGasto").val(fechaHoy);

@@ -11,19 +11,6 @@ Namespace Entidad
         Inherits DBE
 
 
-        Private Shared _Todos As List(Of Empleado)
-        Public Shared Property Todos() As List(Of Empleado)
-            Get
-                If _Todos Is Nothing Then
-                    '_Todos = DAL_Empleado.TraerTodos
-                End If
-                Return _Todos
-            End Get
-            Set(ByVal value As List(Of Empleado))
-                _Todos = value
-            End Set
-        End Property
-
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
         Public Property Nombre() As String = ""
@@ -134,21 +121,21 @@ Namespace Entidad
         'End Function
         Public Shared Function TraerTodosXCUIL(CUIL As Long) As List(Of Empleado)
             Dim result As List(Of Empleado) = DAL_Empleado.TraerTodosXCUIL(CUIL)
-            If result Is Nothing Then
+            If result.Count = 0 Then
                 Throw New Exception("No existen Empleados para la búsqueda")
             End If
             Return result
         End Function
         Public Shared Function TraerTodosXNombre(Nombre As String) As List(Of Empleado)
             Dim result As List(Of Empleado) = DAL_Empleado.TraerTodosXNombre(Nombre.Trim)
-            If result Is Nothing Then
+            If result.Count = 0 Then
                 Throw New Exception("No existen Empleados para la búsqueda")
             End If
             Return result
         End Function
         Public Shared Function TraerTodosXNroDocumento(NroDocumento As Long) As List(Of Empleado)
             Dim result As List(Of Empleado) = DAL_Empleado.TraerTodosXNroDocumento(NroDocumento)
-            If result Is Nothing Then
+            If result.Count = 0 Then
                 Throw New Exception("No existen Empleados para la búsqueda")
             End If
             Return result
@@ -160,17 +147,14 @@ Namespace Entidad
         Public Sub Alta()
             ValidarAlta()
             DAL_Empleado.Alta(Me)
-            Refresh()
         End Sub
         Public Sub Baja()
             ValidarBaja()
             DAL_Empleado.Baja(Me)
-            Refresh()
         End Sub
         Public Sub Modifica()
             ValidarModifica()
             DAL_Empleado.Modifica(Me)
-            Refresh()
         End Sub
         ' Otros
         Public Function ToDTO() As DTO.DTO_Empleado
@@ -184,13 +168,24 @@ Namespace Entidad
                 .IdSexo = IdSexo,
                 .IdEstadoCivil = IdEstadoCivil,
                 .FechaNacimiento = LngFechaNacimiento,
-                .Domicilio = ObjDomicilio.toDto
+                .Domicilio = ObjDomicilio.ToDto
             }
             Return result
         End Function
-        Public Shared Sub Refresh()
-            '_Todos = DAL_Empleado.TraerTodos
-        End Sub
+        Public Function ToDTOCabecera() As DTO.DTO_Empleado
+            Dim result As New DTO.DTO_Empleado With {
+                .IdEntidad = IdEntidad,
+                .Nombre = Nombre,
+                .NroDocumento = NroDocumento,
+                .CUIL = CUIL,
+                .NroSindical = NroSindical,
+                .IdEstado = IdEstado,
+                .IdSexo = IdSexo,
+                .IdEstadoCivil = IdEstadoCivil,
+                .FechaNacimiento = LngFechaNacimiento
+            }
+            Return result
+        End Function
         ' Nuevos
 #End Region
 #Region " Métodos Privados "
@@ -260,7 +255,7 @@ End Namespace ' Entidad
 
 Namespace DTO
     Public Class DTO_Empleado
-        Inherits DTO_DBE
+        Inherits DTO_Dimensional
 
 
 #Region " Atributos / Propiedades"
@@ -285,7 +280,6 @@ Namespace DataAccessLibrary
         Const storeBaja As String = "ADM.p_Empleado_Baja"
         Const storeModifica As String = "ADM.p_Empleado_Modifica"
         Const storeTraerUnoXId As String = "ADM.p_Empleado_TraerUnoXId"
-        'Const storeTraerTodos As String = "ADM.p_Empleado_TraerTodos"
         Const storeTraerTodosXCUIL As String = "ADM.p_Empleado_TraerTodosXCUIL"
         Const storeTraerTodosXNombre As String = "ADM.p_Empleado_TraerTodosXNombre"
         Const storeTraerTodosXNroDocumento As String = "ADM.p_Empleado_TraerTodosXNroDocumento"
@@ -361,21 +355,6 @@ Namespace DataAccessLibrary
             End Using
             Return result
         End Function
-        'Public Shared Function TraerTodos() As List(Of Empleado)
-        '    Dim store As String = storeTraerTodos
-        '    Dim pa As New parametrosArray
-        '    Dim listaResult As New List(Of Empleado)
-        '    Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
-        '        If dt.Rows.Count > 0 Then
-        '            For Each dr As DataRow In dt.Rows
-        '                listaResult.Add(LlenarEntidad(dr))
-        '            Next
-        '        Else
-        '            listaResult = Nothing
-        '        End If
-        '    End Using
-        '    Return listaResult
-        'End Function
         Public Shared Function TraerTodosXCUIL(ByVal CUIL As Long) As List(Of Empleado)
             Dim store As String = storeTraerTodosXCUIL
             Dim listaResult As New List(Of Empleado)
@@ -386,8 +365,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult
@@ -402,8 +379,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult
@@ -418,8 +393,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult
@@ -466,17 +439,17 @@ Namespace DataAccessLibrary
                         entidad.IdEntidad = CInt(dr.Item("id"))
                     End If
                 End If
-                If dr.Table.Columns.Contains("Nombre") Then
-                    If dr.Item("Nombre") IsNot DBNull.Value Then
-                        entidad.Nombre = dr.Item("Nombre").ToString.ToUpper.Trim
+                If dr.Table.Columns.Contains("ApellidoNombre") Then
+                    If dr.Item("ApellidoNombre") IsNot DBNull.Value Then
+                        entidad.Nombre = dr.Item("ApellidoNombre").ToString.ToUpper.Trim
                     End If
                 End If
                 If dr.Table.Columns.Contains("NroDocumento") Then
                     If dr.Item("NroDocumento") IsNot DBNull.Value Then
                         entidad.NroDocumento = CLng(dr.Item("NroDocumento"))
-                        If entidad.NroDocumento = 29086245 Then
-                            Dim a As String = ""
-                        End If
+                        'If entidad.NroDocumento = 29086245 Then
+                        '    Dim a As String = ""
+                        'End If
                     End If
                 End If
                 If dr.Table.Columns.Contains("CUIL") Then

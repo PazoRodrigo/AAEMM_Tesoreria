@@ -29,12 +29,13 @@ function Limpiar_Empresa() {
     $(".DatoFormulario").val('');
 }
 async function LlenarEmpresa() {
+    console.log(_ObjEmpresa);
     $("#TxtRazonSocial").val(_ObjEmpresa.RazonSocial);
     $("#TxtCUIT").val(_ObjEmpresa.CUIT);
     $("#TxtEmail").val(_ObjEmpresa.CorreoElectronico);
-    $("#TxtDireccion").val(_ObjEmpresa.Domicilio.Direccion);
-    $("#TxtCP").val(_ObjEmpresa.Domicilio.CodigoPostal);
-    $("#TxtLocalidad").val(_ObjEmpresa.Domicilio.Localidad.Descripcion);
+    $("#TxtDireccion").val(_ObjEmpresa.ObjDomicilio.Direccion);
+    $("#TxtCP").val(_ObjEmpresa.ObjDomicilio.CodigoPostal);
+    $("#TxtLocalidad").val(_ObjEmpresa.ObjDomicilio.Localidad.Descripcion);
 }
 function Nuevo_Empresa() {
     Limpiar_Empresa();
@@ -53,7 +54,11 @@ async function ArmarComboConvenio() {
 document.addEventListener('EventoSeleccionarEmpresa', async function (e) {
     try {
         let objSeleccionado = e.detail;
-        _ObjEmpresa = objSeleccionado;
+        if (objSeleccionado.CUIT > 0) {
+            _ObjEmpresa = await Empresa.TraerUnoXCUIT(objSeleccionado.CUIT);
+        } else {
+            _ObjEmpresa = await Empresa.TraerUno(objSeleccionado.IdEntidad);
+        }
         await LlenarEmpresa();
     } catch (e) {
         alertAlerta(e);

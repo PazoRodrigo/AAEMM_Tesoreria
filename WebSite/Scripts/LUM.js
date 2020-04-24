@@ -1,15 +1,18 @@
 ﻿// Funciones
 function jsSoloNumeros(e) {
     var keynum = window.event ? window.event.keyCode : e.which;
-    if ((keynum === 8) || (keynum === 46))
+    if ((parseInt(keynum === 8)) || (parseInt(keynum) === 46))
         return true;
     return /\d/.test(String.fromCharCode(keynum));
 }
 function jsSoloNumerosSinPuntos(e) {
     var keynum = window.event ? window.event.keyCode : e.which;
-    if (keynum === 8)
+    if (keynum == 8)
         return true;
     return /\d/.test(String.fromCharCode(keynum));
+}
+function jsNoEscribir(e) {
+    e.preventDefault();
 }
 function Right(str, n) {
     if (n <= 0)
@@ -32,10 +35,10 @@ function Left(str, n) {
 }
 function limpiarTextos() {
     $('input[type=text]').val('');
-}
+};
 function limpiarCheckBoxs() {
     $('input[type=checkbox]').attr('checked', false);
-}
+};
 if (!String.format) {
     String.format = function (format) {
         var args = Array.prototype.slice.call(arguments, 1);
@@ -73,35 +76,33 @@ function spinnerClose() {
 function CantCaracteresRestantes(CantTotal, Texto) {
     return valor = CantTotal - Texto.length;
 }
-//function CantCaracteresRestantes(span, CantTotal, Texto, alarma, estilo, estiloAlarma, fontSize) {
-//    let valor = CantTotal - Texto.length;
-//    $('#' + span + '').html('');
-//    $('#' + span + '').css('font-size', fontSize);
-//    $('#' + span + '').val(valor);
-//    if (valor <= alarma) {
-//        $('#' + span + '').css('color', estiloAlarma);
-//    } else {
-//        $('#' + span + '').css('color', estilo);
-//    }
-//    return $('#' + span + '').val(valor);
-//}
+function MonedaDecimales2(valor) {
+    let result = '$ 0.00';
+    if (valor !== undefined) {
+        if (valor !== null) {
+            result = ('$ ' + valor.toFixed(2));
+        }
+
+    }
+    return result;
+}
 
 // Validaciones
 function validarTelefono(nroIngresado1, nroIngresado2, nroIngresado3) {
     var result = true;
-    if (nroIngresado1.length === 0 && nroIngresado1.length === 0 && nroIngresado3.length === 0) {
+    if (parseInt(nroIngresado1.length) === 0 && parseInt(nroIngresado1.length) === 0 && parseInt(nroIngresado3.length) === 0) {
         result = false;
         alertAlerta('Ingrese un nro. de Teléfono Completo (DDN/Área/Número)');
     } else {
-        if (nroIngresado1.length === 0) {
+        if (parseInt(nroIngresado1.length) === 0) {
             result = false;
             alertAlerta('Ingrese el DDN del nro. de Teléfono');
         } else {
-            if (nroIngresado2.length === 0) {
+            if (parseInt(nroIngresado2.length) === 0) {
                 result = false;
                 alertAlerta('Ingrese el Área del nro. de Teléfono');
             } else {
-                if (nroIngresado3.length === 0) {
+                if (parseInt(nroIngresado3.length) === 0) {
                     result = false;
                     alertAlerta('Ingrese el número del nro. de Teléfono');
                 }
@@ -112,7 +113,7 @@ function validarTelefono(nroIngresado1, nroIngresado2, nroIngresado3) {
 }
 function validarVacio(busqueda) {
     var result = true;
-    if (busqueda.length === 0) {
+    if (parseInt(busqueda.length) === 0) {
         result = false;
     }
     return result;
@@ -123,6 +124,9 @@ function validarCantidadCaracteres(busqueda, cantidad_caracteres) {
         result = false;
     }
     return result;
+}
+function LimpiarDiv(div) {
+    $('#' + div + '').html('');
 }
 async function validarEmail(email) {
     var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -136,16 +140,21 @@ async function BuscarTextoXCantCaracteres(Caracteres, TextoBuscado, ListaTodo, L
     let ListaResultado = [];
     if (TextoBuscado.length >= Caracteres) {
         let Resultado = $.grep(Lista, function (element, index) {
-            return element.Nombre.toLowerCase().indexOf(TextoBuscado.toLowerCase()) !== -1;
+            return element.Nombre.toLowerCase().indexOf(TextoBuscado.toLowerCase()) != -1;
         });
         ListaResultado = Resultado;
     } else {
         ListaResultado = ListaTodo;
     }
     return ListaResultado;
+};
+function ValidarConContenido(campo) {
+    let result = false;
+    if ($('#' + campo + '').val().length > 0) {
+        result = true;
+    }
+    return result;
 }
-
-
 // Alertas
 function alertOk(mensaje) {
     Swal.fire("", mensaje.toString(), "success");
@@ -158,6 +167,9 @@ function alertAlerta(mensaje) {
 }
 function alertError(mensaje) {
     Swal.fire("", mensaje.toString(), "error");
+}
+function alertConsulta(mensaje) {
+    Swal.fire("", mensaje.toString(), "question");
 }
 function alertConfirmarEliminarLinea(codNomenclador, descripcion) {
     Swal.fire({
@@ -193,13 +205,13 @@ function PopUpConfirmarSinCancelar(tipoAlerta, titulo, texto, evento, strBtnSi) 
 }
 function PopUpConfirmarConCancelar(tipoAlerta, objeto, titulo, texto, evento, strBtnSi, strBtnNo, colorBtnSi, colorBtnNo) {
     let event = new CustomEvent(evento, { detail: objeto });
-    if (strBtnNo === '') {
+    if (strBtnNo == '') {
         strBtnNo = 'Cancelar';
     }
-    if (colorBtnNo === '') {
+    if (colorBtnNo == '') {
         colorBtnNo = "#DD6B55";
     }
-    if (colorBtnSi === '') {
+    if (colorBtnSi == '') {
         colorBtnSi = '#1ACB4D';
     }
     Swal.fire({
@@ -218,7 +230,6 @@ function PopUpConfirmarConCancelar(tipoAlerta, objeto, titulo, texto, evento, st
     });
 }
 
-
 // Fechas
 function fechaHoy() {
     let fecha = new Date();
@@ -231,24 +242,41 @@ function FechaHoyLng() {
     let result = FechaHoy.getFullYear() + '' + ("0" + (FechaHoy.getMonth() + 1)).slice(-2) + '' + ("0" + FechaHoy.getDate()).slice(-2);
     return result;
 }
+//function Date_LongToDate(lng) {
+//    console.log(lng);
+//    let fecha = '';
+//    if (lng != '') {
+//        if (lng > 0) {
+//            let str = lng.toString();
+//            if (str.length === 8) {
+//                let ano = (str.substring(0, 4));
+//                let mes = (str.substring(4, 6));
+//                let dia = (str.substring(6));
+//                fecha = ano + '/' + Right('00' + mes, 2) + '/' + Right('00' + dia, 2);
+//            }
+//        }
+//    }
+//    return new Date();
+//}
 function Date_LongToDate(lng) {
-    let fecha = '';
-    if (lng !== '') {
+    let fecha = null;
+    if (lng != '') {
         if (lng > 0) {
             let str = lng.toString();
             if (str.length === 8) {
-                let ano = str.substring(0, 4);
-                let mes = str.substring(4, 6);
-                let dia = str.substring(6);
+                let ano = (str.substring(0, 4));
+                let mes = (str.substring(4, 6));
+                let dia = (str.substring(6));
                 fecha = ano + '/' + Right('00' + mes, 2) + '/' + Right('00' + dia, 2);
             }
         }
     }
-    return new Date(fecha);
+    return fecha;
 }
+//  _ObjSolicitudAfiliacion.FechaNacimiento = '2019/11/30'; //Pasa pero no se lleva el dato
 function LongToDateString(lng) {
     let fecha = '';
-    if (lng !== '') {
+    if (lng != '') {
         let str = lng.toString();
         if (str.length === 8) {
             let dia = str.substring(6);
@@ -280,20 +308,26 @@ function dateStringToLong(str) {
     return fecha;
 }
 function dateToLong(fecha) {
-    //return fecha.substring(6, 4) + '' + fecha.substring(3, 2) + '' + fecha.substring(0, 2);
-    return fecha.substring(6, 10) + fecha.substring(3, 5) + fecha.substring(0, 2);
+    return fecha.substr(6, 4) + '' + fecha.substr(3, 2) + '' + fecha.substr(0, 2);
+}
+function Date_LongToString(Lng) {
+    let result = '';
+    if (Lng > 0) {
+        result = Right(Lng, 2) + "/" + Left(Right(Lng, 4), 2) + "/" + Left(Lng, 4);
+    }
+    return result;
 }
 
 // Sesion
 function GrabarValorEnSesion(clave, valor) {
     Storage.prototype.setObject = function (clave, valor) {
         this.setItem(clave, JSON.stringify(valor));
-    };
+    }
 }
 function ObtenerValorEnSesion(clave) {
     Storage.prototype.getObject = function (clave) {
         return JSON.parse(this.getItem(clave));
-    };
+    }
 }
 
 // Ordenar
@@ -301,6 +335,9 @@ function SortXNombre(a, b) {
     var aNombre = a.Nombre.toLowerCase();
     var bNombre = b.Nombre.toLowerCase();
     return ((aNombre < bNombre) ? -1 : ((aNombre > bNombre) ? 1 : 0));
+}
+function Ordenar(a, b) {
+    return b < a ? 1 : -1;
 }
 function OrdenarLista(a, b) {
     if (a.IdOrdenEnLista < b.IdOrdenEnLista) {
@@ -312,6 +349,27 @@ function OrdenarLista(a, b) {
     return 0;
 }
 
+function MarcoDefault(IdControl) {
+    $('#' + IdControl + '').css({
+        "border-color": "silver",
+        "border-width": "1px",
+        "border-style": "solid"
+    });
+}
+function MarcoError(IdControl) {
+    $('#' + IdControl + '').css({
+        "border-color": "red",
+        "border-width": "1px",
+        "border-style": "solid"
+    });
+}
+function MarcoOk(IdControl) {
+    $('#' + IdControl + '').css({
+        "border-color": "green",
+        "border-width": "1px",
+        "border-style": "solid"
+    });
+}
 // Validaciones
 function TraerPeriodosActualMenos(cantMeses, desde) {
     // El desde debe ser aaaamm
@@ -320,12 +378,12 @@ function TraerPeriodosActualMenos(cantMeses, desde) {
     var ano = fecha.getFullYear();
     var mes = fecha.getMonth() + 1;
     var anoMes = '';
-    if (desde === 0) {
+    if (parseInt(desde) === 0) {
         for (ind = 0; ind < cantMeses; ind++) {
             anoMes = ano + '' + Right("00" + mes, 2);
             result.push(anoMes);
             mes -= 1;
-            if (mes === 0) {
+            if (parseInt(mes) === 0) {
                 ano -= 1;
                 mes = 12;
             }
@@ -346,7 +404,9 @@ function lum_TraerProvincias() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             wsTransfer = data.d;
-            if (wsTransfer.todoOk !== true) {
+            if (wsTransfer.todoOk == true) {
+            }
+            else {
                 alertAlerta(wsTransfer.mensaje);
             }
         },
@@ -361,3 +421,57 @@ function lum_TraerProvincias() {
 function LUM_ArmarPOP(div) {
 }
 
+function getUrlParams(urlOrQueryString) {
+    if ((i = urlOrQueryString.indexOf('?')) >= 0) {
+        const queryString = urlOrQueryString.substring(i + 1);
+        if (queryString) {
+            return _mapUrlParams(queryString);
+        }
+    }
+
+    return {};
+}
+
+async function ArmarPop(DivContenido, ancho, Titulo) {
+    $("#Modal-PopUp").remove();
+    let control = '';
+    control += '<div id="Modal-PopUp" class="modal" tabindex="-1" role="dialog">';
+    control += '    <div class="modal-dialog" style="' + ancho + '">';
+    control += '        <div class="modal-content" style="">';
+    if (Titulo != undefined) {
+        control += '            <div class="modal-header HeaderPopUp">';
+        control += '                <h3 class="modal-title">' + Titulo + '</h3>';
+        control += '            </div>';
+    }
+    control += '            <div class="modal-body">';
+    control += '                <div id="' + DivContenido + '"></div>';
+    control += '            </div>';
+    control += '            <div class="modal-footer">';
+    control += '                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>';
+    control += '            </div>';
+    control += '        </div>';
+    control += '    </div>';
+    control += '</div>';
+    $("body").append(control);
+    $('#Modal-PopUp').modal({ show: true });
+}
+
+/**
+ * Helper function for `getUrlParams()`
+ * Builds the querystring parameter to value object map.
+ *
+ * @param queryString {string} - The full querystring, without the leading '?'.
+ */
+function _mapUrlParams(queryString) {
+    return queryString
+        .split('&')
+        .map(function (keyValueString) { return keyValueString.split('=') })
+        .reduce(function (urlParams, [key, value]) {
+            if (Number.isInteger(parseInt(value)) && parseInt(value) == value) {
+                urlParams[key] = parseInt(value);
+            } else {
+                urlParams[key] = decodeURI(value);
+            }
+            return urlParams;
+        }, {});
+}

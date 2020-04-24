@@ -178,7 +178,7 @@ Namespace Entidad
         End Sub
         Private Sub ValidarNoDuplicados()
             Banco.Refresh()
-            Dim result As Banco = Todos.Find(Function(x) x.Nombre.ToUpper = Nombre)
+            Dim result As Banco = Todos.Find(Function(x) x.Nombre.ToUpper = Nombre And x.IdEntidad <> IdEntidad)
             If Not result Is Nothing Then
                 Throw New Exception("El Nombre a ingresar ya existe")
             End If
@@ -189,7 +189,7 @@ End Namespace ' Entidad
 
 Namespace DTO
     Public Class DTO_Banco
-        Inherits DTO_DBE
+        Inherits DTO_Dimensional
 
 
 #Region " Atributos / Propiedades"
@@ -281,8 +281,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult

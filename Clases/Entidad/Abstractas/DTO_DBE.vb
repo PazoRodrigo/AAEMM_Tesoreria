@@ -12,7 +12,6 @@ Namespace DTO
         Public Property FechaAlta() As Long = 0
         Public Property FechaBaja() As Long = 0
         Public Property IdMotivoBaja() As Integer = 0
-        Public Property IdEstado() As Integer = 0
 #End Region
     End Class ' DTO_CentroCosto
 End Namespace ' DTO

@@ -2,8 +2,6 @@
     try {
         $("#NombreFormulario").text('Indicadores');
         Inicio();
-
-
     } catch (e) {
         spinnerClose();
         alertAlerta(e);

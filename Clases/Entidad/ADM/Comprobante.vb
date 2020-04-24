@@ -246,23 +246,25 @@ Namespace Entidad
                     End If
                 End If
             End If
-            If Me.IdTipoPago.ToString = "" Then
-                sError &= "<b>Tipo de Pago</b> Debe ingresar el Tipo de Pago. <br />"
-            Else
-                If Not IsNumeric(Me.IdTipoPago) Then
-                    sError &= "<b>Tipo de Pago</b> Debe ser numérico. <br />"
-                Else
-                    If Me.IdTipoPago = 0 Then
-                        sError &= "<b>Tipo de Pago</b> Debe ingresar el Tipo de Pago. <br />"
-                    End If
-                End If
-            End If
+            ' Lo saca Eduardo 23/04/2020
+            'If Me.IdTipoPago.ToString = "" Then
+            '    sError &= "<b>Tipo de Pago</b> Debe ingresar el Tipo de Pago. <br />"
+            'Else
+            '    If Not IsNumeric(Me.IdTipoPago) Then
+            '        sError &= "<b>Tipo de Pago</b> Debe ser numérico. <br />"
+            '    Else
+            '        If Me.IdTipoPago = 0 Then
+            '            sError &= "<b>Tipo de Pago</b> Debe ingresar el Tipo de Pago. <br />"
+            '        End If
+            '    End If
+            'End If
             If Not Me.FechaGasto.HasValue Then
                 sError &= "<b>Fecha Gasto</b> Debe ingresar la Fecha. <br />"
             End If
-            If Not Me.FechaPago.HasValue Then
-                sError &= "<b>Fecha Pago</b> Debe ingresar la Fecha. <br />"
-            End If
+            ' Lo saca Eduardo 23/04/2020
+            'If Not Me.FechaPago.HasValue Then
+            '    sError &= "<b>Fecha Pago</b> Debe ingresar la Fecha. <br />"
+            'End If
             If Me.NroComprobante.ToString <> "" AndAlso Not IsNumeric(Me.NroComprobante) Then
                 sError &= "<b>Nro. Comprobante</b> Debe ser numérico. <br />"
             End If
@@ -425,8 +427,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult

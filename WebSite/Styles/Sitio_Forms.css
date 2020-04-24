@@ -172,6 +172,30 @@ li.Formulario {
     clear: both;
 }
 
+.liCombo a {
+    background-color: lightblue;
+    display: block;
+    color: blue;
+}
+
+    .liCombo a:hover {
+        text-decoration: none;
+        background-color: blue;
+        color: lightblue;
+    }
+
+.liGrilla a {
+    background-color: blue;
+    display: block;
+    color: #fff;
+}
+
+    .liGrilla a:hover {
+        background-color: lightblue;
+        text-decoration: none;
+        color: #000;
+    }
+
 SpanDatoFormulario {
     float: left;
     padding-left: 15px;
@@ -204,7 +228,7 @@ InputDatoFormularioPorc {
     padding-left: 5px;
 }
 
-TextareaDatoFormulario {
+.TextareaDatoFormulario {
     width: 100%;
     font-family: 'Karla', sans-serif;
     background-color: transparent;

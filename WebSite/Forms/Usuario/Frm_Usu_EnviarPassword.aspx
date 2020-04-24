@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Forms/MP_Inicio.master" AutoEventWireup="false" CodeFile="Frm_Usu_EnviarPassword.aspx.vb" Inherits="Forms_Usuario_Frm_Usu_EnviarPassword" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Usu_EnviarPassword.js")%>'></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Usu_EnviarPassword.js?version20200416_1")%>'></script>
 
     <ul>
         <li>

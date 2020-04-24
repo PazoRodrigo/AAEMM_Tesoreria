@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Proveedores" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ABM_Proveedores.aspx.vb" Inherits="Forms_Frm_ABM_Proveedores" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_ABM_Proveedores.js")%>'></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_ABM_Proveedores.js?version20200416_1")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';

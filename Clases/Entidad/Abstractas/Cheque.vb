@@ -23,7 +23,7 @@ End Namespace ' Entidad
 
 Namespace DTO
     Public MustInherit Class DTO_Cheque
-        Inherits DTO_DBE
+        Inherits DTO_Dimensional
 
 
 #Region " Atributos / Propiedades"

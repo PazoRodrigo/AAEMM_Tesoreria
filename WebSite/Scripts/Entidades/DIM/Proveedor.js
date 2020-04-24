@@ -186,19 +186,16 @@ class Proveedor extends DBE {
         str += '</div>';
         return $('#' + div + '').html(str);
     }
-    static async ArmarCombo(lista, div, selector, evento, ventana, Cbo) {
-        let cbo = "";
-        cbo += '<div id="' + Cbo + '" class="dropdown">';
-        cbo += '    <button id="' + selector + '" class="btn btn-primary dropdown-toggle btn-md btn-block" type="button" data-toggle="dropdown">' + ventana;
-        cbo += '        <span class="caret"></span>';
-        cbo += '    </button>';
-        cbo += '<ul class="dropdown-menu">';
+    static async ArmarCombo(lista, div, selector, evento, ventana, estilo) {
+        lista.sort(SortXNombre);
+        let Cbo = '';
+        Cbo += '<select id="_' + div + '" onchange="SeleccionProveedor()"  data-Evento="' + evento + '" name="myselect" class="' + estilo + '">';
+        Cbo += '    <option value="0" id="' + selector + '">' + ventana + '</option>';
         $(lista).each(function () {
-            cbo += '<li><a href="#" class="mibtn-seleccionProveedor" data-Id="' + this.IdEntidad + '"  data-Evento="' + evento + '" > ' + this.Nombre + '</a></li>';
+            Cbo += '<option class="mibtn-seleccionProveedor" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + this.Nombre + '</option>';
         });
-        cbo += '</ul>';
-        cbo += '</div>';
-        return $('#' + div + '').html(cbo);
+        Cbo += '</select>';
+        return $('#' + div + '').html(Cbo);
     }
 }
 function LlenarEntidadProveedor(entidad) {
@@ -243,3 +240,17 @@ $('body').on('click', ".mibtn-EliminarProveedor", async function () {
         alertAlerta(e);
     }
 });
+async function SeleccionProveedor() {
+    try {
+        let elemento = document.getElementById("_CboProveedor");
+        let buscado = $.grep(_Lista_Proveedor, function (entidad, index) {
+            return entidad.IdEntidad == elemento.options[elemento.selectedIndex].value;
+        });
+        let Seleccionado = buscado[0];
+        let evento = elemento.getAttribute('data-Evento');
+        let event = new CustomEvent(evento, { detail: Seleccionado });
+        document.dispatchEvent(event);
+    } catch (e) {
+        alertAlerta(e);
+    }
+}

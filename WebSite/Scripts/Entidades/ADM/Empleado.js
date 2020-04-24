@@ -5,7 +5,15 @@ class Empleado extends DBE {
         super();
         this.IdEntidad = 0;
         this.Nombre = '';
+        this.NroDocumento = 0;
+        this.CUIL = 0;
+        this.NroSindical = 0;
+        this.FechaNacimiento = 0;
+        this.IdSexo = 0;
+        this.IdEstadoCivil = 0;
         this.Observaciones = '';
+
+        this.ObjDomicilio;
     }
 
     // ABM
@@ -178,12 +186,13 @@ class Empleado extends DBE {
             str += '    <ul class="ListaGrilla">';
             let estiloItem = '';
             for (let item of lista) {
+                console.log(item);
                 estiloItem = 'LinkListaGrillaObjeto';
                 if (item.IdEstado === 1) {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
                 }
-                let aItem = '<a href="#" class="mibtn-seleccionEmpleado" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.Nombre + '</a>';
-                str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div></li>', aItem);
+                let aItem = '<a href="#" class="mibtn-seleccionEmpleado" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.NroDocumento + ' - ' + item.Nombre + '</a>';
+                str += String.format('<li class="liGrilla"><div class="LinkListaGrilla ' + estiloItem + '">{0}</div></li>', aItem);
             }
             str += '    </ul>';
             str += '</div>';
@@ -205,7 +214,7 @@ class Empleado extends DBE {
                 }
                 let aItem = '<a href="#" class="mibtn-seleccionEmpleado" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.Nombre + '</a>';
                 let aEliminar = '<a href="#" class="mibtn-EliminarEmpleado" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
-                str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
+                str += String.format('<li class="liGrilla"><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
             }
             str += '    </ul>';
             str += '</div>';
@@ -327,16 +336,24 @@ function LlenarEntidadEmpleado(entidad) {
     Res.IdMotivoBaja = entidad.IdMotivoBaja;
     Res.IdEntidad = entidad.IdEntidad;
     Res.Nombre = entidad.Nombre;
+    Res.NroDocumento = entidad.NroDocumento;
+    Res.CUIL = entidad.CUIL;
+    Res.NroSindical = entidad.NroSindical;
+    //Res.FechaNacimiento = entidad.FechaNacimiento;
+    Res.IdSexo = entidad.IdSexo;
+    Res.IdEstadoCivil = entidad.IdEstadoCivil;
+    Res.ObjDomicilio = entidad.ObjDomicilio;
     Res.Observaciones = entidad.Observaciones;
     Res.IdEstado = entidad.IdEstado;
+    console.log(Res);
     return Res;
 }
 function LimpiarBuscador() {
     $(".TxtBuscadores").val('');
+    $("#grillaBuscadorEmpleado").html('');
 }
 $('body').on('click', '#LinkBtnBuscarEmpleado', async function (e) {
     try {
-        spinner();
         let buscaCUIL = $("#txtBuscaCUIL").val();
         let buscaNroDocumento = $("#txtBuscaNroDocumento").val();
         let buscaNombre = $("#txtBuscaNombre").val();
@@ -353,9 +370,10 @@ $('body').on('click', '#LinkBtnBuscarEmpleado', async function (e) {
                     }
                 }
             }
+            spinner();
             await LlenarGrillaBuscadorEmpleado(TipoBuscador);
+            spinnerClose();
         }
-        spinnerClose();
     } catch (e) {
         spinnerClose();
         alertAlerta(e);

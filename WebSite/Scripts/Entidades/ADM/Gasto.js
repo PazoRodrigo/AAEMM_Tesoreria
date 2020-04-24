@@ -24,7 +24,7 @@ class Gasto extends DBE {
     // ABM
     async Alta() {
         try {
-            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            //let ObjU = JSON.parse(sessionStorage.getItem("User"));
             //this.IdUsuarioAlta = ObjU.IdEntidad;
             this.IdUsuarioAlta = 1;
             let data = {
@@ -42,8 +42,7 @@ class Gasto extends DBE {
     async Baja() {
         try {
             let ObjU = JSON.parse(sessionStorage.getItem("User"));
-            //this.IdUsuarioBaja = ObjU.IdEntidad;
-            this.IdUsuarioBaja = 1;
+            this.IdUsuarioBaja = ObjU.IdEntidad;
             let data = {
                 'entidad': this
             };
@@ -138,7 +137,7 @@ class Gasto extends DBE {
                 if (item.IdEstado === 11) {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
                 }
-                let aItem = '<a href="#" class="mibtn-seleccionGasto" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + LongToDateString(item.FechaAlta) + ' </a>';
+                let aItem = '<a href="#" class="mibtn-seleccionGasto" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + LongToDateString(item.FechaAlta) + ' - ' + item.Estado + ' - ' + MonedaDecimales2(item.Importe) + ' </a>';
                 let aEliminar = '<a href="#" class="mibtn-EliminarGasto" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
                 str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
             }
@@ -203,7 +202,7 @@ function LlenarEntidadGasto(entidad) {
 $('body').on('click', ".mibtn-seleccionGasto", async function () {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
+              let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];

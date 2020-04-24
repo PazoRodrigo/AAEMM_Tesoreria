@@ -16,7 +16,6 @@ Public Class WsEmpleado
         Dim ws As New Transfer
         Try
             Dim result As New List(Of DTO.DTO_Empleado)
-            Entidad.Empleado.Refresh()
             Dim lista As List(Of Entidad.Empleado) = Entidad.Empleado.TraerTodosXCUIL(CUIL)
             If Not lista Is Nothing Then
                 For Each item As Entidad.Empleado In lista
@@ -38,7 +37,6 @@ Public Class WsEmpleado
         Dim ws As New Transfer
         Try
             Dim result As New List(Of DTO.DTO_Empleado)
-            Entidad.Empleado.Refresh()
             Dim lista As List(Of Entidad.Empleado) = Entidad.Empleado.TraerTodosXNroDocumento(NroDocumento)
             If Not lista Is Nothing Then
                 For Each item As Entidad.Empleado In lista
@@ -60,7 +58,6 @@ Public Class WsEmpleado
         Dim ws As New Transfer
         Try
             Dim result As New List(Of DTO.DTO_Empleado)
-            Entidad.Empleado.Refresh()
             Dim lista As List(Of Entidad.Empleado) = Entidad.Empleado.TraerTodosXNombre(Nombre)
             If Not lista Is Nothing Then
                 For Each item As Entidad.Empleado In lista

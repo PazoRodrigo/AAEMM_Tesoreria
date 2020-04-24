@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="AAEMM. Indicadores" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Indicadores.aspx.vb" Inherits="Forms_Frm_Indicadores" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Indicadores.js")%>'></script>
-    <%--<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>--%>
+    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Indicadores.js?version20200416_1")%>'></script>
+    <%--<script src="https://canvasjs.com/assets/script/canvasjs.min.js?version20200416_1"></script>--%>
     <%--<script type="text/javascript">
         window.onload = function () {
             var chart = new CanvasJS.Chart("chartContainer", {
@@ -225,7 +225,7 @@
                                         <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Administracion.aspx")%>'>Administración</a></li>
                                         <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Reportes.aspx")%>'>Reportes</a></li>
                                         <li class="BtnDistribuidorIndicadores"><a href="#">Ingresos</a></li>
-                                        <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Gasto.aspx")%>'>Gastos</a></li>
+                                        <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/ADM/Frm_Adm_Gasto.aspx")%>'>Gastos</a></li>
                                         <li class="BtnDistribuidorIndicadoresDanger">
                                             <a href="#">
                                                 <div>Ch. Rechazados <span id="LblChequesRechazados" style="float:right; padding-right:10px;"></span> </div>

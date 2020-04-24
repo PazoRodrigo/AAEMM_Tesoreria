@@ -14,11 +14,12 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/iconos.css" rel="stylesheet" />
     <link href="~/Styles/datepicker.css" rel="stylesheet" type="text/css" />
-
+    <link rel="icon" type="image/vnd.microsoft.icon" href="../Imagenes/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/vnd.microsoft.icon" href="../Imagenes/favicon-32x32.png" sizes="32x32">
 </head>
 <body style="display: none;">
     <noscript>
-          <p>El Sistema requiere para su funcionamiento el uso de JavaScript.  Si lo has deshabilitado intencionadamente, por favor vuelve a activarlo.</p> 
+        <p>El Sistema requiere para su funcionamiento el uso de JavaScript.  Si lo has deshabilitado intencionadamente, por favor vuelve a activarlo.</p>
     </noscript>
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -34,30 +35,28 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
     <!-- Entidades -->
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/ChequePropio.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/ChequeTercero.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Comprobante.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empleado.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empresa.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Gasto.js")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/ChequePropio.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/ChequeTercero.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Comprobante.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empleado.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empresa.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Gasto.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Ingreso.js?version20200416_1")%>' type="text/javascript"></script>
 
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Domicilio.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Indicadores.js")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Domicilio.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Indicadores.js?version20200416_1")%>' type="text/javascript"></script>
 
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/CentroCosto.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Convenio.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/CuentaContable.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/OriginarioGasto.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Proveedor.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoContacto.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoDomicilio.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoGasto.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoPago.js")%>' type="text/javascript"></script>
-
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Estados/EstadoCheque.js")%>' type="text/javascript"></script>
-
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/USUARIO/Usuario.js")%>' type="text/javascript"></script>
-
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/CentroCosto.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Convenio.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/CuentaContable.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/OriginarioGasto.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Proveedor.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoContacto.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoDomicilio.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoGasto.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoPago.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Estados/EstadoCheque.js?version20200416_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/USUARIO/Usuario.js?version20200416_1")%>' type="text/javascript"></script>
     <!-- WebServices-->
     <script type="text/javascript">
         var urlWsCentroCosto = '<%= ResolveClientUrl("~/WebServices/WsCentroCosto.asmx")%>';
@@ -81,16 +80,15 @@
     </script>
     <script>
         $(document).ready(function () {
-             $("body").css('display', 'block');
-
-            //let temp = JSON.parse(sessionStorage.getItem("User"));
-            //if (temp == null) {
-            //    window.location.href = 'http://localhost:14162/Forms/Login/Frm_Login.aspx';
-            //} else {
-            //    $("body").css('display', 'block');
-            //    let str = temp.Apellido + ', ' + temp.Nombre
-            //    $("#SpanUsuario").text(str.substring(0, 20));
-            //}
+            //$("body").css('display', 'block');
+            let temp = JSON.parse(sessionStorage.getItem("User"));
+            if (temp == null) {
+                window.location.href = 'http://localhost:14162/Forms/Login/Frm_Login.aspx';
+            } else {
+                $("body").css('display', 'block');
+                let str = temp.Apellido + ', ' + temp.Nombre
+                $("#SpanUsuario").text(str.substring(0, 20));
+            }
         });
         function Salir() {
             PopUpConfirmarConCancelar('info', null, 'Desea Salir del Sistema?', '', 'EventoInicio', 'Salir', 'Cancelar');
@@ -147,13 +145,6 @@
                     return false;
                 }
             });
-
-            //Inicio();
-            //function Inicio() {
-            //    if (location.protocol != 'https:') {
-            //        //location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
-            //    }
-            //}
             $.datepicker.regional['es'] = {
                 inline: true,
                 showOtherMonths: true,
@@ -171,35 +162,11 @@
                 changeYear: true,
                 yearSuffix: ''
             };
-            //$('.datepicker').datepicker({
-            //    inline: true,
-            //    showOtherMonths: true,
-            //    dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            //});
             $.datepicker.setDefaults($.datepicker.regional['es']);
         });
-        //$.datepicker.regional['es'] = {
-        //    closeText: 'Cerrar',
-        //    prevText: 'Ant',
-        //    nextText: 'Sig',
-        //    currentText: 'Hoy',
-        //    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        //    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-        //    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-        //    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-        //    dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-        //    weekHeader: 'Sm',
-        //    dateFormat: 'dd/mm/yy',
-        //    firstDay: 1,
-        //    isRTL: false,
-        //    showMonthAfterYear: false,
-        //    changeYear: true,
-        //    yearSuffix: ''
-        //};
-        //$.datepicker.setDefaults($.datepicker.regional['es']);
     </script>
     <header>
-        <script src='<%= ResolveClientUrl("~/Scripts/Forms/MP.js")%>'></script>
+        <script src='<%= ResolveClientUrl("~/Scripts/Forms/MP.js?version20200416_1")%>'></script>
         <div id="DivHeaderLogo">
             <img id="LogoHeader" src='<%= ResolveClientUrl("~/imagenes/Logo_AAEMM.jpg")%>' alt="Logo AAEMM">
         </div>

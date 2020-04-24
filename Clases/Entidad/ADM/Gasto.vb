@@ -91,7 +91,7 @@ Namespace Entidad
             'If result Is Nothing Then
             '    Throw New Exception("No existen Gastos para la búsqueda")
             'End If
-            'Return result
+            Return Nothing
         End Function
         Private Shared Function TraerTodosXEstado(idEstado As Enumeradores.EstadoGasto) As List(Of Gasto)
             Dim result As New List(Of Gasto)
@@ -221,7 +221,7 @@ Namespace DTO
 #Region " Atributos / Propiedades"
         Public Property IdEntidad() As Integer = 0
         Public Property Observaciones() As String = ""
-        Public Property IdEstado() As Integer
+        Public Property IdEstado() As Integer = 0
         Public Property Estado() As String = ""
         Public Property Importe() As Decimal = 0
         Public Property CantidadComprobantes() As Integer = 0
@@ -327,8 +327,6 @@ Namespace DataAccessLibrary
         '            For Each dr As DataRow In dt.Rows
         '                listaResult.Add(LlenarEntidad(dr))
         '            Next
-        '        Else
-        '            listaResult = Nothing
         '        End If
         '    End Using
         '    Return listaResult
@@ -342,8 +340,6 @@ Namespace DataAccessLibrary
         '            For Each dr As DataRow In dt.Rows
         '                listaResult.Add(LlenarEntidad(dr))
         '            Next
-        '        Else
-        '            listaResult = Nothing
         '        End If
         '    End Using
         '    Return listaResult

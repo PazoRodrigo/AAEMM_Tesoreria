@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Convenios" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ABM_Convenios.aspx.vb" Inherits="Forms_Frm_ABM_Convenios" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_ABM_Convenios.js")%>'></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_ABM_Convenios.js?version20200416_1")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -86,7 +86,7 @@
                                     <span class="SpanDatoFormulario">%. Empresa</span>
                                 </div>
                                 <div class="col-2">
-                                    <input id="TxtPorcEmpresa" class="DatoFormulario InputDatoFormulario_C" type="text" placeholder="%" autocomplete="off">
+                                    <input id="TxtPorcEmpresa" class="DatoFormulario InputDatoFormulario_C" type="text" placeholder="%" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
                                 </div>
                             </div>
                             <div class="row mt-1">
@@ -94,7 +94,7 @@
                                     <span class="SpanDatoFormulario">%. Afiliado</span>
                                 </div>
                                 <div class="col-2">
-                                    <input id="TxtPorcAfiliado" class="DatoFormulario InputDatoFormulario_C" type="text" placeholder="%" autocomplete="off">
+                                    <input id="TxtPorcAfiliado" class="DatoFormulario InputDatoFormulario_C" type="text" placeholder="%" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
                                 </div>
                             </div>
                             <div class="row mt-1">
@@ -102,7 +102,7 @@
                                     <span class="SpanDatoFormulario">%. No Afiliado</span>
                                 </div>
                                 <div class="col-2">
-                                    <input id="TxtPorcNoAfiliado" class="DatoFormulario InputDatoFormulario_C" type="text" placeholder="%" autocomplete="off">
+                                    <input id="TxtPorcNoAfiliado" class="DatoFormulario InputDatoFormulario_C" type="text" placeholder="%" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
                                 </div>
                             </div>
                             <div class="row mt-1">
@@ -110,7 +110,7 @@
                                     <span class="SpanDatoFormulario">%. Otro</span>
                                 </div>
                                 <div class="col-2">
-                                    <input id="TxtPorcOtro" class="DatoFormulario InputDatoFormulario_C" type="text" placeholder="%" autocomplete="off">
+                                    <input id="TxtPorcOtro" class="DatoFormulario InputDatoFormulario_C" type="text" placeholder="%" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
                                 </div>
                             </div>
                         </div>

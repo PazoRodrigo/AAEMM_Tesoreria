@@ -187,97 +187,14 @@ nav li.MenuIndicador:hover ul.SubMenuInidicador {
 }
 
 
-/*
-#DivHeaderTituloInstitucion {
-    height: 55px;
-    line-height: 55px;
-    text-align: center;
-}
-
-#DivHeaderTituloFormulario {
-    height: 55px;
-    line-height: 55px;
-    text-align: left;
-    padding-left: 2px;
-}
-
-
-
-
-
-
-
-
-
-#ContenedorFormularios {
-    margin-top: 120px;
-    width: 95%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-
-
-#NombreFormulario {
-    font-size: 28px;
-    color: darkblue;
-    text-shadow: 20px 10px 2px gray;
-}
-
-#SpanFecha {
-    font-size: 20px;
-}
-
-
-
-
-
-#BtnSalir {
-    margin-top: 55px;
-    background: powderblue;
-    color: white;
+select {
+    background-color: lightblue ;
+    border: none;
+    font-size: 14px;
+    height: 30px;
+    padding: 5px;
     width: 100%;
-    text-align: center;
-    font-size: 20px;
-    height: 40px;
-    line-height: 40px;
-    border: 2px solid white;
-    border-radius: 5px 5px 5px 5px;
 }
-
-#BtnIndicadores {
-    position: fixed;
-    top: 23%;
-    left: 3%;
-    background: rgb(50, 126, 48);
-    color: white;
-    width: 170px;
-    text-align: center;
-    font-size: 22px;
-    height: 50px;
-    line-height: 50px;
-    border: 2px solid white;
-    border-radius: 20px 20px 20px 20px;
-}
-
-#BtnVolver {
-    position: fixed;
-    top: 90%;
-    left: 85%;
-    background: gray;
-    color: white;
-    width: 130px;
-    text-align: center;
-    font-size: 22px;
-    height: 40px;
-    line-height: 40px;
-    border: 2px solid white;
-    border-radius: 80px 20px 20px 80px;
-}
-
-
-
-*/
 
 
 /* ***** Textos *****************************************************************************************/

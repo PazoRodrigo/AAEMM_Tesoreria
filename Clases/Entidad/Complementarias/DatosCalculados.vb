@@ -23,16 +23,16 @@ Namespace Entidad
         Sub New()
 
         End Sub
-        Sub New(ByVal id As Integer)
-            Dim objImportar As DatosCalculados = TraerUno(id)
-            ' Entidad
-            SaldoCuentaCorriente = objImportar.SaldoCuentaCorriente
-        End Sub
+        'Sub New(ByVal id As Integer)
+        '    Dim objImportar As DatosCalculados = TraerUno(id)
+        '    ' Entidad
+        '    SaldoCuentaCorriente = objImportar.SaldoCuentaCorriente
+        'End Sub
 #End Region
 #Region " Métodos Estáticos"
         ' Traer
-        Public Shared Function TraerUno(ByVal Id As Integer) As DatosCalculados
-            Dim result As DatosCalculados = DAL_DatosCalculados.TraerUno(Id)
+        Public Shared Function TraerUno(ByVal CUIT As Long, IdEstablecimiento As Integer) As DatosCalculados
+            Dim result As DatosCalculados = DAL_DatosCalculados.TraerUno(CUIT, IdEstablecimiento)
             If result Is Nothing Then
                 Throw New Exception("No existen resultados para la búsqueda")
             End If
@@ -75,14 +75,15 @@ Namespace DataAccessLibrary
     Public Class DAL_DatosCalculados
 
 #Region " Stored "
-        Const storeTraerUnoXId As String = "p_DatosCalculados_TraerUnoXID"
+        Const storeTraerUno As String = "p_Empresa_DatosCalculados"
 #End Region
 #Region " Métodos Públicos "
-        Public Shared Function TraerUno(ByVal Id As Integer) As DatosCalculados
-            Dim store As String = storeTraerUnoXId
+        Public Shared Function TraerUno(ByVal CUIT As Long, IdEstablecimiento As Integer) As DatosCalculados
+            Dim store As String = storeTraerUno
             Dim result As New DatosCalculados
             Dim pa As New parametrosArray
-            pa.add("@Id", Id)
+            pa.add("@CUIT", CUIT)
+            pa.add("@IdEstablecimiento", IdEstablecimiento)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then

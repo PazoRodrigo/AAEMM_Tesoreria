@@ -43,12 +43,20 @@ Namespace Entidad
             End If
             Return result
         End Function
-        Friend Function toDto() As DTO_Domicilio
+        Friend Function ToDto() As DTO_Domicilio
+            Dim ObjLocalidadTemp As New Localidad
+            If IdLocalidad = 0 AndAlso CodigoPostal > 0 Then
+                Dim listaLocalTemp As List(Of Localidad) = Localidad.TraerTodosXCP(CodigoPostal)
+                If listaLocalTemp.Count > 0 Then
+                    ObjLocalidadTemp = listaLocalTemp(0)
+                    IdLocalidad = ObjLocalidadTemp.IdEntidad
+                End If
+            End If
             Dim result As New DTO.DTO_Domicilio With {
                 .Direccion = Direccion,
                 .CodigoPostal = CodigoPostal,
                 .IdLocalidad = IdLocalidad,
-                .Localidad = Localidad.TraerTodosXCP(CodigoPostal)(0).ToDTO
+                .Localidad = ObjLocalidadTemp.ToDTO
             }
             Return result
         End Function

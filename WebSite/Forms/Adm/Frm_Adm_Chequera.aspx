@@ -1,12 +1,12 @@
 ﻿<%@ Page Title="AAEMM. Chequera" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_Chequera.aspx.vb" Inherits="Forms_Administracion_Frm_Adm_Chequera" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Adm_Chequera.js")%>'></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Adm_Chequera.js?version20200416_1")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
             if (e.which == 27) {
-                redirect = '<%= ResolveClientUrl("~/Forms/Frm_Dist_Configuracion.aspx")%>';
+                redirect = '<%= ResolveClientUrl("~/Forms/Frm_Dist_Administracion.aspx")%>';
                 window.location = redirect;
             }
         };
@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                         </div>
-                         <div class="row mt-1 text-center mh-100" style="height: 250px;">
+                        <div class="row mt-1 text-center mh-100" style="height: 250px;">
                             <div class="col-12 mh-100" id="GrillaRegistrados"></div>
                         </div>
                         <div class="row mt-1">

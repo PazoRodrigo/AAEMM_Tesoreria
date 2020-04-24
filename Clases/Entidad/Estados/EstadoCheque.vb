@@ -115,8 +115,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult

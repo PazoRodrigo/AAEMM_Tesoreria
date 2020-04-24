@@ -184,19 +184,16 @@ class CuentaContable extends DBE {
         str += '</div>';
         return $('#' + div + '').html(str);
     }
-    static async ArmarCombo(lista, div, selector, evento, ventana, Cbo) {
-        let cbo = "";
-        cbo += '<div id="' + Cbo + '" class="dropdown">';
-        cbo += '    <button id="' + selector + '" class="btn btn-primary dropdown-toggle btn-md btn-block" type="button" data-toggle="dropdown">' + ventana;
-        cbo += '        <span class="caret"></span>';
-        cbo += '    </button>';
-        cbo += '<ul class="dropdown-menu">';
+    static async ArmarCombo(lista, div, selector, evento, ventana, estilo) {
+        lista.sort(SortXNombre);
+        let Cbo = '';
+        Cbo += '<select id="_' + div + '" onchange="SeleccionCuenta()"  data-Evento="' + evento + '" name="myselect" class="' + estilo + '">';
+        Cbo += '    <option value="0" id="' + selector + '">' + ventana + '</option>';
         $(lista).each(function () {
-            cbo += '<li><a href="#" class="mibtn-seleccionCuentaContable" data-Id="' + this.IdEntidad + '" data-Nombre="' + this.Nombre + '" data-Evento="' + evento + '" > ' + this.Nombre + '</a></li>';
+            Cbo += '<option class="mibtn-seleccionCuentaContable" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + this.Nombre + '</option>';
         });
-        cbo += '</ul>';
-        cbo += '</div>';
-        return $('#' + div + '').html(cbo);
+        Cbo += '</select>';
+        return $('#' + div + '').html(Cbo);
     }
 }
 function LlenarEntidadCuentaContable(entidad) {
@@ -241,3 +238,17 @@ $('body').on('click', ".mibtn-EliminarCuentaContable", async function () {
         alertAlerta(e);
     }
 });
+async function SeleccionCuenta() {
+    try {
+        let elemento = document.getElementById("_CboCuenta");
+        let buscado = $.grep(_Lista_CuentaContable, function (entidad, index) {
+            return entidad.IdEntidad == elemento.options[elemento.selectedIndex].value;
+        });
+        let Seleccionado = buscado[0];
+        let evento = elemento.getAttribute('data-Evento');
+        let event = new CustomEvent(evento, { detail: Seleccionado });
+        document.dispatchEvent(event);
+    } catch (e) {
+        alertAlerta(e);
+    }
+}

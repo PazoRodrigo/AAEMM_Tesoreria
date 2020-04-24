@@ -25,6 +25,7 @@ Namespace Entidad
 
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
+        Public Property Codigo() As Long = 0
         Public Property RazonSocial() As String = ""
         Public Property CUIT() As Long = 0
         Public Property Establecimiento() As Integer = 0
@@ -43,15 +44,15 @@ Namespace Entidad
                 Return result
             End Get
         End Property
-        Private _DatosCalculados As DatosCalculados
-        Public ReadOnly Property DatosCalculados() As DatosCalculados
-            Get
-                If _DatosCalculados Is Nothing Then
-                    _DatosCalculados = DatosCalculados.TraerUno(IdEntidad)
-                End If
-                Return _DatosCalculados
-            End Get
-        End Property
+        'Private _DatosCalculados As DatosCalculados
+        'Public ReadOnly Property DatosCalculados() As DatosCalculados
+        '    Get
+        '        If _DatosCalculados Is Nothing Then
+        '            _DatosCalculados = DatosCalculados.TraerUno(CUIT, Establecimiento)
+        '        End If
+        '        Return _DatosCalculados
+        '    End Get
+        'End Property
 #End Region
 #Region " Constructores "
         Sub New()
@@ -96,23 +97,13 @@ Namespace Entidad
             CorreoElectronico = DtODesde.CorreoElectronico
             IdEstado = CType(DtODesde.IdEstado, Enumeradores.EstadoEmpresa)
             ' Domicilio
-            ObjDomicilio.Direccion = DtODesde.Domicilio.Direccion
-            ObjDomicilio.CodigoPostal = DtODesde.Domicilio.CodigoPostal
-            ObjDomicilio.IdLocalidad = DtODesde.Domicilio.IdLocalidad
+            ObjDomicilio.Direccion = DtODesde.ObjDomicilio.Direccion
+            ObjDomicilio.CodigoPostal = DtODesde.ObjDomicilio.CodigoPostal
+            ObjDomicilio.IdLocalidad = DtODesde.ObjDomicilio.IdLocalidad
         End Sub
 #End Region
 #Region " Métodos Estáticos"
         ' Traer
-        'Public Shared Function TraerUno(ByVal Id As Integer) As Empresa
-        '    Dim result As Empresa = Todos.Find(Function(x) x.IdEntidad = Id)
-        '    If result Is Nothing Then
-        '        Throw New Exception("No existen resultados para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
-        'Public Shared Function TraerTodos() As List(Of Empresa)
-        '    Return Todos
-        'End Function
         Public Shared Function TraerUno(ByVal Id As Integer) As Empresa
             Dim result As Empresa = DAL_Empresa.TraerUno(Id)
             If result Is Nothing Then
@@ -120,30 +111,58 @@ Namespace Entidad
             End If
             Return result
         End Function
+        Public Shared Function TraerUnoXCUIT(CUIT As Long) As Empresa
+            Return DAL_Empresa.TraerUnoXCUIT(CUIT)
+        End Function
         Public Shared Function TraerTodos() As List(Of Empresa)
             Dim result As List(Of Empresa) = DAL_Empresa.TraerTodos()
-            If result Is Nothing Then
+            If result.Count = 0 Then
                 Throw New Exception("No existen Empresas para la búsqueda")
             End If
             Return result
         End Function
         Public Shared Function TraerTodosXCUIT(CUIT As Long) As List(Of Empresa)
             Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXCUIT(CUIT)
-            If result Is Nothing Then
+            If result.Count = 0 Then
                 Throw New Exception("No existen Empresas para la búsqueda")
             End If
             Return result
         End Function
         Public Shared Function TraerTodosXRazonSocial(RazonSocial As String) As List(Of Empresa)
             Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXRazonSocial(RazonSocial.Trim)
-            If result Is Nothing Then
+            If result.Count = 0 Then
                 Throw New Exception("No existen Empresas para la búsqueda")
             End If
             Return result
         End Function
         Public Shared Function TraerTodosXCentroCosto(IdCentroCosto As Integer) As List(Of Empresa)
             Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXCentroCosto(IdCentroCosto)
-            If result Is Nothing Then
+            If result.Count = 0 Then
+                Throw New Exception("No existen Empresas para la búsqueda")
+            End If
+            Return result
+        End Function
+        Public Shared Function TraerTodosXBusqueda(razonSocial As String, cUIT As Long, idCentroCosto As Integer) As List(Of Empresa)
+            Dim result As New List(Of Empresa)
+            Dim buscador As Integer = 0
+            If razonSocial <> "" Then
+                buscador += 1
+            ElseIf cUIT > 0 Then
+                buscador += 2
+            ElseIf idCentroCosto > 0 Then
+                buscador += 4
+            End If
+            Select Case buscador
+                Case 1
+                    result = TraerTodosXRazonSocial(razonSocial)
+                Case 2
+                    result = TraerTodosXCUIT(cUIT)
+                Case 4
+                    result = TraerTodosXCentroCosto(idCentroCosto)
+                Case Else
+
+            End Select
+            If result.Count = 0 Then
                 Throw New Exception("No existen Empresas para la búsqueda")
             End If
             Return result
@@ -171,12 +190,25 @@ Namespace Entidad
         Public Function ToDTO() As DTO.DTO_Empresa
             Dim result As New DTO.DTO_Empresa With {
                 .IdEntidad = IdEntidad,
+                .Codigo = Codigo,
                 .RazonSocial = RazonSocial,
                 .CUIT = CUIT,
                 .CorreoElectronico = CorreoElectronico,
                 .IdEstado = IdEstado,
                 .FechaReactivacion = LngFechaReactivacion,
-                .Domicilio = ObjDomicilio.toDto
+                .ObjDomicilio = ObjDomicilio.ToDto
+            }
+            Return result
+        End Function
+        Public Function ToDTOCabecera() As DTO.DTO_Empresa
+            Dim result As New DTO.DTO_Empresa With {
+                .IdEntidad = IdEntidad,
+                .Codigo = Codigo,
+                .RazonSocial = RazonSocial,
+                .CUIT = CUIT,
+                .CorreoElectronico = CorreoElectronico,
+                .IdEstado = IdEstado,
+                .FechaReactivacion = LngFechaReactivacion
             }
             Return result
         End Function
@@ -252,16 +284,17 @@ End Namespace ' Entidad
 
 Namespace DTO
     Public Class DTO_Empresa
-        Inherits DTO_DBE
+        Inherits DTO_Dimensional
 
 
 #Region " Atributos / Propiedades"
         Public Property IdEntidad() As Integer = 0
+        Public Property Codigo() As Long = 0
         Public Property RazonSocial() As String = ""
         Public Property CUIT() As Long = 0
         Public Property CorreoElectronico() As String = ""
         Public Property FechaReactivacion() As Long = 0
-        Public Property Domicilio() As DTO.DTO_Domicilio = Nothing
+        Public Property ObjDomicilio() As DTO.DTO_Domicilio = Nothing
 #End Region
     End Class ' DTO_Empresa
 End Namespace ' DTO
@@ -274,6 +307,7 @@ Namespace DataAccessLibrary
         Const storeBaja As String = "ADM.p_Empresa_Baja"
         Const storeModifica As String = "ADM.p_Empresa_Modifica"
         Const storeTraerUnoXId As String = "ADM.p_Empresa_TraerUnoXId"
+        Const storeTraerUnoXCUIT As String = "ADM.p_Empresa_TraerUnoXCUIT"
         Const storeTraerTodos As String = "ADM.p_Empresa_TraerTodos"
         Const storeTraerTodosXCUIT As String = "ADM.p_Empresa_TraerTodosXCUIT"
         Const storeTraerTodosXRazonSocial As String = "ADM.p_Empresa_TraerTodosXRazonSocial"
@@ -344,6 +378,22 @@ Namespace DataAccessLibrary
             End Using
             Return result
         End Function
+        Friend Shared Function TraerUnoXCUIT(CUIT As Long) As Empresa
+            Dim store As String = storeTraerUnoXCUIT
+            Dim result As New Empresa
+            Dim pa As New parametrosArray
+            pa.add("@CUIT", CUIT)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        result = LlenarEntidad(dt.Rows(0))
+                    ElseIf dt.Rows.Count = 0 Then
+                        result = Nothing
+                    End If
+                End If
+            End Using
+            Return result
+        End Function
         Public Shared Function TraerTodos() As List(Of Empresa)
             Dim store As String = storeTraerTodos
             Dim pa As New parametrosArray
@@ -353,8 +403,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult
@@ -369,8 +417,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult
@@ -385,8 +431,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult
@@ -401,8 +445,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult
@@ -446,6 +488,11 @@ Namespace DataAccessLibrary
             If dr.Table.Columns.Contains("id") Then
                 If dr.Item("id") IsNot DBNull.Value Then
                     entidad.IdEntidad = CInt(dr.Item("id"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("cod_ent") Then
+                If dr.Item("icod_entd") IsNot DBNull.Value Then
+                    entidad.Codigo = CLng(dr.Item("cod_ent"))
                 End If
             End If
             If dr.Table.Columns.Contains("RazonSocial") Then

@@ -247,7 +247,6 @@ Namespace DataAccessLibrary
         End Function
         Friend Shared Function TraerTodosXCP(CP As Integer) As List(Of Localidad)
             Dim store As String = storeTraerTodosXCP
-            Dim result As New Localidad
             Dim pa As New parametrosArray
             pa.add("@cp", CP)
             Dim listaResult As New List(Of Localidad)
@@ -256,8 +255,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult
@@ -271,8 +268,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult

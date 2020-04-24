@@ -224,7 +224,7 @@ Namespace Entidad
         End Sub
         Private Sub ValidarNoDuplicados()
             Permiso.Refresh()
-            If Not Todos Is Nothing AndAlso Todos.Count > 0 Then
+            If Todos.Count > 0 Then
                 Dim result As Permiso = Todos.Find(Function(x) x.IdTipoPermiso = IdTipoPermiso)
                 If Not result Is Nothing Then
                     If IdEntidad = 0 Then
@@ -245,7 +245,7 @@ End Namespace ' Entidad
 
 Namespace DTO
     Public Class DTO_Permiso
-        Inherits DTO_DBE
+        Inherits DTO_Dimensional
 
 
 #Region " Atributos / Propiedades"
@@ -348,8 +348,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult
@@ -365,8 +363,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult

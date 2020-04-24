@@ -33,7 +33,7 @@ async function AlmacenarUsuario() {
         let u = $("#txtUser").val();
         let p = $("#txtPass").val();
         if (u.length == 0 || p.length == 0) {
-            throw ('Sebe ingresar Usuario y Contraseña');
+            throw ('Debe ingresar Usuario y Contraseña');
         }
         spinner();
         let usuValido = await Usuario.AccederAlSistema(u, p);

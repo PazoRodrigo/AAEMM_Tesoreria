@@ -267,7 +267,7 @@ Namespace Entidad
         End Sub
         Private Sub ValidarNoDuplicados()
             Perfil.Refresh()
-            If Not Todos Is Nothing AndAlso Todos.Count > 0 Then
+            If Todos.Count > 0 Then
                 Dim result As Perfil = Todos.Find(Function(x) x.Nombre.ToUpper = Nombre.ToUpper)
                 If Not result Is Nothing Then
                     If IdEntidad = 0 Then
@@ -288,7 +288,7 @@ End Namespace ' Entidad
 
 Namespace DTO
     Public Class DTO_Perfil
-        Inherits DTO_DBE
+        Inherits DTO_Dimensional
 
 
 #Region " Atributos / Propiedades"
@@ -387,8 +387,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult
@@ -404,8 +402,6 @@ Namespace DataAccessLibrary
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
                     Next
-                Else
-                    listaResult = Nothing
                 End If
             End Using
             Return listaResult
