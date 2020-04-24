@@ -10,7 +10,7 @@ class Comprobante extends DBE {
         this.IdCentroCosto = 0;
         this.IdCuenta = 0;
         this.IdTipoPago = 0;
-        this.FechaGasto = fechaHoy();
+        this.FechaGasto = 0;
         this.FechaPago = 0;
         this.NroComprobante = 0;
         this.Importe = 0;
@@ -141,12 +141,36 @@ class Comprobante extends DBE {
     }
 
     async ValidarCampos() {
+        let sError = '';
+        if (this.IdCuenta === 0) {
+            sError += '- Debe informar la Cuenta. <br>';
+        }
+        if (this.Importe.length == 0) {
+            sError += '- Debe informar el importe. <br>';
+        } else {
+            if (isNaN(this.Importe)) {
+                sError += '- El importe debe ser numérico. <br>';
+            }
+        }
+        if (this.IdOriginario === 0) {
+            sError += '- Debe informar el Originario. <br>';
+        }
         if (this.IdCentroCosto === 0) {
-            throw 'Debe Completar todos los campos';
-
-        }//if (this.Fec) {
-
-        //}
+            sError += '- Debe informar el Centro de Costo. <br>';
+        }
+        if (this.IdProveedor === 0) {
+            sError += '- Debe informar el Proveedor. <br>';
+        }
+        if (this.NroComprobante.length == 0) {
+            this.NroComprobante = 0;
+        } else {
+            if (isNaN(this.NroComprobante)) {
+                sError += '- El Nro. Comprobante debe ser numérico. <br>';
+            }
+        }
+        if (sError.length > 0) {
+            throw '<b>Debe Completar todos los campos</b><br><br>' + sError;
+        }
     }
     // Todos
     static async TodosXGasto(IdGasto) {

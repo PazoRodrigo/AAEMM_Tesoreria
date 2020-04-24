@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="AAEMM. Indicadores" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Indicadores.aspx.vb" Inherits="Forms_Frm_Indicadores" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Indicadores.js?version20200416_1")%>'></script>
-    <%--<script src="https://canvasjs.com/assets/script/canvasjs.min.js?version20200416_1"></script>--%>
+    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Indicadores.js?version20200424_7")%>'></script>
+    <%--<script src="https://canvasjs.com/assets/script/canvasjs.min.js?version20200424_7"></script>--%>
     <%--<script type="text/javascript">
         window.onload = function () {
             var chart = new CanvasJS.Chart("chartContainer", {

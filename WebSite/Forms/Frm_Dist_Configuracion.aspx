@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Configuración" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Dist_Configuracion.aspx.vb" Inherits="Forms_Frm_Dist_Configuracion" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Dist_Configuracion.js?version20200416_1")%>'></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Dist_Configuracion.js?version20200424_7")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';

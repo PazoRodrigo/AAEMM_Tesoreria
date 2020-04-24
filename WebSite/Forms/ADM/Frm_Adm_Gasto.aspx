@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_Gasto.aspx.vb" Inherits="Forms_ADM_Frm_Adm_Gasto" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("~/Scripts/Forms/ADM/Frm_Gasto.js?version20200416_1")%>'></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Forms/ADM/Frm_Adm_Gasto.js?version20200424_7")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -165,7 +165,7 @@
                         </div>
                     </div>
                     <div class="col-lg-8">
-                        <div id="GastoDetalle" style="max-height: 350px; overflow-y: scroll; display:none;">
+                        <div id="GastoDetalle" style="max-height: 350px; overflow-y: scroll; display: none;">
                             <div style="width100%;">
                                 <div class="row mt-1">
                                     <div class="col-lg-1"></div>
@@ -192,7 +192,7 @@
                                     <div class="col-lg-1"></div>
                                     <div class="col-lg-2">Observaciones</div>
                                     <div class="col-lg-8">
-                                         <textarea id="TxtObservaciones" class="DatoFormularioComprobante TextareaDatoFormulario" placeholder="Observaciones"></textarea>
+                                        <textarea id="TxtObservaciones" class="DatoFormularioComprobante TextareaDatoFormulario" placeholder="Observaciones"></textarea>
                                     </div>
                                 </div>
                                 <div class="row mt-1">

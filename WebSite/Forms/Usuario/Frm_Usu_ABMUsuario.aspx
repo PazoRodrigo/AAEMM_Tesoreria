@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Usu_ABMUsuario.aspx.vb" Inherits="Forms_Usuario_Frm_Usu_ABMUsuario" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-      <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_Usu_ABMUsuario.js?version20200416_1")%>'></script>
+      <script src='<%= ResolveClientUrl("~/Scripts/Forms/Usuario/Frm_Usu_ABMUsuario.js?version20200424_7")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';

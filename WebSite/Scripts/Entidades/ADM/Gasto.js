@@ -60,6 +60,27 @@ class Gasto extends DBE {
             throw e;
         }
     }
+    async Cerrar() {
+        try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioModifica = ObjU.IdEntidad;
+            let data = {
+                'entidad': this
+            };
+            let id = await ejecutarAsync(urlWsGasto + "/Cerrar", data);
+            if (id !== undefined)
+                this.IdEntidad = id;
+            let buscados = $.grep(_Lista_Gasto, function (entidad, index) {
+                return entidad.IdEntidad !== id;
+            });
+            _Lista_Gasto = buscados;
+            this.IdEstado = 2;
+            _Lista_Gasto.push(this);
+            return;
+        } catch (e) {
+            throw e;
+        }
+    }
 
     // Todos
     //static async Todos() {
@@ -202,7 +223,7 @@ function LlenarEntidadGasto(entidad) {
 $('body').on('click', ".mibtn-seleccionGasto", async function () {
     try {
         $this = $(this);
-              let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
+        let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];

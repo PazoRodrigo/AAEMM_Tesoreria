@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Centros de Costos" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ABM_CentroCostos.aspx.vb" Inherits="Forms_Frm_ABM_CentroCostos" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("~/Scripts/Forms/Frm_ABM_CentroCostos.js?version20200416_1")%>'></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Forms/DIM/Frm_ABM_CentroCostos.js?version20200424_7")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';

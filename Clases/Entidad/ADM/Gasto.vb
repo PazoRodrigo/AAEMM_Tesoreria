@@ -24,8 +24,8 @@ Namespace Entidad
                 Select Case IdEstado
                     Case Enumeradores.EstadoGasto.Abierto
                         result = "Abierto"
-                    Case Enumeradores.EstadoGasto.Pagado
-                        result = "Pagado"
+                    Case Enumeradores.EstadoGasto.Cerrado
+                        result = "Cerrado"
                     Case Enumeradores.EstadoGasto.Anulado
                         result = "Anulado"
                     Case Else
@@ -128,6 +128,11 @@ Namespace Entidad
             IdEstado = Enumeradores.EstadoGasto.Anulado
             DAL_Gasto.Baja(Me)
         End Sub
+        Public Sub Cerrar()
+            ValidarModifica()
+            IdEstado = Enumeradores.EstadoGasto.Cerrado
+            DAL_Gasto.Modifica(Me)
+        End Sub
         'Public Sub Modifica()
         '    ValidarModifica()
         '    DAL_Gasto.Modifica(Me)
@@ -160,8 +165,8 @@ Namespace Entidad
         End Sub
         Private Sub ValidarModifica()
             ValidarUsuario(Me.IdUsuarioModifica)
-            ValidarCampos()
-            ValidarNoDuplicados()
+            'ValidarCampos()
+            'ValidarNoDuplicados()
         End Sub
         ' Validaciones
         Private Sub ValidarUsuario(ByVal idUsuario As Integer)

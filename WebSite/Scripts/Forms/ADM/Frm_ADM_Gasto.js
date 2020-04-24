@@ -21,7 +21,7 @@ async function Inicio() {
     _ObjGasto = new Gasto();
     _ObjComprobante = new Comprobante();
     await Gasto.Refresh();
-    _ListaG = await Gasto.TraerGastosAbiertos();
+
     await LlenarGrillaGasto();
     if (parseInt(_ListaG.lenght) === 1) {
         _ObjComprobante.IdGasto = ListaGastos[0];
@@ -37,6 +37,7 @@ async function Inicio() {
 
 }
 async function LlenarGrillaGasto() {
+    _ListaG = await Gasto.TraerGastosAbiertos();
     Gasto.ArmarGrilla(_ListaG, 'GrillaGastosRegistrados', 'EventoSeleccionarGasto', 'EventoEliminarGasto', 'height:300px; overflow-y: scroll');
 }
 async function LlenarGrillaComprobante() {
@@ -95,10 +96,11 @@ function LimpiarGasto() {
 async function NuevoGasto() {
     _ObjGasto = new Gasto;
     await _ObjGasto.Alta();
-    _ListaG = await Gasto.TraerGastosAbiertos();
     await LlenarGrillaGasto();
     await LlenarGasto();
     await NuevoComprobante();
+    //$("#GastoDetalle").css("display", "none");
+    MostrarSolapaGasto()
 }
 async function LlenarGasto() {
     LimpiarGasto();
@@ -117,7 +119,7 @@ async function LlenarGasto() {
 }
 $('body').on('click', '#LinkBtnNuevoGasto', async function (e) {
     try {
-        _ListaG = await Gasto.TraerGastosAbiertos();
+        await LlenarGrillaGasto();
         if (_ListaG.length > 0) {
             PopUpConfirmarConCancelar('info', null, 'Existe un Gasto Abierto, Desea realmente abrir otro?', '', 'EventoNuevoGasto', 'Nuevo Gasto', 'Cancelar');
         } else {
@@ -148,9 +150,8 @@ document.addEventListener('EventoEliminarGasto', async function (e) {
     try {
         let objSeleccionado = e.detail;
         _ObjGasto = objSeleccionado;
-        _ListaG = await Gasto.TraerGastosAbiertos();
         if (_ListaG.length > 0) {
-            PopUpConfirmarConCancelar('warning', null, 'Desea realmente eliminar el Gasto?', 'Será realizada una eliminacón lógica', 'EventoConfirmarEliminarGasto', 'Eliminar Gasto', 'Cancelar', 'red');
+            PopUpConfirmarConCancelar('warning', null, 'Desea realmente eliminar el Gasto?', 'Será realizada una eliminación lógica<br><i>Los datos no se perderán.</i>', 'EventoConfirmarEliminarGasto', 'Eliminar Gasto', 'Cancelar', 'red');
         }
     } catch (e) {
         alertAlerta(e);
@@ -159,13 +160,35 @@ document.addEventListener('EventoEliminarGasto', async function (e) {
 document.addEventListener('EventoConfirmarEliminarGasto', async function (e) {
     try {
         await _ObjGasto.Baja();
-        _ListaG = await Gasto.TraerGastosAbiertos();
         await LlenarGrillaGasto();
     } catch (e) {
         alertAlerta(e);
     }
 }, false);
-
+$('body').on('click', '#LinkBtnCerrarGasto', async function (e) {
+    try {
+        if (_ObjGasto.IdEntidad > 0) {
+            PopUpConfirmarConCancelar('info', null, 'Desea realmente cerrar el gasto?', '<i>El mismo ya no podrá reabrirse.</i>', 'EventoConfirmarCerrarGasto', 'Cerrar Gasto', 'Cancelar');
+        }
+    } catch (e) {
+        alertAlerta(e);
+    }
+});
+document.addEventListener('EventoConfirmarCerrarGasto', async function (e) {
+    try {
+        await _ObjGasto.Cerrar();
+        $("#SpanNroGasto").text('');
+        $("#SpanGastoImporte").text('');
+        $("#SpanGastoComprobantes").text('');
+        $("#SpanGastoEstado").text('');
+        $("#GastoDetalle").css("display", "none");
+        alertOk('El Gasto se ha cerrado correctamente.');
+        _ObjGasto = new Gasto;
+        await LlenarGrillaGasto();
+    } catch (e) {
+        alertAlerta(e);
+    }
+}, false);
 // Comprobante
 async function LimpiarComprobante() {
     $(".DatoFormularioComprobante").val('');
@@ -178,9 +201,13 @@ async function LimpiarComprobante() {
     $('#TxtFechaGasto').val(fechaHoy);
 }
 function NuevoComprobante() {
+    if (_ObjGasto.IdEntidad === 0) {
+        throw ('Debe Abrir o Seleccionar un Gasto');
+    }
     LimpiarComprobante();
     _ObjComprobante = new Comprobante;
     _ObjComprobante.IdGasto = _ObjGasto.IdEntidad;
+    _ObjComprobante.FechaGasto = parseInt(FechaHoyLng());
 }
 async function LlenarComprobante() {
     await LimpiarComprobante();
@@ -225,7 +252,7 @@ document.addEventListener('EventoEliminarComprobante', async function (e) {
         let objSeleccionado = e.detail;
         _ObjComprobante = objSeleccionado;
         if (_ListaG.length > 0) {
-            PopUpConfirmarConCancelar('warning', null, 'Desea realmente eliminar el Comprobante?', 'Será realizada una eliminacón lógica', 'EventoConfirmarEliminarComprobante', 'Eliminar Comprobante', 'Cancelar', 'red');
+            PopUpConfirmarConCancelar('warning', null, 'Desea realmente eliminar el Comprobante?', 'Será realizada una eliminación lógica<br><i>Los datos no se perderán.</i>', 'EventoConfirmarEliminarComprobante', 'Eliminar Comprobante', 'Cancelar', 'red');
         }
     } catch (e) {
         alertAlerta(e);
@@ -245,19 +272,26 @@ $('body').on('click', '#LinkBtnGuardarComprobante', async function (e) {
         if (_ObjComprobante === undefined) {
             throw 'Debe ingresar los Datos del comprobante';
         }
-        if (typeof (_ObjComprobante.FechaGasto) === "string") {
-            _ObjComprobante.FechaGasto = dateStringToLong(_ObjComprobante.FechaGasto);
-        }
+        //alert(_ObjComprobante.FechaGasto);
+        //if (_ObjComprobante.FechaGasto.lenght == 10) {
+        //    let temp = _ObjComprobante.FechaGasto.replace(/_/g, "")
+
+        //}
+        //alert(_ObjComprobante.FechaGasto);
+        //if (typeof (_ObjComprobante.FechaGasto) == 'string') {
+        //    _ObjComprobante.FechaGasto = dateStringToLong(_ObjComprobante.FechaGasto);
+        //}
+        //alert(_ObjComprobante.FechaGasto);
         _ObjComprobante.NroComprobante = $("#TxtNroComprobante").val();
         _ObjComprobante.Importe = $("#TxtImporte").val();
         _ObjComprobante.Observaciones = $("#TxtObservaciones").val();
-        _ObjComprobante.IdGasto = _ObjGasto.IdEntidad;
         if (_ObjComprobante.IdEntidad === 0) {
             await _ObjComprobante.Alta();
         } else {
             await _ObjComprobante.Modifica();
         }
-        await LimpiarComprobante();
+        await LlenarGrillaGasto
+        await NuevoComprobante();
         _ObjGasto = await Gasto.TraerUno(_ObjGasto.IdEntidad);
         await LlenarGasto();
         alertOk('El Comprobante se ha guardado correctamente');
@@ -332,8 +366,6 @@ $(function () {
     $("#TxtFechaGasto").on("change", async function () {
         let selected = $(this).val();
         let seleccionLNG = selected.substr(6, 4) + '' + selected.substr(3, 2) + '' + selected.substr(0, 2);
-        alert(FechaHoyLng());
-        alert(seleccionLNG);
         try {
             if (seleccionLNG > FechaHoyLng()) {
                 $("#TxtFechaGasto").val(fechaHoy);

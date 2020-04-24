@@ -42,7 +42,7 @@
     End Enum
     Public Enum EstadoGasto
         Abierto = 1
-        Pagado = 2
+        Cerrado = 2
         Anulado = 11
     End Enum
     Public Enum TipoPermiso
