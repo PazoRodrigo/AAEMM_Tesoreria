@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_Gasto.aspx.vb" Inherits="Forms_ADM_Frm_Adm_Gasto" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("~/Scripts/Forms/ADM/Frm_Adm_Gasto.js?version20200424_7")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_Gasto.js?version20200428_1")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -91,6 +91,11 @@
             text-align: center;
             text-decoration: none;
         }
+
+        .SpanGastoCabecera {
+            font-size: 2em;
+            color: #fff;
+        }
     </style>
     <ul>
         <li>
@@ -109,28 +114,28 @@
                             <div class="col-1" title="Nro. Gasto" style="text-align: center;">
                                 Gasto
                                 <br />
-                                <div class="SpanGastoCabecera" style="font-size: 3em; color: #fff; font-weight: bold;">
+                                <div class="SpanGastoCabecera">
                                     <span id="SpanNroGasto"></span>
                                 </div>
                             </div>
                             <div class="col-2" title="Importe" style="text-align: center;">
                                 Importe
                                 <br />
-                                <div class="SpanGastoCabecera" style="font-size: 3em; color: #fff;">
+                                <div class="SpanGastoCabecera">
                                     <span id="SpanGastoImporte"></span>
                                 </div>
                             </div>
                             <div class="col-2" title="Comprobantes" style="text-align: center;">
                                 Comprobantes
                                 <br />
-                                <div class="SpanGastoCabecera" style="font-size: 3em; color: #fff;">
+                                <div class="SpanGastoCabecera">
                                     <span id="SpanGastoComprobantes"></span>
                                 </div>
                             </div>
                             <div class="col-2" title="Estado Gasto">
                                 Estado Gasto
                                 <br />
-                                <div class="SpanGastoCabecera" style="font-size: 2em; color: #fff;">
+                                <div class="SpanGastoCabecera">
                                     <span id="SpanGastoEstado"></span>
                                 </div>
                             </div>
@@ -157,88 +162,103 @@
                                 <a href="#" class="btnComprobanteOff" data-ix="tabComprobante">Comprobantes</a>
                             </div>
                         </div>
-                        <div class="row mt-1 text-center">
+                        <div class="row mt-1 text-center" style="height: 250px; overflow-y: scroll">
                             <div class="col-lg-12">
                                 <div id="GrillaGastosRegistrados"></div>
                                 <div id="GrillaComprobantesRegistrados"></div>
                             </div>
                         </div>
+                        <div class="row mt-1 justify-content-around">
+                            <div class="col-lg-8">
+                                <div class="Boton BtnBuscar">
+                                    <a id="LinkBtnCerrarGasto" href="#"><span id="SpanBtnCerrarGasto"></span></a>
+                                </div>
+                            </div>
+                            <%-- <div class="col-lg-1"></div>
+                            <div class="col-lg-4">
+                                <div class="Boton BtnImprimir">
+                                    <a id="LinkBtnImprimirGasto" href="#"><span id="SpanBtnImprimirGasto"></span></a>
+                                </div>
+                            </div>--%>
+                        </div>
                     </div>
                     <div class="col-lg-8">
-                        <div id="GastoDetalle" style="max-height: 350px; overflow-y: scroll; display: none;">
+                        <%-- <div id="GastoDetalle" style="max-height: 350px; overflow-y: scroll; display: none;">--%>
+                        <div id="GastoDetalle" style="display:none;">
                             <div style="width100%;">
                                 <div class="row mt-1">
-                                    <div class="col-lg-1"></div>
-                                    <div class="col-lg-2">Cuenta</div>
+                                    <div class="col-lg-2 ml-3">Cuenta</div>
                                     <div class="col-lg-8">
                                         <div id="CboCuenta"></div>
                                     </div>
                                 </div>
                                 <div class="row mt-1">
-                                    <div class="col-lg-1"></div>
-                                    <div class="col-lg-2">Fecha Gasto</div>
-                                    <div class="col-lg-5">
-                                        <input id="TxtFechaGasto" class="DatoFormularioComprobante InputDatoFormulario datepicker" type="text" placeholder="Fecha Gasto" autocomplete="off">
+                                    <div class="col-lg-2 ml-3">Fecha Gasto</div>
+                                    <div class="col-lg-3">
+                                        <input id="TxtFechaGasto" class="DatoFormularioComprobante InputDatoFormulario datepicker" type="text" placeholder="Fecha Gasto" autocomplete="off" onkeypress="return jsNoEscribir(event)">
                                     </div>
+                                    <div class="col-lg-2 ml-3">Fecha Pago</div>
+                                    <div class="col-lg-3">
+                                        <input id="TxtFechaPago" class="DatoFormularioComprobante InputDatoFormulario datepicker" type="text" placeholder="Fecha Pago" autocomplete="off" onkeypress="return jsNoEscribir(event)">
+                                    </div>
+
                                 </div>
-                                <div class="row mt-1">
+                                <%--  <div class="row mt-1">
                                     <div class="col-lg-1"></div>
                                     <div class="col-lg-2">Fecha Pago</div>
                                     <div class="col-lg-5">
                                         <input id="TxtFechaPago" class="DatoFormularioComprobante InputDatoFormulario datepicker" type="text" placeholder="Fecha Pago" autocomplete="off">
                                     </div>
-                                </div>
+                                </div>--%>
                                 <div class="row mt-1">
-                                    <div class="col-lg-1"></div>
-                                    <div class="col-lg-2">Observaciones</div>
+                                    <div class="col-lg-2 ml-3">Observaciones</div>
                                     <div class="col-lg-8">
                                         <textarea id="TxtObservaciones" class="DatoFormularioComprobante TextareaDatoFormulario" placeholder="Observaciones"></textarea>
                                     </div>
                                 </div>
                                 <div class="row mt-1">
-                                    <div class="col-lg-1"></div>
-                                    <div class="col-lg-2">Importe</div>
+                                    <div class="col-lg-2 ml-3">Importe</div>
                                     <div class="col-lg-5">
                                         <input id="TxtImporte" class="DatoFormularioComprobante InputDatoFormulario" type="text" placeholder="Importe" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
                                     </div>
                                 </div>
                                 <div class="row mt-1">
-                                    <div class="col-lg-1"></div>
-                                    <div class="col-lg-2">Originario</div>
+                                    <div class="col-lg-2 ml-3">Originario</div>
                                     <div class="col-lg-8">
                                         <div id="CboOriginarioGasto"></div>
                                     </div>
                                 </div>
                                 <div class="row mt-1">
-                                    <div class="col-lg-1"></div>
-                                    <div class="col-lg-2">C. de C.</div>
+                                    <div class="col-lg-2 ml-3">C. de C.</div>
                                     <div class="col-lg-8">
                                         <div id="CboCentroCosto"></div>
                                     </div>
                                 </div>
                                 <div class="row mt-1">
-                                    <div class="col-lg-1"></div>
-                                    <div class="col-lg-2">Proveedor</div>
+                                    <div class="col-lg-2 ml-3">Proveedor</div>
                                     <div class="col-lg-8">
                                         <div id="CboProveedor"></div>
                                     </div>
                                 </div>
                                 <div class="row mt-1">
-                                    <div class="col-lg-1"></div>
-                                    <div class="col-lg-2">Nro. Compr.</div>
-                                    <div class="col-lg-8">
+                                    <div class="col-lg-2 ml-3">Nro. Compr.</div>
+                                    <div class="col-lg-3">
                                         <input id="TxtNroComprobante" class="DatoFormularioComprobante InputDatoFormulario" type="text" placeholder="Nro. Compr." autocomplete="off" onkeypress="return jsSoloNumeros(event);">
                                     </div>
+                                    <div class="col-lg-2 ml-3">Tipo Pago</div>
+                                    <div class="col-lg-3">
+                                        <div id="CboTipoPago"></div>
+                                    </div>
                                 </div>
-                                <div class="row mt-1">
+                                <%--<div class="row mt-1">
                                     <div class="col-lg-1"></div>
                                     <div class="col-lg-2">Tipo Pago</div>
                                     <div class="col-lg-8">
                                         <div id="CboTipoPago"></div>
                                     </div>
-                                </div>
+                                </div>--%>
 
-                                <div class="row mt-4">
+                                <div class="row mt-2">
                                     <div class="col-lg-8"></div>
                                     <div class="col-lg-4">
                                         <div class="Boton BtnGuardar">
@@ -246,21 +266,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mt-4"></div>
-                                <div class="row mt-4">
-                                    <div class="col-lg-2"></div>
-                                    <div class="col-lg-4">
-                                        <div class="Boton BtnGuardar">
-                                            <a id="LinkBtnCerrarGasto" href="#"><span id="SpanBtnCerrarGasto"></span></a>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1"></div>
-                                    <div class="col-lg-4">
-                                        <div class="Boton BtnImprimir">
-                                            <a id="LinkBtnImprimirGasto" href="#"><span id="SpanBtnImprimirGasto"></span></a>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>

@@ -15,9 +15,19 @@ Namespace Entidad
         Public Property IdEstado() As Enumeradores.EstadoGasto = Enumeradores.EstadoGasto.Abierto
         Public Property Importe() As Decimal = 0
         Public Property CantidadComprobantes() As Integer = 0
+        Public Property FechaGasto() As Date? = Nothing
         Public Property Observaciones() As String = ""
 #End Region
 #Region " Lazy Load "
+        Public ReadOnly Property LngFechaGasto() As Long
+            Get
+                Dim result As Long = 0
+                If FechaGasto.HasValue Then
+                    result = CLng(Year(FechaGasto.Value).ToString & Right("00" & Month(FechaGasto.Value).ToString, 2) & Right("00" & Day(FechaGasto.Value).ToString, 2))
+                End If
+                Return result
+            End Get
+        End Property
         Public ReadOnly Property Estado() As String
             Get
                 Dim result As String = ""
@@ -34,6 +44,16 @@ Namespace Entidad
                 Return result
             End Get
         End Property
+        Private Property _listaComprobantes As List(Of Comprobante)
+        Public ReadOnly Property ListaComprobantes() As List(Of Comprobante)
+            Get
+                If _listaComprobantes Is Nothing Then
+                    _listaComprobantes = Comprobante.TraerTodosXGasto(IdEntidad)
+                End If
+                Return _listaComprobantes
+            End Get
+        End Property
+
 #End Region
 #Region " Constructores "
         Sub New()
@@ -129,9 +149,9 @@ Namespace Entidad
             DAL_Gasto.Baja(Me)
         End Sub
         Public Sub Cerrar()
-            ValidarModifica()
+            ValidarCerrar()
             IdEstado = Enumeradores.EstadoGasto.Cerrado
-            DAL_Gasto.Modifica(Me)
+            'DAL_Gasto.Modifica(Me)
         End Sub
         'Public Sub Modifica()
         '    ValidarModifica()
@@ -143,6 +163,7 @@ Namespace Entidad
             Dim result As New DTO.DTO_Gasto With {
                 .IdEntidad = IdEntidad,
                 .Importe = Importe,
+                .FechaGasto = LngFechaGasto,
                 .CantidadComprobantes = CantidadComprobantes,
                 .IdEstado = IdEstado,
                 .Estado = Estado,
@@ -162,9 +183,11 @@ Namespace Entidad
         End Sub
         Private Sub ValidarBaja()
             ValidarUsuario(Me.IdUsuarioBaja)
+            ValidarComprobantesActivos()
         End Sub
-        Private Sub ValidarModifica()
+        Private Sub ValidarCerrar()
             ValidarUsuario(Me.IdUsuarioModifica)
+            ValidarComprobantesPagados()
             'ValidarCampos()
             'ValidarNoDuplicados()
         End Sub
@@ -200,6 +223,32 @@ Namespace Entidad
                 Throw New Exception(sError)
             End If
         End Sub
+        Private Sub ValidarComprobantesPagados()
+            Dim cantidadErrores As Integer = 0
+            If ListaComprobantes.Count > 0 Then
+                For Each item As Comprobante In ListaComprobantes
+                    If Not item.FechaPago.HasValue Or item.IdTipoPago = 0 Then
+                        cantidadErrores += 1
+                    End If
+                Next
+            End If
+            If cantidadErrores > 0 Then
+                Throw New Exception("No se puede Cerrar el Gasto. Existen Comprobantes sin pagar.")
+            End If
+        End Sub
+        Private Sub ValidarComprobantesActivos()
+            Dim cantidadErrores As Integer = 0
+            If ListaComprobantes.Count > 0 Then
+                For Each item As Comprobante In ListaComprobantes
+                    If Not item.FechaBaja.HasValue Then
+                        cantidadErrores += 1
+                    End If
+                Next
+            End If
+            If cantidadErrores > 0 Then
+                Throw New Exception("No se puede Anular el Gasto. Existen Comprobantes sin anulars.")
+            End If
+        End Sub
         Private Sub ValidarCaracteres()
             Dim sError As String = ""
             If sError <> "" Then
@@ -229,6 +278,7 @@ Namespace DTO
         Public Property IdEstado() As Integer = 0
         Public Property Estado() As String = ""
         Public Property Importe() As Decimal = 0
+        Public Property FechaGasto() As Long = 0
         Public Property CantidadComprobantes() As Integer = 0
 #End Region
     End Class ' DTO_Gasto
@@ -404,6 +454,11 @@ Namespace DataAccessLibrary
             If dr.Table.Columns.Contains("importe") Then
                 If dr.Item("importe") IsNot DBNull.Value Then
                     entidad.Importe = CDec(dr.Item("importe"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("FechaGasto") Then
+                If dr.Item("FechaGasto") IsNot DBNull.Value Then
+                    entidad.FechaGasto = CDate(dr.Item("FechaGasto"))
                 End If
             End If
             If dr.Table.Columns.Contains("Observaciones") Then

@@ -5,6 +5,7 @@ class Gasto extends DBE {
         super();
         this.IdEntidad = 0;
         this.Importe = 0;
+        this.FechaGasto = 0;
         this.CantidadComprobantes = 0;
         this.Estado = '';
         this.Observaciones = '';
@@ -24,9 +25,9 @@ class Gasto extends DBE {
     // ABM
     async Alta() {
         try {
-            //let ObjU = JSON.parse(sessionStorage.getItem("User"));
-            //this.IdUsuarioAlta = ObjU.IdEntidad;
-            this.IdUsuarioAlta = 1;
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioAlta = ObjU.IdEntidad;
+            //this.IdUsuarioAlta = 1;
             let data = {
                 'entidad': this
             };
@@ -158,9 +159,10 @@ class Gasto extends DBE {
                 if (item.IdEstado === 11) {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
                 }
-                let aItem = '<a href="#" class="mibtn-seleccionGasto" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + LongToDateString(item.FechaAlta) + ' - ' + item.Estado + ' - ' + MonedaDecimales2(item.Importe) + ' </a>';
+                let periodo = Right(Left(item.FechaGasto, 6), 2) + '/' + Left(item.FechaGasto, 4);
+                let aItem = '<a href="#" class="mibtn-seleccionGasto" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + periodo + ' - ' + item.Estado + ' - ' + MonedaDecimales2(item.Importe) + ' </a>';
                 let aEliminar = '<a href="#" class="mibtn-EliminarGasto" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
-                str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
+                str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div > <div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li > ', aItem, aEliminar);
             }
             str += '    </ul>';
             str += '</div>';
@@ -209,6 +211,7 @@ function LlenarEntidadGasto(entidad) {
     Res.IdEntidad = entidad.IdEntidad;
     Res.Observaciones = entidad.Observaciones;
     Res.Importe = entidad.Importe;
+    Res.FechaGasto = entidad.FechaGasto;
     Res.CantidadComprobantes = entidad.CantidadComprobantes;
     Res.IdEstado = entidad.IdEstado;
     Res.Estado = entidad.Estado;

@@ -237,7 +237,7 @@ class Comprobante extends DBE {
                 if (item.IdEstado === 1) {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
                 }
-                let aItem = '<a href="#" class="mibtn-seleccionComprobante" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + LongToDateString(item.FechaAlta) + ' ' + item.Estado + ' - ' + MonedaDecimales2(item.Importe) + ' </a>';
+                let aItem = '<a href="#" class="mibtn-seleccionComprobante" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + LongToDateString(item.FechaGasto) + ' ' + item.Estado + ' - ' + MonedaDecimales2(item.Importe) + ' </a>';
                 let aEliminar = '<a href="#" class="mibtn-EliminarComprobante" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
                 str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
             }

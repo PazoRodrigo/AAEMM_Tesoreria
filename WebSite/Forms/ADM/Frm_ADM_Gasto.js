@@ -21,27 +21,22 @@ async function Inicio() {
     _ObjGasto = new Gasto();
     _ObjComprobante = new Comprobante();
     await Gasto.Refresh();
-
     await LlenarGrillaGasto();
-    if (parseInt(_ListaG.lenght) === 1) {
+    if (parseInt(_ListaG.length) === 1) {
         _ObjComprobante.IdGasto = ListaGastos[0];
         await LlenarGasto();
     }
     await LimpiarComprobante();
     MostrarSolapaGasto();
-
-    //let $datepicker = $('#TxtFechaGasto');
-    //$datepicker.datepicker();
-    //$datepicker.datepicker('setDate', new Date());
-
-
 }
 async function LlenarGrillaGasto() {
     _ListaG = await Gasto.TraerGastosAbiertos();
-    Gasto.ArmarGrilla(_ListaG, 'GrillaGastosRegistrados', 'EventoSeleccionarGasto', 'EventoEliminarGasto', 'height:300px; overflow-y: scroll');
+    //Gasto.ArmarGrilla(_ListaG, 'GrillaGastosRegistrados', 'EventoSeleccionarGasto', 'EventoEliminarGasto', 'height:300px; overflow-y: scroll');
+    Gasto.ArmarGrilla(_ListaG, 'GrillaGastosRegistrados', 'EventoSeleccionarGasto', 'EventoEliminarGasto','');
 }
 async function LlenarGrillaComprobante() {
-    Comprobante.ArmarGrilla(_ListaC, 'GrillaComprobantesRegistrados', 'EventoSeleccionarComprobante', 'EventoEliminarComprobante', 'height:300px; overflow-y: scroll');
+    Comprobante.ArmarGrilla(_ListaC, 'GrillaComprobantesRegistrados', 'EventoSeleccionarComprobante', 'EventoEliminarComprobante');
+    //Comprobante.ArmarGrilla(_ListaC, 'GrillaComprobantesRegistrados', 'EventoSeleccionarComprobante', 'EventoEliminarComprobante', 'height:300px; overflow-y: scroll');
 }
 async function LlenarCboCuenta() {
     let lista = await CuentaContable.TraerTodos();
@@ -71,6 +66,8 @@ function MostrarSolapaGasto() {
     $(".btnComprobanteOff").css("display", "block");
     $("#GrillaGastosRegistrados").css("display", "block");
     $("#GrillaComprobantesRegistrados").css("display", "none");
+    $("#GastoDetalle").css("display", "none");
+
 }
 function MostrarSolapaComprobante() {
     $(".btnGastoOn").css("display", "none");
@@ -99,8 +96,7 @@ async function NuevoGasto() {
     await LlenarGrillaGasto();
     await LlenarGasto();
     await NuevoComprobante();
-    //$("#GastoDetalle").css("display", "none");
-    MostrarSolapaGasto()
+    MostrarSolapaGasto();
 }
 async function LlenarGasto() {
     LimpiarGasto();
@@ -182,11 +178,13 @@ document.addEventListener('EventoConfirmarCerrarGasto', async function (e) {
         $("#SpanGastoComprobantes").text('');
         $("#SpanGastoEstado").text('');
         $("#GastoDetalle").css("display", "none");
-        alertOk('El Gasto se ha cerrado correctamente.');
         _ObjGasto = new Gasto;
-        await LlenarGrillaGasto();
+        alertOk('El Gasto se ha cerrado correctamente.');
     } catch (e) {
         alertAlerta(e);
+    } finally {
+        await LlenarGrillaGasto();
+        MostrarSolapaGasto();
     }
 }, false);
 // Comprobante
