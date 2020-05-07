@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Chequera" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_Chequera.aspx.vb" Inherits="Forms_Administracion_Frm_Adm_Chequera" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("~/Scripts/Forms/ADM/Frm_Adm_Chequera.js?version20200424_7")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_Chequera.js?version20200428_1")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
