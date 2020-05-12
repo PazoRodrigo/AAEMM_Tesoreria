@@ -5,3 +5,8 @@
         alertAlerta(e);
     }
 });
+
+async function LlenarListasArchivos() {
+
+    Archivo
+}

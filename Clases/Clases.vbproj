@@ -46,11 +46,11 @@
   <ItemGroup>
     <Reference Include="Connection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LibreriasPropias\Connection\bin\Debug\Connection.dll</HintPath>
+      <HintPath>..\..\..\Desarrollos\LibreriasPropias\Connection\bin\Debug\Connection.dll</HintPath>
     </Reference>
     <Reference Include="LUM, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LibreriasPropias\LUM\bin\Debug\LUM.dll</HintPath>
+      <HintPath>..\..\..\Desarrollos\LibreriasPropias\LUM\bin\Debug\LUM.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -78,7 +78,8 @@
     <Compile Include="Entidad\ADM\Comprobante.vb" />
     <Compile Include="Entidad\ADM\Empleado.vb" />
     <Compile Include="Entidad\ADM\Gasto.vb" />
-    <Compile Include="Entidad\ADM\Ingreso.vb" />
+    <Compile Include="Entidad\Enumeradores.vb" />
+    <Compile Include="Entidad\Ingresos\Ingreso.vb" />
     <Compile Include="Entidad\ARC\Archivo.vb" />
     <Compile Include="Entidad\Complementarias\CuentaCorriente.vb" />
     <Compile Include="Entidad\Complementarias\DatosCalculados.vb" />

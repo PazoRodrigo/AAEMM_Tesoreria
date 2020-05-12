@@ -5,6 +5,7 @@ Imports Clases.DataAccessLibrary
 Imports Clases.Entidad
 Imports LUM
 Imports Connection
+Imports System.IO
 
 Namespace Entidad
     Public Class Ingreso
@@ -24,7 +25,7 @@ Namespace Entidad
         Public Property NombreArchivo() As String = ""
         Public Property FechaPago() As Date? = Nothing
         Public Property FechaAcreditacion() As Date? = Nothing
-        Public Property FechaPagoFacil() As Date? = Nothing
+        Public Property Observaciones() As String = ""
 #End Region
 #Region " Lazy Load "
         Public ReadOnly Property LngFechaPago() As Long
@@ -36,20 +37,14 @@ Namespace Entidad
                 Return result
             End Get
         End Property
+        Friend Shared Function ArmarListaIngresosBN(idUsuario As Integer, fechaArchivo As Date, archivo As StreamReader, lista As List(Of Ingreso)) As String
+            Throw New NotImplementedException()
+        End Function
         Public ReadOnly Property LngFechaAcreditacion() As Long
             Get
                 Dim result As Long = 0
                 If FechaAcreditacion.HasValue Then
                     result = CLng(Year(FechaAcreditacion.Value).ToString & Right("00" & Month(FechaAcreditacion.Value).ToString, 2) & Right("00" & Day(FechaAcreditacion.Value).ToString, 2))
-                End If
-                Return result
-            End Get
-        End Property
-        Public ReadOnly Property LngFechaPagoFacil() As Long
-            Get
-                Dim result As Long = 0
-                If FechaPagoFacil.HasValue Then
-                    result = CLng(Year(FechaPagoFacil.Value).ToString & Right("00" & Month(FechaPagoFacil.Value).ToString, 2) & Right("00" & Day(FechaPagoFacil.Value).ToString, 2))
                 End If
                 Return result
             End Get
@@ -81,7 +76,7 @@ Namespace Entidad
             NombreArchivo = objImportar.NombreArchivo
             FechaPago = objImportar.FechaPago
             FechaAcreditacion = objImportar.FechaAcreditacion
-            FechaPagoFacil = objImportar.FechaPagoFacil
+            Observaciones = objImportar.Observaciones
         End Sub
         Sub New(ByVal DtODesde As DTO.DTO_Ingreso)
             ' DBE
@@ -116,10 +111,7 @@ Namespace Entidad
                 Dim TempFecha As String = Right(DtODesde.FechaAcreditacion.ToString, 2) + "/" + Left(Right(DtODesde.FechaAcreditacion.ToString, 4), 2) + "/" + Left(DtODesde.FechaAcreditacion.ToString, 4)
                 FechaAcreditacion = CDate(TempFecha)
             End If
-            If DtODesde.FechaPagoFacil > 0 Then
-                Dim TempFecha As String = Right(DtODesde.FechaPagoFacil.ToString, 2) + "/" + Left(Right(DtODesde.FechaPagoFacil.ToString, 4), 2) + "/" + Left(DtODesde.FechaPagoFacil.ToString, 4)
-                FechaPagoFacil = CDate(TempFecha)
-            End If
+            Observaciones = DtODesde.Observaciones
         End Sub
 #End Region
 #Region " Métodos Estáticos"
@@ -159,6 +151,16 @@ Namespace Entidad
             End If
             Return result
         End Function
+        Friend Shared Sub ValidarNombreArchivoDuplicado(nombreArchivo As String)
+            Dim ListaIngresos As List(Of Ingreso) = DAL_Ingreso.TraerTodosXNombreArchivo(nombreArchivo)
+            If ListaIngresos.Count > 0 Then
+                Throw New Exception("<b> ERROR </b><br /><b>El archivo NO se ha ingresado</b> <br /> <br />Archivo ya existente en el sistema")
+            End If
+        End Sub
+
+        Friend Shared Function TraerTodosXNombreArchivo(nombreArchivo As String) As List(Of Ingreso)
+            Return DAL_Ingreso.TraerTodosXNombreArchivo(nombreArchivo)
+        End Function
         Public Shared Function TraerTodosXPeriodo(Periodo As Integer) As List(Of Ingreso)
             Dim result As List(Of Ingreso) = DAL_Ingreso.TraerTodosXPeriodo(Periodo)
             If result.Count = 0 Then
@@ -167,6 +169,9 @@ Namespace Entidad
             Return result
         End Function
         ' Nuevos
+        Friend Shared Function TraerUltimosXOrigen(IdOrigen As Enumerador.TipoIngreso, Cantidad As Integer) As List(Of Ingreso)
+            Return DAL_Ingreso.TraerUltimos30XOrigen(IdOrigen)
+        End Function
 #End Region
 #Region " Métodos Públicos"
         ' ABM
@@ -198,7 +203,7 @@ Namespace Entidad
                 .NombreArchivo = NombreArchivo,
                 .FechaPago = LngFechaPago,
                 .FechaAcreditacion = LngFechaAcreditacion,
-                .FechaPagoFacil = LngFechaPagoFacil
+                .Observaciones = Observaciones
             }
             Return result
         End Function
@@ -284,7 +289,7 @@ Namespace DTO
         Public Property NombreArchivo() As String = ""
         Public Property FechaPago() As Long = 0
         Public Property FechaAcreditacion() As Long = 0
-        Public Property FechaPagoFacil() As Long = 0
+        Public Property Observaciones() As String = ""
 #End Region
     End Class ' DTO_Ingreso
 End Namespace ' DTO
@@ -293,7 +298,7 @@ Namespace DataAccessLibrary
     Public Class DAL_Ingreso
 
 #Region " Stored "
-        Const storeAlta As String = "ADM.p_Ingreso_Alta"
+        Const storeAlta As String = "INGRESO.p_Ingreso_Alta"
         Const storeBaja As String = "ADM.p_Ingreso_Baja"
         Const storeModifica As String = "ADM.p_Ingreso_Modifica"
         Const storeTraerUnoXId As String = "ADM.p_Ingreso_TraerUnoXId"
@@ -302,6 +307,8 @@ Namespace DataAccessLibrary
         Const storeTraerTodosXFechasXAcreditacion As String = "ADM.p_Ingreso_TraerTodosXFechasXAcreditacion"
         Const storeTraerTodosXFechasXPago As String = "ADM.p_Ingreso_TraerTodosXFechasXPago"
         Const storeTraerTodosXPeriodo As String = "ADM.p_Ingreso_TraerTodosXPeriodo"
+        Const storeTraerTodosXNombreArchivo As String = "INGRESO.p_Ingreso_TraerTodosXNombreArchivo"
+        Const storeTraerUltimos30XOrigen As String = "INGRESO.p_Ingreso_storeTraerUltimos30XOrigen"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
@@ -309,8 +316,19 @@ Namespace DataAccessLibrary
             Dim store As String = storeAlta
             Dim pa As New parametrosArray
             pa.add("@idUsuarioAlta", entidad.IdUsuarioAlta)
-            'pa.add("@Nombre", entidad.Nombre)
-            'pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
+            pa.add("@FechaPago", entidad.FechaPago)
+            pa.add("@FechaAcreditacion", entidad.FechaAcreditacion)
+            pa.add("@IdOrigen", entidad.IdOrigen)
+            pa.add("@NombreArchivo", entidad.NombreArchivo)
+            pa.add("@Importe", entidad.Importe)
+            pa.add("@Periodo", entidad.Periodo)
+            pa.add("@CUIT", entidad.CUIT)
+            pa.add("@CodigoEntidad", entidad.CodigoEntidad)
+            pa.add("@IdCentroCosto", entidad.IdCentroCosto)
+            pa.add("@NroRecibo", entidad.NroRecibo)
+            pa.add("@NroCheche", entidad.NroCheche)
+            pa.add("@IdEstado", entidad.IdEstado)
+            pa.add("@Observaciones", entidad.Observaciones)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
@@ -348,7 +366,7 @@ Namespace DataAccessLibrary
                 End If
             End Using
         End Sub
-        '' Traer
+        ' Traer
         Public Shared Function TraerUno(ByVal id As Integer) As Ingreso
             Dim store As String = storeTraerUnoXId
             Dim result As New Ingreso
@@ -437,6 +455,35 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
+        ' Traer Base Nueva
+        Friend Shared Function TraerUltimos30XOrigen(IdOrigen As Enumerador.TipoIngreso) As List(Of Ingreso)
+            Dim store As String = storeTraerUltimos30XOrigen
+            Dim listaResult As New List(Of Ingreso)
+            Dim pa As New parametrosArray
+            pa.add("@IdOrigen", IdOrigen)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
+        Public Shared Function TraerTodosXNombreArchivo(ByVal nombreArchivo As String) As List(Of Ingreso)
+            Dim store As String = storeTraerTodosXNombreArchivo
+            Dim listaResult As New List(Of Ingreso)
+            Dim pa As New parametrosArray
+            pa.add("@nombreArchivo", nombreArchivo)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
 #End Region
 #Region " Métodos Privados "
         Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Ingreso
@@ -473,81 +520,19 @@ Namespace DataAccessLibrary
                 End If
             End If
             ' Entidad
-            If dr.Table.Columns.Contains("id_movimiento") Then
-                If dr.Item("id_movimiento") IsNot DBNull.Value Then
-                    entidad.IdEntidad = CInt(dr.Item("id_movimiento"))
+            If dr.Table.Columns.Contains("Id") Then
+                If dr.Item("Id") IsNot DBNull.Value Then
+                    entidad.IdEntidad = CInt(dr.Item("Id"))
                 End If
             End If
-            If dr.Table.Columns.Contains("sec") Then
-                If dr.Item("sec") IsNot DBNull.Value Then
-                    entidad.IdCentroCosto = CInt(dr.Item("sec"))
+            If dr.Table.Columns.Contains("fechaAcreditacion") Then
+                If dr.Item("fechaAcreditacion") IsNot DBNull.Value Then
+                    entidad.FechaAcreditacion = CDate(dr.Item("fechaAcreditacion"))
                 End If
             End If
-            If dr.Table.Columns.Contains("cod_ent") Then
-                If dr.Item("cod_ent") IsNot DBNull.Value Then
-                    entidad.CodigoEntidad = CLng(dr.Item("cod_ent"))
-                End If
-            End If
-            If dr.Table.Columns.Contains("CUIT") Then
-                If dr.Item("CUIT") IsNot DBNull.Value Then
-                    entidad.CUIT = CLng(dr.Item("CUIT"))
-                End If
-            End If
-            If dr.Table.Columns.Contains("Periodo") Then
-                If dr.Item("Periodo") IsNot DBNull.Value Then
-                    If dr.Item("Periodo").ToString.Length = 7 Then
-                        Dim temp As String = Replace(dr.Item("Periodo").ToString, "/", "")
-                        temp = Right(temp, 4) & Left(temp, 2)
-                        If IsNumeric(temp) Then
-                            entidad.Periodo = CInt(temp)
-                        End If
-                    End If
-                End If
-            End If
-            If dr.Table.Columns.Contains("cheque") Then
-                If dr.Item("cheque") IsNot DBNull.Value Then
-                    entidad.NroCheche = CLng(dr.Item("cheque"))
-                End If
-            End If
-            If dr.Table.Columns.Contains("Importe") Then
-                If dr.Item("Importe") IsNot DBNull.Value Then
-                    entidad.Importe = CDec(dr.Item("Importe"))
-                End If
-            End If
-            If dr.Table.Columns.Contains("origen") Then
-                If dr.Item("origen") IsNot DBNull.Value Then
-                    entidad.IdOrigen = CInt(dr.Item("origen"))
-                End If
-            End If
-            If dr.Table.Columns.Contains("nro_rec") Then
-                If dr.Item("nro_rec") IsNot DBNull.Value Then
-                    If IsNumeric(dr.Item("nro_rec").ToString) Then
-                        entidad.NroRecibo = CInt(dr.Item("nro_rec"))
-                    End If
-                End If
-            End If
-            If dr.Table.Columns.Contains("estado") Then
-                If dr.Item("estado") IsNot vbNullChar AndAlso dr.Item("estado") IsNot DBNull.Value Then
-                    If dr.Item("estado").ToString = " " Then
-                        entidad.IdEstado = CChar("A")
-                    Else
-                        entidad.IdEstado = CChar(dr.Item("estado"))
-                    End If
-                End If
-            End If
-            If dr.Table.Columns.Contains("fec_pago") Then
-                If dr.Item("fec_pago") IsNot DBNull.Value Then
-                    entidad.FechaPago = CDate(dr.Item("fec_pago"))
-                End If
-            End If
-            If dr.Table.Columns.Contains("fec_acr") Then
-                If dr.Item("fec_acr") IsNot DBNull.Value Then
-                    entidad.FechaAcreditacion = CDate(dr.Item("fec_acr"))
-                End If
-            End If
-            If dr.Table.Columns.Contains("fec_cpf") Then
-                If dr.Item("fec_cpf") IsNot DBNull.Value Then
-                    entidad.FechaPagoFacil = CDate(dr.Item("fec_cpf"))
+            If dr.Table.Columns.Contains("fechaPago") Then
+                If dr.Item("fechaPago") IsNot DBNull.Value Then
+                    entidad.FechaPago = CDate(dr.Item("fechaPago"))
                 End If
             End If
             If dr.Table.Columns.Contains("NombreArchivo") Then
@@ -555,6 +540,128 @@ Namespace DataAccessLibrary
                     entidad.NombreArchivo = dr.Item("NombreArchivo").ToString.ToUpper.Trim
                 End If
             End If
+            If dr.Table.Columns.Contains("Importe") Then
+                If dr.Item("Importe") IsNot DBNull.Value Then
+                    entidad.Importe = CDec(dr.Item("Importe"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("Periodo") Then
+                If dr.Item("Periodo") IsNot DBNull.Value Then
+                    entidad.Periodo = CInt(dr.Item("Periodo"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("CUIT") Then
+                If dr.Item("CUIT") IsNot DBNull.Value Then
+                    entidad.CUIT = CLng(dr.Item("CUIT"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("CodigoEntidad") Then
+                If dr.Item("CodigoEntidad") IsNot DBNull.Value Then
+                    entidad.CodigoEntidad = CLng(dr.Item("CodigoEntidad"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("IdCentroCosto") Then
+                If dr.Item("IdCentroCosto") IsNot DBNull.Value Then
+                    entidad.IdCentroCosto = CInt(dr.Item("IdCentroCosto"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("IdEstado") Then
+                If dr.Item("IdEstado") IsNot vbNullChar AndAlso dr.Item("IdEstado") IsNot DBNull.Value Then
+                    If dr.Item("IdEstado").ToString = "" Then
+                        entidad.IdEstado = CChar("A")
+                    Else
+                        entidad.IdEstado = CChar(dr.Item("IdEstado"))
+                    End If
+                End If
+            End If
+            If dr.Table.Columns.Contains("origen") Then
+                If dr.Item("origen") IsNot DBNull.Value Then
+                    entidad.IdOrigen = CInt(dr.Item("origen"))
+                End If
+            End If
+
+            'If dr.Table.Columns.Contains("id_movimiento") Then
+            '    If dr.Item("id_movimiento") IsNot DBNull.Value Then
+            '        entidad.IdEntidad = CInt(dr.Item("id_movimiento"))
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("sec") Then
+            '    If dr.Item("sec") IsNot DBNull.Value Then
+            '        entidad.IdCentroCosto = CInt(dr.Item("sec"))
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("cod_ent") Then
+            '    If dr.Item("cod_ent") IsNot DBNull.Value Then
+            '        entidad.CodigoEntidad = CLng(dr.Item("cod_ent"))
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("CUIT") Then
+            '    If dr.Item("CUIT") IsNot DBNull.Value Then
+            '        entidad.CUIT = CLng(dr.Item("CUIT"))
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("Periodo") Then
+            '    If dr.Item("Periodo") IsNot DBNull.Value Then
+            '        If dr.Item("Periodo").ToString.Length = 7 Then
+            '            Dim temp As String = Replace(dr.Item("Periodo").ToString, "/", "")
+            '            temp = Right(temp, 4) & Left(temp, 2)
+            '            If IsNumeric(temp) Then
+            '                entidad.Periodo = CInt(temp)
+            '            End If
+            '        End If
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("cheque") Then
+            '    If dr.Item("cheque") IsNot DBNull.Value Then
+            '        entidad.NroCheche = CLng(dr.Item("cheque"))
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("Importe") Then
+            '    If dr.Item("Importe") IsNot DBNull.Value Then
+            '        entidad.Importe = CDec(dr.Item("Importe"))
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("origen") Then
+            '    If dr.Item("origen") IsNot DBNull.Value Then
+            '        entidad.IdOrigen = CInt(dr.Item("origen"))
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("nro_rec") Then
+            '    If dr.Item("nro_rec") IsNot DBNull.Value Then
+            '        If IsNumeric(dr.Item("nro_rec").ToString) Then
+            '            entidad.NroRecibo = CInt(dr.Item("nro_rec"))
+            '        End If
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("estado") Then
+            '    If dr.Item("estado") IsNot vbNullChar AndAlso dr.Item("estado") IsNot DBNull.Value Then
+            '        If dr.Item("estado").ToString = " " Then
+            '            entidad.IdEstado = CChar("A")
+            '        Else
+            '            entidad.IdEstado = CChar(dr.Item("estado"))
+            '        End If
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("fec_pago") Then
+            '    If dr.Item("fec_pago") IsNot DBNull.Value Then
+            '        entidad.FechaPago = CDate(dr.Item("fec_pago"))
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("fec_acr") Then
+            '    If dr.Item("fec_acr") IsNot DBNull.Value Then
+            '        entidad.FechaAcreditacion = CDate(dr.Item("fec_acr"))
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("fec_cpf") Then
+            '    If dr.Item("fec_cpf") IsNot DBNull.Value Then
+            '        entidad.FechaPagoFacil = CDate(dr.Item("fec_cpf"))
+            '    End If
+            'End If
+            'If dr.Table.Columns.Contains("NombreArchivo") Then
+            '    If dr.Item("NombreArchivo") IsNot DBNull.Value Then
+            '        entidad.NombreArchivo = dr.Item("NombreArchivo").ToString.ToUpper.Trim
+            '    End If
+            'End If
             Return entidad
         End Function
 #End Region

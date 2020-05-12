@@ -37,7 +37,7 @@ Partial Class Forms_ARC_Frm_Arc_Extracto
             FileUpload1.SaveAs(Server.MapPath(nomArc))
             Using file As IO.StreamReader = New System.IO.StreamReader(Server.MapPath(nomArc))
                 Dim arc As New Archivo
-                resultadoImportacion = arc.SubirArchivoCSV(1, nombreArchivo, fechaArchivo, file)
+                resultadoImportacion = arc.SubirArchivoCSV(1, nombreArchivo, file)
             End Using
         Catch ex As Exception
             LblError.Text = ex.Message.ToString
