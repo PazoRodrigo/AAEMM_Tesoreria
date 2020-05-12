@@ -23,8 +23,32 @@
                 <a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Archivos.aspx")%>' class="LinkBtn" title="Volver a Archivos"><span class="icon-circle-left"></span></a>
             </div>
         </li>
-        <li class="linea">
+         <li class="linea">
             <div class="container-fluid">
+                <div class="row mt-1 justify-content-center">
+                    <div class="col-lg-3">
+                        <div style="width: 90%; margin-left: auto; margin-right: auto; text-align: center; padding-top: 10px;">
+                            <span id="SpanIngresoArchivos" class="AAEMM" style="font-size: 15px; color: #fff;">Ingreso de Archivos</span>
+                            <div style="width: 95%; margin-right: auto; margin-left: auto;">
+                                <asp:FileUpload ID="FileUpload1" CssClass="form-control" runat="server" />
+                                <br />
+                                <asp:Button ID="Upload" CssClass="btn btn-primary" runat="server" Text="Subir" UseSubmitBehavior="False" />
+                                <br />
+                                <asp:Label ID="LblError" runat="server"></asp:Label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-2 mt-2">
+                        <h4 class="bg-warning text-center">Archivos EX </h4>
+                        <div id="GrillaArchivos1" style="height:370px;overflow-y:scroll;"></div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-2 mt-2">
+                        <h4 class="bg-warning text-center">Archivos MC</h4>
+                        <div id="GrillaArchivos2" style="height:370px;overflow-y:scroll;"></div>
+                    </div>
+                </div>
             </div>
         </li>
     </ul>

@@ -1,6 +1,4 @@
-﻿'Imports System.Collections.Generic
-'Imports System.Configuration
-Imports Clases.Entidad
+﻿Imports Clases.Entidad
 
 Partial Class Forms_ARC_Frm_Arc_Ingresos
     Inherits System.Web.UI.Page
@@ -23,8 +21,11 @@ Partial Class Forms_ARC_Frm_Arc_Ingresos
             End If
             nombreArchivo = FileUpload1.PostedFile.FileName.Substring(0, 2)
             Dim extension As String = System.IO.Path.GetExtension(FileUpload1.PostedFile.FileName).ToLower()
-            If Not (nombreArchivo = "PF" Or nombreArchivo = "BN") And LCase(extension) = ".txt" Then
+            If Not (nombreArchivo = "BN" Or nombreArchivo = "PF") Then
                 Throw New Exception("Por favor seleccione un archivo PF o BN")
+            End If
+            If Not (LCase(extension) = ".txt") Then
+                Throw New Exception("Por favor seleccione un archivo PF o BN de extensión txt")
             End If
             Dim nomArc As String = "~/Archivos/TXT/"
             If nombreArchivo = "PF" Then
