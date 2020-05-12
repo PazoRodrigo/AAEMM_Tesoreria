@@ -1,8 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Indicadores" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Indicadores.aspx.vb" Inherits="Forms_Frm_Indicadores" %>
+
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-
     <script src='<%= ResolveClientUrl("Frm_Indicadores.js?version20200428_1")%>'></script>
     <%--<script src="https://canvasjs.com/assets/script/canvasjs.min.js?version20200428_1"></script>--%>
     <%--<script type="text/javascript">
@@ -228,6 +227,7 @@
                                         <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Reportes.aspx")%>'>Reportes</a></li>
                                         <li class="BtnDistribuidorIndicadores"><a href="#">Ingresos</a></li>
                                         <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/ADM/Frm_Adm_Gasto.aspx")%>'>Gastos</a></li>
+                                        <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Archivos.aspx")%>'>Archivos</a></li>
                                         <li class="BtnDistribuidorIndicadoresDanger">
                                             <a href="#">
                                                 <div>Ch. Rechazados <span id="LblChequesRechazados" style="float: right; padding-right: 10px;"></span></div>
@@ -235,75 +235,18 @@
                                         </li>
                                     </ul>
                                 </nav>
-                                <div id="Inferior" style="width: 100%; background-color: transparent; margin-top: 50px; height: 140px; border: 1px solid blue; border-radius: 8px;">
+                               <%-- <div id="Inferior" style="width: 100%; background-color: transparent; margin-top: 50px; height: 140px; border: 1px solid blue; border-radius: 8px;">
                                     <div style="width: 90%; margin-left: auto; margin-right: auto; text-align: center; padding-top: 10px;">
                                         <span id="SpanIngresoArchivos" class="AAEMM" style="font-size: 15px; color: #fff;">Ingreso de Archivos</span>
-                                        <input type="text" style="width: 90%; height: 25px; margin-top: 15px; text-align: left; padding-left: 8px; margin-bottom: 10px;" placeholder="Archivo..." readonly="readonly" />
                                         <div style="width: 95%; margin-right: auto; margin-left: auto;">
-                                            <a href="#" id="BtnExaminar" title="Indicadores">
-                                                <div class="Btn">
-                                                    <span title="Examinar....">Examinar ...</span>
-                                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                                                        <Triggers>
-                                                            <asp:PostBackTrigger ControlID="Upload" />
-                                                        </Triggers>
-                                                        <ContentTemplate>
-                                                            <br />
-                                                            <table class="mGridBusqueda" style="width: 400px;">
-                                                                <tr>
-                                                                    <th colspan="2">
-                                                                        <asp:Label ID="Label7" runat="server" Font-Names="Tahoma" Text="Subir Archivo - CL / SE / RE"></asp:Label>
-                                                                    </th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <asp:Label ID="Label8" runat="server" Font-Names="Tahoma" Text="Archivo"></asp:Label>
-                                                                    </td>
-                                                                    <td align="center">
-                                                                        <asp:FileUpload ID="FileUpload1" runat="server" />
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="2" align="center">
-                                                                        <asp:Button ID="Upload" runat="server" Text="Subir" UseSubmitBehavior="False" />
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                            &nbsp;<br />
-                                                            &nbsp;
-          <%--  <cc1:modalpopupextender id="ModalPopupExtender1" runat="server" popupcontrolid="Panel1"
-                targetcontrolid="Upload">
-            </cc1:modalpopupextender>--%>
-                                                        </ContentTemplate>
-                                                        <Triggers>
-                                                            <asp:PostBackTrigger ControlID="Upload" />
-                                                        </Triggers>
-                                                    </asp:UpdatePanel>
-                                                    <asp:Panel ID="Panel1" runat="server" BackColor="White">
-                                                        <table border="1" width="400">
-                                                            <tr>
-                                                                <td align="center" valign="middle">
-                                                                    <asp:Label ID="Label6" runat="server" Font-Bold="True" Font-Names="Times New Roman"
-                                                                        Font-Size="12pt" Text="No cierre esta ventana hasta que desaparezca este mensaje. Espere a que se carque el archivo. El proceso puede tardar algunos minutos..."
-                                                                        Width="279px"></asp:Label>
-                                                                    <br />
-                                                                    <br />
-                                                                    <asp:Image ID="Image1" runat="server" Height="91px" ImageUrl="~/images/loading.gif"
-                                                                        Width="115px" />
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </asp:Panel>
-                                                </div>
-                                            </a>
-                                            <a href="#" id="IcVolver" title="Volver">
-                                                <div id="DivBtn2" class="Btn">
-                                                    <span title="Subir Archivo">Ingresar</span>
-                                                </div>
-                                            </a>
+                                            <form id="form1" runat="server">
+                                                <asp:FileUpload ID="FileUpload1" CssClass="form-control" runat="server" />
+                                                <br />
+                                                <asp:Button ID="Upload" CssClass="btn btn-primary" runat="server" Text="Subir" UseSubmitBehavior="False" />
+                                            </form>
                                         </div>
                                     </div>
-                                </div>
+                                </div>--%>
                             </div>
                         </div>
                     </div>
@@ -311,6 +254,5 @@
             </div>
         </li>
     </ul>
-
 </asp:Content>
 

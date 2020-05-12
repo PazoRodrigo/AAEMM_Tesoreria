@@ -194,7 +194,7 @@
         </div>
     </header>
     <section id="Contenedor" style="height: 510px; padding-top: 1px;">
-        <form>
+       <form id="form1" runat="server">
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
             </asp:ContentPlaceHolder>
         </form>
