@@ -13,7 +13,7 @@ Namespace Entidad
 
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
-        Public Property IdEstado() As Char = CChar("")
+        Public Property IdEstado() As Char = CChar("A")
         Public Property IdCentroCosto() As Integer = 0
         Public Property CodigoEntidad() As Long = 0
         Public Property CUIT() As Long = 0
@@ -176,7 +176,7 @@ Namespace Entidad
 #Region " Métodos Públicos"
         ' ABM
         Public Sub Alta()
-            ValidarAlta()
+            'ValidarAltaBN()
             DAL_Ingreso.Alta(Me)
         End Sub
         Public Sub Baja()
@@ -211,7 +211,12 @@ Namespace Entidad
 #End Region
 #Region " Métodos Privados "
         ' ABM
-        Private Sub ValidarAlta()
+        Private Sub ValidarAltaBN()
+            ValidarUsuario(Me.IdUsuarioAlta)
+            ValidarCampos()
+            ValidarNoDuplicados()
+        End Sub
+        Private Sub ValidarAltaPF()
             ValidarUsuario(Me.IdUsuarioAlta)
             ValidarCampos()
             ValidarNoDuplicados()
