@@ -38,15 +38,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2"></div>
+                    <div class="col-lg-1"></div>
                     <div class="col-lg-2 mt-2">
                         <h4 class="bg-warning text-center">Archivos BN </h4>
                         <div id="GrillaArchivos1" style="height:370px;overflow-y:scroll;"></div>
                     </div>
-                    <div class="col-lg-1"></div>
                     <div class="col-lg-2 mt-2">
                         <h4 class="bg-warning text-center">Archivos PF</h4>
                         <div id="GrillaArchivos2" style="height:370px;overflow-y:scroll;"></div>
+                    </div>
+                    <div class="col-lg-2 mt-2">
+                        <h4 class="bg-warning text-center">Archivos TR</h4>
+                        <div id="GrillaArchivos3" style="height:370px;overflow-y:scroll;"></div>
                     </div>
                 </div>
             </div>

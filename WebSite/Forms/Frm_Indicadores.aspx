@@ -235,18 +235,10 @@
                                         </li>
                                     </ul>
                                 </nav>
-                               <%-- <div id="Inferior" style="width: 100%; background-color: transparent; margin-top: 50px; height: 140px; border: 1px solid blue; border-radius: 8px;">
-                                    <div style="width: 90%; margin-left: auto; margin-right: auto; text-align: center; padding-top: 10px;">
-                                        <span id="SpanIngresoArchivos" class="AAEMM" style="font-size: 15px; color: #fff;">Ingreso de Archivos</span>
-                                        <div style="width: 95%; margin-right: auto; margin-left: auto;">
-                                            <form id="form1" runat="server">
-                                                <asp:FileUpload ID="FileUpload1" CssClass="form-control" runat="server" />
-                                                <br />
-                                                <asp:Button ID="Upload" CssClass="btn btn-primary" runat="server" Text="Subir" UseSubmitBehavior="False" />
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>--%>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
                             </div>
                         </div>
                     </div>

@@ -169,11 +169,12 @@ Namespace Entidad
         End Function
         ' Nuevos
         Public Shared Function TraerUnaXCUIT(CUIT As Long) As Empresa
-            Dim result As Empresa = Todos.Find(Function(x) x.CUIT = CUIT And x.Establecimiento = 0)
-            If result Is Nothing Then
-                Throw New Exception("No existen resultados para la búsqueda")
-            End If
-            Return result
+            Return Todos.Find(Function(x) x.CUIT = CUIT And x.Establecimiento = 0)
+            'Dim result As Empresa = Todos.Find(Function(x) x.CUIT = CUIT And x.Establecimiento = 0)
+            'If result Is Nothing Then
+            '    Throw New Exception("No existen resultados para la búsqueda")
+            'End If
+            'Return result
         End Function
 
 #End Region

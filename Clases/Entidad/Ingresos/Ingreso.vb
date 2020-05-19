@@ -169,14 +169,14 @@ Namespace Entidad
             Return result
         End Function
         ' Nuevos
-        Friend Shared Function TraerUltimosXOrigen(IdOrigen As Enumerador.TipoIngreso, Cantidad As Integer) As List(Of Ingreso)
+        Friend Shared Function TraerUltimosXOrigen(IdOrigen As Enumerador.TipoArchivo, Cantidad As Integer) As List(Of Ingreso)
             Return DAL_Ingreso.TraerUltimos30XOrigen(IdOrigen)
         End Function
 #End Region
 #Region " Métodos Públicos"
         ' ABM
         Public Sub Alta()
-            'ValidarAltaBN()
+            ValidarAlta()
             DAL_Ingreso.Alta(Me)
         End Sub
         Public Sub Baja()
@@ -211,12 +211,7 @@ Namespace Entidad
 #End Region
 #Region " Métodos Privados "
         ' ABM
-        Private Sub ValidarAltaBN()
-            ValidarUsuario(Me.IdUsuarioAlta)
-            ValidarCampos()
-            ValidarNoDuplicados()
-        End Sub
-        Private Sub ValidarAltaPF()
+        Private Sub ValidarAlta()
             ValidarUsuario(Me.IdUsuarioAlta)
             ValidarCampos()
             ValidarNoDuplicados()
@@ -333,7 +328,7 @@ Namespace DataAccessLibrary
             pa.add("@NroRecibo", entidad.NroRecibo)
             pa.add("@NroCheche", entidad.NroCheche)
             pa.add("@IdEstado", entidad.IdEstado)
-            pa.add("@Observaciones", entidad.Observaciones)
+            pa.add("@Observaciones", entidad.Observaciones.Trim.ToUpper)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
@@ -348,7 +343,7 @@ Namespace DataAccessLibrary
             pa.add("@idUsuarioBaja", entidad.IdUsuarioBaja)
             pa.add("@id", entidad.IdEntidad)
             'pa.add("@IdMotivoBaja", entidad.IdMotivoBaja)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
                         entidad.IdEntidad = CInt(dt.Rows(0)(0))
@@ -461,7 +456,7 @@ Namespace DataAccessLibrary
             Return listaResult
         End Function
         ' Traer Base Nueva
-        Friend Shared Function TraerUltimos30XOrigen(IdOrigen As Enumerador.TipoIngreso) As List(Of Ingreso)
+        Friend Shared Function TraerUltimos30XOrigen(IdOrigen As Enumerador.TipoArchivo) As List(Of Ingreso)
             Dim store As String = storeTraerUltimos30XOrigen
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray

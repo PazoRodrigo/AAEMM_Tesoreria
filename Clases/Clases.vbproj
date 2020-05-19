@@ -80,7 +80,7 @@
     <Compile Include="Entidad\ADM\Gasto.vb" />
     <Compile Include="Entidad\Enumeradores.vb" />
     <Compile Include="Entidad\Ingresos\Ingreso.vb" />
-    <Compile Include="Entidad\ARC\Archivo.vb" />
+    <Compile Include="Entidad\Ingresos\Archivo.vb" />
     <Compile Include="Entidad\Complementarias\CuentaCorriente.vb" />
     <Compile Include="Entidad\Complementarias\DatosCalculados.vb" />
     <Compile Include="Entidad\Complementarias\Sexo.vb" />

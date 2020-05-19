@@ -22,32 +22,35 @@ Partial Class Forms_ARC_Frm_Arc_Ingresos
             End If
             Dim strArchivo = System.IO.Path.GetFileNameWithoutExtension(FileUpload1.PostedFile.FileName)
             If strArchivo.Length <> 10 Then
-                Throw New Exception("El nombre del archivo debe ser BNaaaaMMdd o PFaaaaMMdd")
+                Throw New Exception("El nombre del archivo debe ser BNaaaaMMdd, PFaaaaMMdd o TRaaaaMMdd. Ej. BN20200826")
             End If
             nombreArchivo = strArchivo.Substring(0, 2)
             fechaArchivo = strArchivo.Substring(2, 8)
             Dim extension As String = System.IO.Path.GetExtension(FileUpload1.PostedFile.FileName).ToLower()
-            If Not (nombreArchivo = "BN" Or nombreArchivo = "PF") Then
-                Throw New Exception("Por favor seleccione un archivo PF o BN")
+            If Not (nombreArchivo = "BN" Or nombreArchivo = "PF" Or nombreArchivo = "TR") Then
+                Throw New Exception("Por favor seleccione un archivo BN, PF o TR")
             End If
-            If Not (LCase(extension) = ".txt") Then
-                Throw New Exception("Por favor seleccione un archivo PF o BN de extensión txt")
+            If nombreArchivo = "BN" Or nombreArchivo = "PF" Then
+                If Not (LCase(extension) = ".txt") Then
+                    Throw New Exception("Por favor seleccione un archivo PF o BN de extensión txt")
+                End If
             End If
-            Dim nomArc As String = "~/Archivos/TXT/"
-            If nombreArchivo = "PF" Then
-                nomArc &= "PF_"
-            ElseIf nombreArchivo = "BN" Then
-                nomArc &= "BN_"
+            If nombreArchivo = "TR" Then
+                If Not (LCase(extension) = ".csv") Then
+                    Throw New Exception("Por favor seleccione un archivo TF de extensión csv")
+                End If
             End If
-            nomArc &= Now.ToString("yyyyMMdd_hhmmss") & extension
-            FileUpload1.SaveAs(Server.MapPath(nomArc))
-            Using file As IO.StreamReader = New System.IO.StreamReader(Server.MapPath(nomArc))
+            Dim RutaDestino As String = "~/Archivos/TXT/" & nombreArchivo & "_" & Now.ToString("yyyyMMdd_hhmmss") & extension
+            FileUpload1.SaveAs(Server.MapPath(RutaDestino))
+            Using file As IO.StreamReader = New System.IO.StreamReader(Server.MapPath(RutaDestino))
                 Archivo.SubirArchivoTXT(1, strArchivo, file)
             End Using
             'msgValidacion.Mostrar(resultadoImportacion)
+        Catch et As TypeInitializationException
+            LUM.LUM.MensajeSweet("Atención !!!", et.InnerException.ToString, "warning")
         Catch ex As Exception
-            'msgValidacion.Mostrar(ex.Message.ToString)
-            LblError.Text = ex.Message.ToString
+            LUM.LUM.MensajeSweet("Atención !!!", ex.Message.ToString, "warning")
+            'LblError.Text = ex.Message.ToString
         End Try
     End Sub
 End Class
