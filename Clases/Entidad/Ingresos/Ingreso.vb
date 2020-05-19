@@ -154,7 +154,8 @@ Namespace Entidad
         Friend Shared Sub ValidarNombreArchivoDuplicado(nombreArchivo As String)
             Dim ListaIngresos As List(Of Ingreso) = DAL_Ingreso.TraerTodosXNombreArchivo(nombreArchivo)
             If ListaIngresos.Count > 0 Then
-                Throw New Exception("<b> ERROR </b><br /><b>El archivo NO se ha ingresado</b> <br /> <br />Archivo ya existente en el sistema")
+                'Throw New Exception("<b> ERROR </b><br /><b>El archivo NO se ha ingresado</b> <br /> <br />Archivo ya existente en el sistema")
+                Throw New Exception("<b>El archivo NO se ha ingresado</b> <br />Archivo ya existente en el sistema.")
             End If
         End Sub
 

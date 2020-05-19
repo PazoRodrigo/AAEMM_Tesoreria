@@ -1,4 +1,7 @@
-﻿Imports System.IO
+﻿Option Explicit On
+Option Strict On
+
+Imports System.IO
 
 Namespace Entidad
     Public Class Archivo
@@ -18,8 +21,7 @@ Namespace Entidad
         Public Shared Function TraerUltimosXTipo(cantidad As Integer) As List(Of Archivo)
 
         End Function
-        Public Shared Sub SubirArchivoTXT(idUsuario As Integer, nombreArchivo As String, archivo As System.IO.StreamReader)
-            Dim result As String = ""
+        Public Shared Function SubirArchivoTXT(idUsuario As Integer, nombreArchivo As String, archivo As System.IO.StreamReader) As String
             ValidarNombreArchivo(nombreArchivo)
             Dim lista As New List(Of Ingreso)
             'Dim importeTotalArchivoBN As Decimal = 0
@@ -39,9 +41,8 @@ Namespace Entidad
                 Case Else
                     Throw New Exception("Archivo NO soportado")
             End Select
-            ArmarResultadoIngreso(lista)
-            Throw New Exception("Se han registrado " + lista.Count.ToString + " Ingresos.")
-        End Sub
+            Return ArmarResultadoIngreso(lista)
+        End Function
 #End Region
 #Region " Privados Listas"
         Private Shared Sub ArmarListaIngresos(Tipo As Enumerador.TipoArchivo, idUsuario As Integer, nombreArchivo As String, archivo As StreamReader, lista As List(Of Ingreso))
@@ -62,11 +63,11 @@ Namespace Entidad
                             entidad.FechaPago = CDate(linea2.Substring(24, 2) & "/" & linea2.Substring(22, 2) & "/" & linea2.Substring(18, 4))
                             entidad.FechaAcreditacion = CDate(linea2.Substring(32, 2) & "/" & linea2.Substring(30, 2) & "/" & linea2.Substring(26, 4))
                             entidad.Importe = CDec(linea2.Substring(43, 14).Insert(12, ","))
-                            entidad.IdCentroCosto = linea2.Substring(62, 2)
-                            entidad.Periodo = linea2.Substring(80, 6)
-                            entidad.CUIT = linea2.Substring(69, 11)
+                            entidad.IdCentroCosto = CInt(linea2.Substring(62, 2))
+                            entidad.Periodo = CInt(linea2.Substring(80, 6))
+                            entidad.CUIT = CLng(linea2.Substring(69, 11))
                             entidad.IdEstado = CChar("A")
-                            entidad.NroCheche = linea2.Substring(139, 15)
+                            entidad.NroCheche = CLng(linea2.Substring(139, 15))
                             If CLng(entidad.NroCheche) > 0 Then
                                 ' Es cheque
                                 entidad.IdEstado = CChar("A")
@@ -194,9 +195,9 @@ Namespace Entidad
                                         entidad.CUIT = CLng(opcionCUIT_2)
                                     End If
                                     ResolverCodigoEntidad(entidad)
-                                    entidad.IdEstado = "A"
+                                    entidad.IdEstado = CChar("A")
                                     If entidad.CodigoEntidad = 0 Then
-                                        entidad.IdEstado = "T"
+                                        entidad.IdEstado = CChar("T")
                                     End If
                                     ' Es el primero y valida internamente para que no se repita
                                     'If lista.Count = 0 Then
@@ -233,34 +234,36 @@ Namespace Entidad
                 Next
             End If
         End Sub
-        Private Shared Sub ArmarResultadoIngreso(lista As List(Of Ingreso))
+        Private Shared Function ArmarResultadoIngreso(lista As List(Of Ingreso)) As String
             Dim Resultado As New StrResultadoIngresos
             Resultado.cantAcreditados = 0
             Resultado.cantAcreditadosPendiente = 0
             Resultado.cantPendientes = 0
             Resultado.cantRechazados = 0
             Resultado.cantNoEncontrados = 0
-            If lista.Count > 0 Then
-                For Each item As Ingreso In lista
-                    If item.IdEstado.ToString.Length = 1 Then
-                        Select Case item.IdEstado
-                            Case "A"
-                                Resultado.cantAcreditados += 1
-                            Case "L"
-                                Resultado.cantAcreditadosPendiente += 1
-                            Case "P"
-                                Resultado.cantPendientes += 1
-                            Case "R"
-                                Resultado.cantRechazados += 1
-                            Case "T"
-                                Resultado.cantNoEncontrados += 1
-                            Case Else
-                                Throw New Exception("Identificador de Estado a Revisar: " + item.IdEstado.ToString)
-                        End Select
-                    End If
-                Next
+            If lista.Count = 0 Then
+                Throw New Exception("No se han ingresado registros")
             End If
-        End Sub
+            For Each item As Ingreso In lista
+                If item.IdEstado.ToString.Length = 1 Then
+                    Select Case item.IdEstado
+                        Case CChar("A")
+                            Resultado.cantAcreditados += 1
+                        Case CChar("L")
+                            Resultado.cantAcreditadosPendiente += 1
+                        Case CChar("P")
+                            Resultado.cantPendientes += 1
+                        Case CChar("R")
+                            Resultado.cantRechazados += 1
+                        Case CChar("T")
+                            Resultado.cantNoEncontrados += 1
+                        Case Else
+                            Throw New Exception("Identificador de Estado a Revisar: " + item.IdEstado.ToString)
+                    End Select
+                End If
+            Next
+            Return "Se han registrado " + lista.Count.ToString + " ingresos."
+        End Function
 #End Region
 #Region " Validaciones y Funciones"
         Private Shared Sub ResolverCodigoEntidad(entidad As Ingreso)
@@ -281,7 +284,8 @@ Namespace Entidad
             Dim temp As String = nombreArchivo.Substring(2, 8)
             Dim fechaArchivo As Date = CDate(Right(temp, 2) + "-" + Left(Right(temp, 4), 2) + "-" + Left(temp, 4))
             If fechaArchivo > Today Then
-                Throw New Exception("<b> ERROR </b><br /><b>El archivo NO se ha ingresado</b> <br /> <br />La fecha del Archivo es incorrecta")
+                'Throw New Exception("<b> ERROR </b><br /><b>El archivo NO se ha ingresado</b> <br /> <br />La fecha del Archivo es incorrecta")
+                Throw New Exception("<b>El archivo NO se ha ingresado</b> <br />La fecha del Archivo es incorrecta.")
             End If
             Select Case nombreArchivo.Substring(0, 2)
                 Case "BN"
@@ -306,7 +310,7 @@ Namespace Entidad
                         anio = anio - 1
                         mes = 12
                     End If
-                    result = anio & Right("00" & mes.ToString, 2)
+                    result = CInt(anio & Right("00" & mes.ToString, 2))
                 End If
                 Return result
             End Get

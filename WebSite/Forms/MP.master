@@ -17,7 +17,7 @@
     <link rel="icon" type="image/vnd.microsoft.icon" href="../Imagenes/favicon-16x16.png" sizes="16x16">
     <link rel="icon" type="image/vnd.microsoft.icon" href="../Imagenes/favicon-32x32.png" sizes="32x32">
 </head>
-<body style="display: block;">
+<body style="display: none;">
     <noscript>
         <p>El Sistema requiere para su funcionamiento el uso de JavaScript.  Si lo has deshabilitado intencionadamente, por favor vuelve a activarlo.</p>
     </noscript>
@@ -79,17 +79,17 @@
         var urlWsUsuario = '<%= ResolveClientUrl("~/WebServices/WsUsuario.asmx")%>';
     </script>
     <script>
-        //$(document).ready(function () {
-        //    //$("body").css('display', 'block');
-        //    let temp = JSON.parse(sessionStorage.getItem("User"));
-        //    if (temp == null) {
-        //        window.location.href = 'http://localhost:14162/Forms/Login/Frm_Login.aspx';
-        //    } else {
-        //        $("body").css('display', 'block');
-        //        let str = temp.Apellido + ', ' + temp.Nombre
-        //        $("#SpanUsuario").text(str.substring(0, 20));
-        //    }
-        //});
+        $(document).ready(function () {
+            //$("body").css('display', 'block');
+            let temp = JSON.parse(sessionStorage.getItem("User"));
+            if (temp == null) {
+                window.location.href = 'http://localhost:14162/Forms/Login/Frm_Login.aspx';
+            } else {
+                $("body").css('display', 'block');
+                let str = temp.Apellido + ', ' + temp.Nombre
+                $("#SpanUsuario").text(str.substring(0, 20));
+            }
+        });
         function Salir() {
             PopUpConfirmarConCancelar('info', null, 'Desea Salir del Sistema?', '', 'EventoInicio', 'Salir', 'Cancelar');
         }

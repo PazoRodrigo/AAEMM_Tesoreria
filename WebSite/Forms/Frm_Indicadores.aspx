@@ -237,8 +237,25 @@
                                 </nav>
                             </div>
                         </div>
-                        <div class="row">
+                       
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-8">
+                        
+                    </div>
+                    <div class="col-lg-4">
+                         <div class="row">
                             <div class="col-lg-12">
+                                <div style="width: 90%; margin-left: auto; margin-right: auto; text-align: center; padding-top: 10px;">
+                                    <span id="SpanIngresoArchivos" class="AAEMM" style="font-size: 15px; color: #fff;">Ingreso de Archivos</span>
+                                    <div style="width: 95%; margin-right: auto; margin-left: auto;">
+                                        <asp:FileUpload ID="FileUpload1" CssClass="form-control" runat="server" />
+                                        <asp:Button ID="Upload" CssClass="btn btn-primary" runat="server" Text="Subir" UseSubmitBehavior="False" />
+                                        <asp:Label ID="LblOK" runat="server" CssClass="bg-light text-success "></asp:Label>
+                                        <asp:Label ID="LblError" runat="server" CssClass="bg-light text-danger "></asp:Label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

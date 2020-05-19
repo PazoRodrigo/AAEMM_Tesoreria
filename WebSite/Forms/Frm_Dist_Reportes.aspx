@@ -52,11 +52,9 @@
                             <nav>
                                 <ul class="Menu">
                                     <li class="BtnDistribuidor">
-                                      <ul class="SubMenu">
-                                        <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>'>(Alt + I)  - Ingresos</a></li>
-                                        <%--<li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesPropios.aspx")%>'>(Alt + P)  - Cheques Propios</a></li>
-                                             <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesTerceros.aspx")%>'>(Alt + T)  - Cheques Terceros</a></li>--%>
-                                    </ul>
+                                        <ul class="SubMenu">
+                                            <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>'>(Alt + I)  - Ingresos</a></li>
+                                        </ul>
                                     </li>
                                 </ul>
                             </nav>
