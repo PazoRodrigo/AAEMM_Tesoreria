@@ -7,30 +7,9 @@
             let redirect = '';
             if (e.which == 27) {
                 redirect = '<%= ResolveClientUrl("~/Forms/Frm_Indicadores.aspx")%>';
-            } else if (e.ctrlKey && e.altKey && (e.which == 67 || e.which == 99)) {
-                // Ctrol + Alt + C
-                redirect = 'Frm_ABM_CentroCostos.aspx';
-            } else if (e.ctrlKey && e.altKey && (e.which == 86 || e.which == 118)) {
-                // Ctrol + Alt + V
-                redirect = 'Frm_ABM_Convenios.aspx';
-            } else if (e.ctrlKey && e.altKey && (e.which == 85 || e.which == 117)) {
-                // Ctrol + Alt + U
-                redirect = 'Frm_ABM_CuentaContable.aspx';
-            } else if (e.ctrlKey && e.altKey && (e.which == 79 || e.which == 111)) {
-                // Ctrol + Alt + O
-                redirect = 'Frm_ABM_OriginarioGasto.aspx';
-            } else if (e.ctrlKey && e.altKey && (e.which == 84 || e.which == 116)) {
-                // Ctrol + Alt + T
-                redirect = 'Frm_ABM_TipoContacto.aspx';
-            } else if (e.ctrlKey && e.altKey && (e.which == 68 || e.which == 100)) {
-                // Ctrol + Alt + D
-                redirect = 'Frm_ABM_TipoDomicilio.aspx';
-            } else if (e.ctrlKey && e.altKey && (e.which == 80 || e.which == 112)) {
-                // Ctrol + Alt + P
-                redirect = 'Frm_ABM_TipoPago.aspx';
-            } else if (e.ctrlKey && e.altKey && (e.which == 82 || e.which == 114)) {
-                // Ctrol + Alt + R
-                redirect = 'Frm_ABM_Proveedores.aspx';
+            } else if (e.ctrlKey && e.altKey && (e.which == 73 || e.which == 105)) {
+                // Ctrol + Alt + I
+               redirect = '<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>';
             }
             window.location = redirect;
         };
@@ -53,7 +32,7 @@
                                 <ul class="Menu">
                                     <li class="BtnDistribuidor">
                                         <ul class="SubMenu">
-                                            <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>'>(Alt + I)  - Ingresos</a></li>
+                                            <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>'>(Alt + I) - Ingresos</a></li>
                                         </ul>
                                     </li>
                                 </ul>

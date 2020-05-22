@@ -74,16 +74,16 @@ Public Class WsIngreso
     Public Function TraerTodosXFechasXAcreditacion(Desde As Date, Hasta As Date) As Transfer
         Dim ws As New Transfer
         Try
-            Dim result As New List(Of DTO.DTO_Ingreso)
-            Dim lista As List(Of Entidad.Ingreso) = Entidad.Ingreso.TraerTodosXFechasXAcreditacion(Desde, Hasta)
-            If Not lista Is Nothing Then
-                For Each item As Entidad.Ingreso In lista
-                    result.Add(item.ToDTO)
-                Next
-            End If
-            ws.data = result
-            ws.todoOk = True
-            ws.mensaje = ""
+            'Dim result As New List(Of DTO.DTO_Ingreso)
+            'Dim lista As List(Of Entidad.Ingreso) = Entidad.Ingreso.TraerTodosXFechasXAcreditacion(Desde, Hasta)
+            'If Not lista Is Nothing Then
+            '    For Each item As Entidad.Ingreso In lista
+            '        result.Add(item.ToDTO)
+            '    Next
+            'End If
+            'ws.data = result
+            'ws.todoOk = True
+            'ws.mensaje = ""
         Catch ex As Exception
             ws.todoOk = False
             ws.mensaje = ex.Message

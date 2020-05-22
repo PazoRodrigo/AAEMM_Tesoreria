@@ -78,6 +78,70 @@ Namespace Entidad
             FechaAcreditacion = objImportar.FechaAcreditacion
             Observaciones = objImportar.Observaciones
         End Sub
+        Sub New(ByVal ObjLineaArchivo As LineaArchivoBN)
+            IdUsuarioAlta = ObjLineaArchivo.IdUsuarioAlta
+            IdUsuarioBaja = ObjLineaArchivo.IdUsuarioBaja
+            IdMotivoBaja = ObjLineaArchivo.IdMotivoBaja
+            FechaAlta = ObjLineaArchivo.FechaAlta
+            FechaBaja = ObjLineaArchivo.FechaBaja
+            ' Entidad
+            IdCentroCosto = ObjLineaArchivo.IdCentroCosto
+            CodigoEntidad = ResolverCodigoEntidad(ObjLineaArchivo.CUIT)
+            CUIT = ObjLineaArchivo.CUIT
+            Periodo = ObjLineaArchivo.Periodo
+            NroCheche = ObjLineaArchivo.NroCheche
+            IdEstado = ObjLineaArchivo.IdEstado
+            Importe = ObjLineaArchivo.Importe
+            IdOrigen = ObjLineaArchivo.IdTipoArchivo
+            NombreArchivo = ObjLineaArchivo.NombreArchivo
+            FechaPago = ObjLineaArchivo.FechaPago
+            FechaAcreditacion = ObjLineaArchivo.FechaAcreditacion
+        End Sub
+        Sub New(ByVal ObjLineaArchivo As LineaArchivoPF)
+            IdUsuarioAlta = ObjLineaArchivo.IdUsuarioAlta
+            IdUsuarioBaja = ObjLineaArchivo.IdUsuarioBaja
+            IdMotivoBaja = ObjLineaArchivo.IdMotivoBaja
+            FechaAlta = ObjLineaArchivo.FechaAlta
+            FechaBaja = ObjLineaArchivo.FechaBaja
+            ' Entidad
+            IdCentroCosto = ObjLineaArchivo.IdCentroCosto
+            CodigoEntidad = ResolverCodigoEntidad(ObjLineaArchivo.CUIT)
+            CUIT = ObjLineaArchivo.CUIT
+            Periodo = ObjLineaArchivo.Periodo
+            NroCheche = ObjLineaArchivo.NroCheche
+            IdEstado = ObjLineaArchivo.IdEstado
+            Importe = ObjLineaArchivo.Importe
+            IdOrigen = ObjLineaArchivo.IdTipoArchivo
+            NombreArchivo = ObjLineaArchivo.NombreArchivo
+            FechaPago = ObjLineaArchivo.FechaPago
+            FechaAcreditacion = ObjLineaArchivo.FechaAcreditacion
+        End Sub
+        'Sub New(ByVal ObjLineaArchivo As LineaArchivoMC)
+        '    IdUsuarioAlta = ObjLineaArchivo.IdUsuarioAlta
+        '    IdUsuarioBaja = ObjLineaArchivo.IdUsuarioBaja
+        '    IdMotivoBaja = ObjLineaArchivo.IdMotivoBaja
+        '    FechaAlta = ObjLineaArchivo.FechaAlta
+        '    FechaBaja = ObjLineaArchivo.FechaBaja
+        '    ' Entidad
+        '    FechaPago = ObjLineaArchivo.FechaMovimiento
+        '    FechaAcreditacion = ObjLineaArchivo.FechaMovimiento
+        '    IdOrigen = ObjLineaArchivo.IdTipoArchivo
+        '    NombreArchivo = ObjLineaArchivo.NombreArchivo
+        '    'If Left(ObjLineaArchivo.Concepto, 2) = "TR" Then
+        '    '    CodigoEntidad = ResolverCodigoEntidad(ObjLineaArchivo.Concepto)
+
+        '    'End If
+        '    'CUIT = ObjLineaArchivo.CUIT
+        '    'Importe = ObjLineaArchivo.Importe
+
+        '    'IdCentroCosto = ObjLineaArchivo.IdCentroCosto
+
+
+        '    'Periodo = ObjLineaArchivo.Periodo
+
+
+
+        'End Sub
         Sub New(ByVal DtODesde As DTO.DTO_Ingreso)
             ' DBE
             IdUsuarioAlta = DtODesde.IdUsuarioAlta
@@ -137,12 +201,8 @@ Namespace Entidad
             End If
             Return result
         End Function
-        Public Shared Function TraerTodosXFechasXAcreditacion(Desde As Date, Hasta As Date) As List(Of Ingreso)
-            Dim result As List(Of Ingreso) = DAL_Ingreso.TraerTodosXFechasXAcreditacion(Desde, Hasta)
-            If result.Count = 0 Then
-                Throw New Exception("No existen Ingresos para la búsqueda")
-            End If
-            Return result
+        Public Shared Function TraerTodosXFechasXAcreditacion(Desde As Date, Hasta As Date, IdOrigen As Integer) As List(Of Ingreso)
+            Return DAL_Ingreso.TraerTodosXFechasXAcreditacion(Desde, Hasta, IdOrigen)
         End Function
         Public Shared Function TraerTodosXFechasXPago(Desde As Date, Hasta As Date) As List(Of Ingreso)
             Dim result As List(Of Ingreso) = DAL_Ingreso.TraerTodosXFechasXPago(Desde, Hasta)
@@ -170,9 +230,12 @@ Namespace Entidad
             Return result
         End Function
         ' Nuevos
-        Friend Shared Function TraerUltimosXOrigen(IdOrigen As Enumerador.TipoArchivo, Cantidad As Integer) As List(Of Ingreso)
+        Friend Shared Function TraerUltimosXOrigen(IdOrigen As Enumeradores.TipoArchivo, Cantidad As Integer) As List(Of Ingreso)
             Return DAL_Ingreso.TraerUltimos30XOrigen(IdOrigen)
         End Function
+        Friend Shared Sub IngresarArchivoMC(nombreArchivo As String)
+            AltaArchivoMC(nombreArchivo)
+        End Sub
 #End Region
 #Region " Métodos Públicos"
         ' ABM
@@ -209,6 +272,9 @@ Namespace Entidad
             Return result
         End Function
         ' Nuevos
+        Public Shared Sub AltaArchivoMC(nombreArchivo As String)
+            DAL_Ingreso.AltaArchivoMC(nombreArchivo)
+        End Sub
 #End Region
 #Region " Métodos Privados "
         ' ABM
@@ -267,6 +333,38 @@ Namespace Entidad
         Private Sub ValidarNoDuplicados()
 
         End Sub
+        ' Otros
+        Private Shared Function ResolverCodigoEntidad(CUIT As Long) As Integer
+            Dim CodigoEntidad As Integer = 0
+            If CUIT > 0 Then
+                Try
+                    Dim Empresa As Empresa = Empresa.TraerUnaXCUIT(CUIT)
+                    If Empresa IsNot Nothing Then
+                        CodigoEntidad = Empresa.IdEntidad
+                    End If
+                Catch ex As Exception
+                    ' No hace nada
+                End Try
+            End If
+            Return CodigoEntidad
+        End Function
+        Private Shared ReadOnly Property calcularPeriodoPago(fechaAcreditacion As Date?) As Integer
+            Get
+                Dim result As Integer = 0
+                Dim mes As Integer
+                Dim anio As Integer
+                If fechaAcreditacion.HasValue Then
+                    anio = CInt(fechaAcreditacion.Value.Year)
+                    mes = CInt(fechaAcreditacion.Value.Month)
+                    If mes = 1 Then
+                        anio = anio - 1
+                        mes = 12
+                    End If
+                    result = CInt(anio & Right("00" & mes.ToString, 2))
+                End If
+                Return result
+            End Get
+        End Property
 #End Region
     End Class ' Ingreso
 End Namespace ' Entidad
@@ -300,12 +398,21 @@ Namespace DataAccessLibrary
 
 #Region " Stored "
         Const storeAlta As String = "INGRESO.p_Ingreso_Alta"
+        Const storeAltaArchivoMC As String = "INGRESO.p_Ingreso_AltaMC"
+        Const storeTraerTodosXFechasXAcreditacion As String = "INGRESO.p_Ingreso_TraerTodosXFechasXAcreditacion"
+
+
+
+
+
+
+
+
         Const storeBaja As String = "ADM.p_Ingreso_Baja"
         Const storeModifica As String = "ADM.p_Ingreso_Modifica"
         Const storeTraerUnoXId As String = "ADM.p_Ingreso_TraerUnoXId"
         Const storeTraerTodosXCentroCosto As String = "ADM.p_Ingreso_TraerTodosXCentroCosto"
         Const storeTraerTodosXCUIT As String = "ADM.p_Ingreso_TraerTodosXCUIT"
-        Const storeTraerTodosXFechasXAcreditacion As String = "ADM.p_Ingreso_TraerTodosXFechasXAcreditacion"
         Const storeTraerTodosXFechasXPago As String = "ADM.p_Ingreso_TraerTodosXFechasXPago"
         Const storeTraerTodosXPeriodo As String = "ADM.p_Ingreso_TraerTodosXPeriodo"
         Const storeTraerTodosXNombreArchivo As String = "INGRESO.p_Ingreso_TraerTodosXNombreArchivo"
@@ -357,9 +464,7 @@ Namespace DataAccessLibrary
             Dim pa As New parametrosArray
             pa.add("@idUsuarioModifica", entidad.IdUsuarioModifica)
             pa.add("@id", entidad.IdEntidad)
-            'pa.add("@Nombre", entidad.Nombre)
-            'pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
                         entidad.IdEntidad = CInt(dt.Rows(0)(0))
@@ -412,13 +517,14 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
-        Public Shared Function TraerTodosXFechasXAcreditacion(ByVal Desde As Date, ByVal Hasta As Date) As List(Of Ingreso)
+        Public Shared Function TraerTodosXFechasXAcreditacion(ByVal Desde As Date, ByVal Hasta As Date, IdOrigen As Integer) As List(Of Ingreso)
             Dim store As String = storeTraerTodosXFechasXAcreditacion
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray
             pa.add("@Desde", Desde)
             pa.add("@Hasta", Hasta)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            pa.add("@IdOrigen", IdOrigen)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -433,7 +539,7 @@ Namespace DataAccessLibrary
             Dim pa As New parametrosArray
             pa.add("@Desde", Desde)
             pa.add("@Hasta", Hasta)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -457,12 +563,12 @@ Namespace DataAccessLibrary
             Return listaResult
         End Function
         ' Traer Base Nueva
-        Friend Shared Function TraerUltimos30XOrigen(IdOrigen As Enumerador.TipoArchivo) As List(Of Ingreso)
+        Friend Shared Function TraerUltimos30XOrigen(IdOrigen As Enumeradores.TipoArchivo) As List(Of Ingreso)
             Dim store As String = storeTraerUltimos30XOrigen
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray
             pa.add("@IdOrigen", IdOrigen)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -485,6 +591,19 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
+        Friend Shared Sub AltaArchivoMC(nombreArchivo As String)
+            Dim result As Integer = 0
+            Dim store As String = storeAltaArchivoMC
+            Dim pa As New parametrosArray
+            pa.add("@nombreArchivo", nombreArchivo)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        result = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
+        End Sub
 #End Region
 #Region " Métodos Privados "
         Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Ingreso
