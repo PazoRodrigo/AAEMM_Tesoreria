@@ -26,13 +26,14 @@
             chart.render();
         }
     </script>--%>
+    <asp:Button ID="btnSubirOculto" runat="server" Style="visibility: hidden;" />
     <ul>
         <li>
             <div id="DivNombreFormulario100"><span id="NombreFormulario"></span></div>
         </li>
         <li class="linea">
             <div class="container-fluid">
-                <div class="row mt-1" style="height: 270px;">
+                <div class="row mt-1">
                     <div class="col-lg-10">
                         <div class="row">
                             <div class="col-lg-4">
@@ -225,7 +226,7 @@
                                         <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Configuracion.aspx")%>'>Configuración</a></li>
                                         <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Administracion.aspx")%>'>Administración</a></li>
                                         <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Reportes.aspx")%>'>Reportes</a></li>
-                                        <li class="BtnDistribuidorIndicadores"><a href="#">Ingresos</a></li>
+                                        <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/ADM/Frm_Adm_Ingreso.aspx")%>'>Ingresos</a></li>
                                         <li class="BtnDistribuidorIndicadores"><a href='<%= ResolveClientUrl("~/Forms/ADM/Frm_Adm_Gasto.aspx")%>'>Gastos</a></li>
                                         <li class="BtnDistribuidorIndicadores" style="display: none;"><a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Archivos.aspx")%>'>Archivos</a></li>
                                         <li class="BtnDistribuidorIndicadoresDanger">
@@ -237,7 +238,6 @@
                                 </nav>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="row mt-1">
@@ -246,15 +246,18 @@
                     <div class="col-lg-4">
                         <div class="row mt-2">
                             <div class="col-lg-12">
-                                <div style="width: 90%; margin-left: auto; margin-right: auto; text-align: center; padding-top: 10px;">
-                                    <span id="SpanIngresoArchivos" class="AAEMM" style="font-size: 18px; color: #fff;">Ingreso de Archivos</span>
-                                    <div style="width: 95%; margin-right: auto; margin-left: auto;">
-                                        <asp:FileUpload ID="FileUpload1" CssClass="form-control" runat="server" />
-                                        <br />
-                                        <asp:Button ID="Upload" CssClass="btn btn-primary" runat="server" Text="Subir" UseSubmitBehavior="False" />
-                                        <br />
-                                        <asp:Label ID="LblOK" runat="server" CssClass="bg-light text-success "></asp:Label>
-                                        <asp:Label ID="LblError" runat="server" CssClass="bg-light text-danger "></asp:Label>
+                                <div id="PnlResultado" style="display: none;"></div>
+                                <div id="PnlArchivos">
+                                    <div style="width: 90%; margin-left: auto; margin-right: auto; text-align: center; padding-top: 10px;">
+                                        <span id="SpanIngresoArchivos" class="AAEMM" style="font-size: 18px; color: #fff;">Ingreso de Archivos</span>
+                                        <div style="width: 95%; margin-right: auto; margin-left: auto;">
+                                            <asp:FileUpload ID="FileUpload1" CssClass="form-control" runat="server" />
+                                            <br />
+                                            <asp:Button ID="Upload" CssClass="btn btn-primary" runat="server" Text="Subir" UseSubmitBehavior="False" />
+                                            <br />
+                                            <asp:Label ID="LblOK" runat="server" CssClass="bg-light text-success "></asp:Label>
+                                            <asp:Label ID="LblError" runat="server" CssClass="bg-light text-danger "></asp:Label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

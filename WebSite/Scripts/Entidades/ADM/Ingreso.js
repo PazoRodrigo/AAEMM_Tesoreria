@@ -1,4 +1,4 @@
-﻿var _IdCentroCostoBuscadorIngreso;
+﻿var _ListaIngresos;
 
 class Ingreso extends DBE {
     constructor() {
@@ -16,23 +16,12 @@ class Ingreso extends DBE {
         this.NombreArchivo = '';
         this.FechaPago = 0;
         this.FechaAcreditacion = 0;
-        this.FechaPagoFacil = 0;
+        this.Observaciones = '';
 
-        this._ObjIngreso;
         this._ObjCentroCosto;
         this._ObjOrigen;
     }
 
-    async ObjIngreso() {
-        try {
-            if (this._ObjIngreso === undefined) {
-                this._ObjIngreso = Ingreso.TraerUnoXCUIT(this.CUIT);
-            }
-            return this._ObjIngreso;
-        } catch (e) {
-            return new Ingreso;
-        }
-    }
     async ObjCentroCosto() {
         try {
             if (this._ObjCentroCosto === undefined) {
@@ -47,16 +36,13 @@ class Ingreso extends DBE {
         let result = '';
         switch (this.IdOrigen) {
             case 1:
-                result = 'BNA';
+                result = 'BN';
                 break;
             case 2:
-                result = 'Pago Fácil';
+                result = 'PF';
                 break;
-            case 10:
-                result = 'Transferencia';
-                break;
-            case 11:
-                result = 'Transferencia';
+            case 3:
+                result = 'MC';
                 break;
             default:
         }
@@ -64,7 +50,6 @@ class Ingreso extends DBE {
     }
     async Estado() {
         switch (this.IdEstado) {
-
             case 'A':
                 result = 'Acreditado';
                 break;
@@ -77,93 +62,117 @@ class Ingreso extends DBE {
             case 'R':
                 result = 'Rechazado';
                 break;
+            case 'T':
+                result = 'CUIT No Encontrado';
+                break;
             default:
         }
     }
 
- 
-    static async armarUC() {
-        $("#grilla").html("");
-        let control = "";
-        if (parseInt($("#Modal-PopUpIngreso").length) === 0) {
-            control += '<div id="Modal-PopUpIngreso" class="modal" tabindex="-1" role="dialog" >';
-            control += '    <div class="modal-dialog modal-lg">';
-            control += '        <div class="modal-content">';
-            control += '            <div class="modal-header">';
-            control += '                <h2 class="modal-title">Buscador de Ingresos</h2>';
-            control += '            </div>';
-            control += '            <div class="row">';
-            control += '                <div class="modal-body">';
-            control += '                    <div class="container col-md-12">';
-            control += '                        <div class="row">';
-            control += '                            <div class="col-md-2">';
-            control += '                                <h6> CUIT </h6>';
-            control += '                            </div>';
-            control += '                            <div class="col-md-5">';
-            control += '                                <input class="form-control input-sm TxtBuscadores" maxlength="11" style="width:160px" id="txtBuscaCUIT" type="text" placeholder="CUIT (11 números)" onkeypress="return jsSoloNumeros(event);" autocomplete="off"/>';
-            control += '                           </div>';
-            control += '                        </div>';
-            control += '                        <div class="row mt-1">';
-            control += '                            <div class="col-md-2">';
-            control += '                                <h6> C. de C.</h6>';
-            control += '                            </div>';
-            control += '                            <div class="col-md-8">';
-            control += '                                <div id="CboBuscadorCentroCosto"></div>';
-            control += '                            </div>';
-            control += '                        </div>';
-            control += '                        <div class="row mt-1">';
-            control += '                            <div class="col-md-2">';
-            control += '                                <h6> Tipo </h6>';
-            control += '                            </div>';
-            control += '                            <div class="col-md-10">';
-            control += '                                <input type="radio" name="seleccionFecha" class="mibtn-seleccionFecha" value="1"/>Acreditación';
-            control += '                                <input type="radio" name="seleccionFecha" class="mibtn-seleccionFecha" value="2"/>Pago';
-            control += '                            </div>';
-            control += '                        </div>';
-            control += '                        <div class="row mt-1">';
-            control += '                            <div class="col-md-2">';
-            control += '                                <h6> Fechas</h6>';
-            control += '                            </div>';
-            control += '                            <div class="col-md-4">';
-            control += '                                <input id="TxtFechaDesde" class="form-control input-sm TxtBuscadores datepicker" type="text" placeholder="Desde" autocomplete="off">';
-            control += '                            </div>';
-            control += '                            <div class="col-md-4">';
-            control += '                                <input id="TxtFechaHasta" class="form-control input-sm TxtBuscadores datepicker" type="text" placeholder="Hasta" autocomplete="off">';
-            control += '                            </div>';
-            control += '                        </div>';
-            control += '                        <div class="row mt-2">';
-            control += '                            <div class="col-md-9"></div>';
-            control += '                            <div class="col-md-3">';
-            control += '                                <div class="Boton BtnBuscar">';
-            control += '                                    <a id="LinkBtnBuscarIngreso" href="#"><span>Buscar Ingreso</span></a>';
-            control += '                                </div>';
-            control += '                            </div>';
-            control += '                        </div>';
-            control += '                        <div class="row mt-2">';
-            control += '                            <div class="col-md-12">';
-            control += '                                <div id="grillaBuscadorIngresos" style="height: 180px;overflow-y: scroll;"></div>';
-            control += '                            </div>';
-            control += '                        </div>';
-            control += '                    </div>';
-            control += '                </div>';
-            control += '            </div>';
-            control += '            <div class="modal-footer">';
-            control += '                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>';
-            control += '            </div>';
-            control += '        </div>';
-            control += '    </div>';
-            control += '</div>';
-            $("body").append(control);
+    // Traer
+    static async TraerTodos() {
+        let lista = await ejecutarAsync(urlWsIngreso + "/TraerTodos");
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadIngreso(value));
+            });
         }
-        LimpiarBuscador();
-        let lista = await CentroCosto.TraerTodosActivos();
-        await CentroCosto.ArmarCombo(lista, 'CboBuscadorCentroCosto', 'SelectorBuscadorCentroCosto', 'EventoBuscadorCentroCosto', 'Centro de Costo', 'CboBuscadorCC');
-        _IdCentroCostoBuscadorIngreso = 0;
-        $("#Modal-PopUpIngreso").modal('show');
-        $("#txtBuscaCUIT").focus();
+        _ListaIngresos = result;
+        return result;
+    }
+    static async TraerTodosXBusqueda(Busqueda) {
+        let data = {
+            'Busqueda': Busqueda
+        };
+        let lista = await ejecutarAsync(urlWsIngreso + "/TraerTodosXBusqueda", data);
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadIngreso(value));
+            });
+        }
+        _ListaIngresos = result;
+        return result;
+    }
+
+    static async ArmarGrillaCabecera(div) {
+        $("#" + div + "").html('');
+        let str = "";
+        str += '<table class="table table-sm">';
+        str += '    <thead>';
+        str += '        <tr>';
+        str += '            <th style="visibility: hidden;"><img src="../../Imagenes/lupa.png" style="width:30px; height: auto;" alt=""></th>';
+        str += '            <th class="text-center" style="width: 80px;">Fecha</th>';
+        str += '            <th class="text-center" style="width: 270px;">CUIT / Empresa</th>';
+        str += '            <th class="text-center" style="width: 80px;">Período</th>';
+        str += '            <th class="text-center" style="width: 110px;">Importe</th>';
+        str += '            <th class="text-center" style="width: 100px;">Archivo</th>';
+        str += '            <th class="text-center" style="width: 40px;">Og</th>';
+        str += '            <th class="text-center" style="width: 40px;">Ch.</th>';
+        str += '            <th class="text-left" style="width: 50px;">Et.</th>';
+        str += '        </tr>';
+        str += '    </thead>';
+        str += '</table >';
+        return $("#" + div + "").html(str);
+    }
+    static async ArmarGrillaDetalle(div, lista, evento, estilo) {
+        $("#" + div + "").html('');
+        let str = "";
+        str += '<div style="' + estilo + '">';
+        str += '<table class="table table-sm table-striped table-hover">';
+        str += '    <tbody>';
+        if (lista.length > 0) {
+            for (let item of lista) {
+                console.log(item);
+                str += '        <tr>';
+                str += '            <td style=""><a hfre="#" data-Id="' + item.IdEntidad + '"  data-Evento="' + evento + '" onclick="SeleccionIngreso(this);"> <img src="../../Imagenes/lupa.png" alt=""></a></td>';
+                str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + item.FechaAcreditacion + '</small></td>';
+                str += '            <td class="text-left" style="width: 270px;"><small class="text-light">' + item.CUIT + '</small></td>';
+                str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + item.Periodo + '</small></td>';
+                str += '            <td class="text-right" style="width: 110px;"><small class="text-light">' + separadorMiles(item.Importe) + '</small></td>';
+                str += '            <td class="text-center" style="width: 100px;"><small class="text-light">' + item.NombreArchivo + '</small></td>';
+                str += '            <td class="text-center" style="width: 40px;"><small class="text-light">' + await item.Origen() + '</small></td>';
+                let cheque = '';
+                if (item.NroCheche > 0) {
+                    cheque = 'Si';
+                }
+                str += '            <td class="text-center" style="width: 40px;"><small class="text-light">' + cheque + 'si</small></td>';
+                str += '            <td class="text-center" style="width: 30px;"><small class="text-light">' + item.IdEstado + '</small></td>';
+                str += '        </tr>';
+            }
+        }
+        str += '    </tbody>';
+        str += '</table >';
+        str += '</div >';
+        return $("#" + div + "").html(str);
+
     }
 }
-function LimpiarBuscador() {
-    $(".TxtBuscadores").val('');
-    $("#grillaBuscadorIngresos").html('');
+function LlenarEntidadIngreso(entidad) {
+    let Res = new Ingreso;
+    Res.IdUsuarioAlta = entidad.IdUsuarioAlta;
+    Res.IdUsuarioBaja = entidad.IdUsuarioBaja;
+    Res.IdUsuarioModifica = entidad.IdUsuarioModifica;
+    Res.FechaAlta = entidad.FechaAlta;
+    Res.FechaBaja = entidad.FechaBaja;
+    Res.IdMotivoBaja = entidad.IdMotivoBaja;
+    Res.IdEntidad = entidad.IdEntidad;
+    Res.IdEstado = entidad.IdEstado;
+    Res.IdCentroCosto = entidad.IdCentroCosto;
+    Res.CodigoEntidad = entidad.CodigoEntidad;
+    Res.CUIT = entidad.CUIT;
+    Res.Periodo = entidad.Periodo;
+    Res.NroCheche = entidad.NroCheche;
+    Res.Importe = entidad.Importe;
+    Res.IdOrigen = entidad.IdOrigen;
+    Res.NroRecibo = entidad.NroRecibo;
+    Res.NombreArchivo = entidad.NombreArchivo;
+    Res.FechaPago = entidad.FechaPago;
+    Res.FechaAcreditacion = entidad.FechaAcreditacion;
+    Res.Observaciones = entidad.Observaciones;
+    return Res;
+}
+function SeleccionIngreso(MiElemento) {
+    alert(111);
 }

@@ -16,15 +16,238 @@
             <div id="BtnIndicadores" class="Cabecera Porc10_L">
                 <a id="LinkBtnInidicadores" href='<%= ResolveClientUrl("~/Forms/Frm_Indicadores.aspx")%>' class="LinkBtn" title="Indicadores"><span class="icon-stats-dots"></span></a>
             </div>
-            <div id="DivNombreFormulario" class="Cabecera Porc80_L">
+            <div id="DivNombreFormulario" class="Cabecera Porc90_L">
                 <span id="SpanNombreFormulario"></span>
-            </div>
-            <div id="BtnVolver" class="Cabecera Porc10_L">
-                <a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Administracion.aspx")%>' class="LinkBtn" title="Volver a Configuración"><span class="icon-circle-left"></span></a>
             </div>
         </li>
         <li class="linea">
             <div class="container-fluid">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="container border border-primary">
+                            <div class="col-12 text-center">Fecha Acreditación</div>
+                            <div class="container">
+                                <div class="row mt-1 justify-content-center">
+                                    <div class="col-5">
+                                        <input type="text" id="BuscaDesdeAcred"
+                                            class="form-control datepicker" onkeypress="return jsNoEscribir(event)" placeholder="Desde">
+                                    </div>
+                                    <div class="col-2"></div>
+                                    <div class="col-5">
+                                        <input type="text" id="BuscaHastaAcred"
+                                            class="form-control datepicker" onkeypress="return jsNoEscribir(event)" placeholder="Hasta">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">Estado</div>
+                                <div class="col-8">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoA" value="A">
+                                        <label class="form-check-label" for="IdEstadoA">A</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoL" value="L">
+                                        <label class="form-check-label" for="IdEstadoL">L</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoP" value="P">
+                                        <label class="form-check-label" for="IdEstadoP">P</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoR" value="R">
+                                        <label class="form-check-label" for="IdEstadoR">R</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoT" value="T">
+                                        <label class="form-check-label" for="IdEstadoT">T</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">Empresa</div>
+                                <div class="col-8">
+                                    <input type="text" id="BuscaEmpresa" class="form-control" placeholder="Empresa">
+                                </div>
+
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">CUIT</div>
+                                <div class="col-8">
+                                    <input type="text" id="BuscaCUIT" class="form-control text-center"
+                                        placeholder="CUIT" onkeypress="return jsSoloNumerosSinPuntos(event)" maxlength="11" style="width: 120px;">
+                                </div>
+                            </div>
+
+                            <div class="row mt-1">
+                                <div class="col-4">Tipo</div>
+                                <div class="col-8">
+                                    <div id="ChecksTipo"></div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckTipo" type="checkbox" id="TipoBN" value="1">
+                                        <label class="form-check-label" for="TipoBN">BN</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckTipo" type="checkbox" id="TipoPF" value="2">
+                                        <label class="form-check-label" for="TipoPF">PF</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckTipo" type="checkbox" id="TipoMC" value="3">
+                                        <label class="form-check-label" for="TipoMC">MC</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">Importe</div>
+                                <div class="col-5">
+                                    <input type="text" id="BuscaImporte" class="form-control" onkeypress="return jsSoloNumeros(event)"
+                                        placeholder="Importe">
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">Nro. Recibo</div>
+                                <div class="col-7">
+                                    <input type="text" id="BuscaNroRecibo" class="form-control" onkeypress="return jsSoloNumerosSinPuntos(event)"
+                                        placeholder="Nro. Recibo">
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">Nro. Cheque</div>
+                                <div class="col-7">
+                                    <input type="text" id="BuscaNroCheque" class="form-control" onkeypress="return jsSoloNumerosSinPuntos(event)"
+                                        placeholder="Nro. Cheque">
+                                </div>
+                            </div>
+                            <div class="row mt-3 mb-3">
+                                <div class="col-1"></div>
+                                <div class="col-10">
+                                    <a href="#" id="BtnBuscador" class="btn btn-md btn-block btn-primary">Buscar Ingresos
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div id="Grilla" class="row" style="display: block;">
+                            <div class="container border border-primary">
+                                <div class="row mt-1">
+                                    <div class="col-1">
+                                        <a href="#">
+                                            <img src="../../Imagenes/Binoculares.png" alt=""></a>
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-12">
+                                        <div id="GrillaCabecera"></div>
+                                        <%--   <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" style="width: 15px;"></th>
+                                                    <th scope="col">Acreditación</th>
+                                                    <th scope="col">CUIT / Empresa</th>
+                                                    <th scope="col">Período</th>
+                                                    <th scope="col">Importe</th>
+                                                    <th scope="col">Archivo</th>
+                                                    <th scope="col">Origen</th>
+                                                    <th scope="col">Cheque</th>
+                                                    <th scope="col">Estado</th>
+                                                </tr>
+                                            </thead>
+                                        </table>--%>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="GrillaDetalle"></div>
+                                        <%-- <table class="table table-sm table-striped table-hover">
+                                            <tbody>
+                                                <tr>
+                                                    <td><img src="../../Imagenes/lupa.png" alt=""></td>
+                                                    <td>Acreditación</td>
+                                                    <td>CUIT / Empresa</td>
+                                                    <td>Período</td>
+                                                    <td>Importe</td>
+                                                    <td>Archivo</td>
+                                                    <td>Origen</td>
+                                                    <td>Cheque</td>
+                                                    <td>Estado</td>
+                                                </tr>
+                                                
+                                            </tbody>
+                                        </table>--%>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Seleccionado" class="row" style="display: none;">
+                            <div class="container border border-primary">
+                                <div class="row mt-1">
+                                    <div class="col-1">
+                                        <img src="" alt="Binoculares">
+                                    </div>
+                                    <div class="col-1">
+                                        <img src="" alt="Grilla">
+                                    </div>
+                                    <div class="col-1">CUIT</div>
+                                    <div class="col-2">
+                                        <input type="text" id="EntidadCUIT" class="form-control text-center"
+                                            placeholder="CUIT" maxlength="11" style="width: 120px;">
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="text" id="EntidadEmpresa" class="form-control"
+                                            placeholder="Empresa" readonly>
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-2">Acreditacion</div>
+                                    <div class="col-2">
+                                        <input type="text" id="EntidadAcred" class="form-control datepicker"
+                                            placeholder="Acreditación">
+                                    </div>
+                                    <div class="col-2">Período</div>
+                                    <div class="col-2">
+                                        <input type="text" id="EntidadPeriodo" class="form-control"
+                                            placeholder="Período">
+                                    </div>
+                                    <div class="col-2">Importe</div>
+                                    <div class="col-2">
+                                        <input type="text" id="EntidadImporte" class="form-control"
+                                            placeholder="Importe">
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-2">Origen</div>
+                                    <div class="col-2">
+                                        <input type="text" id="EntidadOrigen" class="form-control"
+                                            placeholder="Origen" readonly>
+                                    </div>
+                                    <div class="col-2">Nro. Cheque</div>
+                                    <div class="col-2">
+                                        <input type="text" id="EntidadNroCheque" class="form-control"
+                                            placeholder="Nro. Cheque">
+                                    </div>
+                                    <div class="col-2">Estado</div>
+                                    <div class="col-2">
+                                        <input type="text" id="EntidadEstado" class="form-control"
+                                            placeholder="Estado" readonly>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-1"></div>
+                                    <div class="col-6">
+                                        <a href="#" class="btn btn-md btn-block btn-success">Actualizar
+                                        Ingreso</a>
+                                    </div>
+                                    <div class="col-1"></div>
+                                    <div class="col-3">
+                                        <a href="#" class="btn btn-md btn-block btn-warning">Separar
+                                        Ingreso</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </li>
     </ul>

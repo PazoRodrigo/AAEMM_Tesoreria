@@ -11,6 +11,16 @@ Namespace Entidad
     Public Class Ingreso
         Inherits DBE
 
+        Public Structure StrBusqueda
+            Public Desde As Long
+            Public Hasta As Long
+            Public Estados As List(Of Integer)
+            Public CUIT As Long
+            Public Tipo As List(Of Char)
+            Public Importe As Decimal
+            Public NroRecibo As Long
+            Public NroCheque As Long
+        End Structure
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
         Public Property IdEstado() As Char = CChar("A")
@@ -180,6 +190,26 @@ Namespace Entidad
 #End Region
 #Region " Métodos Estáticos"
         ' Traer
+        Public Shared Function TraerTodos() As List(Of Ingreso)
+            Return DAL_Ingreso.TraerTodos()
+        End Function
+        Public Shared Function TraerTodosXBusqueda(busqueda As StrBusqueda) As List(Of Ingreso)
+            Dim existeParametro As Boolean = False
+            Dim sqlQuery As String = "SELECT * FROM Ingreso.Ingresos"
+            If busqueda.Desde > 0 Then
+                Dim Desde As New Date(busqueda.Desde)
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE"
+                End If
+
+                sqlQuery += "FechaAcredicion > '" + Desde.ToString + "'"
+            End If
+
+            Dim result As List(Of Ingreso) = DAL_Ingreso.TraerTodosXBusqueda(sqlQuery)
+            Return result
+        End Function
+
         Public Shared Function TraerUno(ByVal Id As Integer) As Ingreso
             Dim result As Ingreso = DAL_Ingreso.TraerUno(Id)
             If result Is Nothing Then
@@ -374,6 +404,7 @@ Namespace DTO
         Inherits DTO_DBE
 
 
+
 #Region " Atributos / Propiedades"
         Public Property IdEntidad() As Integer = 0
         Public Property IdEstado() As Char = CChar("")
@@ -400,6 +431,9 @@ Namespace DataAccessLibrary
         Const storeAlta As String = "INGRESO.p_Ingreso_Alta"
         Const storeAltaArchivoMC As String = "INGRESO.p_Ingreso_AltaMC"
         Const storeTraerTodosXFechasXAcreditacion As String = "INGRESO.p_Ingreso_TraerTodosXFechasXAcreditacion"
+        Const storeTraerTodos As String = "INGRESO.p_Ingreso_TraerTodos"
+        Const storeTraerTodosAcreditados As String = "INGRESO.p_Ingreso_TraerTodosAcreditados"
+        Const storeTraerTodosNOAcreditados As String = "INGRESO.p_Ingreso_TraerTodosNOAcreditados"
 
 
 
@@ -437,7 +471,7 @@ Namespace DataAccessLibrary
             pa.add("@NroCheche", entidad.NroCheche)
             pa.add("@IdEstado", entidad.IdEstado)
             pa.add("@Observaciones", entidad.Observaciones.Trim.ToUpper)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
                         entidad.IdEntidad = CInt(dt.Rows(0)(0))
@@ -473,12 +507,51 @@ Namespace DataAccessLibrary
             End Using
         End Sub
         ' Traer
+        Public Shared Function TraerTodos() As List(Of Ingreso)
+            Dim store As String = storeTraerTodos
+            Dim listaResult As New List(Of Ingreso)
+            Dim pa As New parametrosArray
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
+        Public Shared Function TraerTodosAcreditados() As List(Of Ingreso)
+            Dim store As String = storeTraerTodosAcreditados
+            Dim listaResult As New List(Of Ingreso)
+            Dim pa As New parametrosArray
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
+        Public Shared Function TraerTodosNOAcreditados() As List(Of Ingreso)
+            Dim store As String = storeTraerTodosNOAcreditados
+            Dim listaResult As New List(Of Ingreso)
+            Dim pa As New parametrosArray
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
         Public Shared Function TraerUno(ByVal id As Integer) As Ingreso
             Dim store As String = storeTraerUnoXId
             Dim result As New Ingreso
             Dim pa As New parametrosArray
             pa.add("@id", id)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
                         result = LlenarEntidad(dt.Rows(0))
@@ -494,7 +567,7 @@ Namespace DataAccessLibrary
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray
             pa.add("@IdCentroCosto", IdCentroCosto)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -508,7 +581,7 @@ Namespace DataAccessLibrary
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray
             pa.add("@CUIT", CUIT)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -553,7 +626,7 @@ Namespace DataAccessLibrary
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray
             pa.add("@Periodo", Periodo)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -582,7 +655,7 @@ Namespace DataAccessLibrary
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray
             pa.add("@nombreArchivo", nombreArchivo)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -694,9 +767,9 @@ Namespace DataAccessLibrary
                     End If
                 End If
             End If
-            If dr.Table.Columns.Contains("origen") Then
-                If dr.Item("origen") IsNot DBNull.Value Then
-                    entidad.IdOrigen = CInt(dr.Item("origen"))
+            If dr.Table.Columns.Contains("IdOrigen") Then
+                If dr.Item("IdOrigen") IsNot DBNull.Value Then
+                    entidad.IdOrigen = CInt(dr.Item("IdOrigen"))
                 End If
             End If
 
@@ -783,6 +856,10 @@ Namespace DataAccessLibrary
             '    End If
             'End If
             Return entidad
+        End Function
+
+        Friend Shared Function TraerTodosXBusqueda(sqlQuery As String) As List(Of Ingreso)
+            Throw New NotImplementedException()
         End Function
 #End Region
     End Class ' DAL_Ingreso

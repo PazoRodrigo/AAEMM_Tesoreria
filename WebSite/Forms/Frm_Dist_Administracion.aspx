@@ -14,7 +14,7 @@
             } else if (e.ctrlKey && e.altKey && (e.which == 72 || e.which == 104)) {
                 // Ctrol + Alt + H
                 redirect = '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Chequera.aspx")%>';
-                 } else if (e.ctrlKey && e.altKey && (e.which == 73 || e.which == 105)) {
+            } else if (e.ctrlKey && e.altKey && (e.which == 73 || e.which == 105)) {
                 // Ctrol + Alt + I
                 redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Ingreso.aspx")%>';
             } else if (e.ctrlKey && e.altKey && (e.which == 77 || e.which == 109)) {
@@ -59,7 +59,6 @@
                                         <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empresa.aspx")%>'>(Alt + E)  - Empresas</a></li>
                                         <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empleado.aspx")%>'>(Alt + M)  - Empleados</a></li>
                                         <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Chequera.aspx")%>'>(Alt + H)  - Chequera</a></li>
-                                        <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Ingreso.aspx")%>'>(Alt + I)  - Ingresos</a></li>
                                         <%--<li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesPropios.aspx")%>'>(Alt + P)  - Cheques Propios</a></li>
                                              <li><a href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesTerceros.aspx")%>'>(Alt + T)  - Cheques Terceros</a></li>--%>
                                     </ul>
