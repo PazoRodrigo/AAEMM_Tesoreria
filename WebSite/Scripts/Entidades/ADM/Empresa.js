@@ -1,39 +1,47 @@
 ﻿var _Lista_Empresa;
-var _IdCentroCostoBuscadorEmpresa;
 
+class StrBusquedaEmpresa {
+    constructor() {
+        this.CUIT = 0;
+        this.RazonSocial = '';
+        this.IdCentroCosto = 0;
+        this.IncluirAlta = 1;
+        this.IncluirBaja = 0;
+        this.Incluir0 = 0;
+    }
+}
 class Empresa extends DBE {
     constructor() {
-        super();
-        this.IdEntidad = 0;
-        this.Codigo = 0;
-        this.RazonSocial = '';
-        this.CUIT = 0;
-        this.CorreoElectronico = '';
-        this.IdEstado = 0;
+            super();
+            this.IdEntidad = 0;
+            this.Codigo = 0;
+            this.RazonSocial = '';
+            this.CUIT = 0;
+            this.CorreoElectronico = '';
+            this.IdEstado = 0;
 
-        this.ObjDomicilio;
-    }
-
-    // Lazy
-    async ObjDatosCalculados() {
-        try {
-            let data = {
-                'CUIT': CUIT,
-                'IdEstablecimiento': IdEstablecimiento
-            };
-            let lista = await ejecutarAsync(urlWsEmpresa + "/TraerDatosCalculados", data);
-            let result = [];
-            if (lista.length > 0) {
-                $.each(lista, function (key, value) {
-                    result.push(LlenarEntidadDatosCalculados(value));
-                });
-            }
-            return result[0];
-        } catch (e) {
-            return [];
+            this.ObjDomicilio;
         }
-    }
-    // ABM
+        // Lazy
+    async ObjDatosCalculados() {
+            try {
+                let data = {
+                    'CUIT': CUIT,
+                    'IdEstablecimiento': IdEstablecimiento
+                };
+                let lista = await ejecutarAsync(urlWsEmpresa + "/TraerDatosCalculados", data);
+                let result = [];
+                if (lista.length > 0) {
+                    $.each(lista, function(key, value) {
+                        result.push(LlenarEntidadDatosCalculados(value));
+                    });
+                }
+                return result[0];
+            } catch (e) {
+                return [];
+            }
+        }
+        // ABM
     async Alta() {
         await this.ValidarCamposEmpresa();
         this.Nombre = this.Nombre.toUpperCase();
@@ -62,7 +70,7 @@ class Empresa extends DBE {
             let id = await ejecutarAsync(urlWsEmpresa + "/Modifica", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Empresa, function (entidad, index) {
+            let buscados = $.grep(_Lista_Empresa, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Empresa = buscados;
@@ -81,7 +89,7 @@ class Empresa extends DBE {
             let id = await ejecutarAsync(urlWsEmpresa + "/Baja", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Empresa, function (entidad, index) {
+            let buscados = $.grep(_Lista_Empresa, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Empresa = buscados;
@@ -120,7 +128,7 @@ class Empresa extends DBE {
         let lista = await ejecutarAsync(urlWsEmpresa + "/TraerUno", data);
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function (key, value) {
+            $.each(lista, function(key, value) {
                 result.push(LlenarEntidadEmpresa(value));
             });
         }
@@ -133,7 +141,7 @@ class Empresa extends DBE {
         let lista = await ejecutarAsync(urlWsEmpresa + "/TraerUnoXCUIT", data);
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function (key, value) {
+            $.each(lista, function(key, value) {
                 result.push(LlenarEntidadEmpresa(value));
             });
         }
@@ -144,133 +152,166 @@ class Empresa extends DBE {
     }
     static async TraerTodosActivos() {
         _Lista_Empresa = await Empresa.TraerTodos();
-        let buscado = $.grep(_Lista_Empresa, function (entidad, index) {
+        let buscado = $.grep(_Lista_Empresa, function(entidad, index) {
             return entidad.IdEstado === 0;
         });
         return buscado;
     }
     static async TraerTodas() {
-        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodos");
-        _Lista_Empresa = [];
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadEmpresa(value));
-            });
+            let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodos");
+            _Lista_Empresa = [];
+            let result = [];
+            if (lista.length > 0) {
+                $.each(lista, function(key, value) {
+                    result.push(LlenarEntidadEmpresa(value));
+                });
+            }
+            _Lista_Empresa = result;
+            return _Lista_Empresa;
         }
-        _Lista_Empresa = result;
-        return _Lista_Empresa;
-    }
-    static async TraerTodasXCUIT(CUIT) {
-        let data = {
-            'CUIT': CUIT
-        };
-        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosXCUIT", data);
-        _Lista_Empresa = [];
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadEmpresa(value));
-            });
+        // static async TraerTodasXCUIT(CUIT) {
+        //     let data = {
+        //         'CUIT': CUIT
+        //     };
+        //     let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosXCUIT", data);
+        //     _Lista_Empresa = [];
+        //     let result = [];
+        //     if (lista.length > 0) {
+        //         $.each(lista, function(key, value) {
+        //             result.push(LlenarEntidadEmpresa(value));
+        //         });
+        //     }
+        //     _Lista_Empresa = result;
+        //     return _Lista_Empresa;
+        // }
+        // static async TraerTodasXRazonSocial(RazonSocial) {
+        //     let data = {
+        //         'RazonSocial': RazonSocial
+        //     };
+        //     let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosXRazonSocial", data);
+        //     _Lista_Empresa = [];
+        //     let result = [];
+        //     if (lista.length > 0) {
+        //         $.each(lista, function(key, value) {
+        //             result.push(LlenarEntidadEmpresa(value));
+        //         });
+        //     }
+        //     _Lista_Empresa = result;
+        //     return _Lista_Empresa;
+        // }
+        // static async TraerTodasXCentroCosto(IdCentroCosto) {
+        //     let data = {
+        //         'IdCentroCosto': IdCentroCosto
+        //     };
+        //     let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosXCentroCosto", data);
+        //     _Lista_Empresa = [];
+        //     let result = [];
+        //     if (lista.length > 0) {
+        //         $.each(lista, function(key, value) {
+        //             result.push(LlenarEntidadEmpresa(value));
+        //         });
+        //     }
+        //     _Lista_Empresa = result;
+        //     return _Lista_Empresa;
+        // }
+    static async TraerTodosXBusqueda(Busqueda) {
+            let data = {
+                'Busqueda': Busqueda
+            };
+            let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosXBusqueda", data);
+            let result = [];
+            if (lista.length > 0) {
+                $.each(lista, function(key, value) {
+                    result.push(LlenarEntidadEmpresa(value));
+                });
+            }
+            _ListaEmpresas = result;
+            return result;
         }
-        _Lista_Empresa = result;
-        return _Lista_Empresa;
-    }
-    static async TraerTodasXRazonSocial(RazonSocial) {
-        let data = {
-            'RazonSocial': RazonSocial
-        };
-        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosXRazonSocial", data);
-        _Lista_Empresa = [];
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadEmpresa(value));
-            });
-        }
-        _Lista_Empresa = result;
-        return _Lista_Empresa;
-    }
-    static async TraerTodasXCentroCosto(IdCentroCosto) {
-        let data = {
-            'IdCentroCosto': IdCentroCosto
-        };
-        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosXCentroCosto", data);
-        _Lista_Empresa = [];
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadEmpresa(value));
-            });
-        }
-        _Lista_Empresa = result;
-        return _Lista_Empresa;
-    }
-    static async TraerTodosXBusqueda(RazonSocial, CUIT, IdCentroCosto) {
-        let data = {
-            'IdCentroCosto': IdCentroCosto,
-            'CUIT': CUIT,
-            'RazonSocial': RazonSocial
-        };
-        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosXBusqueda", data);
-        _Lista_Empresa = [];
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadEmpresa(value));
-            });
-        }
-        _Lista_Empresa = result;
-        return _Lista_Empresa;
-    }
-
-    // Otros
+        // Otros
     static async Refresh() {
-        _Lista_Empresa = await Empresa.TraerTodas();
-    }
-    // Herramientas
-    static async ArmarGrillaSinEliminar(lista, div, eventoSeleccion, estilo) {
-        $('#' + div + '').html('');
-        let str = '';
-        if (lista.length > 0) {
-            str += '<div style="' + estilo + '">';
-            str += '    <ul class="ListaGrilla">';
-            let estiloItem = '';
-            for (let item of lista) {
-                estiloItem = 'LinkListaGrillaObjeto';
-                if (item.IdEstado === 1) {
-                    estiloItem = 'LinkListaGrillaObjetoEliminado';
-                }
-                let aItem = '<a href="#" class="mibtn-seleccionEmpresa" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.CUIT + ' - ' + item.RazonSocial + '</a>';
-                str += String.format('<li class="liGrilla"><div class="LinkListaGrilla ' + estiloItem + '">{0}</div></li>', aItem);
-            }
-            str += '    </ul>';
-            str += '</div>';
+            _Lista_Empresa = await Empresa.TraerTodas();
         }
-        return $('#' + div + '').html(str);
+        // HErramientas
+    static async ArmarGrillaCabecera(div) {
+        $("#" + div + "").html('');
+        let str = "";
+        str += '<table class="table table-sm">';
+        str += '    <thead>';
+        str += '        <tr>';
+        str += '            <th style="width: 50px;visibility: hidden;"><img src="../../Imagenes/lupa.png" style="width:30px; height: auto;" alt=""></th>';
+        str += '            <th class="text-center" style="width: 100px;">CUIT</th>';
+        str += '            <th class="text-center" style="width: 400px;">Razon Social</th>';
+        str += '            <th class="text-left pl-4" style="width: 120px;">Fecha Baja</th>';
+        str += '        </tr>';
+        str += '    </thead>';
+        str += '</table >';
+        return $("#" + div + "").html(str);
     }
-    static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
-        $('#' + div + '').html('');
-        let str = '';
-        console.log(lista);
-        if (lista.length > 0) {
+    static async ArmarGrillaDetalle(div, lista, evento, estilo) {
+            $("#" + div + "").html('');
+            let str = "";
             str += '<div style="' + estilo + '">';
-            str += '    <ul class="ListaGrilla">';
-            let estiloItem = '';
-            for (let item of lista) {
-                estiloItem = 'LinkListaGrillaObjeto';
-                if (item.IdEstado === 1) {
-                    estiloItem = 'LinkListaGrillaObjetoEliminado';
+            str += '<table class="table table-sm table-striped table-hover">';
+            str += '    <tbody>';
+            if (lista.length > 0) {
+                for (let item of lista) {
+                    str += '        <tr>';
+                    str += '            <td style="width: 50px;" class="text-center"><a hfre="#" id="' + item.IdEntidad + '"  data-Evento="' + evento + '" onclick="SeleccionEmpresa(this);"> <img src="../../Imagenes/lupa.png" alt=""></a></td>';
+                    str += '            <td class="text-center" style="width: 120px;"><class="text-light">' + item.CUIT + '</class=></td>';
+                    str += '            <td class="text-left pl-3" style="width: 500px;"><class="text-light">' + item.RazonSocial + '</class=></td>';
+                    str += '            <td class="text-center" style="width: 120px"><class="text-light">' + item.FechaBaja + '</class=></td>';
+                    str += '        </tr>';
                 }
-                let aItem = '<a href="#" class="mibtn-seleccionEmpresa" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.CUIT + ' - ' + item.RazonSocial + '</a>';
-                let aEliminar = '<a href="#" class="mibtn-EliminarEmpresa" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
-                str += String.format('<li class="liGrilla"><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
             }
-            str += '    </ul>';
-            str += '</div>';
+            str += '    </tbody>';
+            str += '</table >';
+            str += '</div >';
+            return $("#" + div + "").html(str);
+
         }
-        return $('#' + div + '').html(str);
-    }
+        // static async ArmarGrillaSinEliminar(lista, div, eventoSeleccion, estilo) {
+        //     $('#' + div + '').html('');
+        //     let str = '';
+        //     if (lista.length > 0) {
+        //         str += '<div style="' + estilo + '">';
+        //         str += '    <ul class="ListaGrilla">';
+        //         let estiloItem = '';
+        //         for (let item of lista) {
+        //             estiloItem = 'LinkListaGrillaObjeto';
+        //             if (item.IdEstado === 1) {
+        //                 estiloItem = 'LinkListaGrillaObjetoEliminado';
+        //             }
+        //             let aItem = '<a href="#" class="mibtn-seleccionEmpresa" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.CUIT + ' - ' + item.RazonSocial + '</a>';
+        //             str += String.format('<li class="liGrilla"><div class="LinkListaGrilla ' + estiloItem + '">{0}</div></li>', aItem);
+        //         }
+        //         str += '    </ul>';
+        //         str += '</div>';
+        //     }
+        //     return $('#' + div + '').html(str);
+        // }
+        // static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
+        //     $('#' + div + '').html('');
+        //     let str = '';
+        //     console.log(lista);
+        //     if (lista.length > 0) {
+        //         str += '<div style="' + estilo + '">';
+        //         str += '    <ul class="ListaGrilla">';
+        //         let estiloItem = '';
+        //         for (let item of lista) {
+        //             estiloItem = 'LinkListaGrillaObjeto';
+        //             if (item.IdEstado === 1) {
+        //                 estiloItem = 'LinkListaGrillaObjetoEliminado';
+        //             }
+        //             let aItem = '<a href="#" class="mibtn-seleccionEmpresa" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.CUIT + ' - ' + item.RazonSocial + '</a>';
+        //             let aEliminar = '<a href="#" class="mibtn-EliminarEmpresa" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
+        //             str += String.format('<li class="liGrilla"><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
+        //         }
+        //         str += '    </ul>';
+        //         str += '</div>';
+        //     }
+        //     return $('#' + div + '').html(str);
+        // }
     static async ArmarRadios(lista, div, evento, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -307,75 +348,8 @@ class Empresa extends DBE {
         str += '</div>';
         return $('#' + div + '').html(str);
     }
-    static async armarUC() {
-        $("#grilla").html("");
-        let control = "";
-        if (parseInt($("#Modal-PopUpEmpresa").length) === 0) {
-            control += '<div id="Modal-PopUpEmpresa" class="modal" tabindex="-1" role="dialog" >';
-            control += '    <div class="modal-dialog modal-lg">';
-            control += '        <div class="modal-content">';
-            control += '            <div class="modal-header">';
-            control += '                <h2 class="modal-title">Buscador de Empresas</h2>';
-            control += '            </div>';
-            control += '            <div class="row">';
-            control += '                <div class="modal-body">';
-            control += '                    <div class="container col-md-12">';
-            control += '                        <div class="row">';
-            control += '                            <div class="col-md-2">';
-            control += '                                <h6> CUIT </h6>';
-            control += '                            </div>';
-            control += '                            <div class="col-md-5">';
-            control += '                                <input class="form-control input-sm TxtBuscadores" maxlength="11" style="width:160px" id="txtBuscaCUIT" type="text" placeholder="CUIT (11 números)" onkeypress="return jsSoloNumeros(event);" autocomplete="off"/>';
-            control += '                           </div>';
-            control += '                        </div>';
-            control += '                        <div class="row mt-1">';
-            control += '                            <div class="col-md-2">';
-            control += '                                <h6> Razón Social </h6>';
-            control += '                            </div>';
-            control += '                            <div class="col-md-9">';
-            control += '                                <input class="form-control input-sm TxtBuscadores" id="txtRazonSocial" type="text" placeholder="Razón Social" autocomplete="off"/>';
-            control += '                            </div>';
-            control += '                        </div>';
-            control += '                        <div class="row mt-1">';
-            control += '                            <div class="col-md-2">';
-            control += '                                <h6> C. de C.</h6>';
-            control += '                            </div>';
-            control += '                            <div class="col-md-8">';
-            control += '                                <div id="CboBuscadorCentroCosto"></div>';
-            control += '                            </div>';
-            control += '                        </div>';
-            control += '                        <div class="row mt-2">';
-            control += '                            <div class="col-md-9"></div>';
-            control += '                            <div class="col-md-3">';
-            control += '                                <div class="Boton BtnBuscar">';
-            control += '                                    <a id="LinkBtnBuscarEmpresa" href="#"><span>Buscar Empresa</span></a>';
-            control += '                                </div>';
-            control += '                            </div>';
-            control += '                        </div>';
-            control += '                        <div class="row mt-2">';
-            control += '                            <div class="col-md-12">';
-            control += '                                <div id="grillaBuscadorEmpresa" style="height: 180px;overflow-y: scroll;"></div>';
-            control += '                            </div>';
-            control += '                        </div>';
-            control += '                    </div>';
-            control += '                </div>';
-            control += '            </div>';
-            control += '            <div class="modal-footer">';
-            control += '                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>';
-            control += '            </div>';
-            control += '        </div>';
-            control += '    </div>';
-            control += '</div>';
-            $("body").append(control);
-        }
-        LimpiarBuscador();
-        let lista = await CentroCosto.TraerTodosActivos();
-        await CentroCosto.ArmarCombo(lista, 'CboBuscadorCentroCosto', 'SelectorBuscadorCentroCosto', 'EventoBuscadorCentroCosto', 'Centro de Costo', 'CboBuscadorCC');
-        _IdCentroCostoBuscadorEmpresa = 0;
-        $("#Modal-PopUpEmpresa").modal('show');
-        $("#txtBuscaCUIT").focus();
-    }
 }
+
 function LlenarEntidadEmpresa(entidad) {
     let Res = new Empresa;
     Res.IdUsuarioAlta = entidad.IdUsuarioAlta;
@@ -393,6 +367,22 @@ function LlenarEntidadEmpresa(entidad) {
     Res.ObjDomicilio = entidad.ObjDomicilio;
     return Res;
 }
+async function SeleccionEmpresa(MiElemento) {
+    try {
+        let elemento = document.getElementById(MiElemento.id);
+        let evento = elemento.getAttribute('data-Evento');
+        let buscado = $.grep(_ListaEmpresas, function(entidad, index) {
+            return entidad.IdEntidad == MiElemento.id;
+        });
+        if (buscado[0] != undefined) {
+            let event = new CustomEvent(evento, { detail: buscado[0] });
+            document.dispatchEvent(event);
+        }
+    } catch (e) {
+        alertAlerta(e);
+    }
+}
+
 function LlenarEntidadDatosCalculados(entidad) {
     console.log(entidad);
     let Res = [];
@@ -406,90 +396,89 @@ function LlenarEntidadDatosCalculados(entidad) {
     console.log(Res);
     return Res;
 }
-function LimpiarBuscador() {
-    $(".TxtBuscadores").val('');
-    $("#grillaBuscadorEmpresa").html('');
-}
-document.addEventListener('EventoBuscadorCentroCosto', async function (e) {
-    try {
-        let objSeleccionado = e.detail;
-        _IdCentroCostoBuscadorEmpresa = objSeleccionado.IdEntidad;
-        $("#SelectorBuscadorCentroCosto").text(objSeleccionado.Nombre);
-    } catch (e) {
-        alertAlerta(e);
-    }
-}, false);
-$('body').on('click', '#LinkBtnBuscarEmpresa', async function (e) {
-    try {
-        let buscaCUIT = $("#txtBuscaCUIT").val();
-        let buscaRazonSocial = $("#txtRazonSocial").val();
-        let TipoBuscador = '';
-        if (parseInt(buscaCUIT.length) === 11 || parseInt(buscaRazonSocial.length) > 3 || parseInt(_IdCentroCostoBuscadorEmpresa) > 0) {
-            if (parseInt(buscaCUIT.length) === 11) {
-                TipoBuscador = 'xCUIT';
-            } else {
-                if (parseInt(buscaRazonSocial.length) > 3) {
-                    TipoBuscador = 'xRazonSocial';
-                } else {
-                    if (parseInt(_IdCentroCostoBuscadorEmpresa) > 0) {
-                        TipoBuscador = 'xIdCentroCosto';
-                    }
-                }
-            }
-            spinner();
-            await LlenarGrillaBuscadorEmpresa(TipoBuscador);
-            spinnerClose();
-        }
-    } catch (e) {
-        spinnerClose();
-        alertAlerta(e);
-    }
-});
-async function LlenarGrillaBuscadorEmpresa(TipoBuscador) {
-    _Lista_Empresa = [];
-    switch (TipoBuscador) {
-        case 'xCUIT':
-            _Lista_Empresa = await Empresa.TraerTodasXCUIT($("#txtBuscaCUIT").val());
-            break;
-        case 'xRazonSocial':
-            _Lista_Empresa = await Empresa.TraerTodasXRazonSocial($("#txtRazonSocial").val());
-            break;
-        case 'xIdCentroCosto':
-            _Lista_Empresa = await Empresa.TraerTodasXCentroCosto(_IdCentroCostoBuscadorEmpresa);
-            break;
-        default:
-    }
-    Empresa.ArmarGrillaSinEliminar(_Lista_Empresa, 'grillaBuscadorEmpresa', 'EventoSeleccionarEmpresa', '');
-}
 
-$('body').on('click', ".mibtn-seleccionEmpresa", async function () {
-    try {
-        $this = $(this);
-        let buscado = $.grep(_Lista_Empresa, function (entidad, index) {
-            return entidad.IdEntidad === parseInt($this.attr("data-Id"));
-        });
-        let Seleccionado = buscado[0];
-        let evento = $this.attr("data-Evento");
-        $("#Modal-PopUpEmpresa").modal('hide');
-        let event = new CustomEvent(evento, { detail: Seleccionado });
-        document.dispatchEvent(event);
-    } catch (e) {
-        alertAlerta(e);
-    }
-});
-$('body').on('click', ".mibtn-EliminarEmpresa", async function () {
-    try {
-        $this = $(this);
-        let buscado = $.grep(_Lista_Empresa, function (entidad, index) {
-            return entidad.IdEntidad === parseInt($this.attr("data-Id"));
-        });
-        let Seleccionado = buscado[0];
-        let evento = $this.attr("data-Evento");
-        let event = new CustomEvent(evento, { detail: Seleccionado });
-        document.dispatchEvent(event);
-    } catch (e) {
-        alertAlerta(e);
-    }
-});
+// function LimpiarBuscador() {
+//     $(".TxtBuscadores").val('');
+//     $("#grillaBuscadorEmpresa").html('');
+// }
+// document.addEventListener('EventoBuscadorCentroCosto', async function(e) {
+//     try {
+//         let objSeleccionado = e.detail;
+//         _IdCentroCostoBuscadorEmpresa = objSeleccionado.IdEntidad;
+//         $("#SelectorBuscadorCentroCosto").text(objSeleccionado.Nombre);
+//     } catch (e) {
+//         alertAlerta(e);
+//     }
+// }, false);
+// $('body').on('click', '#LinkBtnBuscarEmpresa', async function(e) {
+//     try {
+//         let buscaCUIT = $("#txtBuscaCUIT").val();
+//         let buscaRazonSocial = $("#txtRazonSocial").val();
+//         let TipoBuscador = '';
+//         if (parseInt(buscaCUIT.length) === 11 || parseInt(buscaRazonSocial.length) > 3 || parseInt(_IdCentroCostoBuscadorEmpresa) > 0) {
+//             if (parseInt(buscaCUIT.length) === 11) {
+//                 TipoBuscador = 'xCUIT';
+//             } else {
+//                 if (parseInt(buscaRazonSocial.length) > 3) {
+//                     TipoBuscador = 'xRazonSocial';
+//                 } else {
+//                     if (parseInt(_IdCentroCostoBuscadorEmpresa) > 0) {
+//                         TipoBuscador = 'xIdCentroCosto';
+//                     }
+//                 }
+//             }
+//             spinner();
+//             await LlenarGrillaBuscadorEmpresa(TipoBuscador);
+//             spinnerClose();
+//         }
+//     } catch (e) {
+//         spinnerClose();
+//         alertAlerta(e);
+//     }
+// });
+// async function LlenarGrillaBuscadorEmpresa(TipoBuscador) {
+//     _Lista_Empresa = [];
+//     switch (TipoBuscador) {
+//         case 'xCUIT':
+//             _Lista_Empresa = await Empresa.TraerTodasXCUIT($("#txtBuscaCUIT").val());
+//             break;
+//         case 'xRazonSocial':
+//             _Lista_Empresa = await Empresa.TraerTodasXRazonSocial($("#txtRazonSocial").val());
+//             break;
+//         case 'xIdCentroCosto':
+//             _Lista_Empresa = await Empresa.TraerTodasXCentroCosto(_IdCentroCostoBuscadorEmpresa);
+//             break;
+//         default:
+//     }
+//     Empresa.ArmarGrillaSinEliminar(_Lista_Empresa, 'grillaBuscadorEmpresa', 'EventoSeleccionarEmpresa', '');
+// }
 
-
+// $('body').on('click', ".mibtn-seleccionEmpresa", async function() {
+//     try {
+//         $this = $(this);
+//         let buscado = $.grep(_Lista_Empresa, function(entidad, index) {
+//             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
+//         });
+//         let Seleccionado = buscado[0];
+//         let evento = $this.attr("data-Evento");
+//         $("#Modal-PopUpEmpresa").modal('hide');
+//         let event = new CustomEvent(evento, { detail: Seleccionado });
+//         document.dispatchEvent(event);
+//     } catch (e) {
+//         alertAlerta(e);
+//     }
+// });
+// $('body').on('click', ".mibtn-EliminarEmpresa", async function() {
+//     try {
+//         $this = $(this);
+//         let buscado = $.grep(_Lista_Empresa, function(entidad, index) {
+//             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
+//         });
+//         let Seleccionado = buscado[0];
+//         let evento = $this.attr("data-Evento");
+//         let event = new CustomEvent(evento, { detail: Seleccionado });
+//         document.dispatchEvent(event);
+//     } catch (e) {
+//         alertAlerta(e);
+//     }
+// });

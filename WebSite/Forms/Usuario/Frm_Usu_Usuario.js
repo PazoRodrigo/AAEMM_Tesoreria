@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
     try {
         let ObjU = JSON.parse(sessionStorage.getItem("User"));
         $("#SpanNombreFormulario").text(ObjU.Apellido + ', ' + ObjU.Nombre);
@@ -10,6 +10,7 @@
         alertAlerta(e);
     }
 });
+
 function Inicio(us) {
     $("#TxtNombre").val(us.Nombre);
     $("#TxtApellido").val(us.Apellido);
@@ -17,10 +18,13 @@ function Inicio(us) {
     $("#TxtCorreoElectronico").val(us.CorreoElectronico);
     $("#TxtNroInterno").val(us.NroInterno);
 }
-$('body').on('click', '#LinkBtnModificarPassword', async function (e) {
+$('body').on('click', '#LinkBtnModificarPassword', async function(e) {
+    $('#TxtPasswordAnterior').val('');
+    $('#TxtPasswordNueva').val('');
+    $('#TxtPasswordValida').val('');
     $("#DivPassword").css('display', 'block');
 });
-$('body').on('click', '#LinkBtnGuardar', async function (e) {
+$('body').on('click', '#LinkBtnGuardar', async function(e) {
     try {
         spinner();
         let Temp = JSON.parse(sessionStorage.getItem("User"));
@@ -34,12 +38,12 @@ $('body').on('click', '#LinkBtnGuardar', async function (e) {
         await ObjU.Modifica();
         spinnerClose();
         PopUpConfirmarSinCancelar('success', 'Los cambios se han guardado correctamente', 'Ingrese nuevamente al Sitio.', 'EventoInicio', 'Aceptar');
-            } catch (e) {
+    } catch (e) {
         spinnerClose();
         alertAlerta(e);
     }
 });
-$('body').on('click', '#LinkBtnGuardarPassword', async function (e) {
+$('body').on('click', '#LinkBtnGuardarPassword', async function(e) {
     try {
         spinner();
         let Anterior = $('#TxtPasswordAnterior').val();
@@ -53,17 +57,16 @@ $('body').on('click', '#LinkBtnGuardarPassword', async function (e) {
         let Temp = JSON.parse(sessionStorage.getItem("User"));
         let ObjU = new Usuario;
         ObjU.IdEntidad = Temp.IdEntidad;
-        ObjU.ModificaPassword(Anterior, Nueva);
+        await ObjU.ModificaPassword(Anterior, Nueva);
         spinnerClose();
         alertOk('La contraseña ha sido modificada correctamente. Recuerde utilizarla al ingresar la próxima vez.');
         $("#DivPassword").css('display', 'none');
-
     } catch (e) {
         spinnerClose();
         alertAlerta(e);
     }
 });
-document.addEventListener('EventoInicio', async function (e) {
+document.addEventListener('EventoInicio', async function(e) {
     try {
         window.location.href = 'http://localhost:14162/Forms/Login/Frm_Login.aspx';
     } catch (e) {

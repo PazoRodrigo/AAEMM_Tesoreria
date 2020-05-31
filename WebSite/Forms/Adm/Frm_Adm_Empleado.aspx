@@ -25,6 +25,141 @@
         </li>
         <li class="linea">
             <div class="container-fluid">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="container border border-primary">
+                            <div class="col-12 text-center">Fecha Acreditación</div>
+                            <div class="container">
+                                <div class="row mt-1 justify-content-center">
+                                    <div class="col-5">
+                                        <input type="text" id="BuscaDesdeAcred"
+                                            class="form-control datepicker" onkeypress="return jsNoEscribir(event)" placeholder="Desde">
+                                    </div>
+                                    <div class="col-2"></div>
+                                    <div class="col-5">
+                                        <input type="text" id="BuscaHastaAcred"
+                                            class="form-control datepicker" onkeypress="return jsNoEscribir(event)" placeholder="Hasta">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">Estado</div>
+                                <div class="col-8">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoA" value="A">
+                                        <label class="form-check-label" for="IdEstadoA">A</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoL" value="L">
+                                        <label class="form-check-label" for="IdEstadoL">L</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoP" value="P">
+                                        <label class="form-check-label" for="IdEstadoP">P</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoR" value="R">
+                                        <label class="form-check-label" for="IdEstadoR">R</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoT" value="T">
+                                        <label class="form-check-label" for="IdEstadoT">T</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">Empresa</div>
+                                <div class="col-8">
+                                    <input type="text" id="BuscaRazonSocial" class="form-control" placeholder="Razon Social">
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">CUIT</div>
+                                <div class="col-8">
+                                    <input type="text" id="BuscaCUIT" class="form-control text-center"
+                                        placeholder="CUIT" onkeypress="return jsSoloNumerosSinPuntos(event)" maxlength="11" style="width: 120px;">
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">Tipo</div>
+                                <div class="col-8">
+                                    <div id="ChecksTipo"></div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckTipo" type="checkbox" id="TipoBN" value="1">
+                                        <label class="form-check-label" for="TipoBN">BN</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckTipo" type="checkbox" id="TipoPF" value="2">
+                                        <label class="form-check-label" for="TipoPF">PF</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="CheckTipo" type="checkbox" id="TipoMC" value="3">
+                                        <label class="form-check-label" for="TipoMC">MC</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">Importe</div>
+                                <div class="col-5">
+                                    <input type="text" id="BuscaImporte" class="form-control" onkeypress="return jsSoloNumeros(event)"
+                                        placeholder="Importe">
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">Nro. Recibo</div>
+                                <div class="col-7">
+                                    <input type="text" id="BuscaNroRecibo" class="form-control" onkeypress="return jsSoloNumerosSinPuntos(event)"
+                                        placeholder="Nro. Recibo">
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-4">Nro. Cheque</div>
+                                <div class="col-7">
+                                    <input type="text" id="BuscaNroCheque" class="form-control" onkeypress="return jsSoloNumerosSinPuntos(event)"
+                                        placeholder="Nro. Cheque">
+                                </div>
+                            </div>
+                            <div class="row mt-3 mb-3">
+                                <div class="col-1"></div>
+                                <div class="col-10">
+                                    <a href="#" id="BtnBuscador" class="btn btn-md btn-block btn-primary">Buscar Ingresos
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <span id="LblCantidadRegistrosGrilla" class="text-light text-bold"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div id="Grilla" class="row" style="display: block;">
+                            <div class="container border border-primary">
+                                <div class="row mt-1">
+                                    <div class="col-12">
+                                        <div id="GrillaCabecera"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="GrillaDetalle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Seleccionado" class="row" style="display: none;">
+                            <div class="container border border-primary pb-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <%--<li class="linea">
+            <div class="container-fluid">
                 <div class="row mt-1">
                     <div class="col-lg-12">
                         <div class="row mt-1">
@@ -222,7 +357,7 @@
                     </div>
                 </div>
             </div>
-        </li>
+        </li>--%>
     </ul>
 </asp:Content>
 

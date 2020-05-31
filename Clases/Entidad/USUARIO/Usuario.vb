@@ -232,7 +232,7 @@ Namespace Entidad
             End If
             ObjU.IdUsuarioModifica = idUsuario
             DAL_Usuario.ModificaPassword(ObjU)
-            ObjU.MailCambioPassword()
+            'ObjU.MailCambioPassword()
         End Sub
 #End Region
 #Region " Métodos Públicos"
@@ -509,6 +509,8 @@ Namespace Entidad
             Dim sError As String = ""
             If PasswordNueva = "" Then
                 sError &= "<b>Contraseña</b> Debe ingresar la Contraseña. <br />"
+            ElseIf PasswordNueva.Length < 6 Then
+                sError &= "<b>Contraseña</b> Debe tener como mínimo 6 caracteres. <br />"
             ElseIf PasswordNueva.Length > 10 Then
                 sError &= "<b>Contraseña</b> Debe tener como máximo 10 caracteres. <br />"
             End If

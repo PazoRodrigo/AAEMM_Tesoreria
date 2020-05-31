@@ -67,9 +67,8 @@
                             <div class="row mt-1">
                                 <div class="col-4">Empresa</div>
                                 <div class="col-8">
-                                    <input type="text" id="BuscaEmpresa" class="form-control" placeholder="Empresa">
+                                    <input type="text" id="BuscaRazonSocial" class="form-control" placeholder="Razon Social">
                                 </div>
-
                             </div>
                             <div class="row mt-1">
                                 <div class="col-4">CUIT</div>
@@ -78,7 +77,6 @@
                                         placeholder="CUIT" onkeypress="return jsSoloNumerosSinPuntos(event)" maxlength="11" style="width: 120px;">
                                 </div>
                             </div>
-
                             <div class="row mt-1">
                                 <div class="col-4">Tipo</div>
                                 <div class="col-8">
@@ -126,110 +124,75 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <span id="LblCantidadRegistrosGrilla" class="text-light text-bold"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-8">
                         <div id="Grilla" class="row" style="display: block;">
                             <div class="container border border-primary">
                                 <div class="row mt-1">
-                                    <div class="col-1">
-                                        <a href="#">
-                                            <img src="../../Imagenes/Binoculares.png" alt=""></a>
-                                    </div>
-                                </div>
-                                <div class="row mt-1">
                                     <div class="col-12">
                                         <div id="GrillaCabecera"></div>
-                                        <%--   <table class="table table-sm">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" style="width: 15px;"></th>
-                                                    <th scope="col">Acreditación</th>
-                                                    <th scope="col">CUIT / Empresa</th>
-                                                    <th scope="col">Período</th>
-                                                    <th scope="col">Importe</th>
-                                                    <th scope="col">Archivo</th>
-                                                    <th scope="col">Origen</th>
-                                                    <th scope="col">Cheque</th>
-                                                    <th scope="col">Estado</th>
-                                                </tr>
-                                            </thead>
-                                        </table>--%>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <div id="GrillaDetalle"></div>
-                                        <%-- <table class="table table-sm table-striped table-hover">
-                                            <tbody>
-                                                <tr>
-                                                    <td><img src="../../Imagenes/lupa.png" alt=""></td>
-                                                    <td>Acreditación</td>
-                                                    <td>CUIT / Empresa</td>
-                                                    <td>Período</td>
-                                                    <td>Importe</td>
-                                                    <td>Archivo</td>
-                                                    <td>Origen</td>
-                                                    <td>Cheque</td>
-                                                    <td>Estado</td>
-                                                </tr>
-                                                
-                                            </tbody>
-                                        </table>--%>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div id="Seleccionado" class="row" style="display: none;">
-                            <div class="container border border-primary">
-                                <div class="row mt-1">
-                                    <div class="col-1">
-                                        <img src="" alt="Binoculares">
-                                    </div>
-                                    <div class="col-1">
-                                        <img src="" alt="Grilla">
-                                    </div>
+                            <div class="container border border-primary pb-3">
+                                <div class="row mt-4">
                                     <div class="col-1">CUIT</div>
                                     <div class="col-2">
                                         <input type="text" id="EntidadCUIT" class="form-control text-center"
                                             placeholder="CUIT" maxlength="11" style="width: 120px;">
                                     </div>
+                                    <div class="col-2">Razon Social</div>
                                     <div class="col-7">
-                                        <input type="text" id="EntidadEmpresa" class="form-control"
-                                            placeholder="Empresa" readonly>
+                                        <input type="text" id="EntidadRazonSocial" class="form-control"
+                                            placeholder="Razon Social" disabled>
                                     </div>
                                 </div>
                                 <div class="row mt-1">
-                                    <div class="col-2">Acreditacion</div>
-                                    <div class="col-2">
+                                    <div class="col-1">Fecha</div>
+                                    <div class="col-3">
                                         <input type="text" id="EntidadAcred" class="form-control datepicker"
                                             placeholder="Acreditación">
                                     </div>
-                                    <div class="col-2">Período</div>
-                                    <div class="col-2">
+                                    <div class="col-1">Período</div>
+                                    <div class="col-3">
                                         <input type="text" id="EntidadPeriodo" class="form-control"
                                             placeholder="Período">
                                     </div>
-                                    <div class="col-2">Importe</div>
-                                    <div class="col-2">
+                                    <div class="col-1">Importe</div>
+                                    <div class="col-3">
                                         <input type="text" id="EntidadImporte" class="form-control"
                                             placeholder="Importe">
                                     </div>
                                 </div>
                                 <div class="row mt-1">
-                                    <div class="col-2">Origen</div>
-                                    <div class="col-2">
+                                    <div class="col-1">Origen</div>
+                                    <div class="col-3">
                                         <input type="text" id="EntidadOrigen" class="form-control"
-                                            placeholder="Origen" readonly>
+                                            placeholder="Origen" disabled>
                                     </div>
-                                    <div class="col-2">Nro. Cheque</div>
-                                    <div class="col-2">
+                                    <div class="col-1">Cheque</div>
+                                    <div class="col-3">
                                         <input type="text" id="EntidadNroCheque" class="form-control"
                                             placeholder="Nro. Cheque">
                                     </div>
-                                    <div class="col-2">Estado</div>
-                                    <div class="col-2">
+                                    <div class="col-1">Estado</div>
+                                    <div class="col-3">
                                         <input type="text" id="EntidadEstado" class="form-control"
-                                            placeholder="Estado" readonly>
+                                            placeholder="Estado" disabled>
                                     </div>
                                 </div>
                                 <div class="row mt-4">

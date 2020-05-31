@@ -11,15 +11,16 @@ Namespace Entidad
     Public Class Ingreso
         Inherits DBE
 
-        Public Structure StrBusqueda
+        Public Structure StrBusquedaIngreso
             Public Desde As Long
             Public Hasta As Long
-            Public Estados As List(Of Integer)
             Public CUIT As Long
-            Public Tipo As List(Of Char)
+            Public RazonSocial As String
             Public Importe As Decimal
             Public NroRecibo As Long
             Public NroCheque As Long
+            Public Estados As String
+            Public Tipos As String
         End Structure
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
@@ -47,9 +48,6 @@ Namespace Entidad
                 Return result
             End Get
         End Property
-        Friend Shared Function ArmarListaIngresosBN(idUsuario As Integer, fechaArchivo As Date, archivo As StreamReader, lista As List(Of Ingreso)) As String
-            Throw New NotImplementedException()
-        End Function
         Public ReadOnly Property LngFechaAcreditacion() As Long
             Get
                 Dim result As Long = 0
@@ -57,6 +55,17 @@ Namespace Entidad
                     result = CLng(Year(FechaAcreditacion.Value).ToString & Right("00" & Month(FechaAcreditacion.Value).ToString, 2) & Right("00" & Day(FechaAcreditacion.Value).ToString, 2))
                 End If
                 Return result
+            End Get
+        End Property
+        Public ReadOnly Property LazyRazonSocial() As String
+            Get
+                Dim Result As String = CUIT.ToString
+                Dim ListaEmpresa As List(Of Empresa) = Empresa.TraerTodosLazy
+                Dim Temp As Empresa = ListaEmpresa.Find(Function(x) x.CUIT = CUIT)
+                If Not Temp Is Nothing Then
+                    Result = Temp.RazonSocial
+                End If
+                Return Result
             End Get
         End Property
 #End Region
@@ -126,32 +135,6 @@ Namespace Entidad
             FechaPago = ObjLineaArchivo.FechaPago
             FechaAcreditacion = ObjLineaArchivo.FechaAcreditacion
         End Sub
-        'Sub New(ByVal ObjLineaArchivo As LineaArchivoMC)
-        '    IdUsuarioAlta = ObjLineaArchivo.IdUsuarioAlta
-        '    IdUsuarioBaja = ObjLineaArchivo.IdUsuarioBaja
-        '    IdMotivoBaja = ObjLineaArchivo.IdMotivoBaja
-        '    FechaAlta = ObjLineaArchivo.FechaAlta
-        '    FechaBaja = ObjLineaArchivo.FechaBaja
-        '    ' Entidad
-        '    FechaPago = ObjLineaArchivo.FechaMovimiento
-        '    FechaAcreditacion = ObjLineaArchivo.FechaMovimiento
-        '    IdOrigen = ObjLineaArchivo.IdTipoArchivo
-        '    NombreArchivo = ObjLineaArchivo.NombreArchivo
-        '    'If Left(ObjLineaArchivo.Concepto, 2) = "TR" Then
-        '    '    CodigoEntidad = ResolverCodigoEntidad(ObjLineaArchivo.Concepto)
-
-        '    'End If
-        '    'CUIT = ObjLineaArchivo.CUIT
-        '    'Importe = ObjLineaArchivo.Importe
-
-        '    'IdCentroCosto = ObjLineaArchivo.IdCentroCosto
-
-
-        '    'Periodo = ObjLineaArchivo.Periodo
-
-
-
-        'End Sub
         Sub New(ByVal DtODesde As DTO.DTO_Ingreso)
             ' DBE
             IdUsuarioAlta = DtODesde.IdUsuarioAlta
@@ -193,23 +176,137 @@ Namespace Entidad
         Public Shared Function TraerTodos() As List(Of Ingreso)
             Return DAL_Ingreso.TraerTodos()
         End Function
-        Public Shared Function TraerTodosXBusqueda(busqueda As StrBusqueda) As List(Of Ingreso)
-            Dim existeParametro As Boolean = False
-            Dim sqlQuery As String = "SELECT * FROM Ingreso.Ingresos"
-            If busqueda.Desde > 0 Then
-                Dim Desde As New Date(busqueda.Desde)
-                If Not existeParametro Then
-                    existeParametro = True
-                    sqlQuery += " WHERE"
+        Public Shared Function TraerTodosXBusqueda(busqueda As StrBusquedaIngreso) As List(Of Ingreso)
+            Dim TablaAcreditados As String = "Ingreso.Ingresos_Acreditados Ing LEFT JOIN OSEMM.dbo.Afib002 AF ON Ing.CUIT = CAST(REPLACE(AF.CUIT,'-','') AS BIGINT) AND dep='00'"
+            Dim TablaNOAcreditados As String = "Ingreso.Ingresos_NOAcreditados Ing LEFT JOIN OSEMM.dbo.Afib002 AF ON Ing.CUIT = CAST(REPLACE(AF.CUIT,'-','') AS BIGINT) AND dep='00'"
+            Dim sqlQuery As String = "SELECT * FROM "
+            Dim tablas As Integer = 0
+            If busqueda.Estados.Length = 0 Then
+                tablas = 1
+            Else
+                If (busqueda.Estados.Contains("A") Or busqueda.Estados.Contains("L") Or busqueda.Estados.Contains("T")) Then
+                    tablas += 1
                 End If
-
-                sqlQuery += "FechaAcredicion > '" + Desde.ToString + "'"
+                If (busqueda.Estados.Contains("P") Or busqueda.Estados.Contains("R")) Then
+                    tablas += 2
+                End If
             End If
-
+            If tablas < 3 Then
+                If tablas = 1 Then
+                    sqlQuery += TablaAcreditados
+                    sqlQuery += ArmarStringSQL(busqueda)
+                ElseIf tablas = 2 Then
+                    sqlQuery += TablaNOAcreditados
+                    sqlQuery += ArmarStringSQL(busqueda)
+                End If
+            Else
+                sqlQuery += TablaAcreditados
+                sqlQuery += ArmarStringSQL(busqueda)
+                sqlQuery += " UNION "
+                sqlQuery += ArmarStringSQL(busqueda)
+                sqlQuery += TablaNOAcreditados
+            End If
             Dim result As List(Of Ingreso) = DAL_Ingreso.TraerTodosXBusqueda(sqlQuery)
             Return result
         End Function
-
+        Private Shared Function ArmarStringSQL(busqueda As StrBusquedaIngreso) As String
+            Dim existeParametro As Boolean = False
+            Dim result As String = ""
+            If busqueda.Desde > 0 Then
+                Dim Fecha As String = Left(busqueda.Desde.ToString, 4) & "-" & Right("00" & Left(busqueda.Desde.ToString, 6), 2) & "-" & Right("00" & busqueda.Desde.ToString, 2)
+                If Not existeParametro Then
+                    existeParametro = True
+                    result += " WHERE "
+                End If
+                result += "FechaAcreditacion >= '" + Fecha + "'"
+            End If
+            If busqueda.Hasta > 0 Then
+                Dim Fecha As String = Left(busqueda.Hasta.ToString, 4) & "-" & Right("00" & Left(busqueda.Hasta.ToString, 6), 2) & "-" & Right("00" & busqueda.Hasta.ToString, 2)
+                If Not existeParametro Then
+                    existeParametro = True
+                    result += " WHERE "
+                Else
+                    result += " AND "
+                End If
+                result += "FechaAcreditacion <= '" + Fecha + "'"
+            End If
+            If busqueda.CUIT > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    result += " WHERE "
+                Else
+                    result += " AND "
+                End If
+                result += "Ing.CUIT = '" + busqueda.CUIT.ToString + "'"
+            End If
+            If busqueda.RazonSocial.Length > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    result += " WHERE "
+                Else
+                    result += " AND "
+                End If
+                result += "denomina LIKE '%" + busqueda.RazonSocial + "%'"
+            End If
+            If busqueda.Importe > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    result += " WHERE "
+                Else
+                    result += " AND "
+                End If
+                result += "Importe = '" + busqueda.Importe.ToString + "'"
+            End If
+            If busqueda.NroRecibo > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    result += " WHERE "
+                Else
+                    result += " AND "
+                End If
+                result += "NroRecibo = '" + busqueda.NroRecibo.ToString + "'"
+            End If
+            If busqueda.NroCheque > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    result += " WHERE "
+                Else
+                    result += " AND "
+                End If
+                result += "CUIT = '" + busqueda.NroCheque.ToString + "'"
+            End If
+            If busqueda.Estados <> "" Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    result += " WHERE "
+                Else
+                    result += " AND "
+                End If
+                result += "IdEstado IN ('" + busqueda.Estados(0) & "'"
+                Dim i As Integer = 1
+                While i <= busqueda.Estados.Length - 1
+                    result += ", '" & busqueda.Estados(i) & "'"
+                    i += 1
+                End While
+                result += ")"
+            End If
+            If busqueda.Tipos <> "" Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    result += " WHERE "
+                Else
+                    result += " AND "
+                End If
+                result += "IdOrigen IN (" + busqueda.Tipos(0)
+                Dim i As Integer = 1
+                While i <= busqueda.Tipos.Length - 1
+                    result += ", " & busqueda.Tipos(i)
+                    i += 1
+                End While
+                result += ")"
+            End If
+            Return result
+        End Function
         Public Shared Function TraerUno(ByVal Id As Integer) As Ingreso
             Dim result As Ingreso = DAL_Ingreso.TraerUno(Id)
             If result Is Nothing Then
@@ -297,7 +394,8 @@ Namespace Entidad
                 .NombreArchivo = NombreArchivo,
                 .FechaPago = LngFechaPago,
                 .FechaAcreditacion = LngFechaAcreditacion,
-                .Observaciones = Observaciones
+                .Observaciones = Observaciones,
+                .RazonSocial = LazyRazonSocial()
             }
             Return result
         End Function
@@ -420,6 +518,7 @@ Namespace DTO
         Public Property FechaPago() As Long = 0
         Public Property FechaAcreditacion() As Long = 0
         Public Property Observaciones() As String = ""
+        Public Property RazonSocial() As String = ""
 #End Region
     End Class ' DTO_Ingreso
 End Namespace ' DTO
@@ -434,6 +533,7 @@ Namespace DataAccessLibrary
         Const storeTraerTodos As String = "INGRESO.p_Ingreso_TraerTodos"
         Const storeTraerTodosAcreditados As String = "INGRESO.p_Ingreso_TraerTodosAcreditados"
         Const storeTraerTodosNOAcreditados As String = "INGRESO.p_Ingreso_TraerTodosNOAcreditados"
+        Const storeTraerTodosXBusqueda As String = "INGRESO.p_Ingreso_TraerXBusquedaLibre"
 
 
 
@@ -677,6 +777,20 @@ Namespace DataAccessLibrary
                 End If
             End Using
         End Sub
+        Friend Shared Function TraerTodosXBusqueda(sqlQuery As String) As List(Of Ingreso)
+            Dim store As String = storeTraerTodosXBusqueda
+            Dim listaResult As New List(Of Ingreso)
+            Dim pa As New parametrosArray
+            pa.add("@sqlQuery", sqlQuery)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
 #End Region
 #Region " Métodos Privados "
         Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Ingreso
@@ -858,9 +972,6 @@ Namespace DataAccessLibrary
             Return entidad
         End Function
 
-        Friend Shared Function TraerTodosXBusqueda(sqlQuery As String) As List(Of Ingreso)
-            Throw New NotImplementedException()
-        End Function
 #End Region
     End Class ' DAL_Ingreso
 End Namespace ' DataAccessLibrary

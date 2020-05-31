@@ -12,46 +12,14 @@ Public Class WsEmpresa
     Inherits System.Web.Services.WebService
 
     <WebMethod()>
-    Public Function TraerUnoXCUIT(CUIT As Long) As Transfer
+    Public Function TraerTodos() As Transfer
         Dim ws As New Transfer
         Try
             Dim result As New List(Of DTO.DTO_Empresa)
-            result.Add(Entidad.Empresa.TraerUnoXCUIT(CUIT).ToDTO)
-            ws.data = result
-            ws.todoOk = True
-            ws.mensaje = ""
-        Catch ex As Exception
-            ws.todoOk = False
-            ws.mensaje = ex.Message
-            ws.data = Nothing
-        End Try
-        Return ws
-    End Function
-    <WebMethod()>
-    Public Function TraerUno(IdEntidad As Integer) As Transfer
-        Dim ws As New Transfer
-        Try
-            Dim result As New List(Of DTO.DTO_Empresa)
-            result.Add(Entidad.Empresa.TraerUno(IdEntidad).ToDTO)
-            ws.data = result
-            ws.todoOk = True
-            ws.mensaje = ""
-        Catch ex As Exception
-            ws.todoOk = False
-            ws.mensaje = ex.Message
-            ws.data = Nothing
-        End Try
-        Return ws
-    End Function
-    <WebMethod()>
-    Public Function TraerTodosXCUIT(CUIT As Long) As Transfer
-        Dim ws As New Transfer
-        Try
-            Dim result As New List(Of DTO.DTO_Empresa)
-            Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXCUIT(CUIT)
+            Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodos()
             If Not lista Is Nothing Then
                 For Each item As Entidad.Empresa In lista
-                    result.Add(item.ToDTOCabecera)
+                    result.Add(item.ToDTO)
                 Next
             End If
             ws.data = result
@@ -65,14 +33,14 @@ Public Class WsEmpresa
         Return ws
     End Function
     <WebMethod()>
-    Public Function TraerTodosXCentroCosto(IdCentroCosto As Integer) As Transfer
+    Public Function TraerTodosXBusqueda(Busqueda As Entidad.Empresa.StrBusquedaEmpresa) As Transfer
         Dim ws As New Transfer
         Try
             Dim result As New List(Of DTO.DTO_Empresa)
-            Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXCentroCosto(IdCentroCosto)
+            Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXBusqueda(Busqueda)
             If Not lista Is Nothing Then
                 For Each item As Entidad.Empresa In lista
-                    result.Add(item.ToDTOCabecera)
+                    result.Add(item.ToDTO)
                 Next
             End If
             ws.data = result
@@ -85,62 +53,158 @@ Public Class WsEmpresa
         End Try
         Return ws
     End Function
-    <WebMethod()>
-    Public Function TraerTodosXRazonSocial(RazonSocial As String) As Transfer
-        Dim ws As New Transfer
-        Try
-            Dim result As New List(Of DTO.DTO_Empresa)
-            Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXRazonSocial(RazonSocial)
-            If Not lista Is Nothing Then
-                For Each item As Entidad.Empresa In lista
-                    result.Add(item.ToDTOCabecera)
-                Next
-            End If
-            ws.data = result
-            ws.todoOk = True
-            ws.mensaje = ""
-        Catch ex As Exception
-            ws.todoOk = False
-            ws.mensaje = ex.Message
-            ws.data = Nothing
-        End Try
-        Return ws
-    End Function
-    <WebMethod()>
-    Public Function TraerTodosXBusqueda(RazonSocial As String, CUIT As Long, IdCentroCosto As Integer) As Transfer
-        Dim ws As New Transfer
-        Try
-            Dim result As New List(Of DTO.DTO_Empresa)
-            Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXBusqueda(RazonSocial, CUIT, IdCentroCosto)
-            If Not lista Is Nothing Then
-                For Each item As Entidad.Empresa In lista
-                    result.Add(item.ToDTOCabecera)
-                Next
-            End If
-            ws.data = result
-            ws.todoOk = True
-            ws.mensaje = ""
-        Catch ex As Exception
-            ws.todoOk = False
-            ws.mensaje = ex.Message
-            ws.data = Nothing
-        End Try
-        Return ws
-    End Function
-    <WebMethod()>
-    Public Function TraerDatosCalculados(CUIT As Long, IdEstablecimiento As Integer) As Transfer
-        Dim ws As New Transfer
-        Try
-            Dim result As New List(Of DTO.DTO_DatosCalculados)
-            result.Add(Entidad.DatosCalculados.TraerUno(CUIT, IdEstablecimiento).ToDTO)
-            ws.data = result
-            ws.todoOk = True
-            ws.mensaje = ""
-        Catch ex As Exception
-            ws.todoOk = False
-            ws.mensaje = ex.Message
-            ws.data = Nothing
-        End Try
-        Return ws
-    End Function
+
+    '<WebMethod()>
+    'Public Function TraerUnoXCUIT(CUIT As Long) As Transfer
+    '    Dim ws As New Transfer
+    '    Try
+    '        Dim result As New List(Of DTO.DTO_Empresa)
+    '        result.Add(Entidad.Empresa.TraerUnoXCUIT(CUIT).ToDTO)
+    '        ws.data = result
+    '        ws.todoOk = True
+    '        ws.mensaje = ""
+    '    Catch ex As Exception
+    '        ws.todoOk = False
+    '        ws.mensaje = ex.Message
+    '        ws.data = Nothing
+    '    End Try
+    '    Return ws
+    'End Function
+    '<WebMethod()>
+    'Public Function TraerUno(IdEntidad As Integer) As Transfer
+    '    Dim ws As New Transfer
+    '    Try
+    '        Dim result As New List(Of DTO.DTO_Empresa)
+    '        result.Add(Entidad.Empresa.TraerUno(IdEntidad).ToDTO)
+    '        ws.data = result
+    '        ws.todoOk = True
+    '        ws.mensaje = ""
+    '    Catch ex As Exception
+    '        ws.todoOk = False
+    '        ws.mensaje = ex.Message
+    '        ws.data = Nothing
+    '    End Try
+    '    Return ws
+    'End Function
+    '<WebMethod()>
+    'Public Function TraerTodosXBusqueda(Busqueda As Entidad.Empresa.StrBusquedaEmpresa) As Transfer
+    '    Dim ws As New Transfer
+    '    'Try
+    '    '    Dim result As New List(Of DTO.DTO_Ingreso)
+    '    '    Dim lista As List(Of Entidad.Ingreso) = Entidad.Ingreso.TraerTodosXBusqueda(Busqueda)
+    '    '    If Not lista Is Nothing Then
+    '    '        For Each item As Entidad.Ingreso In lista
+    '    '            result.Add(item.ToDTO)
+    '    '        Next
+    '    '    End If
+    '    '    ws.data = result
+    '    '    ws.todoOk = True
+    '    '    ws.mensaje = ""
+    '    'Catch ex As Exception
+    '    '    ws.todoOk = False
+    '    '    ws.mensaje = ex.Message
+    '    '    ws.data = Nothing
+    '    'End Try
+    '    Return ws
+    'End Function
+    '<WebMethod()>
+    'Public Function TraerTodosXCUIT(CUIT As Long) As Transfer
+    '    Dim ws As New Transfer
+    '    Try
+    '        Dim result As New List(Of DTO.DTO_Empresa)
+    '        Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXCUIT(CUIT)
+    '        If Not lista Is Nothing Then
+    '            For Each item As Entidad.Empresa In lista
+    '                result.Add(item.ToDTOCabecera)
+    '            Next
+    '        End If
+    '        ws.data = result
+    '        ws.todoOk = True
+    '        ws.mensaje = ""
+    '    Catch ex As Exception
+    '        ws.todoOk = False
+    '        ws.mensaje = ex.Message
+    '        ws.data = Nothing
+    '    End Try
+    '    Return ws
+    'End Function
+    '<WebMethod()>
+    'Public Function TraerTodosXCentroCosto(IdCentroCosto As Integer) As Transfer
+    '    Dim ws As New Transfer
+    '    Try
+    '        Dim result As New List(Of DTO.DTO_Empresa)
+    '        Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXCentroCosto(IdCentroCosto)
+    '        If Not lista Is Nothing Then
+    '            For Each item As Entidad.Empresa In lista
+    '                result.Add(item.ToDTOCabecera)
+    '            Next
+    '        End If
+    '        ws.data = result
+    '        ws.todoOk = True
+    '        ws.mensaje = ""
+    '    Catch ex As Exception
+    '        ws.todoOk = False
+    '        ws.mensaje = ex.Message
+    '        ws.data = Nothing
+    '    End Try
+    '    Return ws
+    'End Function
+    '<WebMethod()>
+    'Public Function TraerTodosXRazonSocial(RazonSocial As String) As Transfer
+    '    Dim ws As New Transfer
+    '    Try
+    '        Dim result As New List(Of DTO.DTO_Empresa)
+    '        Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXRazonSocial(RazonSocial)
+    '        If Not lista Is Nothing Then
+    '            For Each item As Entidad.Empresa In lista
+    '                result.Add(item.ToDTOCabecera)
+    '            Next
+    '        End If
+    '        ws.data = result
+    '        ws.todoOk = True
+    '        ws.mensaje = ""
+    '    Catch ex As Exception
+    '        ws.todoOk = False
+    '        ws.mensaje = ex.Message
+    '        ws.data = Nothing
+    '    End Try
+    '    Return ws
+    'End Function
+    '<WebMethod()>
+    'Public Function TraerTodosXBusqueda(RazonSocial As String, CUIT As Long, IdCentroCosto As Integer) As Transfer
+    '    Dim ws As New Transfer
+    '    Try
+    '        Dim result As New List(Of DTO.DTO_Empresa)
+    '        Dim lista As List(Of Entidad.Empresa) = Entidad.Empresa.TraerTodosXBusqueda(RazonSocial, CUIT, IdCentroCosto)
+    '        If Not lista Is Nothing Then
+    '            For Each item As Entidad.Empresa In lista
+    '                result.Add(item.ToDTOCabecera)
+    '            Next
+    '        End If
+    '        ws.data = result
+    '        ws.todoOk = True
+    '        ws.mensaje = ""
+    '    Catch ex As Exception
+    '        ws.todoOk = False
+    '        ws.mensaje = ex.Message
+    '        ws.data = Nothing
+    '    End Try
+    '    Return ws
+    'End Function
+    '<WebMethod()>
+    'Public Function TraerDatosCalculados(CUIT As Long, IdEstablecimiento As Integer) As Transfer
+    '    Dim ws As New Transfer
+    '    Try
+    '        Dim result As New List(Of DTO.DTO_DatosCalculados)
+    '        result.Add(Entidad.DatosCalculados.TraerUno(CUIT, IdEstablecimiento).ToDTO)
+    '        ws.data = result
+    '        ws.todoOk = True
+    '        ws.mensaje = ""
+    '    Catch ex As Exception
+    '        ws.todoOk = False
+    '        ws.mensaje = ex.Message
+    '        ws.data = Nothing
+    '    End Try
+    '    Return ws
+    'End Function
 End Class

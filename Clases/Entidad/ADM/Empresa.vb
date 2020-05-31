@@ -10,6 +10,15 @@ Namespace Entidad
     Public Class Empresa
         Inherits DBE
 
+        Public Structure StrBusquedaEmpresa
+            Public CUIT As Long
+            Public RazonSocial As String
+            Public IdCentroCosto As Integer
+            Public IncluirAlta As Integer
+            Public IncluirBaja As Integer
+            Public Incluir0 As Integer
+        End Structure
+
         Private Shared _Todos As List(Of Empresa)
         Public Shared Property Todos() As List(Of Empresa)
             Get
@@ -111,9 +120,6 @@ Namespace Entidad
             End If
             Return result
         End Function
-        Public Shared Function TraerUnoXCUIT(CUIT As Long) As Empresa
-            Return DAL_Empresa.TraerUnoXCUIT(CUIT)
-        End Function
         Public Shared Function TraerTodos() As List(Of Empresa)
             Dim result As List(Of Empresa) = DAL_Empresa.TraerTodos()
             If result.Count = 0 Then
@@ -121,61 +127,119 @@ Namespace Entidad
             End If
             Return result
         End Function
-        Public Shared Function TraerTodosXCUIT(CUIT As Long) As List(Of Empresa)
-            Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXCUIT(CUIT)
-            If result.Count = 0 Then
-                Throw New Exception("No existen Empresas para la búsqueda")
-            End If
-            Return result
+        Public Shared Function TraerTodosLazy() As List(Of Empresa)
+            Return Todos()
         End Function
-        Public Shared Function TraerTodosXRazonSocial(RazonSocial As String) As List(Of Empresa)
-            Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXRazonSocial(RazonSocial.Trim)
-            If result.Count = 0 Then
-                Throw New Exception("No existen Empresas para la búsqueda")
+        Public Shared Function TraerTodosXBusqueda(busqueda As StrBusquedaEmpresa) As List(Of Empresa)
+            Dim sqlQuery As String = "SELECT * FROM  OSEMM.dbo.Afib002"
+            Dim existeParametro As Boolean = False
+            If busqueda.CUIT > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += " CAST(REPLACE(CUIT,'-','') as Bigint)  = '" + busqueda.CUIT.ToString + "'"
             End If
-            Return result
-        End Function
-        Public Shared Function TraerTodosXCentroCosto(IdCentroCosto As Integer) As List(Of Empresa)
-            Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXCentroCosto(IdCentroCosto)
-            If result.Count = 0 Then
-                Throw New Exception("No existen Empresas para la búsqueda")
+            If busqueda.RazonSocial.Length > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += "denomina LIKE '%" + busqueda.RazonSocial + "%'"
             End If
-            Return result
-        End Function
-        Public Shared Function TraerTodosXBusqueda(razonSocial As String, cUIT As Long, idCentroCosto As Integer) As List(Of Empresa)
-            Dim result As New List(Of Empresa)
-            Dim buscador As Integer = 0
-            If razonSocial <> "" Then
-                buscador += 1
-            ElseIf cUIT > 0 Then
-                buscador += 2
-            ElseIf idCentroCosto > 0 Then
-                buscador += 4
-            End If
-            Select Case buscador
-                Case 1
-                    result = TraerTodosXRazonSocial(razonSocial)
-                Case 2
-                    result = TraerTodosXCUIT(cUIT)
-                Case 4
-                    result = TraerTodosXCentroCosto(idCentroCosto)
-                Case Else
-
-            End Select
-            If result.Count = 0 Then
-                Throw New Exception("No existen Empresas para la búsqueda")
-            End If
-            Return result
-        End Function
-        ' Nuevos
-        Public Shared Function TraerUnaXCUIT(CUIT As Long) As Empresa
-            Return Todos.Find(Function(x) x.CUIT = CUIT And x.Establecimiento = 0)
-            'Dim result As Empresa = Todos.Find(Function(x) x.CUIT = CUIT And x.Establecimiento = 0)
-            'If result Is Nothing Then
-            '    Throw New Exception("No existen resultados para la búsqueda")
+            'If busqueda.IdCentroCosto > 0 Then
+            '    If Not existeParametro Then
+            '        existeParametro = True
+            '        sqlQuery += " WHERE "
+            '    Else
+            '        sqlQuery += " AND "
+            '    End If
+            '    sqlQuery += "IdCentroCosto = '" + busqueda.IdCentroCosto.ToString + "'"
             'End If
-            'Return result
+            ' Fecha Baja
+            If Not existeParametro Then
+                existeParametro = True
+                sqlQuery += " WHERE "
+            Else
+                sqlQuery += " AND "
+            End If
+            If busqueda.IncluirAlta = 1 AndAlso busqueda.IncluirBaja = 0 Then
+                sqlQuery += " Fec_Baja IS NULL"
+            ElseIf busqueda.IncluirAlta = 0 AndAlso busqueda.IncluirBaja = 1 Then
+                sqlQuery += " Fec_Baja ISNOT NULL"
+            Else
+                sqlQuery += " Fec_Baja IS NULL"
+            End If
+            ' Fecha Baja
+            If busqueda.Incluir0 = 1 Then
+                sqlQuery += " CAST(REPLACE(CUIT,'-','') as Bigint) = 0"
+            Else
+                sqlQuery += " CAST(REPLACE(CUIT,'-','') as Bigint) > 0"
+            End If
+
+            Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXBusqueda(sqlQuery)
+            Return result
         End Function
+        Public Shared Function TraerUnaXCUIT(CUIT As Long) As Empresa
+            Return DAL_Empresa.TraerUnoXCUIT(CUIT)
+        End Function
+
+        'Public Shared Function TraerUnoXCUIT(CUIT As Long) As Empresa
+        '    Return DAL_Empresa.TraerUnoXCUIT(CUIT)
+        'End Function
+
+        'Public Shared Function TraerTodosXCUIT(CUIT As Long) As List(Of Empresa)
+        '    Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXCUIT(CUIT)
+        '    If result.Count = 0 Then
+        '        Throw New Exception("No existen Empresas para la búsqueda")
+        '    End If
+        '    Return result
+        'End Function
+        'Public Shared Function TraerTodosXRazonSocial(RazonSocial As String) As List(Of Empresa)
+        '    Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXRazonSocial(RazonSocial.Trim)
+        '    If result.Count = 0 Then
+        '        Throw New Exception("No existen Empresas para la búsqueda")
+        '    End If
+        '    Return result
+        'End Function
+        'Public Shared Function TraerTodosXCentroCosto(IdCentroCosto As Integer) As List(Of Empresa)
+        '    Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXCentroCosto(IdCentroCosto)
+        '    If result.Count = 0 Then
+        '        Throw New Exception("No existen Empresas para la búsqueda")
+        '    End If
+        '    Return result
+        'End Function
+        'Public Shared Function TraerTodosXBusqueda(razonSocial As String, cUIT As Long, idCentroCosto As Integer) As List(Of Empresa)
+        '    Dim result As New List(Of Empresa)
+        '    Dim buscador As Integer = 0
+        '    If razonSocial <> "" Then
+        '        buscador += 1
+        '    ElseIf cUIT > 0 Then
+        '        buscador += 2
+        '    ElseIf idCentroCosto > 0 Then
+        '        buscador += 4
+        '    End If
+        '    Select Case buscador
+        '        Case 1
+        '            result = TraerTodosXRazonSocial(razonSocial)
+        '        Case 2
+        '            result = TraerTodosXCUIT(cUIT)
+        '        Case 4
+        '            result = TraerTodosXCentroCosto(idCentroCosto)
+        '        Case Else
+
+        '    End Select
+        '    If result.Count = 0 Then
+        '        Throw New Exception("No existen Empresas para la búsqueda")
+        '    End If
+        '    Return result
+        'End Function
+        '' Nuevos
+
 
 #End Region
 #Region " Métodos Públicos"
@@ -318,9 +382,14 @@ Namespace DataAccessLibrary
         Const storeTraerUnoXId As String = "ADM.p_Empresa_TraerUnoXId"
         Const storeTraerUnoXCUIT As String = "ADM.p_Empresa_TraerUnoXCUIT"
         Const storeTraerTodos As String = "ADM.p_Empresa_TraerTodos"
-        Const storeTraerTodosXCUIT As String = "ADM.p_Empresa_TraerTodosXCUIT"
-        Const storeTraerTodosXRazonSocial As String = "ADM.p_Empresa_TraerTodosXRazonSocial"
-        Const storeTraerTodosXCentroCosto As String = "ADM.p_Empresa_TraerTodosXCentroCosto"
+        Const storeTraerTodosXBusqueda As String = "ADM.p_Empresa_TraerXBusquedaLibre"
+
+
+
+
+        'Const storeTraerTodosXCUIT As String = "ADM.p_Empresa_TraerTodosXCUIT"
+        'Const storeTraerTodosXRazonSocial As String = "ADM.p_Empresa_TraerTodosXRazonSocial"
+        'Const storeTraerTodosXCentroCosto As String = "ADM.p_Empresa_TraerTodosXCentroCosto"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
@@ -376,7 +445,7 @@ Namespace DataAccessLibrary
             Dim result As New Empresa
             Dim pa As New parametrosArray
             pa.add("@id", id)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
                         result = LlenarEntidad(dt.Rows(0))
@@ -392,7 +461,7 @@ Namespace DataAccessLibrary
             Dim result As New Empresa
             Dim pa As New parametrosArray
             pa.add("@CUIT", CUIT)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
                         result = LlenarEntidad(dt.Rows(0))
@@ -407,7 +476,7 @@ Namespace DataAccessLibrary
             Dim store As String = storeTraerTodos
             Dim pa As New parametrosArray
             Dim listaResult As New List(Of Empresa)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -416,12 +485,12 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
-        Public Shared Function TraerTodosXCUIT(ByVal CUIT As Long) As List(Of Empresa)
-            Dim store As String = storeTraerTodosXCUIT
+        Friend Shared Function TraerTodosXBusqueda(sqlQuery As String) As List(Of Empresa)
+            Dim store As String = storeTraerTodosXBusqueda
             Dim listaResult As New List(Of Empresa)
             Dim pa As New parametrosArray
-            pa.add("@CUIT", CUIT)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+            pa.add("@sqlQuery", sqlQuery)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -430,34 +499,54 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
-        Public Shared Function TraerTodosXRazonSocial(ByVal RazonSocial As String) As List(Of Empresa)
-            Dim store As String = storeTraerTodosXRazonSocial
-            Dim listaResult As New List(Of Empresa)
-            Dim pa As New parametrosArray
-            pa.add("@RazonSocial", RazonSocial)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
-                If dt.Rows.Count > 0 Then
-                    For Each dr As DataRow In dt.Rows
-                        listaResult.Add(LlenarEntidad(dr))
-                    Next
-                End If
-            End Using
-            Return listaResult
-        End Function
-        Public Shared Function TraerTodosXCentroCosto(ByVal IdCentroCosto As Integer) As List(Of Empresa)
-            Dim store As String = storeTraerTodosXCentroCosto
-            Dim listaResult As New List(Of Empresa)
-            Dim pa As New parametrosArray
-            pa.add("@IdCentroCosto", IdCentroCosto)
-            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
-                If dt.Rows.Count > 0 Then
-                    For Each dr As DataRow In dt.Rows
-                        listaResult.Add(LlenarEntidad(dr))
-                    Next
-                End If
-            End Using
-            Return listaResult
-        End Function
+
+
+
+
+
+        'Public Shared Function TraerTodosXCUIT(ByVal CUIT As Long) As List(Of Empresa)
+        '    Dim store As String = storeTraerTodosXCUIT
+        '    Dim listaResult As New List(Of Empresa)
+        '    Dim pa As New parametrosArray
+        '    pa.add("@CUIT", CUIT)
+        '    Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+        '        If dt.Rows.Count > 0 Then
+        '            For Each dr As DataRow In dt.Rows
+        '                listaResult.Add(LlenarEntidad(dr))
+        '            Next
+        '        End If
+        '    End Using
+        '    Return listaResult
+        'End Function
+        'Public Shared Function TraerTodosXRazonSocial(ByVal RazonSocial As String) As List(Of Empresa)
+        '    Dim store As String = storeTraerTodosXRazonSocial
+        '    Dim listaResult As New List(Of Empresa)
+        '    Dim pa As New parametrosArray
+        '    pa.add("@RazonSocial", RazonSocial)
+        '    Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+        '        If dt.Rows.Count > 0 Then
+        '            For Each dr As DataRow In dt.Rows
+        '                listaResult.Add(LlenarEntidad(dr))
+        '            Next
+        '        End If
+        '    End Using
+        '    Return listaResult
+        'End Function
+        'Public Shared Function TraerTodosXCentroCosto(ByVal IdCentroCosto As Integer) As List(Of Empresa)
+        '    Dim store As String = storeTraerTodosXCentroCosto
+        '    Dim listaResult As New List(Of Empresa)
+        '    Dim pa As New parametrosArray
+        '    pa.add("@IdCentroCosto", IdCentroCosto)
+        '    Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+        '        If dt.Rows.Count > 0 Then
+        '            For Each dr As DataRow In dt.Rows
+        '                listaResult.Add(LlenarEntidad(dr))
+        '            Next
+        '        End If
+        '    End Using
+        '    Return listaResult
+        'End Function
+
 #End Region
 #Region " Métodos Privados "
         Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Empresa
@@ -500,18 +589,28 @@ Namespace DataAccessLibrary
                 End If
             End If
             If dr.Table.Columns.Contains("cod_ent") Then
-                If dr.Item("icod_entd") IsNot DBNull.Value Then
+                If dr.Item("cod_ent") IsNot DBNull.Value Then
                     entidad.Codigo = CLng(dr.Item("cod_ent"))
+                End If
+            ElseIf dr.Table.Columns.Contains("cod_empre") Then
+                If dr.Item("cod_empre") IsNot DBNull.Value Then
+                    If IsNumeric(dr.Item("cod_empre")) Then
+                        entidad.Codigo = CLng(dr.Item("cod_empre"))
+                    End If
                 End If
             End If
             If dr.Table.Columns.Contains("RazonSocial") Then
                 If dr.Item("RazonSocial") IsNot DBNull.Value Then
                     entidad.RazonSocial = dr.Item("RazonSocial").ToString.ToUpper.Trim
                 End If
+            ElseIf dr.Table.Columns.Contains("denomina") Then
+                If dr.Item("denomina") IsNot DBNull.Value Then
+                    entidad.RazonSocial = dr.Item("denomina").ToString.Trim
+                End If
             End If
             If dr.Table.Columns.Contains("CUIT") Then
                 If dr.Item("CUIT") IsNot DBNull.Value Then
-                    entidad.CUIT = CLng(dr.Item("CUIT"))
+                    entidad.CUIT = CLng(Replace(dr.Item("CUIT").ToString, "-", ""))
                 End If
             End If
             If dr.Table.Columns.Contains("CorreoElectronico") Then

@@ -41,7 +41,7 @@ class CentroCosto extends DBE {
             let id = await ejecutarAsync(urlWsCentroCosto + "/Modifica", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_CentroCosto, function (entidad, index) {
+            let buscados = $.grep(_Lista_CentroCosto, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_CentroCosto = buscados;
@@ -62,7 +62,7 @@ class CentroCosto extends DBE {
             let id = await ejecutarAsync(urlWsCentroCosto + "/Baja", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_CentroCosto, function (entidad, index) {
+            let buscados = $.grep(_Lista_CentroCosto, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_CentroCosto = buscados;
@@ -95,7 +95,7 @@ class CentroCosto extends DBE {
     // Traer
     static async TraerUno(IdEntidad) {
         _Lista_CentroCosto = await CentroCosto.TraerTodos();
-        let buscado = $.grep(_Lista_CentroCosto, function (entidad, index) {
+        let buscado = $.grep(_Lista_CentroCosto, function(entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
         let Encontrado = buscado[0];
@@ -106,28 +106,28 @@ class CentroCosto extends DBE {
     }
     static async TraerTodosActivos() {
         _Lista_CentroCosto = await CentroCosto.TraerTodos();
-        let buscado = $.grep(_Lista_CentroCosto, function (entidad, index) {
+        let buscado = $.grep(_Lista_CentroCosto, function(entidad, index) {
             return entidad.IdEstado === 0;
         });
         return buscado;
     }
     static async TraerTodas() {
-        let lista = await ejecutarAsync(urlWsCentroCosto + "/TraerTodos");
-        _Lista_CentroCosto = [];
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadCentroCosto(value));
-            });
+            let lista = await ejecutarAsync(urlWsCentroCosto + "/TraerTodos");
+            _Lista_CentroCosto = [];
+            let result = [];
+            if (lista.length > 0) {
+                $.each(lista, function(key, value) {
+                    result.push(LlenarEntidadCentroCosto(value));
+                });
+            }
+            _Lista_CentroCosto = result;
+            return _Lista_CentroCosto;
         }
-        _Lista_CentroCosto = result;
-        return _Lista_CentroCosto;
-    }
-    // Otros
+        // Otros
     static async Refresh() {
-        _Lista_CentroCosto = await CentroCosto.TraerTodas();
-    }
-    // Herramientas
+            _Lista_CentroCosto = await CentroCosto.TraerTodas();
+        }
+        // Herramientas
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -174,44 +174,45 @@ class CentroCosto extends DBE {
         return $('#' + div + '').html(str);
     }
     static async ArmarCheckBoxs(lista, div, evento, estilo) {
-        $('#' + div + '').html('');
-        let str = '';
-        str += '<div style="' + estilo + '">';
-        await Area.Refresh();
-        if (lista.length > 0) {
-            for (let item of lista) {
-                str += '<div class="col-lg-4"><input type="checkbox" class="micbx-Area" name="CkbList_Areas" value="' + item.IdEntidad + '"    id="chk_' + item.IdEntidad + '" /><label for="chk_' + item.IdEntidad + '"> ' + item.Nombre + '</label></div>';
+            $('#' + div + '').html('');
+            let str = '';
+            str += '<div style="' + estilo + '">';
+            await Area.Refresh();
+            if (lista.length > 0) {
+                for (let item of lista) {
+                    str += '<div class="col-lg-4"><input type="checkbox" class="micbx-Area" name="CkbList_Areas" value="' + item.IdEntidad + '"    id="chk_' + item.IdEntidad + '" /><label for="chk_' + item.IdEntidad + '"> ' + item.Nombre + '</label></div>';
+                }
             }
+            str += '</div>';
+            return $('#' + div + '').html(str);
         }
-        str += '</div>';
-        return $('#' + div + '').html(str);
-    }
-    //static async ArmarCombo(lista, div, selector, evento, ventana, Cbo) {
-    //    let cbo = "";
-    //    cbo += '<div id="' + Cbo + '" class="dropdown">';
-    //    cbo += '    <button id="' + selector + '" class="btn btn-primary dropdown-toggle btn-md btn-block" type="button" data-toggle="dropdown">' + ventana;
-    //    cbo += '        <span class="caret"></span>';
-    //    cbo += '    </button>';
-    //    cbo += '<ul class="dropdown-menu">';
-    //    $(lista).each(function () {
-    //        cbo += '<li class="liCombo"><a href="#" class="mibtn-seleccionCentroCosto" data-Id="' + this.IdEntidad + '" data-IdTipoCheque="' + this.IdTipoCheque + '" data-Nombre="' + this.Estado + '" data-Evento="' + evento + '" > ' + this.Nombre + '</a></li>';
-    //    });
-    //    cbo += '</ul>';
-    //    cbo += '</div>';
-    //    return $('#' + div + '').html(cbo);
-    //}
+        //static async ArmarCombo(lista, div, selector, evento, ventana, Cbo) {
+        //    let cbo = "";
+        //    cbo += '<div id="' + Cbo + '" class="dropdown">';
+        //    cbo += '    <button id="' + selector + '" class="btn btn-primary dropdown-toggle btn-md btn-block" type="button" data-toggle="dropdown">' + ventana;
+        //    cbo += '        <span class="caret"></span>';
+        //    cbo += '    </button>';
+        //    cbo += '<ul class="dropdown-menu">';
+        //    $(lista).each(function () {
+        //        cbo += '<li class="liCombo"><a href="#" class="mibtn-seleccionCentroCosto" data-Id="' + this.IdEntidad + '" data-IdTipoCheque="' + this.IdTipoCheque + '" data-Nombre="' + this.Estado + '" data-Evento="' + evento + '" > ' + this.Nombre + '</a></li>';
+        //    });
+        //    cbo += '</ul>';
+        //    cbo += '</div>';
+        //    return $('#' + div + '').html(cbo);
+        //}
     static async ArmarCombo(lista, div, selector, evento, ventana, estilo) {
         lista.sort(SortXNombre);
         let Cbo = '';
-        Cbo += '<select id="_' + div + '" onchange="SeleccionCentroCosto()"  data-Evento="' + evento + '" name="myselect" class="' + estilo + '">';
+        Cbo += '<select id="_CboCentroCosto" onchange="SeleccionCentroCosto()"  data-Evento="' + evento + '" name="myselect" class="' + estilo + '">';
         Cbo += '    <option value="0" id="' + selector + '">' + ventana + '</option>';
-        $(lista).each(function () {
+        $(lista).each(function() {
             Cbo += '<option class="mibtn-seleccionCentroCosto" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + this.Nombre + '</option>';
         });
         Cbo += '</select>';
         return $('#' + div + '').html(Cbo);
     }
 }
+
 function LlenarEntidadCentroCosto(entidad) {
     let Res = new CentroCosto;
     Res.IdUsuarioAlta = entidad.IdUsuarioAlta;
@@ -226,10 +227,10 @@ function LlenarEntidadCentroCosto(entidad) {
     Res.IdEstado = entidad.IdEstado;
     return Res;
 }
-$('body').on('click', ".mibtn-seleccionCentroCosto", async function () {
+$('body').on('click', ".mibtn-seleccionCentroCosto", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_CentroCosto, function (entidad, index) {
+        let buscado = $.grep(_Lista_CentroCosto, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -240,10 +241,10 @@ $('body').on('click', ".mibtn-seleccionCentroCosto", async function () {
         alertAlerta(e);
     }
 });
-$('body').on('click', ".mibtn-EliminarCentroCosto", async function () {
+$('body').on('click', ".mibtn-EliminarCentroCosto", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_CentroCosto, function (entidad, index) {
+        let buscado = $.grep(_Lista_CentroCosto, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -257,7 +258,7 @@ $('body').on('click', ".mibtn-EliminarCentroCosto", async function () {
 async function SeleccionCentroCosto() {
     try {
         let elemento = document.getElementById("_CboCentroCosto");
-        let buscado = $.grep(_Lista_CentroCosto, function (entidad, index) {
+        let buscado = $.grep(_Lista_CentroCosto, function(entidad, index) {
             return entidad.IdEntidad == elemento.options[elemento.selectedIndex].value;
         });
         let Seleccionado = buscado[0];

@@ -25,6 +25,187 @@
         </li>
         <li class="linea">
             <div class="container-fluid">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="container border border-primary">
+                            <div class="row mt-1 justify-content-center">
+                                <div class="col-9  mb-2font-weight-bold text-light">Situación de Empresas </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-1"></div>
+                                <div class="col-11">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="switchIncluirAlta">
+                                        <label class="custom-control-label" for="switchIncluirAlta">Empresas de Alta</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-1"></div>
+                                <div class="col-11">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="switchIncluiBaja">
+                                        <label class="custom-control-label" for="switchIncluiBaja">Empresas de Baja</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-1"></div>
+                                <div class="col-11">
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox" class="custom-control-input" id="switchIncluirCUIT0">
+                                        <label class="custom-control-label" for="switchIncluirCUIT0">Incluir CUIT 00-0000000-0</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4 mb-2 justify-content-center">
+                                <div class="col-9 font-weight-bold text-light">Parámetros </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-3">CUIT</div>
+                                <div class="col-9">
+                                    <input type="text" id="BuscaCUIT" class="form-control text-center"
+                                        placeholder="CUIT" onkeypress="return jsSoloNumerosSinPuntos(event)" maxlength="11" style="width: 120px;">
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-3">Empresa</div>
+                                <div class="col-9">
+                                    <input type="text" id="BuscaRazonSocial" class="form-control" placeholder="Razon Social">
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-3">C. de C.</div>
+                                <div class="col-9">
+                                    <div id="BuscaCboCentroCosto"></div>
+                                </div>
+                            </div>
+                            <div class="row mt-5 mb-3">
+                                <div class="col-1"></div>
+                                <div class="col-10">
+                                    <a href="#" id="BtnBuscador" class="btn btn-md btn-block btn-primary">Buscar Empresas
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <span id="LblCantidadRegistrosGrilla" class="text-light text-bold"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div id="Grilla" class="row" style="display: none;">
+                            <div class="container border border-primary">
+                                <div class="row mt-1">
+                                    <div class="col-12">
+                                        <div id="GrillaCabecera"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="GrillaDetalle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Seleccionado" class="row" style="display: none;">
+                            <div class="container border border-primary pb-1">
+                                <div class="row mt-4">
+                                    <div class="col-2">CUIT</div>
+                                    <div class="col-2">
+                                        <input type="text" id="EntidadCUIT" class="form-control text-center"
+                                            placeholder="CUIT" maxlength="11" style="width: 120px;">
+                                    </div>
+                                    <div class="col-2">Razon Social</div>
+                                    <div class="col-6">
+                                        <input type="text" id="EntidadRazonSocial" class="form-control"
+                                            placeholder="Razon Social" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-2">Convenio</div>
+                                    <div class="col-4">
+                                    </div>
+                                  <div class="col-2">C. de C.</div>
+                                    <div class="col-4">
+                                    </div>
+                                </div>
+                                  <div class="row mt-2 justify-content-end">
+                                    <div class="col-3">
+                                        <a href="#" class="btn btn-block btn-info ">Institución</a>
+                                    </div>
+                                    <div class="col-3">
+                                        <a href="#" class="btn btn-block btn-info ">Personas</a>
+                                    </div>
+                                </div>
+                              
+                                <div class="row mt-2 justify-content-between">
+                                    <div class="col-7">
+                                        <div class="row justify-content-center">
+                                            <div class="col-10">
+                                                <a href="#" class="btn btn-block btn-primary">Cuenta Corriente
+                                                <br />
+                                                    $ 150.000,00
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="row">
+                                            <div class="col-8 text-right">
+                                                Empleados:
+                                            </div>
+                                            <div class="col-2 text-right text-light">
+                                                <span id="LblCantidadEmpleados">35</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-8 text-right">
+                                                Afiliados:
+                                            </div>
+                                            <div class="col-2 text-right text-light">
+                                                <span id="LblCantidadAfiliados">23</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-8 text-right">
+                                                No Afiliados:
+                                            </div>
+                                            <div class="col-2 text-right text-light">
+                                                <span id="LblCantidadNoAfiliados">12</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4 justify-content-center">
+                                    <div class="col-10 mb-2">
+                                        <a href="#" class="btn btn-block btn-success btn-lg">Guardar Cambios</a>
+                                    </div>
+                                </div>
+                                <div class="row mt-4 justify-content-center">
+                                    <div class="col-3 mb-2">
+                                        <a href="#" class="btn btn-block btn-light">Imprimir</a>
+                                    </div>
+
+                                    <div class="col-3 mb-2">
+                                        <a href="#" class="btn btn-block btn-success">Reactivar</a>
+                                    </div>
+                                    <div class="col-3 mb-2">
+                                        <a href="#" class="btn btn-block btn-danger">Dar de Baja</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+<%--        <li class="linea">
+            <div class="container-fluid">
                 <div class="row mt-1">
                     <div class="col-lg-12">
                         <div class="row mt-1">
@@ -123,9 +304,6 @@
                         <div class="row mt-4">
                             <div class="col-1"></div>
                             <div class="col-3">
-                                <%-- <div class="Boton BtnInfo">
-                                    <a id="LinkBtnDomicilios" href="#"><span id="SpanBtnDomicilios"></span></a>
-                                </div>--%>
                             </div>
                             <div class="col-1"></div>
                             <div class="col-3">
@@ -208,7 +386,7 @@
                     </div>
                 </div>
             </div>
-        </li>
+        </li>--%>
     </ul>
 </asp:Content>
 
