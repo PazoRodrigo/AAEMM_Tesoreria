@@ -3,37 +3,14 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <script src='<%= ResolveClientUrl("Frm_Indicadores.js?version20200428_1")%>'></script>
-    <%--<script src="https://canvasjs.com/assets/script/canvasjs.min.js?version20200428_1"></script>--%>
-    <%--<script type="text/javascript">
-        window.onload = function () {
-            var chart = new CanvasJS.Chart("chartContainer", {
-                title: {
-                    text: "My First Chart in CanvasJS"
-                },
-                data: [
-                    {
-                        type: "column",
-                        dataPoints: [
-                            { label: "apple", y: 10 },
-                            { label: "orange", y: 15 },
-                            { label: "banana", y: 25 },
-                            { label: "mango", y: 30 },
-                            { label: "grape", y: 28 }
-                        ]
-                    }
-                ]
-            });
-            chart.render();
-        }
-    </script>--%>
-    <asp:Button ID="btnSubirOculto" runat="server" Style="visibility: hidden;" />
+    <asp:Button ID="btnSubirOculto" runat="server" Style="visibility: hidden; display: none;" />
     <ul>
         <li>
             <div id="DivNombreFormulario100"><span id="NombreFormulario"></span></div>
         </li>
         <li class="linea">
             <div class="container-fluid">
-                <div class="row mt-1">
+                <div class="row mt-1" style="height: 290px;">
                     <div class="col-lg-10">
                         <div class="row">
                             <div class="col-lg-4">
@@ -240,11 +217,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mt-1">
+                <div class="row">
                     <div class="col-lg-8">
                     </div>
                     <div class="col-lg-4">
-                        <div class="row mt-2">
+                        <div class="row">
                             <div class="col-lg-12">
                                 <div id="PnlResultado" style="display: none;"></div>
                                 <div id="PnlArchivos">

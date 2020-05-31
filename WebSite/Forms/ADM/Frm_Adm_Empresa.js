@@ -4,7 +4,8 @@ var _ObjEmpresa;
 $(document).ready(async function() {
     try {
         $("#SpanNombreFormulario").text('Empresas');
-        $("#switchIncluirAlta").attr('checked', 'checked')
+        $("#switchIncluirAlta").attr('checked', 'checked');
+        $("#divCantRegistrosImprimir").css('display', 'none');
         await Inicio();
     } catch (e) {
         alertAlerta(e);
@@ -40,11 +41,20 @@ function LimpiarEmpresa() {
 $('body').on('click', '#BtnBuscador', async function(e) {
     try {
         $("#Seleccionado").css("display", "none");
+        $("#divCantRegistrosImprimir").css('display', 'none');
         spinner();
         LimpiarGrilla();
         let Busqueda = await ArmarBusqueda();
         _ListaEmpresas = await Empresa.TraerTodosXBusqueda(Busqueda);
         await LlenarGrilla();
+        if (_ListaEmpresas.length > 0) {
+            let TextoCantidadRegistros = "Imprimir " + _ListaEmpresas.length + " registro";
+            if (_ListaEmpresas.length > 1) {
+                TextoCantidadRegistros += "s";
+            }
+            $("#LblCantidadRegistrosGrilla").text(TextoCantidadRegistros);
+            $("#divCantRegistrosImprimir").css('display', 'block');
+        }
         spinnerClose();
     } catch (e) {
         spinnerClose();

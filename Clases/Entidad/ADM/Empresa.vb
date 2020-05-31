@@ -176,9 +176,9 @@ Namespace Entidad
             End If
             ' Fecha Baja
             If busqueda.Incluir0 = 1 Then
-                sqlQuery += " CAST(REPLACE(CUIT,'-','') as Bigint) = 0"
+                sqlQuery += " AND CAST(REPLACE(CUIT,'-','') as Bigint) = 0"
             Else
-                sqlQuery += " CAST(REPLACE(CUIT,'-','') as Bigint) > 0"
+                sqlQuery += " AND CAST(REPLACE(CUIT,'-','') as Bigint) > 0"
             End If
 
             Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXBusqueda(sqlQuery)

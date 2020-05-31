@@ -88,10 +88,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12 text-center">
-                                    <span id="LblCantidadRegistrosGrilla" class="text-light text-bold"></span>
+                         <div id="divCantRegistrosImprimir" style="display: none;">
+                            <div class="container">
+                                <div class="row mt-2 justify-content-center">
+                                    <div class="col-9 text-center">
+                                        <a href="#" id="BtnImprimirRegistrosGrilla" class="btn btn-block btn-light"><span id="LblCantidadRegistrosGrilla" class="text-bold"></span></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

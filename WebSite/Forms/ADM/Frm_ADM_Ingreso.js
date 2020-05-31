@@ -1,9 +1,10 @@
 ﻿var _ListaIngresos;
 var _ObjIngreso;
 
-$(document).ready(function() {
+$(document).ready(function () {
     try {
         $("#SpanNombreFormulario").text('Ingresos');
+        $("#divCantRegistrosImprimir").css('display', 'none');
         // $("#SpanBtnNuevo").text('Nuevo Ingreso');
         // $("#SpanBtnBuscar").text('Buscar Ingreso');
         // $("#SpanBtnEliminar").text('Eliminar');
@@ -59,14 +60,23 @@ function LimpiarIngreso() {
     $("#EntidadEstado").val('');
 }
 
-$('body').on('click', '#BtnBuscador', async function(e) {
+$('body').on('click', '#BtnBuscador', async function (e) {
     try {
         $("#Seleccionado").css("display", "none");
+        $("#divCantRegistrosImprimir").css('display', 'none');
         spinner();
         LimpiarGrilla();
         let Busqueda = await ArmarBusqueda();
         _ListaIngresos = await Ingreso.TraerTodosXBusqueda(Busqueda);
         await LlenarGrilla();
+        if (_ListaIngresos.length > 0) {
+            let TextoCantidadRegistros = "Imprimir " + _ListaIngresos.length + " registro";
+            if (_ListaIngresos.length > 1) {
+                TextoCantidadRegistros += "s";
+            }
+            $("#LblCantidadRegistrosGrilla").text(TextoCantidadRegistros);
+            $("#divCantRegistrosImprimir").css('display', 'block');
+        }
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -122,18 +132,13 @@ async function ArmarBusqueda() {
 
 async function LlenarGrilla() {
     $("#Grilla").css("display", "none");
-    $("#LblCantidadRegistrosGrilla").css("display", "none");
     console.log(_ListaIngresos.length);
     if (_ListaIngresos.length > 0) {
         await Ingreso.ArmarGrillaCabecera('GrillaCabecera');
         await Ingreso.ArmarGrillaDetalle('GrillaDetalle', _ListaIngresos, 'EventoSeleccionarIngreso', 'max-height: 350px; overflow-y: scroll;');
         $("#Grilla").css("display", "block");
-        let TextoCantidadRegistros = "Cantidad de Registros: " + _ListaIngresos.length
-        $("#LblCantidadRegistrosGrilla").text(TextoCantidadRegistros)
-        $("#LblCantidadRegistrosGrilla").css("display", "block");
-
     } else {
-        throw ("No existen Ingresos para Mostrar con esos parámetros")
+        throw ("No existen Ingresos para Mostrar con esos parámetros");
     }
 }
 
@@ -153,7 +158,7 @@ async function LlenarIngreso() {
 
 }
 
-document.addEventListener('EventoSeleccionarIngreso', async function(e) {
+document.addEventListener('EventoSeleccionarIngreso', async function (e) {
     try {
         let objSeleccionado = e.detail;
         let listaTempIngresos = [];

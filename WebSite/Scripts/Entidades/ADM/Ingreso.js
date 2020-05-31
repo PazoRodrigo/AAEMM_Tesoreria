@@ -15,27 +15,27 @@ class StrBusquedaIngreso {
 }
 class Ingreso extends DBE {
     constructor() {
-            super();
-            this.IdEntidad = 0;
-            this.IdEstado = '';
-            this.IdCentroCosto = 0;
-            this.CodigoEntidad = 0;
-            this.CUIT = 0;
-            this.Periodo = 0;
-            this.NroCheche = 0;
-            this.Importe = 0;
-            this.IdOrigen = 0;
-            this.NroRecibo = 0;
-            this.NombreArchivo = '';
-            this.FechaPago = 0;
-            this.FechaAcreditacion = 0;
-            this.Observaciones = '';
-            this.RazonSocial = '';
+        super();
+        this.IdEntidad = 0;
+        this.IdEstado = '';
+        this.IdCentroCosto = 0;
+        this.CodigoEntidad = 0;
+        this.CUIT = 0;
+        this.Periodo = 0;
+        this.NroCheche = 0;
+        this.Importe = 0;
+        this.IdOrigen = 0;
+        this.NroRecibo = 0;
+        this.NombreArchivo = '';
+        this.FechaPago = 0;
+        this.FechaAcreditacion = 0;
+        this.Observaciones = '';
+        this.RazonSocial = '';
 
-            this._ObjCentroCosto;
-            this._ObjOrigen;
-        }
-        // Lazy
+        this._ObjCentroCosto;
+        this._ObjOrigen;
+    }
+    // Lazy
     async ObjCentroCosto() {
         try {
             if (this._ObjCentroCosto === undefined) {
@@ -79,33 +79,33 @@ class Ingreso extends DBE {
         return result;
     }
     async Estado() {
-            let result = '';
-            switch (this.IdEstado) {
-                case 'A':
-                    result = 'Acreditado';
-                    break;
-                case 'L':
-                    result = 'Pendiente Acreditado';
-                    break;
-                case 'P':
-                    result = 'Pendiente';
-                    break;
-                case 'R':
-                    result = 'Rechazado';
-                    break;
-                case 'T':
-                    result = 'CUIT No Encontrado';
-                    break;
-                default:
-            }
-            return result;
+        let result = '';
+        switch (this.IdEstado) {
+            case 'A':
+                result = 'Acreditado';
+                break;
+            case 'L':
+                result = 'Pendiente Acreditado';
+                break;
+            case 'P':
+                result = 'Pendiente';
+                break;
+            case 'R':
+                result = 'Rechazado';
+                break;
+            case 'T':
+                result = 'CUIT No Encontrado';
+                break;
+            default:
         }
-        // Traer
+        return result;
+    }
+    // Traer
     static async TraerTodos() {
         let lista = await ejecutarAsync(urlWsIngreso + "/TraerTodos");
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function(key, value) {
+            $.each(lista, function (key, value) {
                 result.push(LlenarEntidadIngreso(value));
             });
         }
@@ -113,20 +113,20 @@ class Ingreso extends DBE {
         return result;
     }
     static async TraerTodosXBusqueda(Busqueda) {
-            let data = {
-                'Busqueda': Busqueda
-            };
-            let lista = await ejecutarAsync(urlWsIngreso + "/TraerTodosXBusqueda", data);
-            let result = [];
-            if (lista.length > 0) {
-                $.each(lista, function(key, value) {
-                    result.push(LlenarEntidadIngreso(value));
-                });
-            }
-            _ListaIngresos = result;
-            return result;
+        let data = {
+            'Busqueda': Busqueda
+        };
+        let lista = await ejecutarAsync(urlWsIngreso + "/TraerTodosXBusqueda", data);
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadIngreso(value));
+            });
         }
-        // HErramientas
+        _ListaIngresos = result;
+        return result;
+    }
+    // HErramientas
     static async ArmarGrillaCabecera(div) {
         $("#" + div + "").html('');
         let str = "";
@@ -176,7 +176,6 @@ class Ingreso extends DBE {
         str += '</table >';
         str += '</div >';
         return $("#" + div + "").html(str);
-
     }
 }
 
@@ -209,7 +208,7 @@ async function SeleccionIngreso(MiElemento) {
     try {
         let elemento = document.getElementById(MiElemento.id);
         let evento = elemento.getAttribute('data-Evento');
-        let buscado = $.grep(_ListaIngresos, function(entidad, index) {
+        let buscado = $.grep(_ListaIngresos, function (entidad, index) {
             return entidad.IdEntidad == MiElemento.id;
         });
         if (buscado[0] != undefined) {
