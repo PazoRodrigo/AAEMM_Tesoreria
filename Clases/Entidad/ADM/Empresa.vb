@@ -170,7 +170,7 @@ Namespace Entidad
             If busqueda.IncluirAlta = 1 AndAlso busqueda.IncluirBaja = 0 Then
                 sqlQuery += " Fec_Baja IS NULL"
             ElseIf busqueda.IncluirAlta = 0 AndAlso busqueda.IncluirBaja = 1 Then
-                sqlQuery += " Fec_Baja ISNOT NULL"
+                sqlQuery += " Fec_Baja IS NOT NULL"
             Else
                 sqlQuery += " Fec_Baja IS NULL"
             End If
@@ -180,6 +180,7 @@ Namespace Entidad
             Else
                 sqlQuery += " AND CAST(REPLACE(CUIT,'-','') as Bigint) > 0"
             End If
+            sqlQuery += " AND DEP = '00' "
 
             Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXBusqueda(sqlQuery)
             Return result
@@ -269,7 +270,9 @@ Namespace Entidad
                 .CorreoElectronico = CorreoElectronico,
                 .IdEstado = IdEstado,
                 .FechaReactivacion = LngFechaReactivacion,
-                .ObjDomicilio = ObjDomicilio.ToDto
+                .ObjDomicilio = ObjDomicilio.ToDto,
+                .FechaAlta = LngFechaAlta(),
+                .FechaBaja = LngFechaBaja()
             }
             Return result
         End Function
@@ -577,9 +580,9 @@ Namespace DataAccessLibrary
                     entidad.FechaAlta = CDate(dr.Item("fechaAlta"))
                 End If
             End If
-            If dr.Table.Columns.Contains("fechaBaja") Then
-                If dr.Item("fechaBaja") IsNot DBNull.Value Then
-                    entidad.FechaBaja = CDate(dr.Item("fechaBaja"))
+            If dr.Table.Columns.Contains("fec_Baja") Then
+                If dr.Item("fec_Baja") IsNot DBNull.Value Then
+                    entidad.FechaBaja = CDate(dr.Item("fec_Baja"))
                 End If
             End If
             ' Entidad

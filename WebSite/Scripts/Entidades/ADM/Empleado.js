@@ -1,5 +1,16 @@
 ﻿var _Lista_Empleado;
 
+class StrBusquedaEmpleado {
+    constructor() {
+        this.IncluirAfiliados = 1;
+        this.IncluirNoAfiliados = 0;
+        this.Nombre = '';
+        this.DNI = 0;
+        this.CUIT = 0;
+        this.CUIL = 0;
+        this.RazonSocial = '';
+    }
+}
 class Empleado extends DBE {
     constructor() {
         super();
@@ -45,7 +56,7 @@ class Empleado extends DBE {
             let id = await ejecutarAsync(urlWsEmpleado + "/Modifica", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Empleado, function (entidad, index) {
+            let buscados = $.grep(_Lista_Empleado, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Empleado = buscados;
@@ -64,7 +75,7 @@ class Empleado extends DBE {
             let id = await ejecutarAsync(urlWsEmpleado + "/Baja", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Empleado, function (entidad, index) {
+            let buscados = $.grep(_Lista_Empleado, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Empleado = buscados;
@@ -98,7 +109,7 @@ class Empleado extends DBE {
     // Traer
     static async TraerUno(IdEntidad) {
         _Lista_Empleado = await Empleado.TraerTodos();
-        let buscado = $.grep(_Lista_Empleado, function (entidad, index) {
+        let buscado = $.grep(_Lista_Empleado, function(entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
         let Encontrado = buscado[0];
@@ -109,7 +120,7 @@ class Empleado extends DBE {
     }
     static async TraerTodosActivos() {
         _Lista_Empleado = await Empleado.TraerTodos();
-        let buscado = $.grep(_Lista_Empleado, function (entidad, index) {
+        let buscado = $.grep(_Lista_Empleado, function(entidad, index) {
             return entidad.IdEstado === 0;
         });
         return buscado;
@@ -119,7 +130,7 @@ class Empleado extends DBE {
         _Lista_Empleado = [];
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function (key, value) {
+            $.each(lista, function(key, value) {
                 result.push(LlenarEntidadEmpleado(value));
             });
         }
@@ -134,7 +145,7 @@ class Empleado extends DBE {
         _Lista_Empleado = [];
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function (key, value) {
+            $.each(lista, function(key, value) {
                 result.push(LlenarEntidadEmpleado(value));
             });
         }
@@ -149,7 +160,7 @@ class Empleado extends DBE {
         _Lista_Empleado = [];
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function (key, value) {
+            $.each(lista, function(key, value) {
                 result.push(LlenarEntidadEmpleado(value));
             });
         }
@@ -159,25 +170,76 @@ class Empleado extends DBE {
         return _Lista_Empleado;
     }
     static async TraerTodasXNombre(Nombre) {
+            let data = {
+                'Nombre': Nombre
+            };
+            let lista = await ejecutarAsync(urlWsEmpleado + "/TraerTodosXNombre", data);
+            _Lista_Empleado = [];
+            let result = [];
+            if (lista.length > 0) {
+                $.each(lista, function(key, value) {
+                    result.push(LlenarEntidadEmpleado(value));
+                });
+            }
+            _Lista_Empleado = result;
+            return _Lista_Empleado;
+    }
+    static async TraerTodosXBusqueda(Busqueda) {
         let data = {
-            'Nombre': Nombre
+            'Busqueda': Busqueda
         };
-        let lista = await ejecutarAsync(urlWsEmpleado + "/TraerTodosXNombre", data);
-        _Lista_Empleado = [];
+        let lista = await ejecutarAsync(urlWsEmpleado + "/TraerTodosXBusqueda", data);
         let result = [];
         if (lista.length > 0) {
             $.each(lista, function (key, value) {
                 result.push(LlenarEntidadEmpleado(value));
             });
         }
-        _Lista_Empleado = result;
-        return _Lista_Empleado;
+        _ListaEmpleados = result;
+        return result;
     }
-    // Otros
+        // Otros
     static async Refresh() {
-        _Lista_Empleado = await Empleado.TraerTodas();
+            _Lista_Empleado = await Empleado.TraerTodas();
+        }
+        // Herramientas
+    static async ArmarGrillaCabecera(div) {
+        $("#" + div + "").html('');
+        let str = "";
+        str += '<table class="table table-sm">';
+        str += '    <thead>';
+        str += '        <tr>';
+        str += '            <th style="width: 50px;visibility: hidden;"><img src="../../Imagenes/lupa.png" style="width:30px; height: auto;" alt=""></th>';
+        str += '            <th class="text-center bg-danger" style="width: 100px;">DNI</th>';
+        str += '            <th class="text-center bg-info" style="width: 400px;">Razon Social</th>';
+        str += '            <th class="text-left pl-4" style="width: 120px;">Fecha Baja</th>';
+        str += '        </tr>';
+        str += '    </thead>';
+        str += '</table >';
+        return $("#" + div + "").html(str);
     }
-    // Herramientas
+    static async ArmarGrillaDetalle(div, lista, evento, estilo) {
+        $("#" + div + "").html('');
+        let str = "";
+        str += '<div style="' + estilo + '">';
+        str += '<table class="table table-sm table-striped table-hover">';
+        str += '    <tbody>';
+        if (lista.length > 0) {
+            for (let item of lista) {
+                str += '        <tr>';
+                str += '            <td style="width: 50px;" class="text-center bg-warning"><a hfre="#" id="' + item.IdEntidad + '"  data-Evento="' + evento + '" onclick="SeleccionEmpresa(this);"> <img src="../../Imagenes/lupa.png" alt=""></a></td>';
+                str += '            <td class="text-center" style="width: 120px; bg-danger"><class="text-light">' + item.CUIT + '</class=></td>';
+                str += '            <td class="text-left pl-3" style="width: 500px; bg-info"><class="text-light">' + item.RazonSocial + '</class=></td>';
+                str += '        </tr>';
+            }
+        }
+        str += '    </tbody>';
+        str += '</table >';
+        str += '</div >';
+        return $("#" + div + "").html(str);
+
+    }
+
     static async ArmarGrillaSinEliminar(lista, div, eventoSeleccion, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -326,6 +388,7 @@ class Empleado extends DBE {
         $("#txtBuscaCUIL").focus();
     }
 }
+
 function LlenarEntidadEmpleado(entidad) {
     let Res = new Empleado;
     Res.IdUsuarioAlta = entidad.IdUsuarioAlta;
@@ -348,11 +411,12 @@ function LlenarEntidadEmpleado(entidad) {
     console.log(Res);
     return Res;
 }
+
 function LimpiarBuscador() {
     $(".TxtBuscadores").val('');
     $("#grillaBuscadorEmpleado").html('');
 }
-$('body').on('click', '#LinkBtnBuscarEmpleado', async function (e) {
+$('body').on('click', '#LinkBtnBuscarEmpleado', async function(e) {
     try {
         let buscaCUIL = $("#txtBuscaCUIL").val();
         let buscaNroDocumento = $("#txtBuscaNroDocumento").val();
@@ -395,10 +459,10 @@ async function LlenarGrillaBuscadorEmpleado(TipoBuscador) {
     }
     await Empleado.ArmarGrillaSinEliminar(_Lista_Empleado, 'grillaBuscadorEmpleado', 'EventoSeleccionarEmpleado', '');
 }
-$('body').on('click', ".mibtn-seleccionEmpleado", async function () {
+$('body').on('click', ".mibtn-seleccionEmpleado", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Empleado, function (entidad, index) {
+        let buscado = $.grep(_Lista_Empleado, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -409,10 +473,10 @@ $('body').on('click', ".mibtn-seleccionEmpleado", async function () {
         alertAlerta(e);
     }
 });
-$('body').on('click', ".mibtn-EliminarEmpleado", async function () {
+$('body').on('click', ".mibtn-EliminarEmpleado", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Empleado, function (entidad, index) {
+        let buscado = $.grep(_Lista_Empleado, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -423,4 +487,3 @@ $('body').on('click', ".mibtn-EliminarEmpleado", async function () {
         alertAlerta(e);
     }
 });
-

@@ -6,10 +6,20 @@ Imports Clases.Entidad
 Imports LUM
 Imports Connection
 
+
 Namespace Entidad
     Public Class Empleado
         Inherits DBE
 
+        Public Structure StrBusquedaEmpleado
+            Public IncluirAfiliados As Integer
+            Public IncluirNoAfiliados As Integer
+            Public Nombre As String
+            Public CUIL As Long
+            Public DNI As Integer
+            Public CUIT As Long
+            Public RazonSocial As String
+        End Structure
 
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
@@ -95,16 +105,69 @@ Namespace Entidad
 #End Region
 #Region " Métodos Estáticos"
         ' Traer
-        'Public Shared Function TraerUno(ByVal Id As Integer) As Empleado
-        '    Dim result As Empleado = Todos.Find(Function(x) x.IdEntidad = Id)
-        '    If result Is Nothing Then
-        '        Throw New Exception("No existen resultados para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
-        'Public Shared Function TraerTodos() As List(Of Empleado)
-        '    Return Todos
-        'End Function
+        Public Shared Function TraerTodosXBusqueda(busqueda As StrBusquedaEmpleado) As List(Of Empleado)
+            Dim sqlQuery As String = "SELECT TOP 200 * FROM  OSEMM.dbo.basa001"
+            Dim existeParametro As Boolean = False
+            If busqueda.Nombre.Length > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += "ape_nom LIKE '%" + busqueda.Nombre + "%'"
+            End If
+            If busqueda.CUIL > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += " CAST(REPLACE(CUIL,'-','') as Bigint)  = '" + busqueda.CUIL.ToString + "'"
+            End If
+            If busqueda.DNI > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += " CAST(REPLACE(NRO_DOC,'-','') as Bigint)  = '" + busqueda.DNI.ToString + "'"
+            End If
+            'If busqueda.CUIT > 0 Then
+            '    If Not existeParametro Then
+            '        existeParametro = True
+            '        sqlQuery += " WHERE "
+            '    Else
+            '        sqlQuery += " AND "
+            '    End If
+            '    sqlQuery += " CAST(REPLACE(CUIT,'-','') as Bigint)  = '" + busqueda.CUIT.ToString + "'"
+            'End If
+            'If busqueda.RazonSocial.Length > 0 Then
+            '    If Not existeParametro Then
+            '        existeParametro = True
+            '        sqlQuery += " WHERE "
+            '    Else
+            '        sqlQuery += " AND "
+            '    End If
+            '    sqlQuery += "denomina LIKE '%" + busqueda.RazonSocial + "%'"
+            'End If
+            ' Afiliado
+            If Not existeParametro Then
+                existeParametro = True
+                sqlQuery += " WHERE "
+            Else
+                sqlQuery += " AND "
+            End If
+            If busqueda.IncluirNoAfiliados = 1 AndAlso busqueda.IncluirAfiliados = 0 Then
+            Else
+                sqlQuery += " Fec_Baja IS NULL"
+            End If
+            ' Fecha Baja
+            Dim result As List(Of Empleado) = DAL_Empleado.TraerTodosXBusqueda(sqlQuery)
+            Return result
+        End Function
         Public Shared Function TraerUno(ByVal Id As Integer) As Empleado
             Dim result As Empleado = DAL_Empleado.TraerUno(Id)
             If result Is Nothing Then
@@ -283,6 +346,8 @@ Namespace DataAccessLibrary
         Const storeTraerTodosXCUIL As String = "ADM.p_Empleado_TraerTodosXCUIL"
         Const storeTraerTodosXNombre As String = "ADM.p_Empleado_TraerTodosXNombre"
         Const storeTraerTodosXNroDocumento As String = "ADM.p_Empleado_TraerTodosXNroDocumento"
+        Const storeTraerTodosXBusqueda As String = "ADM.p_Empleado_TraerXBusquedaLibre"
+
 #End Region
 #Region " Métodos Públicos "
         ' ABM
@@ -397,6 +462,20 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
+        Friend Shared Function TraerTodosXBusqueda(sqlQuery As String) As List(Of Empleado)
+            Dim store As String = storeTraerTodosXBusqueda
+            Dim listaResult As New List(Of Empleado)
+            Dim pa As New parametrosArray
+            pa.add("@sqlQuery", sqlQuery)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
 #End Region
 #Region " Métodos Privados "
         Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Empleado
@@ -426,6 +505,10 @@ Namespace DataAccessLibrary
                 If dr.Item("fechaAlta") IsNot DBNull.Value Then
                     entidad.FechaAlta = CDate(dr.Item("fechaAlta"))
                 End If
+            ElseIf dr.Table.Columns.Contains("fe_Alta") Then
+                If dr.Item("fe_Alta") IsNot DBNull.Value Then
+                    entidad.FechaAlta = CDate(dr.Item("fe_Alta"))
+                End If
             End If
             If dr.Table.Columns.Contains("fechaBaja") Then
                 If dr.Item("fechaBaja") IsNot DBNull.Value Then
@@ -443,18 +526,23 @@ Namespace DataAccessLibrary
                     If dr.Item("ApellidoNombre") IsNot DBNull.Value Then
                         entidad.Nombre = dr.Item("ApellidoNombre").ToString.ToUpper.Trim
                     End If
+                ElseIf dr.Table.Columns.Contains("APE_NOM") Then
+                    If dr.Item("APE_NOM") IsNot DBNull.Value Then
+                        entidad.Nombre = dr.Item("APE_NOM").ToString.ToUpper.Trim
+                    End If
                 End If
                 If dr.Table.Columns.Contains("NroDocumento") Then
                     If dr.Item("NroDocumento") IsNot DBNull.Value Then
                         entidad.NroDocumento = CLng(dr.Item("NroDocumento"))
-                        'If entidad.NroDocumento = 29086245 Then
-                        '    Dim a As String = ""
-                        'End If
+                    End If
+                ElseIf dr.Table.Columns.Contains("NRO_DOC") Then
+                    If dr.Item("NRO_DOC") IsNot DBNull.Value Then
+                        entidad.NroDocumento = CLng(dr.Item("NRO_DOC"))
                     End If
                 End If
                 If dr.Table.Columns.Contains("CUIL") Then
                     If dr.Item("CUIL") IsNot DBNull.Value Then
-                        entidad.CUIL = CLng(dr.Item("CUIL"))
+                        entidad.CUIL = CLng(Replace(dr.Item("CUIL").ToString, "-", ""))
                     End If
                 End If
                 If dr.Table.Columns.Contains("NroSindical") Then
@@ -466,10 +554,24 @@ Namespace DataAccessLibrary
                     If dr.Item("FechaNacimiento") IsNot DBNull.Value Then
                         entidad.FechaNacimiento = CDate(dr.Item("FechaNacimiento"))
                     End If
+                ElseIf dr.Table.Columns.Contains("fec_nac") Then
+                    If dr.Item("fec_nac") IsNot DBNull.Value Then
+                        entidad.FechaNacimiento = CDate(dr.Item("fec_nac"))
+                    End If
                 End If
                 If dr.Table.Columns.Contains("IdSexo") Then
                     If dr.Item("IdSexo") IsNot DBNull.Value Then
                         entidad.IdSexo = CInt(dr.Item("IdSexo"))
+                    End If
+                ElseIf dr.Table.Columns.Contains("sexo") Then
+                    If dr.Item("sexo") IsNot DBNull.Value Then
+                        Select Case dr.Item("sexo").ToString
+                            Case "M"
+                                entidad.IdSexo = 1
+                            Case "F"
+                                entidad.IdSexo = 0
+                            Case Else
+                        End Select
                     End If
                 End If
                 If dr.Table.Columns.Contains("IdEstadoCivil") Then

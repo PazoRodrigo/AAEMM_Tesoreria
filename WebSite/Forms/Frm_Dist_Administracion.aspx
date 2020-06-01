@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Administración" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Dist_Administracion.aspx.vb" Inherits="Forms_Frm_Dist_Administracion" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Dist_Administracion.js?version20200428_1")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Dist_Administracion.js?version20200601_1")%>'></script>
 
     <script>
         document.onkeyup = function (e) {

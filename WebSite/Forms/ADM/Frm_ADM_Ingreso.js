@@ -5,11 +5,6 @@ $(document).ready(function () {
     try {
         $("#SpanNombreFormulario").text('Ingresos');
         $("#divCantRegistrosImprimir").css('display', 'none');
-        // $("#SpanBtnNuevo").text('Nuevo Ingreso');
-        // $("#SpanBtnBuscar").text('Buscar Ingreso');
-        // $("#SpanBtnEliminar").text('Eliminar');
-        // $("#SpanBtnGuardar").text('Guardar');
-        // $("#SpanBtnImprimir").text('Imprimir Ingreso');
         Inicio();
     } catch (e) {
         alertAlerta(e);
@@ -51,6 +46,7 @@ function LimpiarGrilla() {
 
 function LimpiarIngreso() {
     $("#EntidadCUIT").val('');
+    $("#EntidadCodigoEntidad").val('');
     $("#EntidadRazonSocial").val('');
     $("#EntidadAcred").val('');
     $("#EntidadPeriodo").val('');
@@ -132,25 +128,26 @@ async function ArmarBusqueda() {
 
 async function LlenarGrilla() {
     $("#Grilla").css("display", "none");
-    console.log(_ListaIngresos.length);
     if (_ListaIngresos.length > 0) {
         await Ingreso.ArmarGrillaCabecera('GrillaCabecera');
         await Ingreso.ArmarGrillaDetalle('GrillaDetalle', _ListaIngresos, 'EventoSeleccionarIngreso', 'max-height: 350px; overflow-y: scroll;');
         $("#Grilla").css("display", "block");
     } else {
-        throw ("No existen Ingresos para Mostrar con esos parámetros");
+        throw ("No existen Ingresos para mostrar con esos parámetros");
     }
 }
 
 async function LlenarIngreso() {
     LimpiarIngreso();
     if (_ObjIngreso == undefined) {
-        throw ('No existe Ingreso seleccionado');
+        throw 'No existe Ingreso seleccionado';
     }
+    console.log(_ObjIngreso);
     $("#EntidadCUIT").val(_ObjIngreso.CUIT);
+    $("#EntidadCodigoEntidad").val(await _ObjIngreso.StrCodigoEntidad(6));
     $("#EntidadRazonSocial").val(_ObjIngreso.RazonSocial);
-    $("#EntidadAcred").val(_ObjIngreso.FechaAcreditacion);
-    $("#EntidadPeriodo").val(_ObjIngreso.Periodo);
+    $("#EntidadAcred").val(await _ObjIngreso.StrFechaAcreditacion());
+    $("#EntidadPeriodo").val(await _ObjIngreso.StrPeriodo());
     $("#EntidadImporte").val(_ObjIngreso.Importe);
     $("#EntidadOrigen").val(await _ObjIngreso.OrigenLargo());
     $("#EntidadNroCheque").val(_ObjIngreso.NroCheque);

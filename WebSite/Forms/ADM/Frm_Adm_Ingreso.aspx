@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Ingresos" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ADM_Ingreso.aspx.vb" Inherits="Forms_ADM_Frm_Adm_Ingreso" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Adm_Ingreso.js?version20200428_1")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_Ingreso.js?version20200601_1")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -152,48 +152,55 @@
                         <div id="Seleccionado" class="row" style="display: none;">
                             <div class="container border border-primary pb-3">
                                 <div class="row mt-4">
-                                    <div class="col-1">CUIT</div>
-                                    <div class="col-2">
+                                    <div class="col-3 text-center">CUIT</div>
+                                    <div class="col-2 text-center">Código</div>
+                                    <div class="col-7 text-center">Razon Social</div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-3 d-flex justify-content-center">
                                         <input type="text" id="EntidadCUIT" class="form-control text-center"
-                                            placeholder="CUIT" maxlength="11" style="width: 120px;">
+                                            placeholder="CUIT" maxlength="11" style="width: 140px;">
                                     </div>
-                                    <div class="col-2">Razon Social</div>
-                                    <div class="col-7">
+                                    <div class="col-2 d-flex justify-content-center">
+                                        <input type="text" id="EntidadCodigoEntidad" class="form-control text-center"
+                                            placeholder="Código" maxlength="6" style="width: 120px;">
+                                    </div>
+                                    <div class="col-7 d-flex justify-content-center">
                                         <input type="text" id="EntidadRazonSocial" class="form-control"
                                             placeholder="Razon Social" disabled>
                                     </div>
                                 </div>
-                                <div class="row mt-1">
+                                <div class="row mt-2">
                                     <div class="col-1">Fecha</div>
                                     <div class="col-3">
-                                        <input type="text" id="EntidadAcred" class="form-control datepicker"
+                                        <input type="text" id="EntidadAcred" class="form-control datepicker text-center"
                                             placeholder="Acreditación">
                                     </div>
                                     <div class="col-1">Período</div>
                                     <div class="col-3">
-                                        <input type="text" id="EntidadPeriodo" class="form-control"
+                                        <input type="text" id="EntidadPeriodo" class="form-control text-center"
                                             placeholder="Período">
                                     </div>
                                     <div class="col-1">Importe</div>
                                     <div class="col-3">
-                                        <input type="text" id="EntidadImporte" class="form-control"
+                                        <input type="text" id="EntidadImporte" class="form-control text-right"
                                             placeholder="Importe">
                                     </div>
                                 </div>
                                 <div class="row mt-1">
                                     <div class="col-1">Origen</div>
                                     <div class="col-3">
-                                        <input type="text" id="EntidadOrigen" class="form-control"
+                                        <input type="text" id="EntidadOrigen" class="form-control text-center"
                                             placeholder="Origen" disabled>
                                     </div>
                                     <div class="col-1">Cheque</div>
                                     <div class="col-3">
-                                        <input type="text" id="EntidadNroCheque" class="form-control"
+                                        <input type="text" id="EntidadNroCheque" class="form-control text-right"
                                             placeholder="Nro. Cheque">
                                     </div>
                                     <div class="col-1">Estado</div>
                                     <div class="col-3">
-                                        <input type="text" id="EntidadEstado" class="form-control"
+                                        <input type="text" id="EntidadEstado" class="form-control text-center"
                                             placeholder="Estado" disabled>
                                     </div>
                                 </div>

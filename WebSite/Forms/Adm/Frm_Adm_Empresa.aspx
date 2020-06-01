@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Empresas" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ADM_Empresa.aspx.vb" Inherits="Forms_Adm_Frm_Adm_Empresa" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Adm_Empresa.js?version20200428_1")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_Empresa.js?version20200601_1")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -20,7 +20,7 @@
                 <span id="SpanNombreFormulario"></span>
             </div>
             <div id="BtnVolver" class="Cabecera Porc10_L">
-                <a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Administracion.aspx")%>' class="LinkBtn" title="Volver a Configuración"><span class="icon-circle-left"></span></a>
+                <a href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Administracion.aspx")%>' class="LinkBtn" title="Volver a Administración"><span class="icon-circle-left"></span></a>
             </div>
         </li>
         <li class="linea">
@@ -29,9 +29,9 @@
                     <div class="col-4">
                         <div class="container border border-primary">
                             <div class="row mt-1 justify-content-center">
-                                <div class="col-9  mb-2font-weight-bold text-light">Situación de Empresas </div>
+                                <div class="col-9 mb-2 font-weight-bold text-light">Situación de Empresas </div>
                             </div>
-                            <div class="row mt-2">
+                            <div class="row">
                                 <div class="col-1"></div>
                                 <div class="col-11">
                                     <div class="custom-control custom-switch">
@@ -40,12 +40,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-2">
+                            <div class="row mt-1">
                                 <div class="col-1"></div>
                                 <div class="col-11">
                                     <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" id="switchIncluiBaja">
-                                        <label class="custom-control-label" for="switchIncluiBaja">Empresas de Baja</label>
+                                        <input type="checkbox" class="custom-control-input" id="switchIncluirBaja">
+                                        <label class="custom-control-label" for="switchIncluirBaja">Empresas de Baja</label>
                                     </div>
                                 </div>
                             </div>
@@ -58,10 +58,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-4 mb-2 justify-content-center">
+                            <div class="row mt-2 mb-2 justify-content-center">
                                 <div class="col-9 font-weight-bold text-light">Parámetros </div>
                             </div>
-                            <div class="row mt-1">
+                            <div class="row">
                                 <div class="col-3">CUIT</div>
                                 <div class="col-9">
                                     <input type="text" id="BuscaCUIT" class="form-control text-center"
@@ -115,14 +115,21 @@
                         </div>
                         <div id="Seleccionado" class="row" style="display: none;">
                             <div class="container border border-primary pb-1">
-                                <div class="row mt-4">
-                                    <div class="col-2">CUIT</div>
-                                    <div class="col-2">
+                               <div class="row mt-4">
+                                    <div class="col-3 text-center">CUIT</div>
+                                    <div class="col-2 text-center">Código</div>
+                                    <div class="col-7 text-center">Razon Social</div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-3 d-flex justify-content-center">
                                         <input type="text" id="EntidadCUIT" class="form-control text-center"
-                                            placeholder="CUIT" maxlength="11" style="width: 120px;">
+                                            placeholder="CUIT" maxlength="11" style="width: 140px;">
                                     </div>
-                                    <div class="col-2">Razon Social</div>
-                                    <div class="col-6">
+                                    <div class="col-2 d-flex justify-content-center">
+                                        <input type="text" id="EntidadCodigoEntidad" class="form-control text-center"
+                                            placeholder="Código" maxlength="6" style="width: 120px;">
+                                    </div>
+                                    <div class="col-7 d-flex justify-content-center">
                                         <input type="text" id="EntidadRazonSocial" class="form-control"
                                             placeholder="Razon Social" disabled>
                                     </div>
@@ -130,17 +137,20 @@
                                 <div class="row mt-1">
                                     <div class="col-2">Convenio</div>
                                     <div class="col-4">
+                                        <div id="CboConvenio"></div>
                                     </div>
                                   <div class="col-2">C. de C.</div>
                                     <div class="col-4">
+                                        <div id="CboCentroCosto"></div>
+
                                     </div>
                                 </div>
                                   <div class="row mt-2 justify-content-end">
                                     <div class="col-3">
-                                        <a href="#" class="btn btn-block btn-info ">Institución</a>
+                                        <a href="#" id="BtnContactoEmpresa" class="btn btn-block btn-info ">Empresa</a>
                                     </div>
                                     <div class="col-3">
-                                        <a href="#" class="btn btn-block btn-info ">Personas</a>
+                                        <a href="#" id="BtnContactoPersonas" class="btn btn-block btn-info ">Personas</a>
                                     </div>
                                 </div>
                               

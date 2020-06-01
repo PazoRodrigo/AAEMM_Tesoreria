@@ -34,6 +34,29 @@ class Ingreso extends DBE {
 
         this._ObjCentroCosto;
         this._ObjOrigen;
+        this._ObjEmpresa;
+    }
+
+    async StrPeriodo() {
+        let Result = '';
+        if (this.Periodo > 0) {
+            Result = Right(this.Periodo, 2) + '/ ' + Left(this.Periodo, 4);
+        }
+        return Result;
+    }
+    async StrFechaAcreditacion() {
+        let Result = '';
+        if (this.FechaAcreditacion > 0) {
+            Result = LongToDateString(this.FechaAcreditacion);
+        }
+        return Result;
+    }
+    async StrCodigoEntidad(cantCaracteres) {
+        let Result = '';
+        if (this.CodigoEntidad > 0) {
+            Result = Right('00000000000' + this.CodigoEntidad, cantCaracteres);
+        }
+        return Result;
     }
     // Lazy
     async ObjCentroCosto() {
@@ -133,9 +156,10 @@ class Ingreso extends DBE {
         str += '<table class="table table-sm">';
         str += '    <thead>';
         str += '        <tr>';
-        str += '            <th style="visibility: hidden;"><img src="../../Imagenes/lupa.png" style="width:30px; height: auto;" alt=""></th>';
+        str += '            <th class="" style="width:49px;"></th>';
         str += '            <th class="text-center" style="width: 80px;">Fecha</th>';
-        str += '            <th class="text-center" style="width: 270px;">CUIT / Empresa</th>';
+        str += '            <th class="text-center" style="width: 50px;">Cód.</th>';
+        str += '            <th class="text-center" style="width: 220px;">CUIT / Empresa</th>';
         str += '            <th class="text-center" style="width: 80px;">Período</th>';
         str += '            <th class="text-center" style="width: 110px;">Importe</th>';
         str += '            <th class="text-center" style="width: 100px;">Archivo</th>';
@@ -156,11 +180,12 @@ class Ingreso extends DBE {
         if (lista.length > 0) {
             for (let item of lista) {
                 str += '        <tr>';
-                str += '            <td style=""><a hfre="#" id="' + item.IdEntidad + '"  data-Evento="' + evento + '" onclick="SeleccionIngreso(this);"> <img src="../../Imagenes/lupa.png" alt=""></a></td>';
-                str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + item.FechaAcreditacion + '</small></td>';
-                str += '            <td class="text-left" style="width: 270px;"><small class="text-light">' + item.RazonSocial + '</small></td>';
-                str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + item.Periodo + '</small></td>';
-                str += '            <td class="text-right" style="width: 110px;"><small class="text-light">' + separadorMiles(item.Importe) + '</small></td>';
+                str += '            <td style="width:45px;"><a hfre="#" id="' + item.IdEntidad + '"  data-Evento="' + evento + '" onclick="SeleccionIngreso(this);"> <img src="../../Imagenes/lupa.png" alt=""></a></td>';
+                str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrFechaAcreditacion() + '</small></td>';
+                str += '            <td class="text-center" style="width: 50px;"><small class="text-light">' + await item.StrCodigoEntidad(4) + '</small></td>';
+                str += '            <td class="text-left" style="width: 220px;"><small class="text-light">' + Left(item.RazonSocial, 25) + '</small></td>';
+                str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrPeriodo() + '</small></td>';
+                str += '            <td class="text-right pr-1" style="width: 100px;"><small class="text-light">' + separadorMiles(item.Importe) + '</small></td>';
                 str += '            <td class="text-center" style="width: 100px;"><small class="text-light">' + item.NombreArchivo + '</small></td>';
                 str += '            <td class="text-center" style="width: 40px;"><small class="text-light">' + await item.Origen() + '</small></td>';
                 let cheque = '';

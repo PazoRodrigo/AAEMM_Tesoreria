@@ -1,10 +1,9 @@
 ﻿var _ListaEmpresas;
 var _ObjEmpresa;
 
-$(document).ready(async function() {
+$(document).ready(async function () {
     try {
         $("#SpanNombreFormulario").text('Empresas');
-        $("#switchIncluirAlta").attr('checked', 'checked');
         $("#divCantRegistrosImprimir").css('display', 'none');
         await Inicio();
     } catch (e) {
@@ -23,6 +22,9 @@ async function LimpiarFormulario() {
 }
 
 async function LimpiarBuscador() {
+    $("#switchIncluirAlta").prop('checked', true);
+    $("#switchIncluirBaja").prop('checked', false);
+    $("#switchIncluirIncluir0").prop('checked', false);
     $("#BuscaRazonSocal").val('');
     $("#BuscaCUIT").val('');
     let lista = await CentroCosto.Todos();
@@ -30,15 +32,16 @@ async function LimpiarBuscador() {
 }
 
 function LimpiarGrilla() {
-    //LimpiarEmpresa();
     $("#Grilla").css("display", "none");
 }
 
 function LimpiarEmpresa() {
-    $("#DatoFormulario").val('');
+    $("#EntidadCUIT").val('');
+    $("#EntidadCodigoEntidad").val('');
+    $("#EntidadRazonSocial").val('');
 }
 
-$('body').on('click', '#BtnBuscador', async function(e) {
+$('body').on('click', '#BtnBuscador', async function (e) {
     try {
         $("#Seleccionado").css("display", "none");
         $("#divCantRegistrosImprimir").css('display', 'none');
@@ -71,7 +74,7 @@ async function ArmarBusqueda() {
     if ($("#switchIncluirAlta").prop("checked") == true) {
         ChkAlta = 1;
     }
-    if ($("#switchIncluiBaja").prop("checked") == true) {
+    if ($("#switchIncluirBaja").prop("checked") == true) {
         ChkBaja = 1;
     }
     if ($("#switchIncluirCUIT0").prop("checked") == true) {
@@ -97,17 +100,15 @@ async function ArmarBusqueda() {
 async function LlenarGrilla() {
     $("#Grilla").css("display", "none");
     $("#LblCantidadRegistrosGrilla").css("display", "none");
-    console.log(_ListaEmpresas.length);
     if (_ListaEmpresas.length > 0) {
         await Empresa.ArmarGrillaCabecera('GrillaCabecera');
         await Empresa.ArmarGrillaDetalle('GrillaDetalle', _ListaEmpresas, 'EventoSeleccionarEmpresa', 'max-height: 350px; overflow-y: scroll;');
         $("#Grilla").css("display", "block");
-        let TextoCantidadRegistros = "Cantidad de Registros: " + _ListaEmpresas.length
-        $("#LblCantidadRegistrosGrilla").text(TextoCantidadRegistros)
+        let TextoCantidadRegistros = "Cantidad de Registros: " + _ListaEmpresas.length;
+        $("#LblCantidadRegistrosGrilla").text(TextoCantidadRegistros);
         $("#LblCantidadRegistrosGrilla").css("display", "block");
-
     } else {
-        throw ("No existen Ingresos para Mostrar con esos parámetros")
+        throw ("No existen Empresas para mostrar con esos parámetros");
     }
 }
 
@@ -117,10 +118,11 @@ async function LlenarEmpresa() {
         throw ('No existe Empresa seleccionada');
     }
     $("#EntidadCUIT").val(_ObjEmpresa.CUIT);
+    $("#EntidadCodigoEntidad").val(await _ObjEmpresa.StrCodigo(11));
     $("#EntidadRazonSocial").val(_ObjEmpresa.RazonSocial);
 }
 
-document.addEventListener('EventoSeleccionarEmpresa', async function(e) {
+document.addEventListener('EventoSeleccionarEmpresa', async function (e) {
     try {
         let objSeleccionado = e.detail;
         let listaTempEmpresas = [];
@@ -134,6 +136,11 @@ document.addEventListener('EventoSeleccionarEmpresa', async function(e) {
         alertAlerta(e);
     }
 }, false);
+
+function NuevaEmpresa() {
+    LimpiarEmpresa();
+    _ObjEmpresa = new Empresa;
+}
 
 // async function LlenarEmpresa() {
 //     console.log(_ObjEmpresa);
