@@ -1,11 +1,12 @@
-﻿Partial Class Frm_Rep_Ingresos
+﻿Partial Class Forms_Reportes_Frm_Rep_Comprobantes
     Inherits System.Web.UI.Page
+
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not Page.IsPostBack Then
             Dim parm As Microsoft.Reporting.WebForms.ReportParameter() = New Microsoft.Reporting.WebForms.ReportParameter() {}
             ' parm(0) = New Microsoft.Reporting.WebForms.ReportParameter("nombreArchivo", "BN20200318", False)
-            AbrirReporte("/AAEMM2020/Rpt_Ingresos", parm)
+            AbrirReporte("/AAEMM2020/Rpt_Comprobantes", parm)
         End If
     End Sub
 

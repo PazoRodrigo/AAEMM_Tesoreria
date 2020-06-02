@@ -10,6 +10,9 @@
             } else if (e.ctrlKey && e.altKey && (e.which == 73 || e.which == 105)) {
                 // Ctrol + Alt + I
                redirect = '<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>';
+              } else if (e.ctrlKey && e.altKey && (e.which == 71 || e.which == 103)) {
+                // Ctrol + Alt + G
+               redirect = '<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gastos.aspx")%>';
             }
             window.location = redirect;
         };
@@ -33,6 +36,7 @@
                                     <li class="BtnDistribuidor">
                                         <ul class="SubMenu">
                                             <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>'>(Alt + I) - Ingresos</a></li>
+                                            <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gastos.aspx")%>'>(Alt + G) - Gastos</a></li>
                                         </ul>
                                     </li>
                                 </ul>

@@ -151,7 +151,7 @@ Namespace Entidad
         Public Sub Cerrar()
             ValidarCerrar()
             IdEstado = Enumeradores.EstadoGasto.Cerrado
-            'DAL_Gasto.Modifica(Me)
+            DAL_Gasto.Modifica(Me)
         End Sub
         'Public Sub Modifica()
         '    ValidarModifica()

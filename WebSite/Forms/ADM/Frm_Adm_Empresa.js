@@ -35,10 +35,12 @@ function LimpiarGrilla() {
     $("#Grilla").css("display", "none");
 }
 
-function LimpiarEmpresa() {
+async function LimpiarEmpresa() {
     $("#EntidadCUIT").val('');
     $("#EntidadCodigoEntidad").val('');
     $("#EntidadRazonSocial").val('');
+    await ArmarComboCentroCosto();
+    await ArmarComboConvenio();
 }
 
 $('body').on('click', '#BtnBuscador', async function (e) {
@@ -113,7 +115,7 @@ async function LlenarGrilla() {
 }
 
 async function LlenarEmpresa() {
-    LimpiarEmpresa();
+    await LimpiarEmpresa();
     if (_ObjEmpresa == undefined) {
         throw ('No existe Empresa seleccionada');
     }
@@ -142,6 +144,16 @@ function NuevaEmpresa() {
     _ObjEmpresa = new Empresa;
 }
 
+async function ArmarComboCentroCosto() {
+    let lista = await CentroCosto.Todos();
+    await CentroCosto.ArmarCombo(lista, 'CboCentroCosto', 'SelectorCentroCosto', 'EventoSeleccionCentroCosto', 'Centro de Costo', 'CboBuscadorCC');
+}
+
+async function ArmarComboConvenio() {
+    let lista = await Convenio.Todos();
+    await Convenio.ArmarCombo(lista, 'CboConvenio', 'SelectorConvenio', 'EventoSeleccionConvenio', 'Convenio', 'CboConvenio');
+}
+
 // async function LlenarEmpresa() {
 //     console.log(_ObjEmpresa);
 //     $("#TxtRazonSocial").val(_ObjEmpresa.RazonSocial);
@@ -156,14 +168,7 @@ function NuevaEmpresa() {
 //     Limpiar_Empresa();
 //     _ObjEmpresa = new Empresa;
 // }
-// async function ArmarComboCentroCosto(div) {
-//     let lista = await CentroCosto.Todos();
-//     await CentroCosto.ArmarCombo(lista, 'CboCentroCosto', 'SelectorCentroCosto', 'EventoSeleccionCentroCosto', 'Centro de Costo', 'CboBuscadorCC');
-// }
-// async function ArmarComboConvenio() {
-//     let lista = await Convenio.Todos();
-//     await Convenio.ArmarCombo(lista, 'CboConvenio', 'SelectorConvenio', 'EventoSeleccionConvenio', 'Convenio', 'CboConvenio');
-// }
+
 
 // document.addEventListener('EventoSeleccionarEmpresa', async function(e) {
 //     try {

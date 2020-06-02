@@ -142,7 +142,6 @@
                                   <div class="col-2">C. de C.</div>
                                     <div class="col-4">
                                         <div id="CboCentroCosto"></div>
-
                                     </div>
                                 </div>
                                   <div class="row mt-2 justify-content-end">
