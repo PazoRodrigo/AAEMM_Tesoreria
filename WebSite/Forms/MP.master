@@ -36,28 +36,28 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
     <!-- Entidades -->
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/ChequePropio.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/ChequeTercero.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Comprobante.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empleado.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empresa.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Gasto.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Ingreso.js?version20200601_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/ChequePropio.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/ChequeTercero.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Comprobante.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empleado.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empresa.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Gasto.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Ingreso.js?version20200602_1")%>' type="text/javascript"></script>
 
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Domicilio.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Indicadores.js?version20200601_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Domicilio.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Indicadores.js?version20200602_1")%>' type="text/javascript"></script>
 
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/CentroCosto.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Convenio.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/CuentaContable.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/OriginarioGasto.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Proveedor.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoContacto.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoDomicilio.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoGasto.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoPago.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Estados/EstadoCheque.js?version20200601_1")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/USUARIO/Usuario.js?version20200601_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/CentroCosto.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Convenio.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/CuentaContable.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/OriginarioGasto.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Proveedor.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoContacto.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoDomicilio.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoGasto.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoPago.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Estados/EstadoCheque.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/USUARIO/Usuario.js?version20200602_1")%>' type="text/javascript"></script>
     <!-- WebServices-->
     <script type="text/javascript">
         var urlWsCentroCosto = '<%= ResolveClientUrl("~/WebServices/WsCentroCosto.asmx")%>';
@@ -170,7 +170,7 @@
 
 
     <header>
-        <script src='<%= ResolveClientUrl("MP.js?version20200601_1")%>'></script>
+        <script src='<%= ResolveClientUrl("MP.js?version20200602_1")%>'></script>
         <div id="DivHeaderLogo">
             <img id="LogoHeader" src='<%= ResolveClientUrl("~/imagenes/Logo_AAEMM.jpg")%>' alt="Logo AAEMM">
         </div>
@@ -194,7 +194,7 @@
             </a>
         </div>
     </header>
-    <section id="Contenedor" style="height: 510px; padding-top: 1px;">
+    <section id="Contenedor" style="height: 540px; padding-top: 1px;">
         <form id="form1" runat="server">
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
             </asp:ContentPlaceHolder>

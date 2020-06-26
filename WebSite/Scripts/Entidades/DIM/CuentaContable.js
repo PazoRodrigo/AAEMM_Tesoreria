@@ -41,7 +41,7 @@ class CuentaContable extends DBE {
             let id = await ejecutarAsync(urlWsCuentaContable + "/Modifica", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_CuentaContable, function (entidad, index) {
+            let buscados = $.grep(_Lista_CuentaContable, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_CuentaContable = buscados;
@@ -62,7 +62,7 @@ class CuentaContable extends DBE {
             let id = await ejecutarAsync(urlWsCuentaContable + "/Baja", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_CuentaContable, function (entidad, index) {
+            let buscados = $.grep(_Lista_CuentaContable, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_CuentaContable = buscados;
@@ -95,7 +95,7 @@ class CuentaContable extends DBE {
     // Traer
     static async TraerUno(IdEntidad) {
         _Lista_CuentaContable = await CuentaContable.TraerTodos();
-        let buscado = $.grep(_Lista_CuentaContable, function (entidad, index) {
+        let buscado = $.grep(_Lista_CuentaContable, function(entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
         return buscado[0];
@@ -105,28 +105,28 @@ class CuentaContable extends DBE {
     }
     static async TraerTodosActivos() {
         _Lista_CuentaContable = await CuentaContable.TraerTodos();
-        let buscado = $.grep(_Lista_CuentaContable, function (entidad, index) {
+        let buscado = $.grep(_Lista_CuentaContable, function(entidad, index) {
             return entidad.IdEstado === 0;
         });
         return buscado;
     }
     static async TraerTodas() {
-        let lista = await ejecutarAsync(urlWsCuentaContable + "/TraerTodos");
-        _Lista_CuentaContable = [];
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadCuentaContable(value));
-            });
+            let lista = await ejecutarAsync(urlWsCuentaContable + "/TraerTodos");
+            _Lista_CuentaContable = [];
+            let result = [];
+            if (lista.length > 0) {
+                $.each(lista, function(key, value) {
+                    result.push(LlenarEntidadCuentaContable(value));
+                });
+            }
+            _Lista_CuentaContable = result;
+            return _Lista_CuentaContable;
         }
-        _Lista_CuentaContable = result;
-        return _Lista_CuentaContable;
-    }
-    // Otros
+        // Otros
     static async Refresh() {
-        _Lista_CuentaContable = await CuentaContable.TraerTodas();
-    }
-    // Herramientas
+            _Lista_CuentaContable = await CuentaContable.TraerTodas();
+        }
+        // Herramientas
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -187,15 +187,16 @@ class CuentaContable extends DBE {
     static async ArmarCombo(lista, div, selector, evento, ventana, estilo) {
         lista.sort(SortXNombre);
         let Cbo = '';
-        Cbo += '<select id="_' + div + '" onchange="SeleccionCuenta()"  data-Evento="' + evento + '" name="myselect" class="' + estilo + '">';
+        Cbo += '<select id="_' + div + '" data-Evento="' + evento + '" class="' + estilo + '">';
         Cbo += '    <option value="0" id="' + selector + '">' + ventana + '</option>';
-        $(lista).each(function () {
+        $(lista).each(function() {
             Cbo += '<option class="mibtn-seleccionCuentaContable" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + this.Nombre + '</option>';
         });
         Cbo += '</select>';
         return $('#' + div + '').html(Cbo);
     }
 }
+
 function LlenarEntidadCuentaContable(entidad) {
     let Res = new CuentaContable;
     Res.IdUsuarioAlta = entidad.IdUsuarioAlta;
@@ -210,10 +211,10 @@ function LlenarEntidadCuentaContable(entidad) {
     Res.IdEstado = entidad.IdEstado;
     return Res;
 }
-$('body').on('click', ".mibtn-seleccionCuentaContable", async function () {
+$('body').on('click', ".mibtn-seleccionCuentaContable", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_CuentaContable, function (entidad, index) {
+        let buscado = $.grep(_Lista_CuentaContable, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -224,10 +225,10 @@ $('body').on('click', ".mibtn-seleccionCuentaContable", async function () {
         alertAlerta(e);
     }
 });
-$('body').on('click', ".mibtn-EliminarCuentaContable", async function () {
+$('body').on('click', ".mibtn-EliminarCuentaContable", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_CuentaContable, function (entidad, index) {
+        let buscado = $.grep(_Lista_CuentaContable, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -241,7 +242,7 @@ $('body').on('click', ".mibtn-EliminarCuentaContable", async function () {
 async function SeleccionCuenta() {
     try {
         let elemento = document.getElementById("_CboCuenta");
-        let buscado = $.grep(_Lista_CuentaContable, function (entidad, index) {
+        let buscado = $.grep(_Lista_CuentaContable, function(entidad, index) {
             return entidad.IdEntidad == elemento.options[elemento.selectedIndex].value;
         });
         let Seleccionado = buscado[0];

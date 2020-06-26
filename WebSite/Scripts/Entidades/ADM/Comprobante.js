@@ -1,5 +1,20 @@
 ﻿var _Lista_Comprobante;
 
+class StrBusquedaComprobante {
+    constructor() {
+        this.Desde = 0;
+        this.Hasta = 0;
+        this.Estados = '';
+        this.IdGasto = 0;
+        this.IdOriginarioGasto = 0;
+        this.IdProveedor = 0;
+        this.IdCentroCosto = 0;
+        this.IdTipoPago = 0;
+        this.IdCuenta = 0;
+        this.Importe = 0;
+        this.NroComprobante = 0;
+    }
+}
 class Comprobante extends DBE {
     constructor() {
         super();
@@ -68,12 +83,25 @@ class Comprobante extends DBE {
     async ObjTipoPago() {
         try {
             if (this._TipoPago === undefined) {
-                this._ObjTipoPago = await TipoPago.TraerUno(this.IdTipoPago);
+                if (this.IdTipoPago > 0) {
+                    this._ObjTipoPago = await TipoPago.TraerUno(this.IdTipoPago);
+                } else {
+                    this._ObjTipoPago = new TipoPago;
+                }
             }
             return this._ObjTipoPago;
         } catch (e) {
             return new TipoPago;
         }
+    }
+
+    StrPagado() {
+        let Result = 'No';
+        if (this.FechaPago > 0) {
+            Result = 'Si';
+        }
+        return Result;
+
     }
 
     // ABM
@@ -107,7 +135,7 @@ class Comprobante extends DBE {
             let id = await ejecutarAsync(urlWsComprobante + "/Modifica", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Comprobante, function (entidad, index) {
+            let buscados = $.grep(_Lista_Comprobante, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Comprobante = buscados;
@@ -128,7 +156,7 @@ class Comprobante extends DBE {
             let id = await ejecutarAsync(urlWsComprobante + "/Baja", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Comprobante, function (entidad, index) {
+            let buscados = $.grep(_Lista_Comprobante, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Comprobante = buscados;
@@ -141,38 +169,38 @@ class Comprobante extends DBE {
     }
 
     async ValidarCampos() {
-        let sError = '';
-        if (this.IdCuenta === 0) {
-            sError += '- Debe informar la Cuenta. <br>';
-        }
-        if (this.Importe.length == 0) {
-            sError += '- Debe informar el importe. <br>';
-        } else {
-            if (isNaN(this.Importe)) {
-                sError += '- El importe debe ser numérico. <br>';
+            let sError = '';
+            if (this.IdCuenta === 0) {
+                sError += '- Debe informar la Cuenta. <br>';
+            }
+            if (this.Importe.length == 0) {
+                sError += '- Debe informar el importe. <br>';
+            } else {
+                if (isNaN(this.Importe)) {
+                    sError += '- El importe debe ser numérico. <br>';
+                }
+            }
+            if (this.IdOriginario === 0) {
+                sError += '- Debe informar el Originario. <br>';
+            }
+            if (this.IdCentroCosto === 0) {
+                sError += '- Debe informar el Centro de Costo. <br>';
+            }
+            if (this.IdProveedor === 0) {
+                sError += '- Debe informar el Proveedor. <br>';
+            }
+            if (this.NroComprobante.length == 0) {
+                this.NroComprobante = 0;
+            } else {
+                if (isNaN(this.NroComprobante)) {
+                    sError += '- El Nro. Comprobante debe ser numérico. <br>';
+                }
+            }
+            if (sError.length > 0) {
+                throw '<b>Debe Completar todos los campos</b><br><br>' + sError;
             }
         }
-        if (this.IdOriginario === 0) {
-            sError += '- Debe informar el Originario. <br>';
-        }
-        if (this.IdCentroCosto === 0) {
-            sError += '- Debe informar el Centro de Costo. <br>';
-        }
-        if (this.IdProveedor === 0) {
-            sError += '- Debe informar el Proveedor. <br>';
-        }
-        if (this.NroComprobante.length == 0) {
-            this.NroComprobante = 0;
-        } else {
-            if (isNaN(this.NroComprobante)) {
-                sError += '- El Nro. Comprobante debe ser numérico. <br>';
-            }
-        }
-        if (sError.length > 0) {
-            throw '<b>Debe Completar todos los campos</b><br><br>' + sError;
-        }
-    }
-    // Todos
+        // Todos
     static async TodosXGasto(IdGasto) {
         return await Comprobante.TraerTodasXGasto(IdGasto);
     }
@@ -180,7 +208,7 @@ class Comprobante extends DBE {
     // Traer
     static async TraerUno(IdEntidad) {
         _Lista_Comprobante = await Comprobante.TraerTodos();
-        let buscado = $.grep(_Lista_Comprobante, function (entidad, index) {
+        let buscado = $.grep(_Lista_Comprobante, function(entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
         let Encontrado = buscado[0];
@@ -191,7 +219,7 @@ class Comprobante extends DBE {
     }
     static async TraerTodosActivos() {
         _Lista_Comprobante = await Comprobante.TraerTodos();
-        let buscado = $.grep(_Lista_Comprobante, function (entidad, index) {
+        let buscado = $.grep(_Lista_Comprobante, function(entidad, index) {
             return entidad.IdEstado === 0;
         });
         return buscado;
@@ -201,7 +229,7 @@ class Comprobante extends DBE {
         _Lista_Comprobante = [];
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function (key, value) {
+            $.each(lista, function(key, value) {
                 result.push(LlenarEntidadComprobante(value));
             });
         }
@@ -209,22 +237,36 @@ class Comprobante extends DBE {
         return _Lista_Comprobante;
     }
     static async TraerTodasXGasto(IdGasto) {
-        let data = {
-            "IdGasto": IdGasto
-        };
-        let lista = await ejecutarAsync(urlWsComprobante + "/TraerTodosXGasto", data);
-        _Lista_Comprobante = [];
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadComprobante(value));
-            });
+            let data = {
+                "IdGasto": IdGasto
+            };
+            let lista = await ejecutarAsync(urlWsComprobante + "/TraerTodosXGasto", data);
+            _Lista_Comprobante = [];
+            let result = [];
+            if (lista.length > 0) {
+                $.each(lista, function(key, value) {
+                    result.push(LlenarEntidadComprobante(value));
+                });
+            }
+            _Lista_Comprobante = result;
+            return _Lista_Comprobante;
         }
-        _Lista_Comprobante = result;
-        return _Lista_Comprobante;
-    }
-    // Otros
-    // Herramientas
+        // Otros
+    static async TraerTodosXBusqueda(Busqueda) {
+            let data = {
+                'Busqueda': Busqueda
+            };
+            let lista = await ejecutarAsync(urlWsComprobante + "/TraerTodosXBusqueda", data);
+            let result = [];
+            if (lista.length > 0) {
+                $.each(lista, function(key, value) {
+                    result.push(LlenarEntidadComprobante(value));
+                });
+            }
+            _ListaIngresos = result;
+            return result;
+        }
+        // Herramientas
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -246,6 +288,58 @@ class Comprobante extends DBE {
         }
         return $('#' + div + '').html(str);
     }
+
+
+
+    static async ArmarGrillaCabecera(div) {
+        $("#" + div + "").html('');
+        let str = "";
+        str += '<table class="table table-sm">';
+        str += '    <thead>';
+        str += '        <tr>';
+        str += '            <th class="text-center" style="width: 55px;">Id</th>';
+        str += '            <th class="text-center" style="width: 110px;">Gasto</th>';
+        str += '            <th class="text-center" style="width: 55px;">Pago</th>';
+        str += '            <th class="text-center" style="width: 180px;">Tipo Pago</th>';
+        str += '            <th class="text-center" style="width: 195px;">Proveedor</th>';
+        str += '            <th class="text-center" style="width: 105px;">Importe</th>';
+        str += '            <th class="text-center" style="width: 90px;">Baja</th>';
+        str += '        </tr>';
+        str += '    </thead>';
+        str += '</table >';
+        return $("#" + div + "").html(str);
+    }
+
+    static async ArmarGrillaDetalle(div, lista, evento, estilo) {
+        $("#" + div + "").html('');
+        let str = "";
+        str += '<div style="' + estilo + '">';
+        str += '<table class="table table-sm table-striped table-hover">';
+        str += '    <tbody>';
+        if (lista.length > 0) {
+            for (let item of lista) {
+                str += '        <tr>';
+                str += '            <td class="text-center" style="width: 55px;"><div class="small text-light">' + item.IdGasto + '</div></td>';
+                str += '            <td class="text-center" style="width: 110px;"><div class="small text-light">' + LongToDateString(item.FechaGasto) + '</div></td>';
+                str += '            <td class="text-center" style="width: 55px;"><div class="small text-light">' + item.StrPagado() + '</div></td>';
+                str += '            <td class="text-left pl-1" style="width: 180px;"><div class="small text-light">' + Left((await item.ObjTipoPago()).Nombre, 22) + '</div></td>';
+                str += '            <td class="text-left pl-1" style="width: 200px;"><div class="small text-light">' + Left((await item.ObjProveedor()).Nombre, 25) + '</div></td>';
+                str += '            <td class="text-right pr-2" style="width: 105px;"><div class="small text-light">' + MonedaDecimales2(item.Importe) + '</div></td>';
+                let strFechaBaja = '';
+                if (item.FechaBaja > 0) {
+                    strFechaBaja = LongToDateString(item.FechaBaja);
+                }
+                str += '            <td class="text-center" style="width: 90px;"><div class="text-danger bg-light">' + strFechaBaja + '</div></td>';
+                str += '        </tr>';
+            }
+        }
+        str += '    </tbody>';
+        str += '</table >';
+        str += '</div >';
+        return $("#" + div + "").html(str);
+
+    }
+
     static async ArmarRadios(lista, div, evento, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -283,6 +377,7 @@ class Comprobante extends DBE {
         return $('#' + div + '').html(str);
     }
 }
+
 function LlenarEntidadComprobante(entidad) {
     let Res = new Comprobante;
     Res.IdEntidad = entidad.IdEntidad;
@@ -308,10 +403,10 @@ function LlenarEntidadComprobante(entidad) {
     Res.IdMotivoBaja = entidad.IdMotivoBaja;
     return Res;
 }
-$('body').on('click', ".mibtn-seleccionComprobante", async function () {
+$('body').on('click', ".mibtn-seleccionComprobante", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Comprobante, function (entidad, index) {
+        let buscado = $.grep(_Lista_Comprobante, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -322,10 +417,10 @@ $('body').on('click', ".mibtn-seleccionComprobante", async function () {
         alertAlerta(e);
     }
 });
-$('body').on('click', ".mibtn-EliminarComprobante", async function () {
+$('body').on('click', ".mibtn-EliminarComprobante", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Comprobante, function (entidad, index) {
+        let buscado = $.grep(_Lista_Comprobante, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];

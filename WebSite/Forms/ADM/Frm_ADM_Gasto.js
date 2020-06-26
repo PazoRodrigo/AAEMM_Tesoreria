@@ -1,70 +1,69 @@
-﻿var _ObjGasto;
-var _ObjComprobante;
-var _ListaG;
-var _ListaC;
+﻿var _ListaIngresos;
+var _ObjIngreso;
 
-$(document).ready(function () {
+$(document).ready(async function() {
     try {
-        $("#SpanNombreFormulario").text('Gastos');
-        $("#SpanBtnComprobante").text('Nuevo Comprobante');
-        $("#SpanBtnGasto").text('Nuevo Gasto');
-        $("#SpanBtnBuscar").text('Buscar');
-        $("#SpanBtnGuardarComprobante").text('Guardar Comprobante');
-        $("#SpanBtnCerrarGasto").text('Cerrar Gasto');
-        $("#SpanBtnImprimirGasto").text('Imprimir Gasto');
-        Inicio();
+        SeleccionGasto();
+        await LlenarCombosComprobante();
+        $("#divCantRegistrosImprimir").css('display', 'none');
     } catch (e) {
         alertAlerta(e);
     }
 });
-async function Inicio() {
-    _ObjGasto = new Gasto();
-    _ObjComprobante = new Comprobante();
-    await Gasto.Refresh();
-    await LlenarGrillaGasto();
-    if (parseInt(_ListaG.length) === 1) {
-        _ObjComprobante.IdGasto = ListaGastos[0];
-        await LlenarGasto();
+
+$('body').on('click', '#RBuscaGasto', async function(e) {
+    try {
+        SeleccionGasto();
+
+    } catch (e) {
+        alertAlerta(e);
     }
-    await LimpiarComprobante();
-    MostrarSolapaGasto();
-}
-async function LlenarGrillaGasto() {
-    _ListaG = await Gasto.TraerGastosAbiertos();
-    //Gasto.ArmarGrilla(_ListaG, 'GrillaGastosRegistrados', 'EventoSeleccionarGasto', 'EventoEliminarGasto', 'height:300px; overflow-y: scroll');
-    Gasto.ArmarGrilla(_ListaG, 'GrillaGastosRegistrados', 'EventoSeleccionarGasto', 'EventoEliminarGasto','');
-}
-async function LlenarGrillaComprobante() {
-    Comprobante.ArmarGrilla(_ListaC, 'GrillaComprobantesRegistrados', 'EventoSeleccionarComprobante', 'EventoEliminarComprobante');
-    //Comprobante.ArmarGrilla(_ListaC, 'GrillaComprobantesRegistrados', 'EventoSeleccionarComprobante', 'EventoEliminarComprobante', 'height:300px; overflow-y: scroll');
-}
-async function LlenarCboCuenta() {
-    let lista = await CuentaContable.TraerTodos();
-    CuentaContable.ArmarCombo(lista, 'CboCuenta', 'SelectorCuentaContable', 'EventoSeleccionCuentaContable', 'Seleccione Cuenta', '');
-}
-async function LlenarCboOriginario() {
-    let lista = await OriginarioGasto.TraerTodos();
-    OriginarioGasto.ArmarCombo(lista, 'CboOriginarioGasto', 'SelectorOriginarioGasto', 'EventoSeleccionOriginarioGasto', 'Seleccione Originario Gasto', '');
-}
-async function LlenarCboProveedor() {
-    let lista = await Proveedor.TraerTodos();
-    Proveedor.ArmarCombo(lista, 'CboProveedor', 'SelectorProveedor', 'EventoSeleccionProveedor', 'Seleccione Proveedor', '');
-}
-async function LlenarCboCentroCosto() {
-    let lista = await CentroCosto.TraerTodos();
-    CentroCosto.ArmarCombo(lista, 'CboCentroCosto', 'SelectorCentroCosto', 'EventoSeleccionCentroCosto', 'Seleccione C. de C.', '');
+});
+$('body').on('click', '#RBuscaComprobante', async function(e) {
+    try {
+        SeleccionComprobante();
+    } catch (e) {
+        alertAlerta(e);
+    }
+});
+
+function SeleccionGasto() {
+    $("#divBuscadorGasto").css("display", "block");
+    $("#divBuscadorComprobante").css("display", "none");
 }
 
-async function LlenarCboTipoPago() {
-    let lista = await TipoPago.TraerTodos();
-    TipoPago.ArmarCombo(lista, 'CboTipoPago', 'SelectorTipoPago', 'EventoSeleccionTipoPago', 'Seleccione Tipo Pago', '');
+function SeleccionComprobante() {
+    $("#divBuscadorGasto").css("display", "none");
+    $("#divBuscadorComprobante").css("display", "block");
 }
-function MostrarSolapaGasto() {
-    $(".btnGastoOn").css("display", "block");
-    $(".btnGastoOff").css("display", "none");
-    $(".btnComprobanteOn").css("display", "none");
-    $(".btnComprobanteOff").css("display", "block");
-    $("#GrillaGastosRegistrados").css("display", "block");
+
+async LlenarCombosComprobante() {
+    await LlenarCboBuscaComprobanteOriginario();
+    await LlenarCboBuscaComprobanteCuenta();
+    await LlenarCboBuscaComprobanteProveedor();
+    await LlenarCboBuscaComprobanteCentroCosto();
+    await LlenarCboBuscaComprobanteTipoPago();
+}
+async function LlenarCboBuscaComprobanteCuenta() {
+    let lista = await CuentaContable.TraerTodos();
+    CuentaContable.ArmarCombo(lista, 'CboBuscaComprobanteCuenta', 'SelectorCuentaContable', 'EventoSeleccionCuentaContable', 'Seleccione Cuenta', '');
+}
+async function LlenarCboBuscaComprobanteOriginario() {
+    let lista = await OriginarioGasto.TraerTodos();
+    OriginarioGasto.ArmarCombo(lista, 'CboBuscaComprobanteOriginarioGasto', 'SelectorOriginarioGasto', 'EventoSeleccionOriginarioGasto', 'Seleccione Originario Gasto', '');
+}
+async function LlenarCboBuscaComprobanteProveedor() {
+    let lista = await Proveedor.TraerTodos();
+    Proveedor.ArmarCombo(lista, 'CboBuscaComprobanteProveedor', 'SelectorProveedor', 'EventoSeleccionProveedor', 'Seleccione Proveedor', '');
+}
+async function LlenarCboBuscaComprobanteCentroCosto() {
+    let lista = await CentroCosto.TraerTodos();
+    CentroCosto.ArmarCombo(lista, 'CboBuscaComprobanteCentroCosto', 'SelectorCentroCosto', 'EventoSeleccionCentroCosto', 'Seleccione C. de C.', '');
+}
+async function LlenarCboBuscaComprobanteTipoPago() {
+    let lista = await TipoPago.TraerTodos();
+    TipoPago.ArmarCombo(lista, 'CboBuscaComprobanteTipoPago', 'SelectorTipoPago', 'EventoSeleccionTipoPago', 'Seleccione Tipo Pago', '');
+}   $("#GrillaGastosRegistrados").css("display", "block");
     $("#GrillaComprobantesRegistrados").css("display", "none");
     $("#GastoDetalle").css("display", "none");
 

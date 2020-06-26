@@ -53,4 +53,8 @@
         PF = 2
         MC = 3
     End Enum
+    Public Enum TipoMovimientoDH
+        D = 1
+        H = 2
+    End Enum
 End Class

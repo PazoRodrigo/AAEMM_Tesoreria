@@ -53,5 +53,4 @@ Public Class WsIngreso
         End Try
         Return ws
     End Function
-
 End Class

@@ -45,7 +45,7 @@ class Convenio extends DBE {
             let id = await ejecutarAsync(urlWsConvenio + "/Modifica", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Convenio, function (entidad, index) {
+            let buscados = $.grep(_Lista_Convenio, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Convenio = buscados;
@@ -66,7 +66,7 @@ class Convenio extends DBE {
             let id = await ejecutarAsync(urlWsConvenio + "/Baja", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Convenio, function (entidad, index) {
+            let buscados = $.grep(_Lista_Convenio, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Convenio = buscados;
@@ -99,7 +99,7 @@ class Convenio extends DBE {
     // Traer
     static async TraerUno(IdEntidad) {
         _Lista_Convenio = await Convenio.TraerTodos();
-        let buscado = $.grep(_Lista_Convenio, function (entidad, index) {
+        let buscado = $.grep(_Lista_Convenio, function(entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
         let Encontrado = buscado[0];
@@ -110,28 +110,28 @@ class Convenio extends DBE {
     }
     static async TraerTodosActivos() {
         _Lista_Convenio = await Convenio.TraerTodos();
-        let buscado = $.grep(_Lista_Convenio, function (entidad, index) {
+        let buscado = $.grep(_Lista_Convenio, function(entidad, index) {
             return entidad.IdEstado === 0;
         });
         return buscado;
     }
     static async TraerTodas() {
-        let lista = await ejecutarAsync(urlWsConvenio + "/TraerTodos");
-        _Lista_Convenio = [];
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadConvenio(value));
-            });
+            let lista = await ejecutarAsync(urlWsConvenio + "/TraerTodos");
+            _Lista_Convenio = [];
+            let result = [];
+            if (lista.length > 0) {
+                $.each(lista, function(key, value) {
+                    result.push(LlenarEntidadConvenio(value));
+                });
+            }
+            _Lista_Convenio = result;
+            return _Lista_Convenio;
         }
-        _Lista_Convenio = result;
-        return _Lista_Convenio;
-    }
-    // Otros
+        // Otros
     static async Refresh() {
-        _Lista_Convenio = await Convenio.TraerTodas();
-    }
-    // Herramientas
+            _Lista_Convenio = await Convenio.TraerTodas();
+        }
+        // Herramientas
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -191,9 +191,9 @@ class Convenio extends DBE {
     static async ArmarCombo(lista, div, selector, evento, ventana, estilo) {
         lista.sort(SortXNombre);
         let Cbo = '';
-        Cbo += '<select id="_CboConvenio" onchange="SeleccionConvenio()"  data-Evento="' + evento + '" name="myselect" class="' + estilo + '">';
+        Cbo += '<select id="_' + div + '" data-Evento="' + evento + '" class="' + estilo + '">';
         Cbo += '    <option value="0" id="' + selector + '">' + ventana + '</option>';
-        $(lista).each(function () {
+        $(lista).each(function() {
             Cbo += '<option class="mibtn-seleccionConvenio" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + this.Nombre + '</option>';
         });
         Cbo += '</select>';
@@ -215,6 +215,7 @@ class Convenio extends DBE {
     //    return $('#' + div + '').html(cbo);
     //}
 }
+
 function LlenarEntidadConvenio(entidad) {
     let Res = new Convenio;
     Res.IdUsuarioAlta = entidad.IdUsuarioAlta;
@@ -233,10 +234,10 @@ function LlenarEntidadConvenio(entidad) {
     Res.PorcOtro = entidad.PorcOtro;
     return Res;
 }
-$('body').on('click', ".mibtn-seleccionConvenio", async function () {
+$('body').on('click', ".mibtn-seleccionConvenio", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Convenio, function (entidad, index) {
+        let buscado = $.grep(_Lista_Convenio, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -247,10 +248,10 @@ $('body').on('click', ".mibtn-seleccionConvenio", async function () {
         alertAlerta(e);
     }
 });
-$('body').on('click', ".mibtn-EliminarConvenio", async function () {
+$('body').on('click', ".mibtn-EliminarConvenio", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Convenio, function (entidad, index) {
+        let buscado = $.grep(_Lista_Convenio, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -266,7 +267,7 @@ async function SeleccionConvenio() {
     try {
         console.log(_Lista_Convenio);
         let elemento = document.getElementById("_CboConvenio");
-        let buscado = $.grep(_Lista_Convenio, function (entidad, index) {
+        let buscado = $.grep(_Lista_Convenio, function(entidad, index) {
             return entidad.IdEntidad == elemento.options[elemento.selectedIndex].value;
         });
         let Seleccionado = buscado[0];

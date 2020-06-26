@@ -80,4 +80,25 @@ Public Class WsComprobante
         End Try
         Return ws
     End Function
+    <WebMethod()>
+    Public Function TraerTodosXBusqueda(Busqueda As Entidad.Comprobante.StrBusquedaComprobante) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Comprobante)
+            Dim lista As List(Of Entidad.Comprobante) = Entidad.Comprobante.TraerTodosXBusqueda(Busqueda)
+            If Not lista Is Nothing Then
+                For Each item As Entidad.Comprobante In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
 End Class

@@ -11,6 +11,20 @@ Namespace Entidad
         Inherits DBE
 
 
+        Public Structure StrBusquedaComprobante
+            Public Desde As Long
+            Public Hasta As Long
+            Public Estados As String
+            Public IdGasto As Integer
+            Public IdOriginarioGasto As Integer
+            Public IdProveedor As Integer
+            Public IdCentroCosto As Integer
+            Public IdTipoPago As Integer
+            Public IdCuenta As Integer
+            Public Importe As Decimal
+            Public NroComprobante As Long
+        End Structure
+
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
         Public Property IdGasto() As Integer = 0
@@ -105,6 +119,7 @@ Namespace Entidad
             Importe = DtODesde.Importe
             Observaciones = DtODesde.Observaciones
         End Sub
+
 #End Region
 #Region " Métodos Estáticos"
         ' Traer
@@ -129,6 +144,117 @@ Namespace Entidad
             Return DAL_Comprobante.TraerTodosXGasto(IdGasto)
         End Function
         ' Nuevos
+        Public Shared Function TraerTodosXBusqueda(busqueda As Entidad.Comprobante.StrBusquedaComprobante) As List(Of Comprobante)
+            Dim existeParametro As Boolean = False
+            Dim sqlQuery As String = ""
+            If busqueda.Desde > 0 Then
+                Dim Fecha As String = Left(busqueda.Desde.ToString, 4) & "-" & Right("00" & Left(busqueda.Desde.ToString, 6), 2) & "-" & Right("00" & busqueda.Desde.ToString, 2)
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                End If
+                sqlQuery += "FechaGasto >= '" + Fecha + "'"
+            End If
+            If busqueda.Hasta > 0 Then
+                Dim Fecha As String = Left(busqueda.Hasta.ToString, 4) & "-" & Right("00" & Left(busqueda.Hasta.ToString, 6), 2) & "-" & Right("00" & busqueda.Hasta.ToString, 2)
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += "FechaGasto <= '" + Fecha + "'"
+            End If
+            If busqueda.Estados <> "" Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += "IdEstado IN ('" + busqueda.Estados(0) & "'"
+                Dim i As Integer = 1
+                While i <= busqueda.Estados.Length - 1
+                    sqlQuery += ", '" & busqueda.Estados(i) & "'"
+                    i += 1
+                End While
+                sqlQuery += ")"
+            End If
+            If busqueda.IdGasto > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += "IdGasto = '" + busqueda.IdGasto.ToString + "'"
+            End If
+            If busqueda.IdOriginarioGasto > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += "IdOriginarioGasto = '" + busqueda.IdOriginarioGasto.ToString + "'"
+            End If
+            If busqueda.IdProveedor > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += "IdProveedor = '" + busqueda.IdProveedor.ToString + "'"
+            End If
+            If busqueda.IdCentroCosto > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += "IdCentroCosto = '" + busqueda.IdCentroCosto.ToString + "'"
+            End If
+            If busqueda.IdTipoPago > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += "IdTipoPago = '" + busqueda.IdTipoPago.ToString + "'"
+            End If
+            If busqueda.IdCuenta > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += "IdCuenta = '" + busqueda.IdCuenta.ToString + "'"
+            End If
+            If busqueda.Importe > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += "Importe = '" + busqueda.Importe.ToString + "'"
+            End If
+            If busqueda.NroComprobante > 0 Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                sqlQuery += "NroComprobante = '" + busqueda.NroComprobante.ToString + "'"
+            End If
+            Dim result As List(Of Comprobante) = DAL_Comprobante.TraerTodosXBusqueda(sqlQuery)
+            Return result
+        End Function
 #End Region
 #Region " Métodos Públicos"
         ' ABM
@@ -336,6 +462,7 @@ Namespace DataAccessLibrary
         Const storeModifica As String = "ADM.p_Comprobante_Modifica"
         Const storeTraerUnoXId As String = "ADM.p_Comprobante_TraerUnoXId"
         Const storeTraerTodosXGasto As String = "ADM.p_Comprobante_TraerTodosXGasto"
+        Const storeTraerTodosXBusqueda As String = "ADM.p_Comprobante_TraerXBusquedaLibre"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
@@ -423,6 +550,20 @@ Namespace DataAccessLibrary
             pa.add("@IdGasto", IdGasto)
             Dim listaResult As New List(Of Comprobante)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
+        Friend Shared Function TraerTodosXBusqueda(sqlQuery As String) As List(Of Comprobante)
+            Dim store As String = storeTraerTodosXBusqueda
+            Dim listaResult As New List(Of Comprobante)
+            Dim pa As New parametrosArray
+            pa.add("@sqlQuery", sqlQuery)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))

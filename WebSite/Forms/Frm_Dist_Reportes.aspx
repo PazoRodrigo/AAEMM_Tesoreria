@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Reportes" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Dist_Reportes.aspx.vb" Inherits="Forms_Frm_Dist_Reportes" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Dist_Reportes.js?version20200601_1")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Dist_Reportes.js?version20200602_1")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -9,10 +9,13 @@
                 redirect = '<%= ResolveClientUrl("~/Forms/Frm_Indicadores.aspx")%>';
             } else if (e.ctrlKey && e.altKey && (e.which == 73 || e.which == 105)) {
                 // Ctrol + Alt + I
-               redirect = '<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>';
-              } else if (e.ctrlKey && e.altKey && (e.which == 71 || e.which == 103)) {
+                redirect = '<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>';
+            } else if (e.ctrlKey && e.altKey && (e.which == 71 || e.which == 103)) {
                 // Ctrol + Alt + G
-               redirect = '<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gastos.aspx")%>';
+                redirect = '<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gastos.aspx")%>';
+             } else if (e.ctrlKey && e.altKey && (e.which == 67 || e.which == 99)) {
+                // Ctrol + Alt + C
+                redirect = '<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Comprobantes.aspx")%>';
             }
             window.location = redirect;
         };
@@ -36,7 +39,9 @@
                                     <li class="BtnDistribuidor">
                                         <ul class="SubMenu">
                                             <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>'>(Alt + I) - Ingresos</a></li>
-                                            <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gastos.aspx")%>'>(Alt + G) - Gastos</a></li>
+                                            <%-- <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gastos.aspx")%>'>(Alt + G) - Gastos</a></li> --%>
+                                            <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gastos2.aspx")%>'>(Alt + G) - Gastos y Comprobantes</a></li>
+                                            <%-- <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Comprobantes.aspx")%>'>(Alt + C) - Comprobantes</a></li> --%>
                                         </ul>
                                     </li>
                                 </ul>

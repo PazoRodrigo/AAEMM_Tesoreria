@@ -40,7 +40,7 @@ class Ingreso extends DBE {
     async StrPeriodo() {
         let Result = '';
         if (this.Periodo > 0) {
-            Result = Right(this.Periodo, 2) + '/ ' + Left(this.Periodo, 4);
+            Result = Right(this.Periodo, 2) + '/' + Left(this.Periodo, 4);
         }
         return Result;
     }
@@ -52,13 +52,13 @@ class Ingreso extends DBE {
         return Result;
     }
     async StrCodigoEntidad(cantCaracteres) {
-        let Result = '';
-        if (this.CodigoEntidad > 0) {
-            Result = Right('00000000000' + this.CodigoEntidad, cantCaracteres);
+            let Result = '';
+            if (this.CodigoEntidad > 0) {
+                Result = Right('00000000000' + this.CodigoEntidad, cantCaracteres);
+            }
+            return Result;
         }
-        return Result;
-    }
-    // Lazy
+        // Lazy
     async ObjCentroCosto() {
         try {
             if (this._ObjCentroCosto === undefined) {
@@ -102,33 +102,33 @@ class Ingreso extends DBE {
         return result;
     }
     async Estado() {
-        let result = '';
-        switch (this.IdEstado) {
-            case 'A':
-                result = 'Acreditado';
-                break;
-            case 'L':
-                result = 'Pendiente Acreditado';
-                break;
-            case 'P':
-                result = 'Pendiente';
-                break;
-            case 'R':
-                result = 'Rechazado';
-                break;
-            case 'T':
-                result = 'CUIT No Encontrado';
-                break;
-            default:
+            let result = '';
+            switch (this.IdEstado) {
+                case 'A':
+                    result = 'Acreditado';
+                    break;
+                case 'L':
+                    result = 'Pendiente Acreditado';
+                    break;
+                case 'P':
+                    result = 'Pendiente';
+                    break;
+                case 'R':
+                    result = 'Rechazado';
+                    break;
+                case 'T':
+                    result = 'CUIT No Encontrado';
+                    break;
+                default:
+            }
+            return result;
         }
-        return result;
-    }
-    // Traer
+        // Traer
     static async TraerTodos() {
         let lista = await ejecutarAsync(urlWsIngreso + "/TraerTodos");
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function (key, value) {
+            $.each(lista, function(key, value) {
                 result.push(LlenarEntidadIngreso(value));
             });
         }
@@ -136,20 +136,20 @@ class Ingreso extends DBE {
         return result;
     }
     static async TraerTodosXBusqueda(Busqueda) {
-        let data = {
-            'Busqueda': Busqueda
-        };
-        let lista = await ejecutarAsync(urlWsIngreso + "/TraerTodosXBusqueda", data);
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadIngreso(value));
-            });
+            let data = {
+                'Busqueda': Busqueda
+            };
+            let lista = await ejecutarAsync(urlWsIngreso + "/TraerTodosXBusqueda", data);
+            let result = [];
+            if (lista.length > 0) {
+                $.each(lista, function(key, value) {
+                    result.push(LlenarEntidadIngreso(value));
+                });
+            }
+            _ListaIngresos = result;
+            return result;
         }
-        _ListaIngresos = result;
-        return result;
-    }
-    // HErramientas
+        // Herramientas
     static async ArmarGrillaCabecera(div) {
         $("#" + div + "").html('');
         let str = "";
@@ -189,10 +189,10 @@ class Ingreso extends DBE {
                 str += '            <td class="text-center" style="width: 100px;"><small class="text-light">' + item.NombreArchivo + '</small></td>';
                 str += '            <td class="text-center" style="width: 40px;"><small class="text-light">' + await item.Origen() + '</small></td>';
                 let cheque = '';
-                if (item.NroCheche > 0) {
+                if (parseInt(item.NroCheche) > 0) {
                     cheque = 'Si';
                 }
-                str += '            <td class="text-center" style="width: 40px;"><small class="text-light">' + cheque + 'si</small></td>';
+                str += '            <td class="text-center" style="width: 40px;"><small class="text-light">' + cheque + '</small></td>';
                 str += '            <td class="text-center" style="width: 30px;"><small class="text-light">' + item.IdEstado + '</small></td>';
                 str += '        </tr>';
             }
@@ -233,7 +233,7 @@ async function SeleccionIngreso(MiElemento) {
     try {
         let elemento = document.getElementById(MiElemento.id);
         let evento = elemento.getAttribute('data-Evento');
-        let buscado = $.grep(_ListaIngresos, function (entidad, index) {
+        let buscado = $.grep(_ListaIngresos, function(entidad, index) {
             return entidad.IdEntidad == MiElemento.id;
         });
         if (buscado[0] != undefined) {

@@ -10,6 +10,11 @@ Namespace Entidad
     Public Class Gasto
         Inherits DBE
 
+        Public Structure StrBusquedaGasto
+            Public Desde As Long
+            Public Hasta As Long
+            Public Estados As String
+        End Structure
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
         Public Property IdEstado() As Enumeradores.EstadoGasto = Enumeradores.EstadoGasto.Abierto
@@ -113,6 +118,55 @@ Namespace Entidad
             'End If
             Return Nothing
         End Function
+
+        Public Shared Function TraerTodosXBusqueda(busqueda As StrBusquedaGasto) As List(Of Gasto)
+            Dim existeParametro As Boolean = False
+            Dim resultStr As String = ""
+            If busqueda.Desde > 0 Then
+                Dim Fecha As String = Left(busqueda.Desde.ToString, 4) & "-" & Right("00" & Left(busqueda.Desde.ToString, 6), 2) & "-" & Right("00" & busqueda.Desde.ToString, 2)
+                If Not existeParametro Then
+                    existeParametro = True
+                    resultStr += " WHERE "
+                End If
+                resultStr += "FechaGasto >= '" + Fecha + "'"
+            End If
+            If busqueda.Hasta > 0 Then
+                Dim Fecha As String = Left(busqueda.Hasta.ToString, 4) & "-" & Right("00" & Left(busqueda.Hasta.ToString, 6), 2) & "-" & Right("00" & busqueda.Hasta.ToString, 2)
+                If Not existeParametro Then
+                    existeParametro = True
+                    resultStr += " WHERE "
+                Else
+                    resultStr += " AND "
+                End If
+                resultStr += "FechaGasto <= '" + Fecha + "'"
+            End If
+            If busqueda.Estados <> "" Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    resultStr += " WHERE "
+                Else
+                    resultStr += " AND "
+                End If
+                resultStr += "g.IdEstado IN ('" + busqueda.Estados(0) & "'"
+                Dim i As Integer = 1
+                While i <= busqueda.Estados.Length - 1
+                    resultStr += ", '" & busqueda.Estados(i) & "'"
+                    i += 1
+                End While
+                resultStr += ")"
+            End If
+            If Not existeParametro Then
+                existeParametro = True
+                resultStr += " WHERE "
+            Else
+                resultStr += " AND "
+            End If
+            resultStr += "g.FechaBaja IS NULL"
+            'WHERE FechaGasto BETWEEN '20200101' AND '20200301' and g.IdEstado IN (2)
+            Dim result As List(Of Gasto) = DAL_Gasto.TraerTodosXBusqueda(resultStr)
+            Return result
+        End Function
+
         Private Shared Function TraerTodosXEstado(idEstado As Enumeradores.EstadoGasto) As List(Of Gasto)
             Dim result As New List(Of Gasto)
             Dim Todos As List(Of Gasto) = TraerTodos()
@@ -294,6 +348,7 @@ Namespace DataAccessLibrary
         Const storeTraerUnoXId As String = "ADM.p_Gasto_TraerUnoXId"
         Const storeTraerTodos As String = "ADM.p_Gasto_TraerTodos"
         Const storeTraerTodosXEstado As String = "ADM.p_Gasto_TraerTodosXEstado"
+        Const storeTraerTodosXBusqueda As String = "ADM.p_Gasto_TraerXBusquedaLibre"
         Const storeTraerTodosUltimos5 As String = "ADM.p_Gasto_TraerTodosUltimos5"
 #End Region
 #Region " Métodos Públicos "
@@ -364,6 +419,20 @@ Namespace DataAccessLibrary
             Dim pa As New parametrosArray
             Dim listaResult As New List(Of Gasto)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
+        Friend Shared Function TraerTodosXBusqueda(sqlQuery As String) As List(Of Gasto)
+            Dim store As String = storeTraerTodosXBusqueda
+            Dim listaResult As New List(Of Gasto)
+            Dim pa As New parametrosArray
+            pa.add("@sqlQuery", sqlQuery)
+            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))

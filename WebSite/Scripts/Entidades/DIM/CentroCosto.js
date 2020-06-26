@@ -174,36 +174,22 @@ class CentroCosto extends DBE {
         return $('#' + div + '').html(str);
     }
     static async ArmarCheckBoxs(lista, div, evento, estilo) {
-            $('#' + div + '').html('');
-            let str = '';
-            str += '<div style="' + estilo + '">';
-            await Area.Refresh();
-            if (lista.length > 0) {
-                for (let item of lista) {
-                    str += '<div class="col-lg-4"><input type="checkbox" class="micbx-Area" name="CkbList_Areas" value="' + item.IdEntidad + '"    id="chk_' + item.IdEntidad + '" /><label for="chk_' + item.IdEntidad + '"> ' + item.Nombre + '</label></div>';
-                }
+        $('#' + div + '').html('');
+        let str = '';
+        str += '<div style="' + estilo + '">';
+        await Area.Refresh();
+        if (lista.length > 0) {
+            for (let item of lista) {
+                str += '<div class="col-lg-4"><input type="checkbox" class="micbx-Area" name="CkbList_Areas" value="' + item.IdEntidad + '"    id="chk_' + item.IdEntidad + '" /><label for="chk_' + item.IdEntidad + '"> ' + item.Nombre + '</label></div>';
             }
-            str += '</div>';
-            return $('#' + div + '').html(str);
         }
-        //static async ArmarCombo(lista, div, selector, evento, ventana, Cbo) {
-        //    let cbo = "";
-        //    cbo += '<div id="' + Cbo + '" class="dropdown">';
-        //    cbo += '    <button id="' + selector + '" class="btn btn-primary dropdown-toggle btn-md btn-block" type="button" data-toggle="dropdown">' + ventana;
-        //    cbo += '        <span class="caret"></span>';
-        //    cbo += '    </button>';
-        //    cbo += '<ul class="dropdown-menu">';
-        //    $(lista).each(function () {
-        //        cbo += '<li class="liCombo"><a href="#" class="mibtn-seleccionCentroCosto" data-Id="' + this.IdEntidad + '" data-IdTipoCheque="' + this.IdTipoCheque + '" data-Nombre="' + this.Estado + '" data-Evento="' + evento + '" > ' + this.Nombre + '</a></li>';
-        //    });
-        //    cbo += '</ul>';
-        //    cbo += '</div>';
-        //    return $('#' + div + '').html(cbo);
-        //}
+        str += '</div>';
+        return $('#' + div + '').html(str);
+    }
     static async ArmarCombo(lista, div, selector, evento, ventana, estilo) {
         lista.sort(SortXNombre);
         let Cbo = '';
-        Cbo += '<select id="_CboCentroCosto" onchange="SeleccionCentroCosto()"  data-Evento="' + evento + '" name="myselect" class="' + estilo + '">';
+        Cbo += '<select id="_' + div + '" data-Evento="' + evento + '" class="' + estilo + '">';
         Cbo += '    <option value="0" id="' + selector + '">' + ventana + '</option>';
         $(lista).each(function() {
             Cbo += '<option class="mibtn-seleccionCentroCosto" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + this.Nombre + '</option>';

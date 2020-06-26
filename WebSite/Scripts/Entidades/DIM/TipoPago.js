@@ -41,7 +41,7 @@ class TipoPago extends DBE {
             let id = await ejecutarAsync(urlWsTipoPago + "/Modifica", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_TipoPago, function (entidad, index) {
+            let buscados = $.grep(_Lista_TipoPago, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_TipoPago = buscados;
@@ -62,7 +62,7 @@ class TipoPago extends DBE {
             let id = await ejecutarAsync(urlWsTipoPago + "/Baja", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_TipoPago, function (entidad, index) {
+            let buscados = $.grep(_Lista_TipoPago, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_TipoPago = buscados;
@@ -95,7 +95,7 @@ class TipoPago extends DBE {
     // Traer
     static async TraerUno(IdEntidad) {
         _Lista_TipoPago = await TipoPago.TraerTodos();
-        let buscado = $.grep(_Lista_TipoPago, function (entidad, index) {
+        let buscado = $.grep(_Lista_TipoPago, function(entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
         let Encontrado = buscado[0];
@@ -106,28 +106,28 @@ class TipoPago extends DBE {
     }
     static async TraerTodosActivos() {
         _Lista_TipoPago = await TipoPago.TraerTodos();
-        let buscado = $.grep(_Lista_TipoPago, function (entidad, index) {
+        let buscado = $.grep(_Lista_TipoPago, function(entidad, index) {
             return entidad.IdEstado === 0;
         });
         return buscado;
     }
     static async TraerTodas() {
-        let lista = await ejecutarAsync(urlWsTipoPago + "/TraerTodos");
-        _Lista_TipoPago = [];
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadTipoPago(value));
-            });
+            let lista = await ejecutarAsync(urlWsTipoPago + "/TraerTodos");
+            _Lista_TipoPago = [];
+            let result = [];
+            if (lista.length > 0) {
+                $.each(lista, function(key, value) {
+                    result.push(LlenarEntidadTipoPago(value));
+                });
+            }
+            _Lista_TipoPago = result;
+            return _Lista_TipoPago;
         }
-        _Lista_TipoPago = result;
-        return _Lista_TipoPago;
-    }
-    // Otros
+        // Otros
     static async Refresh() {
-        _Lista_TipoPago = await TipoPago.TraerTodas();
-    }
-    // Herramientas
+            _Lista_TipoPago = await TipoPago.TraerTodas();
+        }
+        // Herramientas
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -174,44 +174,45 @@ class TipoPago extends DBE {
         return $('#' + div + '').html(str);
     }
     static async ArmarCheckBoxs(lista, div, evento, estilo) {
-        $('#' + div + '').html('');
-        let str = '';
-        str += '<div style="' + estilo + '">';
-        await Area.Refresh();
-        if (lista.length > 0) {
-            for (let item of lista) {
-                str += '<div class="col-lg-4"><input type="checkbox" class="micbx-Area" name="CkbList_Areas" value="' + item.IdEntidad + '"    id="chk_' + item.IdEntidad + '" /><label for="chk_' + item.IdEntidad + '"> ' + item.Nombre + '</label></div>';
+            $('#' + div + '').html('');
+            let str = '';
+            str += '<div style="' + estilo + '">';
+            await Area.Refresh();
+            if (lista.length > 0) {
+                for (let item of lista) {
+                    str += '<div class="col-lg-4"><input type="checkbox" class="micbx-Area" name="CkbList_Areas" value="' + item.IdEntidad + '"    id="chk_' + item.IdEntidad + '" /><label for="chk_' + item.IdEntidad + '"> ' + item.Nombre + '</label></div>';
+                }
             }
+            str += '</div>';
+            return $('#' + div + '').html(str);
         }
-        str += '</div>';
-        return $('#' + div + '').html(str);
-    }
-    //static async ArmarCombo(lista, div, selector, evento, ventana, Cbo) {
-    //    let cbo = "";
-    //    cbo += '<div id="' + Cbo + '" class="dropdown">';
-    //    cbo += '    <button id="' + selector + '" class="btn btn-primary dropdown-toggle btn-md btn-block" type="button" data-toggle="dropdown">' + ventana;
-    //    cbo += '        <span class="caret"></span>';
-    //    cbo += '    </button>';
-    //    cbo += '<ul class="dropdown-menu">';
-    //    $(lista).each(function () {
-    //        cbo += '<li><a href="#" class="mibtn-seleccionTipoPago" data-Id="' + this.IdEntidad + '" data-Nombre="' + this.Nombre + '" data-Evento="' + evento + '" > ' + this.Nombre + '</a></li>';
-    //    });
-    //    cbo += '</ul>';
-    //    cbo += '</div>';
-    //    return $('#' + div + '').html(cbo);
-    //}
+        //static async ArmarCombo(lista, div, selector, evento, ventana, Cbo) {
+        //    let cbo = "";
+        //    cbo += '<div id="' + Cbo + '" class="dropdown">';
+        //    cbo += '    <button id="' + selector + '" class="btn btn-primary dropdown-toggle btn-md btn-block" type="button" data-toggle="dropdown">' + ventana;
+        //    cbo += '        <span class="caret"></span>';
+        //    cbo += '    </button>';
+        //    cbo += '<ul class="dropdown-menu">';
+        //    $(lista).each(function () {
+        //        cbo += '<li><a href="#" class="mibtn-seleccionTipoPago" data-Id="' + this.IdEntidad + '" data-Nombre="' + this.Nombre + '" data-Evento="' + evento + '" > ' + this.Nombre + '</a></li>';
+        //    });
+        //    cbo += '</ul>';
+        //    cbo += '</div>';
+        //    return $('#' + div + '').html(cbo);
+        //}
     static async ArmarCombo(lista, div, selector, evento, ventana, estilo) {
         lista.sort(SortXNombre);
         let Cbo = '';
-        Cbo += '<select id="_' + div + '" onchange="SeleccionTipoPago()"  data-Evento="' + evento + '" name="myselect" class="' + estilo + '">';
+        Cbo += '<select id="_' + div + '" data-Evento="' + evento + '" class="' + estilo + '">';
         Cbo += '    <option value="0" id="' + selector + '">' + ventana + '</option>';
-        $(lista).each(function () {
+        $(lista).each(function() {
             Cbo += '<option class="mibtn-seleccionTipoPago" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + this.Nombre + '</option>';
         });
         Cbo += '</select>';
         return $('#' + div + '').html(Cbo);
     }
 }
+
 function LlenarEntidadTipoPago(entidad) {
     let Res = new TipoPago;
     Res.IdUsuarioAlta = entidad.IdUsuarioAlta;
@@ -226,10 +227,10 @@ function LlenarEntidadTipoPago(entidad) {
     Res.IdEstado = entidad.IdEstado;
     return Res;
 }
-$('body').on('click', ".mibtn-seleccionTipoPago", async function () {
+$('body').on('click', ".mibtn-seleccionTipoPago", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_TipoPago, function (entidad, index) {
+        let buscado = $.grep(_Lista_TipoPago, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -240,10 +241,10 @@ $('body').on('click', ".mibtn-seleccionTipoPago", async function () {
         alertAlerta(e);
     }
 });
-$('body').on('click', ".mibtn-EliminarTipoPago", async function () {
+$('body').on('click', ".mibtn-EliminarTipoPago", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_TipoPago, function (entidad, index) {
+        let buscado = $.grep(_Lista_TipoPago, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -257,7 +258,7 @@ $('body').on('click', ".mibtn-EliminarTipoPago", async function () {
 async function SeleccionTipoPago() {
     try {
         let elemento = document.getElementById("_CboTipoPago");
-        let buscado = $.grep(_Lista_TipoPago, function (entidad, index) {
+        let buscado = $.grep(_Lista_TipoPago, function(entidad, index) {
             return entidad.IdEntidad == elemento.options[elemento.selectedIndex].value;
         });
         let Seleccionado = buscado[0];

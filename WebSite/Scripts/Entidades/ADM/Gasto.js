@@ -1,5 +1,12 @@
 ﻿var _Lista_Gasto;
 
+class StrBusquedaGasto {
+    constructor() {
+        this.Desde = 0;
+        this.Hasta = 0;
+        this.Estados = '';
+    }
+}
 class Gasto extends DBE {
     constructor() {
         super();
@@ -12,17 +19,23 @@ class Gasto extends DBE {
 
         this._ListaComprobantes;
     }
-
-    async ListaComprobantes() {
-        try {
-            return await Comprobante.TraerTodasXGasto(this.IdEntidad);
-
-        } catch (e) {
-            return new Comprobante;
-
+    StrPeriodo() {
+        let Result = '';
+        if (this.FechaGasto > 0) {
+            Result = Right(Left(this.FechaGasto, 6), 2) + '/' + Left(this.FechaGasto, 4);
         }
+        return Result;
     }
-    // ABM
+    async ListaComprobantes() {
+            try {
+                return await Comprobante.TraerTodasXGasto(this.IdEntidad);
+
+            } catch (e) {
+                return new Comprobante;
+
+            }
+        }
+        // ABM
     async Alta() {
         try {
             let ObjU = JSON.parse(sessionStorage.getItem("User"));
@@ -50,7 +63,7 @@ class Gasto extends DBE {
             let id = await ejecutarAsync(urlWsGasto + "/Baja", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Gasto, function (entidad, index) {
+            let buscados = $.grep(_Lista_Gasto, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Gasto = buscados;
@@ -71,7 +84,7 @@ class Gasto extends DBE {
             let id = await ejecutarAsync(urlWsGasto + "/Cerrar", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Gasto, function (entidad, index) {
+            let buscados = $.grep(_Lista_Gasto, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Gasto = buscados;
@@ -94,18 +107,20 @@ class Gasto extends DBE {
     // Traer
     static async TraerUno(IdEntidad) {
         _Lista_Gasto = await Gasto.TraerTodas();
-        let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
+        let buscado = $.grep(_Lista_Gasto, function(entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
         let Encontrado = buscado[0];
         return Encontrado;
     }
-
+    static async TraerTodos() {
+        return await Gasto.TraerTodas();
+    }
     static async TraerGastosAbiertos() {
         let lista = await ejecutarAsync(urlWsGasto + "/TraerGastosAbiertos");
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function (key, value) {
+            $.each(lista, function(key, value) {
                 result.push(LlenarEntidadGasto(value));
             });
         }
@@ -113,7 +128,7 @@ class Gasto extends DBE {
     }
     static async TraerTodosActivos() {
         _Lista_Gasto = await Gasto.TraerTodas();
-        let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
+        let buscado = $.grep(_Lista_Gasto, function(entidad, index) {
             return entidad.IdEstado === 0;
         });
         return buscado;
@@ -123,7 +138,7 @@ class Gasto extends DBE {
         _Lista_Gasto = [];
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function (key, value) {
+            $.each(lista, function(key, value) {
                 result.push(LlenarEntidadGasto(value));
             });
         }
@@ -135,18 +150,33 @@ class Gasto extends DBE {
         _Lista_Gasto = [];
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function (key, value) {
+            $.each(lista, function(key, value) {
                 result.push(LlenarEntidadGasto(value));
             });
         }
         _Lista_Gasto = result;
         return _Lista_Gasto;
     }
+    static async TraerTodosXBusqueda(Busqueda) {
+        let data = {
+            'Busqueda': Busqueda
+        };
+        let lista = await ejecutarAsync(urlWsGasto + "/TraerTodosXBusqueda", data);
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function(key, value) {
+                result.push(LlenarEntidadGasto(value));
+            });
+        }
+        _ListaIngresos = result;
+        return result;
+    }
+
     // Otros
     static async Refresh() {
-        _Lista_Gasto = await Gasto.TraerTodas();
-    }
-    // Herramientas
+            _Lista_Gasto = await Gasto.TraerTodas();
+        }
+        // Herramientas
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -168,6 +198,46 @@ class Gasto extends DBE {
             str += '</div>';
         }
         return $('#' + div + '').html(str);
+    }
+
+    static async ArmarGrillaCabecera(div) {
+        $("#" + div + "").html('');
+        let str = "";
+        str += '<table class="table table-sm">';
+        str += '    <thead>';
+        str += '        <tr>';
+        str += '            <th class="text-center" style="width: 55px;">Id</th>';
+        str += '            <th class="text-center" style="width: 110px;">Período</th>';
+        str += '            <th class="text-center" style="width: 85px;">Estado</th>';
+        str += '            <th class="text-center" style="width: 120px;">Cant. Comprob.</th>';
+        str += '            <th class="text-center" style="width: 135px;">Importe</th>';
+        str += '        </tr>';
+        str += '    </thead>';
+        str += '</table >';
+        return $("#" + div + "").html(str);
+    }
+    static async ArmarGrillaDetalle(div, lista, evento, estilo) {
+        $("#" + div + "").html('');
+        let str = "";
+        str += '<div style="' + estilo + '">';
+        str += '<table class="table table-sm table-striped table-hover">';
+        str += '    <tbody>';
+        if (lista.length > 0) {
+            for (let item of lista) {
+                str += '        <tr>';
+                str += '            <td class="text-center" style="width: 55px;"><div class="small text-light">' + item.IdEntidad + '</div></td>';
+                str += '            <td class="text-center" style="width: 110px;"><div class="small text-light">' + item.StrPeriodo() + '</div></td>';
+                str += '            <td class="text-center" style="width: 85px;"><div class="small text-light">' + item.Estado + '</div></td>';
+                str += '            <td class="text-right pr-2" style="width: 120px;"><div class="small text-light">' + item.CantidadComprobantes + '</div></td>';
+                str += '            <td class="text-right pr-2" style="width: 135px;"><div class="small text-light">' + MonedaDecimales2(item.Importe) + '</div></td>';
+                str += '        </tr>';
+            }
+        }
+        str += '    </tbody>';
+        str += '</table >';
+        str += '</div >';
+        return $("#" + div + "").html(str);
+
     }
     static async ArmarRadios(lista, div, evento, estilo) {
         $('#' + div + '').html('');
@@ -205,7 +275,19 @@ class Gasto extends DBE {
         str += '</div>';
         return $('#' + div + '').html(str);
     }
+    static async ArmarCombo(lista, div, selector, evento, ventana, estilo) {
+        let Cbo = '';
+        Cbo += '<select id="_' + div + '" data-Evento="' + evento + '" class="' + estilo + '">';
+        Cbo += '    <option value="0" id="' + selector + '">' + ventana + '</option>';
+        $(lista).each(function() {
+            let periodo = Right(Left(this.FechaGasto, 6), 2) + '/' + Left(this.FechaGasto, 4);
+            Cbo += '<option class="mibtn-seleccionGasto" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + periodo + '</option>';
+        });
+        Cbo += '</select>';
+        return $('#' + div + '').html(Cbo);
+    }
 }
+
 function LlenarEntidadGasto(entidad) {
     let Res = new Gasto;
     Res.IdEntidad = entidad.IdEntidad;
@@ -223,10 +305,10 @@ function LlenarEntidadGasto(entidad) {
     Res.IdMotivoBaja = entidad.IdMotivoBaja;
     return Res;
 }
-$('body').on('click', ".mibtn-seleccionGasto", async function () {
+$('body').on('click', ".mibtn-seleccionGasto", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
+        let buscado = $.grep(_Lista_Gasto, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -237,10 +319,10 @@ $('body').on('click', ".mibtn-seleccionGasto", async function () {
         alertAlerta(e);
     }
 });
-$('body').on('click', ".mibtn-EliminarGasto", async function () {
+$('body').on('click', ".mibtn-EliminarGasto", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
+        let buscado = $.grep(_Lista_Gasto, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];

@@ -35,13 +35,13 @@ class Proveedor extends DBE {
         try {
             let ObjU = JSON.parse(sessionStorage.getItem("User"));
             this.IdUsuarioModifica = ObjU.IdEntidad;
-                 let data = {
+            let data = {
                 'entidad': this
             };
             let id = await ejecutarAsync(urlWsProveedor + "/Modifica", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Proveedor, function (entidad, index) {
+            let buscados = $.grep(_Lista_Proveedor, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Proveedor = buscados;
@@ -62,7 +62,7 @@ class Proveedor extends DBE {
             let id = await ejecutarAsync(urlWsProveedor + "/Baja", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Proveedor, function (entidad, index) {
+            let buscados = $.grep(_Lista_Proveedor, function(entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Proveedor = buscados;
@@ -95,7 +95,7 @@ class Proveedor extends DBE {
     // Traer
     static async TraerUno(IdEntidad) {
         _Lista_Proveedor = await Proveedor.TraerTodos();
-        let buscado = $.grep(_Lista_Proveedor, function (entidad, index) {
+        let buscado = $.grep(_Lista_Proveedor, function(entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
         let Encontrado = buscado[0];
@@ -106,28 +106,28 @@ class Proveedor extends DBE {
     }
     static async TraerTodosActivos() {
         _Lista_Proveedor = await Proveedor.TraerTodos();
-        let buscado = $.grep(_Lista_Proveedor, function (entidad, index) {
+        let buscado = $.grep(_Lista_Proveedor, function(entidad, index) {
             return entidad.IdEstado === 0;
         });
         return buscado;
     }
     static async TraerTodas() {
-        let lista = await ejecutarAsync(urlWsProveedor + "/TraerTodos");
-        _Lista_Proveedor = [];
-        let result = [];
-        if (lista.length > 0) {
-            $.each(lista, function (key, value) {
-                result.push(LlenarEntidadProveedor(value));
-            });
+            let lista = await ejecutarAsync(urlWsProveedor + "/TraerTodos");
+            _Lista_Proveedor = [];
+            let result = [];
+            if (lista.length > 0) {
+                $.each(lista, function(key, value) {
+                    result.push(LlenarEntidadProveedor(value));
+                });
+            }
+            _Lista_Proveedor = result;
+            return _Lista_Proveedor;
         }
-        _Lista_Proveedor = result;
-        return _Lista_Proveedor;
-    }
-    // Otros
+        // Otros
     static async Refresh() {
-        _Lista_Proveedor = await Proveedor.TraerTodas();
-    }
-    // Herramientas
+            _Lista_Proveedor = await Proveedor.TraerTodas();
+        }
+        // Herramientas
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -189,15 +189,16 @@ class Proveedor extends DBE {
     static async ArmarCombo(lista, div, selector, evento, ventana, estilo) {
         lista.sort(SortXNombre);
         let Cbo = '';
-        Cbo += '<select id="_' + div + '" onchange="SeleccionProveedor()"  data-Evento="' + evento + '" name="myselect" class="' + estilo + '">';
+        Cbo += '<select id="_' + div + '" data-Evento="' + evento + '" class="' + estilo + '">';
         Cbo += '    <option value="0" id="' + selector + '">' + ventana + '</option>';
-        $(lista).each(function () {
+        $(lista).each(function() {
             Cbo += '<option class="mibtn-seleccionProveedor" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + this.Nombre + '</option>';
         });
         Cbo += '</select>';
         return $('#' + div + '').html(Cbo);
     }
 }
+
 function LlenarEntidadProveedor(entidad) {
     let Res = new Proveedor;
     Res.IdUsuarioAlta = entidad.IdUsuarioAlta;
@@ -212,10 +213,10 @@ function LlenarEntidadProveedor(entidad) {
     Res.IdEstado = entidad.IdEstado;
     return Res;
 }
-$('body').on('click', ".mibtn-seleccionProveedor", async function () {
+$('body').on('click', ".mibtn-seleccionProveedor", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Proveedor, function (entidad, index) {
+        let buscado = $.grep(_Lista_Proveedor, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -226,10 +227,10 @@ $('body').on('click', ".mibtn-seleccionProveedor", async function () {
         alertAlerta(e);
     }
 });
-$('body').on('click', ".mibtn-EliminarProveedor", async function () {
+$('body').on('click', ".mibtn-EliminarProveedor", async function() {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Proveedor, function (entidad, index) {
+        let buscado = $.grep(_Lista_Proveedor, function(entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -243,7 +244,7 @@ $('body').on('click', ".mibtn-EliminarProveedor", async function () {
 async function SeleccionProveedor() {
     try {
         let elemento = document.getElementById("_CboProveedor");
-        let buscado = $.grep(_Lista_Proveedor, function (entidad, index) {
+        let buscado = $.grep(_Lista_Proveedor, function(entidad, index) {
             return entidad.IdEntidad == elemento.options[elemento.selectedIndex].value;
         });
         let Seleccionado = buscado[0];

@@ -78,10 +78,12 @@
     <Compile Include="Entidad\ADM\Comprobante.vb" />
     <Compile Include="Entidad\ADM\Empleado.vb" />
     <Compile Include="Entidad\ADM\Gasto.vb" />
+    <Compile Include="Entidad\ADM\Cta Cte\MovimientoCtaCte.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivo.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivoBN.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivoMC.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivoPF.vb" />
+    <Compile Include="Entidad\ADM\Cta Cte\TipoMovimientoCtaCte.vb" />
     <Compile Include="Entidad\Ingresos\Ingreso.vb" />
     <Compile Include="Entidad\Archivos\Archivo.vb" />
     <Compile Include="Entidad\Complementarias\CuentaCorriente.vb" />
