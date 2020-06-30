@@ -31,7 +31,7 @@
     <script src='<%= ResolveClientUrl("~/Scripts/jquery-ui-1.12.1/jquery-ui.js") %>' type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <!-- Entidades -->
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/USUARIO/Usuario.js?version20200602_1")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/USUARIO/Usuario.js?version20200630_1")%>' type="text/javascript"></script>
     <!-- WebServices-->
     <script type="text/javascript">
         var urlWsUsuario = '<%= ResolveClientUrl("~/WebServices/WsUsuario.asmx")%>';
@@ -41,27 +41,6 @@
             $("#SpanFecha").text(fechaHoy());
         });
     </script>
- <%--   <script>
-        $(function () {
-            $(".datepicker").datepicker();
-            $("#SpanFecha").text(fechaHoy());
-            let getURL = window.location.pathname
-            let partes = getURL.split("/")
-            if (partes[partes.length - 1] !== 'Frm_Login.aspx') {
-                let ctlLogin = document.getElementById("ctlLogin");
-                ctlLogin.style.visibility = "visible";
-                let ctlUsuario = document.getElementById("DivHeaderUsuario");
-                ctlUsuario.style.visibility = "visible";
-                $("#SpanUsuario").text('Quattrocchi, Eduardo');
-            }
-            Inicio();
-            function Inicio() {
-                if (location.protocol != 'https:') {
-                    //location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
-                }
-            }
-        });
-    </script>--%>
     <header>
         <script src='<%= ResolveClientUrl("MP.js")%>'></script>
         <div id="DivHeaderLogo">

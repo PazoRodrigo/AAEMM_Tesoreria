@@ -46,11 +46,11 @@
   <ItemGroup>
     <Reference Include="Connection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Desarrollos\LibreriasPropias\Connection\bin\Debug\Connection.dll</HintPath>
+      <HintPath>..\..\..\Dll\UTEDyC\Connection.dll</HintPath>
     </Reference>
     <Reference Include="LUM, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Desarrollos\LibreriasPropias\LUM\bin\Debug\LUM.dll</HintPath>
+      <HintPath>..\..\..\Dll\UTEDyC\LUM.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

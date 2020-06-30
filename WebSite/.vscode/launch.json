@@ -6,10 +6,8 @@
     "configurations": [{
         "type": "firefox",
         "request": "launch",
-        "name": "Launch Firefox against localhost",
-        //"url": "http://localhost:53930/Aplicaciones/Login/Login.html",
-        //"url": "http://localhost:53930/Aplicaciones/Empresas/Forms/frm_Empresas_Inicio.aspx",
-        "url": "http://localhost:14162/Forms/Login/Frm_Login.aspx",
+        "name": "Firefox Debug",
+        "url": "http://aplicativosaaemm.dyndns.org/SitioTesoreria/Forms/Login/Frm_Login.aspx",
         "webRoot": "${workspaceFolder}",
         "pathMappings": [{
             "url": "http://localhost:14162",
