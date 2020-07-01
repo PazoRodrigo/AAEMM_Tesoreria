@@ -57,7 +57,7 @@
             </div>
             <div id="DivHeaderFecha"><span id="SpanFecha"></span></div>
         </div>
-        <div id="ctlLogin" style="visibility: hidden;;" class="iconos">
+        <div id="ctlLogin" style="visibility: hidden;" class="iconos">
             <a href='<%= ResolveClientUrl("~/Forms/Login/Frm_Login.aspx") %>' id="IcSalir" title="Salir">
                 <div id="DivHeaderSalir">
                     <span class="icon-exit"></span>

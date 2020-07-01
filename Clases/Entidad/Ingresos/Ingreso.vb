@@ -177,8 +177,10 @@ Namespace Entidad
             Return DAL_Ingreso.TraerTodos()
         End Function
         Public Shared Function TraerTodosXBusqueda(busqueda As StrBusquedaIngreso) As List(Of Ingreso)
-            Dim TablaAcreditados As String = "Ingreso.Ingresos_Acreditados Ing LEFT JOIN OSEMM.dbo.Afib002 AF ON Ing.CUIT = CAST(REPLACE(AF.CUIT,'-','') AS BIGINT) AND dep='00'"
-            Dim TablaNOAcreditados As String = "Ingreso.Ingresos_NOAcreditados Ing LEFT JOIN OSEMM.dbo.Afib002 AF ON Ing.CUIT = CAST(REPLACE(AF.CUIT,'-','') AS BIGINT) AND dep='00'"
+            'Dim TablaAcreditados As String = "Ingreso.Ingresos_Acreditados Ing LEFT JOIN OSEMM.dbo.Afib002 AF ON Ing.CUIT = CAST(REPLACE(AF.CUIT,'-','') AS BIGINT) AND dep='00'"
+            'Dim TablaNOAcreditados As String = "Ingreso.Ingresos_NOAcreditados Ing LEFT JOIN OSEMM.dbo.Afib002 AF ON Ing.CUIT = CAST(REPLACE(AF.CUIT,'-','') AS BIGINT) AND dep='00'"
+            Dim TablaAcreditados As String = "Ingreso.Ingresos_Acreditados Ing"
+            Dim TablaNOAcreditados As String = "Ingreso.Ingresos_NOAcreditados Ing"
             Dim sqlQuery As String = "SELECT * FROM "
             Dim tablas As Integer = 0
             If busqueda.Estados.Length = 0 Then

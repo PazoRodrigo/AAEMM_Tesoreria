@@ -27,15 +27,15 @@ class Gasto extends DBE {
         return Result;
     }
     async ListaComprobantes() {
-            try {
-                return await Comprobante.TraerTodasXGasto(this.IdEntidad);
+        try {
+            return await Comprobante.TraerTodasXGasto(this.IdEntidad);
 
-            } catch (e) {
-                return new Comprobante;
+        } catch (e) {
+            return new Comprobante;
 
-            }
         }
-        // ABM
+    }
+    // ABM
     async Alta() {
         try {
             let ObjU = JSON.parse(sessionStorage.getItem("User"));
@@ -63,7 +63,7 @@ class Gasto extends DBE {
             let id = await ejecutarAsync(urlWsGasto + "/Baja", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Gasto, function(entidad, index) {
+            let buscados = $.grep(_Lista_Gasto, function (entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Gasto = buscados;
@@ -84,7 +84,7 @@ class Gasto extends DBE {
             let id = await ejecutarAsync(urlWsGasto + "/Cerrar", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Gasto, function(entidad, index) {
+            let buscados = $.grep(_Lista_Gasto, function (entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Gasto = buscados;
@@ -107,7 +107,7 @@ class Gasto extends DBE {
     // Traer
     static async TraerUno(IdEntidad) {
         _Lista_Gasto = await Gasto.TraerTodas();
-        let buscado = $.grep(_Lista_Gasto, function(entidad, index) {
+        let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
         let Encontrado = buscado[0];
@@ -120,7 +120,7 @@ class Gasto extends DBE {
         let lista = await ejecutarAsync(urlWsGasto + "/TraerGastosAbiertos");
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function(key, value) {
+            $.each(lista, function (key, value) {
                 result.push(LlenarEntidadGasto(value));
             });
         }
@@ -128,7 +128,7 @@ class Gasto extends DBE {
     }
     static async TraerTodosActivos() {
         _Lista_Gasto = await Gasto.TraerTodas();
-        let buscado = $.grep(_Lista_Gasto, function(entidad, index) {
+        let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
             return entidad.IdEstado === 0;
         });
         return buscado;
@@ -138,7 +138,7 @@ class Gasto extends DBE {
         _Lista_Gasto = [];
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function(key, value) {
+            $.each(lista, function (key, value) {
                 result.push(LlenarEntidadGasto(value));
             });
         }
@@ -150,7 +150,7 @@ class Gasto extends DBE {
         _Lista_Gasto = [];
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function(key, value) {
+            $.each(lista, function (key, value) {
                 result.push(LlenarEntidadGasto(value));
             });
         }
@@ -164,7 +164,7 @@ class Gasto extends DBE {
         let lista = await ejecutarAsync(urlWsGasto + "/TraerTodosXBusqueda", data);
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function(key, value) {
+            $.each(lista, function (key, value) {
                 result.push(LlenarEntidadGasto(value));
             });
         }
@@ -174,9 +174,9 @@ class Gasto extends DBE {
 
     // Otros
     static async Refresh() {
-            _Lista_Gasto = await Gasto.TraerTodas();
-        }
-        // Herramientas
+        _Lista_Gasto = await Gasto.TraerTodas();
+    }
+    // Herramientas
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -190,7 +190,7 @@ class Gasto extends DBE {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
                 }
                 let periodo = Right(Left(item.FechaGasto, 6), 2) + '/' + Left(item.FechaGasto, 4);
-                let aItem = '<a href="#" class="mibtn-seleccionGasto" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + periodo + ' - ' + item.Estado + ' - ' + MonedaDecimales2(item.Importe) + ' </a>';
+                let aItem = '<a href="#" class="mibtn-seleccionGasto" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + periodo + ' - ' + item.Estado + ' - ' + separadorMiles(item.Importe.toFixed(2)) + ' </a>';
                 let aEliminar = '<a href="#" class="mibtn-EliminarGasto" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
                 str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div > <div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li > ', aItem, aEliminar);
             }
@@ -209,8 +209,8 @@ class Gasto extends DBE {
         str += '            <th class="text-center" style="width: 55px;">Id</th>';
         str += '            <th class="text-center" style="width: 110px;">Período</th>';
         str += '            <th class="text-center" style="width: 85px;">Estado</th>';
-        str += '            <th class="text-center" style="width: 120px;">Cant. Comprob.</th>';
-        str += '            <th class="text-center" style="width: 135px;">Importe</th>';
+        str += '            <th class="text-center" style="width: 80px;">Cant. Comprob.</th>';
+        str += '            <th class="text-center" style="width: 175px;">Importe</th>';
         str += '        </tr>';
         str += '    </thead>';
         str += '</table >';
@@ -225,11 +225,11 @@ class Gasto extends DBE {
         if (lista.length > 0) {
             for (let item of lista) {
                 str += '        <tr>';
-                str += '            <td class="text-center" style="width: 55px;"><div class="small text-light">' + item.IdEntidad + '</div></td>';
-                str += '            <td class="text-center" style="width: 110px;"><div class="small text-light">' + item.StrPeriodo() + '</div></td>';
-                str += '            <td class="text-center" style="width: 85px;"><div class="small text-light">' + item.Estado + '</div></td>';
-                str += '            <td class="text-right pr-2" style="width: 120px;"><div class="small text-light">' + item.CantidadComprobantes + '</div></td>';
-                str += '            <td class="text-right pr-2" style="width: 135px;"><div class="small text-light">' + MonedaDecimales2(item.Importe) + '</div></td>';
+                str += '            <td class="text-center" style="width: 55px;"><div class="text-light">' + item.IdEntidad + '</div></td>';
+                str += '            <td class="text-center" style="width: 110px;"><div class="text-light">' + item.StrPeriodo() + '</div></td>';
+                str += '            <td class="text-center" style="width: 85px;"><div class="text-light">' + item.Estado + '</div></td>';
+                str += '            <td class="text-right pr-2" style="width: 120px;"><div class="text-light">' + item.CantidadComprobantes + '</div></td>';
+                str += '            <td class="text-right pr-4" style="width: 135px;"><div class="text-light">' + separadorMiles(item.Importe.toFixed(2)) + '</div></td>';
                 str += '        </tr>';
             }
         }
@@ -279,9 +279,9 @@ class Gasto extends DBE {
         let Cbo = '';
         Cbo += '<select id="_' + div + '" data-Evento="' + evento + '" class="' + estilo + '">';
         Cbo += '    <option value="0" id="' + selector + '">' + ventana + '</option>';
-        $(lista).each(function() {
+        $(lista).each(function () {
             let periodo = Right(Left(this.FechaGasto, 6), 2) + '/' + Left(this.FechaGasto, 4);
-            Cbo += '<option class="mibtn-seleccionGasto" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + periodo + '</option>';
+            Cbo += '<option class="mibtn-seleccionGasto" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + Right('0000' + this.IdEntidad, 4) + ' - ' + periodo + '</option>';
         });
         Cbo += '</select>';
         return $('#' + div + '').html(Cbo);
@@ -305,29 +305,33 @@ function LlenarEntidadGasto(entidad) {
     Res.IdMotivoBaja = entidad.IdMotivoBaja;
     return Res;
 }
-$('body').on('click', ".mibtn-seleccionGasto", async function() {
+$('body').on('click', ".mibtn-seleccionGasto", async function () {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Gasto, function(entidad, index) {
+        let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
         let evento = $this.attr("data-Evento");
-        let event = new CustomEvent(evento, { detail: Seleccionado });
+        let event = new CustomEvent(evento, {
+            detail: Seleccionado
+        });
         document.dispatchEvent(event);
     } catch (e) {
         alertAlerta(e);
     }
 });
-$('body').on('click', ".mibtn-EliminarGasto", async function() {
+$('body').on('click', ".mibtn-EliminarGasto", async function () {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Gasto, function(entidad, index) {
+        let buscado = $.grep(_Lista_Gasto, function (entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
         let evento = $this.attr("data-Evento");
-        let event = new CustomEvent(evento, { detail: Seleccionado });
+        let event = new CustomEvent(evento, {
+            detail: Seleccionado
+        });
         document.dispatchEvent(event);
     } catch (e) {
         alertAlerta(e);

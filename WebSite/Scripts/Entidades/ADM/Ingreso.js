@@ -185,7 +185,7 @@ class Ingreso extends DBE {
                 str += '            <td class="text-center" style="width: 50px;"><small class="text-light">' + await item.StrCodigoEntidad(4) + '</small></td>';
                 str += '            <td class="text-left" style="width: 220px;"><small class="text-light">' + Left(item.RazonSocial, 25) + '</small></td>';
                 str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrPeriodo() + '</small></td>';
-                str += '            <td class="text-right pr-1" style="width: 100px;"><small class="text-light">' + separadorMiles(item.Importe) + '</small></td>';
+                str += '            <td class="text-right pr-1" style="width: 100px;"><small class="text-light">' + separadorMiles(item.Importe.toFixed(2)) + '</small></td>';
                 str += '            <td class="text-center" style="width: 100px;"><small class="text-light">' + item.NombreArchivo + '</small></td>';
                 str += '            <td class="text-center" style="width: 40px;"><small class="text-light">' + await item.Origen() + '</small></td>';
                 let cheque = '';

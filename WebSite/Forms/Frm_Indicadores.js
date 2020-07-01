@@ -29,7 +29,7 @@ async function Inicio() {
     $("#LblEmpleadosDeudaMayor6Meses").text(ObjInidicadores.EmpleadosDeudaMayor6Meses);
     $("#LblEmpleadosInactivos").text(ObjInidicadores.EmpleadosInactivos);
 
-    $("#LblRecaudacion").text(ObjInidicadores.Recaudacion);
+    $("#LblRecaudacion").text(separadorMiles(ObjInidicadores.Recaudacion.toFixed(2)));
     $("#LblRecaudacionXCobrarSinBoleta").text(ObjInidicadores.RecaudacionXCobrarSinBoleta);
     $("#LblRecaudacionXCobrarConBoleta").text(ObjInidicadores.RecaudacionXCobrarConBoleta);
     $("#LblRecaudacionDeuda1Mes").text(ObjInidicadores.RecaudacionDeuda1Mes);

@@ -68,7 +68,7 @@ $('body').on('click', '#LinkBtnGuardarPassword', async function(e) {
 });
 document.addEventListener('EventoInicio', async function(e) {
     try {
-        window.location.href = 'http://aplicativosaaemm.dyndns.org/SitioTesoreria/Forms/Login/Frm_Login.aspx';
+        window.location.href = 'http://localhost:14162/Forms/Login/Frm_Login.aspx';
     } catch (e) {
         alertAlerta(e);
     }

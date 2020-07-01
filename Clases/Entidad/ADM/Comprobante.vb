@@ -165,20 +165,19 @@ Namespace Entidad
                 End If
                 sqlQuery += "FechaGasto <= '" + Fecha + "'"
             End If
-            If busqueda.Estados <> "" Then
+            If busqueda.Estados <> "" AndAlso busqueda.Estados <> "10" Then
                 If Not existeParametro Then
                     existeParametro = True
                     sqlQuery += " WHERE "
                 Else
                     sqlQuery += " AND "
                 End If
-                sqlQuery += "IdEstado IN ('" + busqueda.Estados(0) & "'"
-                Dim i As Integer = 1
-                While i <= busqueda.Estados.Length - 1
-                    sqlQuery += ", '" & busqueda.Estados(i) & "'"
-                    i += 1
-                End While
-                sqlQuery += ")"
+                If busqueda.Estados = "1" Then
+                    sqlQuery += " ISNULL(FechaPago,'') <> '' "
+                End If
+                If busqueda.Estados = "0" Then
+                    sqlQuery += " ISNULL(FechaPago,'') = '' "
+                End If
             End If
             If busqueda.IdGasto > 0 Then
                 If Not existeParametro Then

@@ -135,7 +135,7 @@ class Comprobante extends DBE {
             let id = await ejecutarAsync(urlWsComprobante + "/Modifica", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Comprobante, function(entidad, index) {
+            let buscados = $.grep(_Lista_Comprobante, function (entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Comprobante = buscados;
@@ -156,7 +156,7 @@ class Comprobante extends DBE {
             let id = await ejecutarAsync(urlWsComprobante + "/Baja", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Comprobante, function(entidad, index) {
+            let buscados = $.grep(_Lista_Comprobante, function (entidad, index) {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Comprobante = buscados;
@@ -169,38 +169,38 @@ class Comprobante extends DBE {
     }
 
     async ValidarCampos() {
-            let sError = '';
-            if (this.IdCuenta === 0) {
-                sError += '- Debe informar la Cuenta. <br>';
-            }
-            if (this.Importe.length == 0) {
-                sError += '- Debe informar el importe. <br>';
-            } else {
-                if (isNaN(this.Importe)) {
-                    sError += '- El importe debe ser numérico. <br>';
-                }
-            }
-            if (this.IdOriginario === 0) {
-                sError += '- Debe informar el Originario. <br>';
-            }
-            if (this.IdCentroCosto === 0) {
-                sError += '- Debe informar el Centro de Costo. <br>';
-            }
-            if (this.IdProveedor === 0) {
-                sError += '- Debe informar el Proveedor. <br>';
-            }
-            if (this.NroComprobante.length == 0) {
-                this.NroComprobante = 0;
-            } else {
-                if (isNaN(this.NroComprobante)) {
-                    sError += '- El Nro. Comprobante debe ser numérico. <br>';
-                }
-            }
-            if (sError.length > 0) {
-                throw '<b>Debe Completar todos los campos</b><br><br>' + sError;
+        let sError = '';
+        if (this.IdCuenta === 0) {
+            sError += '- Debe informar la Cuenta. <br>';
+        }
+        if (this.Importe.length == 0) {
+            sError += '- Debe informar el importe. <br>';
+        } else {
+            if (isNaN(this.Importe)) {
+                sError += '- El importe debe ser numérico. <br>';
             }
         }
-        // Todos
+        if (this.IdOriginario === 0) {
+            sError += '- Debe informar el Originario. <br>';
+        }
+        if (this.IdCentroCosto === 0) {
+            sError += '- Debe informar el Centro de Costo. <br>';
+        }
+        if (this.IdProveedor === 0) {
+            sError += '- Debe informar el Proveedor. <br>';
+        }
+        if (this.NroComprobante.length == 0) {
+            this.NroComprobante = 0;
+        } else {
+            if (isNaN(this.NroComprobante)) {
+                sError += '- El Nro. Comprobante debe ser numérico. <br>';
+            }
+        }
+        if (sError.length > 0) {
+            throw '<b>Debe Completar todos los campos</b><br><br>' + sError;
+        }
+    }
+    // Todos
     static async TodosXGasto(IdGasto) {
         return await Comprobante.TraerTodasXGasto(IdGasto);
     }
@@ -208,7 +208,7 @@ class Comprobante extends DBE {
     // Traer
     static async TraerUno(IdEntidad) {
         _Lista_Comprobante = await Comprobante.TraerTodos();
-        let buscado = $.grep(_Lista_Comprobante, function(entidad, index) {
+        let buscado = $.grep(_Lista_Comprobante, function (entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
         let Encontrado = buscado[0];
@@ -219,7 +219,7 @@ class Comprobante extends DBE {
     }
     static async TraerTodosActivos() {
         _Lista_Comprobante = await Comprobante.TraerTodos();
-        let buscado = $.grep(_Lista_Comprobante, function(entidad, index) {
+        let buscado = $.grep(_Lista_Comprobante, function (entidad, index) {
             return entidad.IdEstado === 0;
         });
         return buscado;
@@ -229,7 +229,7 @@ class Comprobante extends DBE {
         _Lista_Comprobante = [];
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function(key, value) {
+            $.each(lista, function (key, value) {
                 result.push(LlenarEntidadComprobante(value));
             });
         }
@@ -237,36 +237,36 @@ class Comprobante extends DBE {
         return _Lista_Comprobante;
     }
     static async TraerTodasXGasto(IdGasto) {
-            let data = {
-                "IdGasto": IdGasto
-            };
-            let lista = await ejecutarAsync(urlWsComprobante + "/TraerTodosXGasto", data);
-            _Lista_Comprobante = [];
-            let result = [];
-            if (lista.length > 0) {
-                $.each(lista, function(key, value) {
-                    result.push(LlenarEntidadComprobante(value));
-                });
-            }
-            _Lista_Comprobante = result;
-            return _Lista_Comprobante;
+        let data = {
+            "IdGasto": IdGasto
+        };
+        let lista = await ejecutarAsync(urlWsComprobante + "/TraerTodosXGasto", data);
+        _Lista_Comprobante = [];
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadComprobante(value));
+            });
         }
-        // Otros
+        _Lista_Comprobante = result;
+        return _Lista_Comprobante;
+    }
+    // Otros
     static async TraerTodosXBusqueda(Busqueda) {
-            let data = {
-                'Busqueda': Busqueda
-            };
-            let lista = await ejecutarAsync(urlWsComprobante + "/TraerTodosXBusqueda", data);
-            let result = [];
-            if (lista.length > 0) {
-                $.each(lista, function(key, value) {
-                    result.push(LlenarEntidadComprobante(value));
-                });
-            }
-            _ListaIngresos = result;
-            return result;
+        let data = {
+            'Busqueda': Busqueda
+        };
+        let lista = await ejecutarAsync(urlWsComprobante + "/TraerTodosXBusqueda", data);
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadComprobante(value));
+            });
         }
-        // Herramientas
+        _ListaIngresos = result;
+        return result;
+    }
+    // Herramientas
     static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
         $('#' + div + '').html('');
         let str = '';
@@ -279,7 +279,7 @@ class Comprobante extends DBE {
                 if (item.IdEstado === 1) {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
                 }
-                let aItem = '<a href="#" class="mibtn-seleccionComprobante" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + LongToDateString(item.FechaGasto) + ' ' + item.Estado + ' - ' + MonedaDecimales2(item.Importe) + ' </a>';
+                let aItem = '<a href="#" class="mibtn-seleccionComprobante" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + LongToDateString(item.FechaGasto) + ' ' + item.Estado + ' - ' + separadorMiles(item.Importe.toFixed(2)) + ' </a>';
                 let aEliminar = '<a href="#" class="mibtn-EliminarComprobante" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
                 str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
             }
@@ -303,7 +303,7 @@ class Comprobante extends DBE {
         str += '            <th class="text-center" style="width: 180px;">Tipo Pago</th>';
         str += '            <th class="text-center" style="width: 195px;">Proveedor</th>';
         str += '            <th class="text-center" style="width: 105px;">Importe</th>';
-        str += '            <th class="text-center" style="width: 90px;">Baja</th>';
+        // str += '            <th class="text-center" style="width: 90px;">Baja</th>';
         str += '        </tr>';
         str += '    </thead>';
         str += '</table >';
@@ -318,18 +318,17 @@ class Comprobante extends DBE {
         str += '    <tbody>';
         if (lista.length > 0) {
             for (let item of lista) {
+                let ColorClase = 'text-light';
+                if (item.FechaBaja > 0) {
+                    ColorClase = 'text-danger bg-light';
+                }
                 str += '        <tr>';
                 str += '            <td class="text-center" style="width: 55px;"><div class="small text-light">' + item.IdGasto + '</div></td>';
                 str += '            <td class="text-center" style="width: 110px;"><div class="small text-light">' + LongToDateString(item.FechaGasto) + '</div></td>';
-                str += '            <td class="text-center" style="width: 55px;"><div class="small text-light">' + item.StrPagado() + '</div></td>';
+                str += '            <td class="text-center" style="width: 75px;"><div class="small text-light">' + item.StrPagado() + '</div></td>';
                 str += '            <td class="text-left pl-1" style="width: 180px;"><div class="small text-light">' + Left((await item.ObjTipoPago()).Nombre, 22) + '</div></td>';
                 str += '            <td class="text-left pl-1" style="width: 200px;"><div class="small text-light">' + Left((await item.ObjProveedor()).Nombre, 25) + '</div></td>';
-                str += '            <td class="text-right pr-2" style="width: 105px;"><div class="small text-light">' + MonedaDecimales2(item.Importe) + '</div></td>';
-                let strFechaBaja = '';
-                if (item.FechaBaja > 0) {
-                    strFechaBaja = LongToDateString(item.FechaBaja);
-                }
-                str += '            <td class="text-center" style="width: 90px;"><div class="text-danger bg-light">' + strFechaBaja + '</div></td>';
+                str += '            <td class="text-right pr-2" style="width: 105px;"><div class="' + ColorClase + '">' + separadorMiles(item.Importe.toFixed(2)) + '</div></td>';
                 str += '        </tr>';
             }
         }
@@ -403,29 +402,33 @@ function LlenarEntidadComprobante(entidad) {
     Res.IdMotivoBaja = entidad.IdMotivoBaja;
     return Res;
 }
-$('body').on('click', ".mibtn-seleccionComprobante", async function() {
+$('body').on('click', ".mibtn-seleccionComprobante", async function () {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Comprobante, function(entidad, index) {
+        let buscado = $.grep(_Lista_Comprobante, function (entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
         let evento = $this.attr("data-Evento");
-        let event = new CustomEvent(evento, { detail: Seleccionado });
+        let event = new CustomEvent(evento, {
+            detail: Seleccionado
+        });
         document.dispatchEvent(event);
     } catch (e) {
         alertAlerta(e);
     }
 });
-$('body').on('click', ".mibtn-EliminarComprobante", async function() {
+$('body').on('click', ".mibtn-EliminarComprobante", async function () {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Comprobante, function(entidad, index) {
+        let buscado = $.grep(_Lista_Comprobante, function (entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
         let evento = $this.attr("data-Evento");
-        let event = new CustomEvent(evento, { detail: Seleccionado });
+        let event = new CustomEvent(evento, {
+            detail: Seleccionado
+        });
         document.dispatchEvent(event);
     } catch (e) {
         alertAlerta(e);

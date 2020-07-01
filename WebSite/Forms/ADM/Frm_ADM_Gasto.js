@@ -31,8 +31,7 @@ async function Inicio() {
 }
 async function LlenarGrillaGasto() {
     _ListaG = await Gasto.TraerGastosAbiertos();
-    //Gasto.ArmarGrilla(_ListaG, 'GrillaGastosRegistrados', 'EventoSeleccionarGasto', 'EventoEliminarGasto', 'height:300px; overflow-y: scroll');
-    Gasto.ArmarGrilla(_ListaG, 'GrillaGastosRegistrados', 'EventoSeleccionarGasto', 'EventoEliminarGasto','');
+    Gasto.ArmarGrilla(_ListaG, 'GrillaGastosRegistrados', 'EventoSeleccionarGasto', 'EventoEliminarGasto', '');
 }
 async function LlenarGrillaComprobante() {
     Comprobante.ArmarGrilla(_ListaC, 'GrillaComprobantesRegistrados', 'EventoSeleccionarComprobante', 'EventoEliminarComprobante');
@@ -59,6 +58,7 @@ async function LlenarCboTipoPago() {
     let lista = await TipoPago.TraerTodos();
     TipoPago.ArmarCombo(lista, 'CboTipoPago', 'SelectorTipoPago', 'EventoSeleccionTipoPago', 'Seleccione Tipo Pago', '');
 }
+
 function MostrarSolapaGasto() {
     $(".btnGastoOn").css("display", "block");
     $(".btnGastoOff").css("display", "none");
@@ -69,6 +69,7 @@ function MostrarSolapaGasto() {
     $("#GastoDetalle").css("display", "none");
 
 }
+
 function MostrarSolapaComprobante() {
     $(".btnGastoOn").css("display", "none");
     $(".btnGastoOff").css("display", "block");
@@ -103,7 +104,7 @@ async function LlenarGasto() {
     if (_ObjGasto !== null) {
         $("#GastoDetalle").css('display', 'block');
         $("#SpanNroGasto").text(_ObjGasto.IdEntidad);
-        $("#SpanGastoImporte").text(_ObjGasto.Importe.toFixed(2));
+        $("#SpanGastoImporte").text(separadorMiles(_ObjGasto.Importe.toFixed(2)));
         $("#SpanGastoComprobantes").text(_ObjGasto.CantidadComprobantes);
         $("#SpanGastoEstado").text(_ObjGasto.Estado);
         _ListaC = await _ObjGasto.ListaComprobantes();
@@ -198,6 +199,7 @@ async function LimpiarComprobante() {
     await LlenarGrillaGasto();
     $('#TxtFechaGasto').val(fechaHoy);
 }
+
 function NuevoComprobante() {
     if (_ObjGasto.IdEntidad === 0) {
         throw ('Debe Abrir o Seleccionar un Gasto');
@@ -224,7 +226,7 @@ async function LlenarComprobante() {
     if (_ObjComprobante.FechaGasto) {
         $("#TxtFechaGasto").val(LongToDateString(_ObjComprobante.FechaGasto));
     }
-    $("#TxtImporte").val(_ObjComprobante.Importe.toFixed(2));
+    $("#TxtImporte").val(separadorMiles(_ObjComprobante.Importe.toFixed(2)));
 }
 $('body').on('click', '#LinkBtnNuevoComprobante', async function (e) {
     try {
@@ -401,5 +403,3 @@ $(function () {
         }
     });
 });
-
-

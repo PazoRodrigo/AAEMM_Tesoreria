@@ -39,9 +39,9 @@
                                     <li class="BtnDistribuidor">
                                         <ul class="SubMenu">
                                             <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>'>(Alt + I) - Ingresos</a></li>
-                                            <%-- <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gastos.aspx")%>'>(Alt + G) - Gastos</a></li> --%>
-                                            <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gastos2.aspx")%>'>(Alt + G) - Gastos y Comprobantes</a></li>
-                                            <%-- <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Comprobantes.aspx")%>'>(Alt + C) - Comprobantes</a></li> --%>
+                                             <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gasto.aspx")%>'>(Alt + G) - Gastos</a></li> 
+                                            <%--<li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gastos2.aspx")%>'>(Alt + G) - Gastos y Comprobantes</a></li>--%>
+                                             <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Comprobante.aspx")%>'>(Alt + C) - Comprobantes</a></li> 
                                         </ul>
                                     </li>
                                 </ul>
