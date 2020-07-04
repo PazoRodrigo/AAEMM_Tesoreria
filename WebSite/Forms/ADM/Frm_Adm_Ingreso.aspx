@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Ingresos" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ADM_Ingreso.aspx.vb" Inherits="Forms_ADM_Frm_Adm_Ingreso" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Adm_Ingreso.js?version20200630_1")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_Ingreso.js?version20200702_01")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -14,7 +14,8 @@
     <ul>
         <li>
             <div id="BtnIndicadores" class="Cabecera Porc10_L">
-                <a id="LinkBtnInidicadores" href='<%= ResolveClientUrl("~/Forms/Frm_Indicadores.aspx")%>' class="LinkBtn" title="Indicadores"><span class="icon-stats-dots"></span></a>
+                <a id="LinkBtnInidicadores" href='<%= ResolveClientUrl("~/Forms/Frm_Indicadores.aspx")%>'
+                    class="LinkBtn" title="Indicadores"><span class="icon-stats-dots"></span></a>
             </div>
             <div id="DivNombreFormulario" class="Cabecera Porc90_L">
                 <span id="SpanNombreFormulario"></span>
@@ -29,13 +30,13 @@
                             <div class="container">
                                 <div class="row mt-1 justify-content-center">
                                     <div class="col-5">
-                                        <input type="text" id="BuscaDesdeAcred"
-                                            class="form-control datepicker" onkeypress="return jsNoEscribir(event)" placeholder="Desde">
+                                        <input type="text" id="BuscaDesdeAcred" class="form-control datepicker"
+                                            onkeypress="return jsNoEscribir(event)" placeholder="Desde">
                                     </div>
                                     <div class="col-2"></div>
                                     <div class="col-5">
-                                        <input type="text" id="BuscaHastaAcred"
-                                            class="form-control datepicker" onkeypress="return jsNoEscribir(event)" placeholder="Hasta">
+                                        <input type="text" id="BuscaHastaAcred" class="form-control datepicker"
+                                            onkeypress="return jsNoEscribir(event)" placeholder="Hasta">
                                     </div>
                                 </div>
                             </div>
@@ -43,23 +44,28 @@
                                 <div class="col-4">Estado</div>
                                 <div class="col-8">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoA" value="A">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox"
+                                            id="IdEstadoA" value="A">
                                         <label class="form-check-label" for="IdEstadoA">A</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoL" value="L">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox"
+                                            id="IdEstadoL" value="L">
                                         <label class="form-check-label" for="IdEstadoL">L</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoP" value="P">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox"
+                                            id="IdEstadoP" value="P">
                                         <label class="form-check-label" for="IdEstadoP">P</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoR" value="R">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox"
+                                            id="IdEstadoR" value="R">
                                         <label class="form-check-label" for="IdEstadoR">R</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" name="CheckEstado" type="checkbox" id="IdEstadoT" value="T">
+                                        <input class="form-check-input" name="CheckEstado" type="checkbox"
+                                            id="IdEstadoT" value="T">
                                         <label class="form-check-label" for="IdEstadoT">T</label>
                                     </div>
                                 </div>
@@ -67,14 +73,16 @@
                             <div class="row mt-1">
                                 <div class="col-4">Empresa</div>
                                 <div class="col-8">
-                                    <input type="text" id="BuscaRazonSocial" class="form-control" placeholder="Razon Social">
+                                    <input type="text" id="BuscaRazonSocial" class="form-control"
+                                        placeholder="Razon Social">
                                 </div>
                             </div>
                             <div class="row mt-1">
                                 <div class="col-4">CUIT</div>
                                 <div class="col-8">
                                     <input type="text" id="BuscaCUIT" class="form-control text-center"
-                                        placeholder="CUIT" onkeypress="return jsSoloNumerosSinPuntos(event)" maxlength="11" style="width: 120px;">
+                                        placeholder="CUIT" onkeypress="return jsSoloNumerosSinPuntos(event)"
+                                        maxlength="11" style="width: 120px;">
                                 </div>
                             </div>
                             <div class="row mt-1">
@@ -82,15 +90,18 @@
                                 <div class="col-8">
                                     <div id="ChecksTipo"></div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" name="CheckTipo" type="checkbox" id="TipoBN" value="1">
+                                        <input class="form-check-input" name="CheckTipo" type="checkbox" id="TipoBN"
+                                            value="1">
                                         <label class="form-check-label" for="TipoBN">BN</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" name="CheckTipo" type="checkbox" id="TipoPF" value="2">
+                                        <input class="form-check-input" name="CheckTipo" type="checkbox" id="TipoPF"
+                                            value="2">
                                         <label class="form-check-label" for="TipoPF">PF</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" name="CheckTipo" type="checkbox" id="TipoMC" value="3">
+                                        <input class="form-check-input" name="CheckTipo" type="checkbox" id="TipoMC"
+                                            value="3">
                                         <label class="form-check-label" for="TipoMC">MC</label>
                                     </div>
                                 </div>
@@ -98,28 +109,29 @@
                             <div class="row mt-1">
                                 <div class="col-4">Importe</div>
                                 <div class="col-5">
-                                    <input type="text" id="BuscaImporte" class="form-control" onkeypress="return jsSoloNumeros(event)"
-                                        placeholder="Importe">
+                                    <input type="text" id="BuscaImporte" class="form-control"
+                                        onkeypress="return jsSoloNumeros(event)" placeholder="Importe">
                                 </div>
                             </div>
                             <div class="row mt-1">
                                 <div class="col-4">Nro. Recibo</div>
                                 <div class="col-7">
-                                    <input type="text" id="BuscaNroRecibo" class="form-control" onkeypress="return jsSoloNumerosSinPuntos(event)"
-                                        placeholder="Nro. Recibo">
+                                    <input type="text" id="BuscaNroRecibo" class="form-control"
+                                        onkeypress="return jsSoloNumerosSinPuntos(event)" placeholder="Nro. Recibo">
                                 </div>
                             </div>
                             <div class="row mt-1">
                                 <div class="col-4">Nro. Cheque</div>
                                 <div class="col-7">
-                                    <input type="text" id="BuscaNroCheque" class="form-control" onkeypress="return jsSoloNumerosSinPuntos(event)"
-                                        placeholder="Nro. Cheque">
+                                    <input type="text" id="BuscaNroCheque" class="form-control"
+                                        onkeypress="return jsSoloNumerosSinPuntos(event)" placeholder="Nro. Cheque">
                                 </div>
                             </div>
                             <div class="row mt-3 mb-3">
                                 <div class="col-1"></div>
                                 <div class="col-10">
-                                    <a href="#" id="BtnBuscador" class="btn btn-md btn-block btn-primary">Buscar Ingresos
+                                    <a href="#" id="BtnBuscador" class="btn btn-md btn-block btn-primary">Buscar
+                                        Ingresos
                                     </a>
                                 </div>
                             </div>
@@ -128,7 +140,9 @@
                             <div class="container">
                                 <div class="row mt-2 justify-content-center">
                                     <div class="col-9 text-center">
-                                        <a href="#" id="BtnImprimirRegistrosGrilla" class="btn btn-block btn-light"><span id="LblCantidadRegistrosGrilla" class="text-bold"></span></a>
+                                        <a href="#" id="BtnImprimirRegistrosGrilla"
+                                            class="btn btn-block btn-light"><span id="LblCantidadRegistrosGrilla"
+                                                class="text-bold"></span></a>
                                     </div>
                                 </div>
                             </div>
@@ -158,8 +172,10 @@
                                 </div>
                                 <div class="row mt-1">
                                     <div class="col-3 d-flex justify-content-center">
-                                        <input type="text" id="EntidadCUIT" class="form-control text-center"
-                                            placeholder="CUIT" maxlength="11" style="width: 140px;">
+                                        <input type="text" id="EntidadCUIT"
+                                            onkeypress="return jsSoloNumerosSinPuntos(event)"
+                                            class="form-control text-center" placeholder="CUIT" maxlength="11"
+                                            style="width: 140px;" />
                                     </div>
                                     <div class="col-2 d-flex justify-content-center">
                                         <input type="text" id="EntidadCodigoEntidad" class="form-control text-center"
@@ -167,7 +183,7 @@
                                     </div>
                                     <div class="col-7 d-flex justify-content-center">
                                         <input type="text" id="EntidadRazonSocial" class="form-control"
-                                            placeholder="Razon Social" disabled>
+                                            placeholder="Razon Social">
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -207,13 +223,14 @@
                                 <div class="row mt-4">
                                     <div class="col-1"></div>
                                     <div class="col-6">
-                                        <a href="#" class="btn btn-md btn-block btn-success">Actualizar
-                                        Ingreso</a>
+                                        <a id="BtnModificar" href="#"
+                                            class="btn btn-md btn-block btn-success">Actualizar
+                                            Ingreso</a>
                                     </div>
                                     <div class="col-1"></div>
                                     <div class="col-3">
-                                        <a href="#" class="btn btn-md btn-block btn-warning">Separar
-                                        Ingreso</a>
+                                        <a id="BtnExplotar" href="#" class="btn btn-md btn-block btn-warning">Separar
+                                            Ingreso</a>
                                     </div>
                                 </div>
                             </div>
@@ -224,4 +241,3 @@
         </li>
     </ul>
 </asp:Content>
-

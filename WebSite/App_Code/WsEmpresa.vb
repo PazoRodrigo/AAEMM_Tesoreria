@@ -54,22 +54,22 @@ Public Class WsEmpresa
         Return ws
     End Function
 
-    '<WebMethod()>
-    'Public Function TraerUnoXCUIT(CUIT As Long) As Transfer
-    '    Dim ws As New Transfer
-    '    Try
-    '        Dim result As New List(Of DTO.DTO_Empresa)
-    '        result.Add(Entidad.Empresa.TraerUnoXCUIT(CUIT).ToDTO)
-    '        ws.data = result
-    '        ws.todoOk = True
-    '        ws.mensaje = ""
-    '    Catch ex As Exception
-    '        ws.todoOk = False
-    '        ws.mensaje = ex.Message
-    '        ws.data = Nothing
-    '    End Try
-    '    Return ws
-    'End Function
+    <WebMethod()>
+    Public Function TraerUnaXCUIT(CUIT As Long) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Empresa)
+            result.Add(Entidad.Empresa.TraerUnaXCUIT(CUIT).ToDTO)
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
     '<WebMethod()>
     'Public Function TraerUno(IdEntidad As Integer) As Transfer
     '    Dim ws As New Transfer

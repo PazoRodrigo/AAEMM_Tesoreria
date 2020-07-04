@@ -2,7 +2,7 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Indicadores.js?version20200630_1")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Indicadores.js?version20200702_01")%>'></script>
     <asp:Button ID="btnSubirOculto" runat="server" Style="visibility: hidden; display: none;" />
     <ul>
         <li>

@@ -11,6 +11,7 @@ Namespace Entidad
 #Region " Atributos / Propiedades "
         Public Property Direccion() As String = ""
         Public Property CodigoPostal() As Integer = 0
+        Public Property Localidad() As String = ""
         Public Property IdLocalidad() As Integer = 0
 #End Region
 #Region " Lazy Load "
@@ -18,7 +19,7 @@ Namespace Entidad
         Public ReadOnly Property ObjLocalidad() As Object
             Get
                 If _ObjLocalidad Is Nothing Then
-                    _ObjLocalidad = Localidad.TraerUno(IdLocalidad)
+                    _ObjLocalidad = Entidad.Localidad.TraerUno(IdLocalidad)
                 End If
                 Return _ObjLocalidad
             End Get
@@ -46,7 +47,7 @@ Namespace Entidad
         Friend Function ToDto() As DTO_Domicilio
             Dim ObjLocalidadTemp As New Localidad
             If IdLocalidad = 0 AndAlso CodigoPostal > 0 Then
-                Dim listaLocalTemp As List(Of Localidad) = Localidad.TraerTodosXCP(CodigoPostal)
+                Dim listaLocalTemp As List(Of Localidad) = Entidad.Localidad.TraerTodosXCP(CodigoPostal)
                 If listaLocalTemp.Count > 0 Then
                     ObjLocalidadTemp = listaLocalTemp(0)
                     IdLocalidad = ObjLocalidadTemp.IdEntidad
@@ -103,6 +104,16 @@ Public Class DAL_Domicilio
         If dr.Table.Columns.Contains("CodigoPostal") Then
             If dr.Item("CodigoPostal") IsNot DBNull.Value Then
                 entidad.CodigoPostal = CInt(dr.Item("CodigoPostal"))
+            End If
+        End If
+        If dr.Table.Columns.Contains("Localidad") Then
+            If dr.Item("Localidad") IsNot DBNull.Value Then
+                entidad.Localidad = dr.Item("Localidad").ToString.ToUpper.Trim
+            End If
+        End If
+        If dr.Table.Columns.Contains("IdLocalidad") Then
+            If dr.Item("IdLocalidad") IsNot DBNull.Value Then
+                entidad.IdLocalidad = CInt(dr.Item("IdLocalidad"))
             End If
         End If
         Return entidad

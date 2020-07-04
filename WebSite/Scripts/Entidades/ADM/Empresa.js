@@ -142,11 +142,11 @@ class Empresa extends DBE {
         }
         return result[0];
     }
-    static async TraerUnoXCUIT(CUIT) {
+    static async TraerUnaXCUIT(CUIT) {
         let data = {
             'CUIT': CUIT
         };
-        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerUnoXCUIT", data);
+        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerUnaXCUIT", data);
         let result = [];
         if (lista.length > 0) {
             $.each(lista, function (key, value) {

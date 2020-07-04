@@ -5,12 +5,14 @@ function jsSoloNumeros(e) {
         return true;
     return /\d/.test(String.fromCharCode(keynum));
 }
+
 function jsSoloNumerosSinPuntos(e) {
     var keynum = window.event ? window.event.keyCode : e.which;
     if (keynum == 8)
         return true;
     return /\d/.test(String.fromCharCode(keynum));
 }
+
 function separadorMiles(nStr) {
     nStr += '';
     var x = nStr.split('.');
@@ -22,9 +24,11 @@ function separadorMiles(nStr) {
     }
     return x1 + x2;
 }
+
 function jsNoEscribir(e) {
     e.preventDefault();
 }
+
 function Right(str, n) {
     if (n <= 0)
         return "";
@@ -35,6 +39,7 @@ function Right(str, n) {
         return String(str).substring(iLen, iLen - n);
     }
 }
+
 function Left(str, n) {
     if (n <= 0)
         return "";
@@ -44,9 +49,11 @@ function Left(str, n) {
         return String(str).substring(0, n);
     }
 }
+
 function limpiarTextos() {
     $('input[type=text]').val('');
 };
+
 function limpiarCheckBoxs() {
     $('input[type=checkbox]').attr('checked', false);
 };
@@ -54,18 +61,19 @@ if (!String.format) {
     String.format = function (format) {
         var args = Array.prototype.slice.call(arguments, 1);
         return format.replace(/{(\d+)}/g, function (match, number) {
-            return typeof args[number] !== 'undefined'
-                ? args[number]
-                : match
-                ;
+            return typeof args[number] !== 'undefined' ?
+                args[number] :
+                match;
         });
     };
 }
+
 function spinner() {
     var clases = ["spinner-loader", "throbber-loader", "refreshing-loader", "heartbeat-loader", "gauge-loader",
         "three-quarters-loader", "wobblebar-loader", "whirly-loader", "flower-loader", "dots-loader",
         "circles-loader", "plus-loader", "ball-loader", "hexdots-loader", "inner-circles-loader", "pong-loader",
-        "pulse-loader", "spinning-pixels-loader"];
+        "pulse-loader", "spinning-pixels-loader"
+    ];
     var clase = clases[Math.floor(Math.random() * 17) + 1];
     $.blockUI({
         css: {
@@ -81,12 +89,15 @@ function spinner() {
         message: '<div class="' + clase + '" style="z-index: 200000"> </div><br/><br/><br/><h3>Espere un momento</h3>'
     });
 }
+
 function spinnerClose() {
     $.unblockUI();
 }
+
 function CantCaracteresRestantes(CantTotal, Texto) {
     return valor = CantTotal - Texto.length;
 }
+
 function MonedaDecimales2(valor) {
     let result = '$ 0.00';
     if (valor !== undefined) {
@@ -122,6 +133,7 @@ function validarTelefono(nroIngresado1, nroIngresado2, nroIngresado3) {
     }
     return result;
 }
+
 function validarVacio(busqueda) {
     var result = true;
     if (parseInt(busqueda.length) === 0) {
@@ -129,6 +141,7 @@ function validarVacio(busqueda) {
     }
     return result;
 }
+
 function validarCantidadCaracteres(busqueda, cantidad_caracteres) {
     var result = true;
     if (busqueda.length < cantidad_caracteres) {
@@ -136,6 +149,7 @@ function validarCantidadCaracteres(busqueda, cantidad_caracteres) {
     }
     return result;
 }
+
 function LimpiarDiv(div) {
     $('#' + div + '').html('');
 }
@@ -159,6 +173,7 @@ async function BuscarTextoXCantCaracteres(Caracteres, TextoBuscado, ListaTodo, L
     }
     return ListaResultado;
 };
+
 function ValidarConContenido(campo) {
     let result = false;
     if ($('#' + campo + '').val().length > 0) {
@@ -170,37 +185,45 @@ function ValidarConContenido(campo) {
 function alertOk(mensaje) {
     Swal.fire("", mensaje.toString(), "success");
 }
+
 function alertInfo(mensaje) {
     Swal.fire("", mensaje.toString(), "info");
 }
+
 function alertAlerta(mensaje) {
     Swal.fire("", mensaje.toString(), "warning");
 }
+
 function alertError(mensaje) {
     Swal.fire("", mensaje.toString(), "error");
 }
+
 function alertConsulta(mensaje) {
     Swal.fire("", mensaje.toString(), "question");
 }
+
 function alertConfirmarEliminarLinea(codNomenclador, descripcion) {
     Swal.fire({
-        title: "Confirma que desea eliminar la línea?",
-        text: codNomenclador + " " + descripcion,
-        type: "warning",
-        showCancelButton: true,
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Si, eliminar línea!",
-        closeOnConfirm: true
-    },
+            title: "Confirma que desea eliminar la línea?",
+            text: codNomenclador + " " + descripcion,
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, eliminar línea!",
+            closeOnConfirm: true
+        },
         function (isConfirm) {
             if (isConfirm) {
                 Practica.EliminarLinea(codNomenclador);
             }
         });
 }
+
 function PopUpConfirmarSinCancelar(tipoAlerta, titulo, texto, evento, strBtnSi) {
-    let event = new CustomEvent(evento, { detail: undefined });
+    let event = new CustomEvent(evento, {
+        detail: undefined
+    });
     Swal.fire({
         title: titulo,
         html: texto,
@@ -214,8 +237,11 @@ function PopUpConfirmarSinCancelar(tipoAlerta, titulo, texto, evento, strBtnSi) 
         }
     });
 }
+
 function PopUpConfirmarConCancelar(tipoAlerta, objeto, titulo, texto, evento, strBtnSi, strBtnNo, colorBtnSi, colorBtnNo) {
-    let event = new CustomEvent(evento, { detail: objeto });
+    let event = new CustomEvent(evento, {
+        detail: objeto
+    });
     if (strBtnNo == '') {
         strBtnNo = 'Cancelar';
     }
@@ -248,6 +274,7 @@ function fechaHoy() {
     let hoy = Right("00" + fecha.getDate(), 2) + '/' + Right("00" + (fecha.getMonth() + 1), 2) + '/' + fecha.getFullYear();
     return hoy;
 }
+
 function FechaHoyLng() {
     let FechaHoy = new Date();
     let result = FechaHoy.getFullYear() + '' + ("0" + (FechaHoy.getMonth() + 1)).slice(-2) + '' + ("0" + FechaHoy.getDate()).slice(-2);
@@ -298,6 +325,7 @@ function LongToDateString(lng) {
     }
     return fecha;
 }
+
 function LongToHourString(lng) {
     let hora = '';
     let str = lng.toString();
@@ -308,6 +336,7 @@ function LongToHourString(lng) {
     }
     return hora;
 }
+
 function dateStringToLong(str) {
     let fecha = 0;
     if (str.length === 10) {
@@ -318,9 +347,11 @@ function dateStringToLong(str) {
     }
     return fecha;
 }
+
 function dateToLong(fecha) {
     return fecha.substr(6, 4) + '' + fecha.substr(3, 2) + '' + fecha.substr(0, 2);
 }
+
 function Date_LongToString(Lng) {
     let result = '';
     if (Lng > 0) {
@@ -335,6 +366,7 @@ function GrabarValorEnSesion(clave, valor) {
         this.setItem(clave, JSON.stringify(valor));
     }
 }
+
 function ObtenerValorEnSesion(clave) {
     Storage.prototype.getObject = function (clave) {
         return JSON.parse(this.getItem(clave));
@@ -347,9 +379,11 @@ function SortXNombre(a, b) {
     var bNombre = b.Nombre.toLowerCase();
     return ((aNombre < bNombre) ? -1 : ((aNombre > bNombre) ? 1 : 0));
 }
+
 function Ordenar(a, b) {
     return b < a ? 1 : -1;
 }
+
 function OrdenarLista(a, b) {
     if (a.IdOrdenEnLista < b.IdOrdenEnLista) {
         return -1;
@@ -367,6 +401,7 @@ function MarcoDefault(IdControl) {
         "border-style": "solid"
     });
 }
+
 function MarcoError(IdControl) {
     $('#' + IdControl + '').css({
         "border-color": "red",
@@ -374,6 +409,7 @@ function MarcoError(IdControl) {
         "border-style": "solid"
     });
 }
+
 function MarcoOk(IdControl) {
     $('#' + IdControl + '').css({
         "border-color": "green",
@@ -402,10 +438,10 @@ function TraerPeriodosActualMenos(cantMeses, desde) {
     }
     return result;
 }
+
 function lum_TraerProvincias() {
     var wsTransfer;
-    var data = {
-    };
+    var data = {};
     $.ajax({
         url: "../WebServices/wsLUM.asmx/TraerProvincias",
         dataType: "json",
@@ -415,9 +451,7 @@ function lum_TraerProvincias() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             wsTransfer = data.d;
-            if (wsTransfer.todoOk == true) {
-            }
-            else {
+            if (wsTransfer.todoOk == true) {} else {
                 alertAlerta(wsTransfer.mensaje);
             }
         },
@@ -429,8 +463,7 @@ function lum_TraerProvincias() {
     return wsTransfer.data;
 }
 // Para hacer
-function LUM_ArmarPOP(div) {
-}
+function LUM_ArmarPOP(div) {}
 
 function getUrlParams(urlOrQueryString) {
     if ((i = urlOrQueryString.indexOf('?')) >= 0) {
@@ -464,7 +497,9 @@ async function ArmarPop(DivContenido, ancho, Titulo) {
     control += '    </div>';
     control += '</div>';
     $("body").append(control);
-    $('#Modal-PopUp').modal({ show: true });
+    $('#Modal-PopUp').modal({
+        show: true
+    });
 }
 
 /**
@@ -476,7 +511,9 @@ async function ArmarPop(DivContenido, ancho, Titulo) {
 function _mapUrlParams(queryString) {
     return queryString
         .split('&')
-        .map(function (keyValueString) { return keyValueString.split('=') })
+        .map(function (keyValueString) {
+            return keyValueString.split('=')
+        })
         .reduce(function (urlParams, [key, value]) {
             if (Number.isInteger(parseInt(value)) && parseInt(value) == value) {
                 urlParams[key] = parseInt(value);

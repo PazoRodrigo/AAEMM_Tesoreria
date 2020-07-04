@@ -66,6 +66,18 @@ $('body').on('click', '#BtnBuscador', async function (e) {
         alertAlerta(e);
     }
 });
+$('body').on('click', '#BtnNuevo', async function (e) {
+    try {
+        $("#Seleccionado").css("display", "block");
+        $("#divCantRegistrosImprimir").css('display', 'none');
+        $("#GrillaCabecera").html('');
+        _ObjEmpresa = new Empresa;
+        LimpiarEmpresa();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
 
 async function ArmarBusqueda() {
     let CUIT = $("#BuscaCUIT").val();
@@ -79,9 +91,9 @@ async function ArmarBusqueda() {
     if ($("#switchIncluirBaja").prop("checked") == true) {
         ChkBaja = 1;
     }
-    if ($("#switchIncluirCUIT0").prop("checked") == true) {
-        ChkCUIT0 = 1;
-    }
+    // if ($("#switchIncluirCUIT0").prop("checked") == true) {
+    //     ChkCUIT0 = 1;
+    // }
     let Buscador = new StrBusquedaEmpresa;
     //this.IdCentroCosto = 0;
     Buscador.IncluirAlta = ChkAlta;
@@ -154,39 +166,7 @@ async function ArmarComboConvenio() {
     await Convenio.ArmarCombo(lista, 'CboConvenio', 'SelectorConvenio', 'EventoSeleccionConvenio', 'Convenio', 'CboConvenio');
 }
 
-// async function LlenarEmpresa() {
-//     console.log(_ObjEmpresa);
-//     $("#TxtRazonSocial").val(_ObjEmpresa.RazonSocial);
-//     $("#TxtCUIT").val(_ObjEmpresa.CUIT);
-//     $("#TxtEmail").val(_ObjEmpresa.CorreoElectronico);
-//     $("#TxtDireccion").val(_ObjEmpresa.ObjDomicilio.Direccion);
-//     $("#TxtCP").val(_ObjEmpresa.ObjDomicilio.CodigoPostal);
-//     $("#TxtLocalidad").val(_ObjEmpresa.ObjDomicilio.Localidad.Descripcion);
-// }
-
 // function Nuevo_Empresa() {
 //     Limpiar_Empresa();
 //     _ObjEmpresa = new Empresa;
 // }
-
-
-// document.addEventListener('EventoSeleccionarEmpresa', async function(e) {
-//     try {
-//         let objSeleccionado = e.detail;
-//         if (objSeleccionado.CUIT > 0) {
-//             _ObjEmpresa = await Empresa.TraerUnoXCUIT(objSeleccionado.CUIT);
-//         } else {
-//             _ObjEmpresa = await Empresa.TraerUno(objSeleccionado.IdEntidad);
-//         }
-//         await LlenarEmpresa();
-//     } catch (e) {
-//         alertAlerta(e);
-//     }
-// }, false);
-// $('body').on('click', '#LinkBtnArmarUC', async function(e) {
-//     try {
-//         Inicio();
-//     } catch (e) {
-//         alertAlerta(e);
-//     }
-// });

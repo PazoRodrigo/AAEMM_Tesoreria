@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Tipos de Domicilio" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ABM_TipoDomicilio.aspx.vb" Inherits="Forms_Frm_ABM_TipoDomicilio" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_ABM_TipoDomicilio.js?version20200630_1")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_ABM_TipoDomicilio.js?version20200702_01")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';

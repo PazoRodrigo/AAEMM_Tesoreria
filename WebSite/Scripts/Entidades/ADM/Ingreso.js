@@ -22,7 +22,7 @@ class Ingreso extends DBE {
         this.CodigoEntidad = 0;
         this.CUIT = 0;
         this.Periodo = 0;
-        this.NroCheche = 0;
+        this.NroCheque = 0;
         this.Importe = 0;
         this.IdOrigen = 0;
         this.NroRecibo = 0;
@@ -52,13 +52,13 @@ class Ingreso extends DBE {
         return Result;
     }
     async StrCodigoEntidad(cantCaracteres) {
-            let Result = '';
-            if (this.CodigoEntidad > 0) {
-                Result = Right('00000000000' + this.CodigoEntidad, cantCaracteres);
-            }
-            return Result;
+        let Result = '';
+        if (this.CodigoEntidad > 0) {
+            Result = Right('00000000000' + this.CodigoEntidad, cantCaracteres);
         }
-        // Lazy
+        return Result;
+    }
+    // Lazy
     async ObjCentroCosto() {
         try {
             if (this._ObjCentroCosto === undefined) {
@@ -102,33 +102,111 @@ class Ingreso extends DBE {
         return result;
     }
     async Estado() {
-            let result = '';
-            switch (this.IdEstado) {
-                case 'A':
-                    result = 'Acreditado';
-                    break;
-                case 'L':
-                    result = 'Pendiente Acreditado';
-                    break;
-                case 'P':
-                    result = 'Pendiente';
-                    break;
-                case 'R':
-                    result = 'Rechazado';
-                    break;
-                case 'T':
-                    result = 'CUIT No Encontrado';
-                    break;
-                default:
-            }
-            return result;
+        let result = '';
+        switch (this.IdEstado) {
+            case 'A':
+                result = 'Acreditado';
+                break;
+            case 'L':
+                result = 'Pendiente Acreditado';
+                break;
+            case 'P':
+                result = 'Pendiente';
+                break;
+            case 'R':
+                result = 'Rechazado';
+                break;
+            case 'T':
+                result = 'CUIT No Encontrado';
+                break;
+            default:
         }
-        // Traer
+        return result;
+    }
+
+    // ABM
+    async Modifica() {
+        await this.ValidarCamposIngreso();
+        try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioModifica = ObjU.IdEntidad;
+            this.IdEstado = 'A';
+            let data = {
+                'entidad': this
+            };
+            let id = await ejecutarAsync(urlWsIngreso + "/Modifica", data);
+            if (id !== undefined)
+                this.IdEntidad = id;
+            let buscados = $.grep(_ListaIngresos, function (entidad, index) {
+                return entidad.IdEntidad !== id;
+            });
+            _ListaIngresos = buscados;
+            this.IdEstado = 0;
+            _ListaIngresos.push(this);
+            return;
+        } catch (e) {
+            throw e;
+        }
+    }
+    async ValidarCamposIngreso() {
+        // Validaciones
+        let sError = '';
+        if (this.CUIT.length == 0) {
+            sError += 'Debe ingresar el CUIT  <br >';
+        } else {
+            if (this.CUIT.length != 11) {
+                sError += 'El CUIT debe tener 11 dígitos  <br >';
+            } else {
+                if (this.CodigoEntidad == 0) {
+                    sError += 'Debe ingresar el CUIT de una entidad correcta  <br >';
+                }
+            }
+        }
+        if (this.Periodo.length == 0) {
+            sError += 'Debe ingresar el Período "MM/aaaa"  <br >';
+        } else {
+            if (this.Periodo.length != 7) {
+                sError += 'Debe ingresar el Período correctamente "MM/aaaa"  <br >';
+            } else {
+                if (this.Periodo.slice(2, 3) != '/') {
+                    sError += 'Debe ingresar el Período correctamente "MM/aaaa"  <br >';
+                } else {
+                    let meses = Left(this.Periodo, 2);
+                    if (meses < 1 || meses > 11) {
+                        sError += 'Verifique el Mes del Período  <br >';
+                    }
+                    let años = Right(this.Periodo, 4);
+                    let fechaActual = FechaHoyLng();
+                    if (años > Left(fechaActual, 4)) {
+                        sError += 'Verifique el Año del Período <br >';
+                    }
+                    let peridoIngresado = años.toString() + meses.toString();
+                    let peridoActual = Left(fechaActual, 6);
+                    if (parseInt(peridoIngresado) > parseInt(peridoActual)) {
+                        sError += 'Verifique el Período <br >';
+                    }
+                }
+            }
+        }
+
+        if (sError.length > 0) {
+            throw sError;
+        }
+        // Asignaciones
+        this.CUIT = parseInt(this.CUIT);
+        this.Periodo = parseInt(Right(this.Periodo, 4).toString() + Left(this.Periodo, 2).toString());
+        this.Importe = parseFloat(this.Importe.replace(/,/g, ''));
+        if (this.NroCheque == '') {
+            this.NroCheque = 0
+        }
+
+    }
+    // Traer
     static async TraerTodos() {
         let lista = await ejecutarAsync(urlWsIngreso + "/TraerTodos");
         let result = [];
         if (lista.length > 0) {
-            $.each(lista, function(key, value) {
+            $.each(lista, function (key, value) {
                 result.push(LlenarEntidadIngreso(value));
             });
         }
@@ -136,20 +214,20 @@ class Ingreso extends DBE {
         return result;
     }
     static async TraerTodosXBusqueda(Busqueda) {
-            let data = {
-                'Busqueda': Busqueda
-            };
-            let lista = await ejecutarAsync(urlWsIngreso + "/TraerTodosXBusqueda", data);
-            let result = [];
-            if (lista.length > 0) {
-                $.each(lista, function(key, value) {
-                    result.push(LlenarEntidadIngreso(value));
-                });
-            }
-            _ListaIngresos = result;
-            return result;
+        let data = {
+            'Busqueda': Busqueda
+        };
+        let lista = await ejecutarAsync(urlWsIngreso + "/TraerTodosXBusqueda", data);
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadIngreso(value));
+            });
         }
-        // Herramientas
+        _ListaIngresos = result;
+        return result;
+    }
+    // Herramientas
     static async ArmarGrillaCabecera(div) {
         $("#" + div + "").html('');
         let str = "";
@@ -182,7 +260,7 @@ class Ingreso extends DBE {
                 str += '        <tr>';
                 str += '            <td style="width:45px;"><a hfre="#" id="' + item.IdEntidad + '"  data-Evento="' + evento + '" onclick="SeleccionIngreso(this);"> <img src="../../Imagenes/lupa.png" alt=""></a></td>';
                 str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrFechaAcreditacion() + '</small></td>';
-                str += '            <td class="text-center" style="width: 50px;"><small class="text-light">' + await item.StrCodigoEntidad(4) + '</small></td>';
+                str += '            <td class="text-center" style="width: 50px;"><small class="text-light">' + await item.StrCodigoEntidad(6) + '</small></td>';
                 str += '            <td class="text-left" style="width: 220px;"><small class="text-light">' + Left(item.RazonSocial, 25) + '</small></td>';
                 str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrPeriodo() + '</small></td>';
                 str += '            <td class="text-right pr-1" style="width: 100px;"><small class="text-light">' + separadorMiles(item.Importe.toFixed(2)) + '</small></td>';
@@ -219,7 +297,7 @@ function LlenarEntidadIngreso(entidad) {
     Res.CUIT = entidad.CUIT;
     Res.RazonSocial = entidad.RazonSocial;
     Res.Periodo = entidad.Periodo;
-    Res.NroCheche = entidad.NroCheche;
+    Res.NroCheque = entidad.NroCheque;
     Res.Importe = entidad.Importe;
     Res.IdOrigen = entidad.IdOrigen;
     Res.NroRecibo = entidad.NroRecibo;
@@ -233,11 +311,13 @@ async function SeleccionIngreso(MiElemento) {
     try {
         let elemento = document.getElementById(MiElemento.id);
         let evento = elemento.getAttribute('data-Evento');
-        let buscado = $.grep(_ListaIngresos, function(entidad, index) {
+        let buscado = $.grep(_ListaIngresos, function (entidad, index) {
             return entidad.IdEntidad == MiElemento.id;
         });
         if (buscado[0] != undefined) {
-            let event = new CustomEvent(evento, { detail: buscado[0] });
+            let event = new CustomEvent(evento, {
+                detail: buscado[0]
+            });
             document.dispatchEvent(event);
         }
     } catch (e) {

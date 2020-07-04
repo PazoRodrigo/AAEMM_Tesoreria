@@ -19,7 +19,7 @@ Namespace Entidad
 
 #Region " Públicos Estáticos"
         Public Shared Function SubirArchivoTXT(idUsuario As Integer, nombreArchivo As String, archivo As System.IO.StreamReader) As String
-            'ValidarNombreArchivo(nombreArchivo)
+            ValidarNombreArchivo(nombreArchivo)
             Dim lista As New List(Of LineaArchivo)
             Dim objLinea As LineaArchivo
             Select Case nombreArchivo.Substring(0, 2)

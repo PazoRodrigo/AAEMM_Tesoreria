@@ -34,14 +34,15 @@ Namespace Entidad
 
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
-        Public Property Codigo() As Long = 0
+        Public Property Codigo() As Integer = 0
         Public Property RazonSocial() As String = ""
+        Public Property Carnet() As String = ""
         Public Property CUIT() As Long = 0
-        Public Property Establecimiento() As Integer = 0
+        Public Property IdCentroCosto() As Integer = 0
         Public Property CorreoElectronico() As String = ""
-        Public Property IdEstado() As Enumeradores.EstadoEmpresa = Nothing
         Public Property FechaReactivacion() As Date? = Nothing
         Public Property ObjDomicilio() As Domicilio = Nothing
+        Public Property IdEstado() As Enumeradores.EstadoEmpresa = Nothing
 #End Region
 #Region " Lazy Load "
         Public ReadOnly Property LngFechaReactivacion() As Long
@@ -131,7 +132,7 @@ Namespace Entidad
             Return Todos()
         End Function
         Public Shared Function TraerTodosXBusqueda(busqueda As StrBusquedaEmpresa) As List(Of Empresa)
-            Dim sqlQuery As String = "SELECT * FROM  OSEMM.dbo.Afib002"
+            Dim sqlQuery As String = "SELECT * FROM ADM.Empresa"
             Dim existeParametro As Boolean = False
             If busqueda.CUIT > 0 Then
                 If Not existeParametro Then
@@ -140,7 +141,7 @@ Namespace Entidad
                 Else
                     sqlQuery += " AND "
                 End If
-                sqlQuery += " CAST(REPLACE(CUIT,'-','') as Bigint)  = '" + busqueda.CUIT.ToString + "'"
+                sqlQuery += " CUIT = " + busqueda.CUIT.ToString + ""
             End If
             If busqueda.RazonSocial.Length > 0 Then
                 If Not existeParametro Then
@@ -149,7 +150,7 @@ Namespace Entidad
                 Else
                     sqlQuery += " AND "
                 End If
-                sqlQuery += "denomina LIKE '%" + busqueda.RazonSocial + "%'"
+                sqlQuery += "RazonSocial LIKE '%" + busqueda.RazonSocial + "%'"
             End If
             'If busqueda.IdCentroCosto > 0 Then
             '    If Not existeParametro Then
@@ -168,80 +169,18 @@ Namespace Entidad
                 sqlQuery += " AND "
             End If
             If busqueda.IncluirAlta = 1 AndAlso busqueda.IncluirBaja = 0 Then
-                sqlQuery += " Fec_Baja IS NULL"
+                sqlQuery += " FechaBaja IS NULL"
             ElseIf busqueda.IncluirAlta = 0 AndAlso busqueda.IncluirBaja = 1 Then
-                sqlQuery += " Fec_Baja IS NOT NULL"
+                sqlQuery += " FechaBaja IS NOT NULL"
             Else
-                sqlQuery += " Fec_Baja IS NULL"
+                sqlQuery += " FechaBaja IS NULL"
             End If
-            ' Fecha Baja
-            If busqueda.Incluir0 = 1 Then
-                sqlQuery += " AND CAST(REPLACE(CUIT,'-','') as Bigint) = 0"
-            Else
-                sqlQuery += " AND CAST(REPLACE(CUIT,'-','') as Bigint) > 0"
-            End If
-            sqlQuery += " AND DEP = '00' "
-
             Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXBusqueda(sqlQuery)
             Return result
         End Function
         Public Shared Function TraerUnaXCUIT(CUIT As Long) As Empresa
             Return DAL_Empresa.TraerUnoXCUIT(CUIT)
         End Function
-
-        'Public Shared Function TraerUnoXCUIT(CUIT As Long) As Empresa
-        '    Return DAL_Empresa.TraerUnoXCUIT(CUIT)
-        'End Function
-
-        'Public Shared Function TraerTodosXCUIT(CUIT As Long) As List(Of Empresa)
-        '    Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXCUIT(CUIT)
-        '    If result.Count = 0 Then
-        '        Throw New Exception("No existen Empresas para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
-        'Public Shared Function TraerTodosXRazonSocial(RazonSocial As String) As List(Of Empresa)
-        '    Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXRazonSocial(RazonSocial.Trim)
-        '    If result.Count = 0 Then
-        '        Throw New Exception("No existen Empresas para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
-        'Public Shared Function TraerTodosXCentroCosto(IdCentroCosto As Integer) As List(Of Empresa)
-        '    Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXCentroCosto(IdCentroCosto)
-        '    If result.Count = 0 Then
-        '        Throw New Exception("No existen Empresas para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
-        'Public Shared Function TraerTodosXBusqueda(razonSocial As String, cUIT As Long, idCentroCosto As Integer) As List(Of Empresa)
-        '    Dim result As New List(Of Empresa)
-        '    Dim buscador As Integer = 0
-        '    If razonSocial <> "" Then
-        '        buscador += 1
-        '    ElseIf cUIT > 0 Then
-        '        buscador += 2
-        '    ElseIf idCentroCosto > 0 Then
-        '        buscador += 4
-        '    End If
-        '    Select Case buscador
-        '        Case 1
-        '            result = TraerTodosXRazonSocial(razonSocial)
-        '        Case 2
-        '            result = TraerTodosXCUIT(cUIT)
-        '        Case 4
-        '            result = TraerTodosXCentroCosto(idCentroCosto)
-        '        Case Else
-
-        '    End Select
-        '    If result.Count = 0 Then
-        '        Throw New Exception("No existen Empresas para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
-        '' Nuevos
-
-
 #End Region
 #Region " Métodos Públicos"
         ' ABM
@@ -386,13 +325,6 @@ Namespace DataAccessLibrary
         Const storeTraerUnoXCUIT As String = "ADM.p_Empresa_TraerUnoXCUIT"
         Const storeTraerTodos As String = "ADM.p_Empresa_TraerTodos"
         Const storeTraerTodosXBusqueda As String = "ADM.p_Empresa_TraerXBusquedaLibre"
-
-
-
-
-        'Const storeTraerTodosXCUIT As String = "ADM.p_Empresa_TraerTodosXCUIT"
-        'Const storeTraerTodosXRazonSocial As String = "ADM.p_Empresa_TraerTodosXRazonSocial"
-        'Const storeTraerTodosXCentroCosto As String = "ADM.p_Empresa_TraerTodosXCentroCosto"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
@@ -401,12 +333,18 @@ Namespace DataAccessLibrary
             Dim pa As New parametrosArray
             pa.add("@idUsuarioAlta", entidad.IdUsuarioAlta)
             pa.add("@RazonSocial", entidad.RazonSocial.ToString.ToUpper.Trim)
+            pa.add("@Carnet", entidad.Carnet.ToString.ToUpper.Trim)
             pa.add("@CUIT", entidad.CUIT)
+            pa.add("@IdCentroCosto", entidad.IdCentroCosto)
             pa.add("@CorreoElectronico", entidad.CorreoElectronico.ToString.ToUpper.Trim)
+            pa.add("@Direccion", entidad.ObjDomicilio.Direccion.ToString.ToUpper.Trim)
+            pa.add("@CodigoPostal", entidad.ObjDomicilio.CodigoPostal)
+            pa.add("@Localidad", entidad.ObjDomicilio.Localidad.ToString.ToUpper.Trim)
+            pa.add("@IdLocalidad", entidad.ObjDomicilio.IdLocalidad)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
-                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
+                        entidad.Codigo = CInt(dt.Rows(0)(0))
                     End If
                 End If
             End Using
@@ -431,8 +369,13 @@ Namespace DataAccessLibrary
             pa.add("@idUsuarioModifica", entidad.IdUsuarioModifica)
             pa.add("@id", entidad.IdEntidad)
             pa.add("@RazonSocial", entidad.RazonSocial.ToString.ToUpper.Trim)
-            pa.add("@CUIT", entidad.CUIT)
+            pa.add("@Carnet", entidad.Carnet.ToString.ToUpper.Trim)
+            pa.add("@IdCentroCosto", entidad.IdCentroCosto)
             pa.add("@CorreoElectronico", entidad.CorreoElectronico.ToString.ToUpper.Trim)
+            pa.add("@Direccion", entidad.ObjDomicilio.Direccion.ToString.ToUpper.Trim)
+            pa.add("@CodigoPostal", entidad.ObjDomicilio.CodigoPostal)
+            pa.add("@Localidad", entidad.ObjDomicilio.Localidad.ToString.ToUpper.Trim)
+            pa.add("@IdLocalidad", entidad.ObjDomicilio.IdLocalidad)
             pa.add("@FechaReactivacion", LUM.Convertidor.DateToDB(entidad.FechaReactivacion))
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
@@ -591,24 +534,19 @@ Namespace DataAccessLibrary
                     entidad.IdEntidad = CInt(dr.Item("id"))
                 End If
             End If
-            If dr.Table.Columns.Contains("cod_ent") Then
-                If dr.Item("cod_ent") IsNot DBNull.Value Then
-                    entidad.Codigo = CLng(dr.Item("cod_ent"))
-                End If
-            ElseIf dr.Table.Columns.Contains("cod_empre") Then
-                If dr.Item("cod_empre") IsNot DBNull.Value Then
-                    If IsNumeric(dr.Item("cod_empre")) Then
-                        entidad.Codigo = CLng(dr.Item("cod_empre"))
-                    End If
+            If dr.Table.Columns.Contains("Codigo") Then
+                If dr.Item("Codigo") IsNot DBNull.Value Then
+                    entidad.Codigo = CInt(dr.Item("Codigo"))
                 End If
             End If
             If dr.Table.Columns.Contains("RazonSocial") Then
                 If dr.Item("RazonSocial") IsNot DBNull.Value Then
                     entidad.RazonSocial = dr.Item("RazonSocial").ToString.ToUpper.Trim
                 End If
-            ElseIf dr.Table.Columns.Contains("denomina") Then
-                If dr.Item("denomina") IsNot DBNull.Value Then
-                    entidad.RazonSocial = dr.Item("denomina").ToString.Trim
+            End If
+            If dr.Table.Columns.Contains("Carnet") Then
+                If dr.Item("Carnet") IsNot DBNull.Value Then
+                    entidad.Carnet = dr.Item("Carnet").ToString.ToUpper.Trim
                 End If
             End If
             If dr.Table.Columns.Contains("CUIT") Then

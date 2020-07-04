@@ -54,6 +54,9 @@ function LimpiarIngreso() {
     $("#EntidadOrigen").val('');
     $("#EntidadNroCheque").val('');
     $("#EntidadEstado").val('');
+    $("#EntidadCodigoEntidad").prop('disabled', true);
+    $("#EntidadRazonSocial").prop('disabled', true);
+    $("#EntidadImporte").prop('disabled', true);
 }
 
 $('body').on('click', '#BtnBuscador', async function (e) {
@@ -142,19 +145,50 @@ async function LlenarIngreso() {
     if (_ObjIngreso == undefined) {
         throw 'No existe Ingreso seleccionado';
     }
-    console.log(_ObjIngreso);
-    $("#EntidadCUIT").val(_ObjIngreso.CUIT);
-    $("#EntidadCodigoEntidad").val(await _ObjIngreso.StrCodigoEntidad(6));
-    $("#EntidadRazonSocial").val(_ObjIngreso.RazonSocial);
+    $("#EntidadCUIT").val('');
+    $("#EntidadCodigoEntidad").val('');
+    $("#EntidadRazonSocial").val('');
+    if (_ObjIngreso.CUIT > 0) {
+        $("#EntidadCUIT").val(_ObjIngreso.CUIT);
+        $("#EntidadCodigoEntidad").val(await _ObjIngreso.StrCodigoEntidad(6));
+        $("#EntidadRazonSocial").val(_ObjIngreso.RazonSocial);
+    }
     $("#EntidadAcred").val(await _ObjIngreso.StrFechaAcreditacion());
     $("#EntidadPeriodo").val(await _ObjIngreso.StrPeriodo());
-    $("#EntidadImporte").val(_ObjIngreso.Importe);
+    $("#EntidadImporte").val(separadorMiles(_ObjIngreso.Importe.toFixed(2)));
     $("#EntidadOrigen").val(await _ObjIngreso.OrigenLargo());
-    $("#EntidadNroCheque").val(_ObjIngreso.NroCheque);
+    if (_ObjIngreso.NroCheque > 0) {
+        $("#EntidadNroCheque").val(_ObjIngreso.NroCheque);
+    }
     $("#EntidadEstado").val(await _ObjIngreso.Estado());
-
 }
+$('body').on('keyup', '#EntidadCUIT', async function (e) {
+    let Texto = $("#EntidadCUIT").val();
+    _ObjIngreso.CodigoEntidad = 0;
+    if (Texto.length == 11) {
+        let TempEmpresa = await Empresa.TraerUnaXCUIT(Texto);
+        $("#EntidadCodigoEntidad").val(await (TempEmpresa.StrCodigo(6)));
+        _ObjIngreso.CodigoEntidad = TempEmpresa.CodigoEntidad;
+        $("#EntidadRazonSocial").val(TempEmpresa.RazonSocial);
+    }
+});
 
+$('body').on('click', '#BtnModificar', async function (e) {
+    try {
+        spinner();
+        _ObjIngreso.CUIT = $("#EntidadCUIT").val();
+        _ObjIngreso.Periodo = $("#EntidadPeriodo").val();
+        _ObjIngreso.NroCheque = $("#EntidadNroCheque").val();
+        _ObjIngreso.Importe = $("#EntidadImporte").val();
+        await _ObjIngreso.Modifica();
+        $("#Grilla").css("display", "none");
+        alertOk('El Ingreso ha sido modificado correctamente.');
+        spinnerClose();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
 document.addEventListener('EventoSeleccionarIngreso', async function (e) {
     try {
         let objSeleccionado = e.detail;

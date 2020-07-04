@@ -52,10 +52,8 @@ Partial Class Forms_Frm_Indicadores
             End Using
             LblOK.Text = Resultado
         Catch et As TypeInitializationException
-            'LUM.LUM.MensajeSweet("Atención !!!", et.InnerException.ToString, "warning")
             LblError.Text = et.Message.ToString
         Catch ex As Exception
-            'LUM.LUM.MensajeSweet("Atención !!!", ex.Message.ToString, "warning")
             LblError.Text = ex.Message.ToString
         End Try
     End Sub

@@ -22,7 +22,7 @@ Namespace Entidad
                 Dim ListaResult As New List(Of LineaArchivo)
                 Dim entidad As LineaArchivoMC
                 Dim varTempo As String = ""
-                Dim primeraLinea As Integer = 10
+                Dim primeraLinea As Integer = 9
                 Dim nroLinea As Integer = 0
                 Dim linea As String
                 While Not archivo.EndOfStream
