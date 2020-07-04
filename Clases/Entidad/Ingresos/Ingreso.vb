@@ -501,9 +501,6 @@ End Namespace ' Entidad
 Namespace DTO
     Public Class DTO_Ingreso
         Inherits DTO_DBE
-
-
-
 #Region " Atributos / Propiedades"
         Public Property IdEntidad() As Integer = 0
         Public Property IdEstado() As Char = CChar("")
@@ -536,6 +533,7 @@ Namespace DataAccessLibrary
         Const storeTraerTodosAcreditados As String = "INGRESO.p_Ingreso_TraerTodosAcreditados"
         Const storeTraerTodosNOAcreditados As String = "INGRESO.p_Ingreso_TraerTodosNOAcreditados"
         Const storeTraerTodosXBusqueda As String = "INGRESO.p_Ingreso_TraerXBusquedaLibre"
+        Const storeTraerTodosXNombreArchivo As String = "INGRESO.p_Ingreso_TraerTodosXNombreArchivo"
 
 
 
@@ -546,11 +544,6 @@ Namespace DataAccessLibrary
 
         Const storeBaja As String = "ADM.p_Ingreso_Baja"
         Const storeTraerUnoXId As String = "ADM.p_Ingreso_TraerUnoXId"
-        'Const storeTraerTodosXCentroCosto As String = "ADM.p_Ingreso_TraerTodosXCentroCosto"
-        'Const storeTraerTodosXCUIT As String = "ADM.p_Ingreso_TraerTodosXCUIT"
-        'Const storeTraerTodosXFechasXPago As String = "ADM.p_Ingreso_TraerTodosXFechasXPago"
-        'Const storeTraerTodosXPeriodo As String = "ADM.p_Ingreso_TraerTodosXPeriodo"
-        Const storeTraerTodosXNombreArchivo As String = "INGRESO.p_Ingreso_TraerTodosXNombreArchivo"
         Const storeTraerUltimos30XOrigen As String = "INGRESO.p_Ingreso_storeTraerUltimos30XOrigen"
 #End Region
 #Region " Métodos Públicos "
@@ -669,34 +662,6 @@ Namespace DataAccessLibrary
             End Using
             Return result
         End Function
-        'Public Shared Function TraerTodosXCentroCosto(ByVal IdCentroCosto As Integer) As List(Of Ingreso)
-        '    Dim store As String = storeTraerTodosXCentroCosto
-        '    Dim listaResult As New List(Of Ingreso)
-        '    Dim pa As New parametrosArray
-        '    pa.add("@IdCentroCosto", IdCentroCosto)
-        '    Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
-        '        If dt.Rows.Count > 0 Then
-        '            For Each dr As DataRow In dt.Rows
-        '                listaResult.Add(LlenarEntidad(dr))
-        '            Next
-        '        End If
-        '    End Using
-        '    Return listaResult
-        'End Function
-        'Public Shared Function TraerTodosXCUIT(ByVal CUIT As Long) As List(Of Ingreso)
-        '    Dim store As String = storeTraerTodosXCUIT
-        '    Dim listaResult As New List(Of Ingreso)
-        '    Dim pa As New parametrosArray
-        '    pa.add("@CUIT", CUIT)
-        '    Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
-        '        If dt.Rows.Count > 0 Then
-        '            For Each dr As DataRow In dt.Rows
-        '                listaResult.Add(LlenarEntidad(dr))
-        '            Next
-        '        End If
-        '    End Using
-        '    Return listaResult
-        'End Function
         Public Shared Function TraerTodosXFechasXAcreditacion(ByVal Desde As Date, ByVal Hasta As Date, IdOrigen As Integer) As List(Of Ingreso)
             Dim store As String = storeTraerTodosXFechasXAcreditacion
             Dim listaResult As New List(Of Ingreso)
@@ -704,7 +669,7 @@ Namespace DataAccessLibrary
             pa.add("@Desde", Desde)
             pa.add("@Hasta", Hasta)
             pa.add("@IdOrigen", IdOrigen)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -713,42 +678,12 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
-        'Public Shared Function TraerTodosXFechasXPago(ByVal Desde As Date, ByVal Hasta As Date) As List(Of Ingreso)
-        '    Dim store As String = storeTraerTodosXFechasXPago
-        '    Dim listaResult As New List(Of Ingreso)
-        '    Dim pa As New parametrosArray
-        '    pa.add("@Desde", Desde)
-        '    pa.add("@Hasta", Hasta)
-        '    Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
-        '        If dt.Rows.Count > 0 Then
-        '            For Each dr As DataRow In dt.Rows
-        '                listaResult.Add(LlenarEntidad(dr))
-        '            Next
-        '        End If
-        '    End Using
-        '    Return listaResult
-        'End Function
-        'Public Shared Function TraerTodosXPeriodo(ByVal Periodo As Integer) As List(Of Ingreso)
-        '    Dim store As String = storeTraerTodosXPeriodo
-        '    Dim listaResult As New List(Of Ingreso)
-        '    Dim pa As New parametrosArray
-        '    pa.add("@Periodo", Periodo)
-        '    Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
-        '        If dt.Rows.Count > 0 Then
-        '            For Each dr As DataRow In dt.Rows
-        '                listaResult.Add(LlenarEntidad(dr))
-        '            Next
-        '        End If
-        '    End Using
-        '    Return listaResult
-        'End Function
-        ' Traer Base Nueva
         Friend Shared Function TraerUltimos30XOrigen(IdOrigen As Enumeradores.TipoArchivo) As List(Of Ingreso)
             Dim store As String = storeTraerUltimos30XOrigen
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray
             pa.add("@IdOrigen", IdOrigen)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -978,7 +913,6 @@ Namespace DataAccessLibrary
             'End If
             Return entidad
         End Function
-
 #End Region
     End Class ' DAL_Ingreso
 End Namespace ' DataAccessLibrary

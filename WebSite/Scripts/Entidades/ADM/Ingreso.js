@@ -197,9 +197,8 @@ class Ingreso extends DBE {
         this.Periodo = parseInt(Right(this.Periodo, 4).toString() + Left(this.Periodo, 2).toString());
         this.Importe = parseFloat(this.Importe.replace(/,/g, ''));
         if (this.NroCheque == '') {
-            this.NroCheque = 0
+            this.NroCheque = 0;
         }
-
     }
     // Traer
     static async TraerTodos() {
@@ -278,6 +277,36 @@ class Ingreso extends DBE {
         str += '    </tbody>';
         str += '</table >';
         str += '</div >';
+        return $("#" + div + "").html(str);
+    }
+    static async ArmarGrillaIngresoSeparado(div, lista, estilo, evento, IngresoOriginal) {
+        $("#" + div + "").html('');
+        let str = "";
+        str += '<div style="' + estilo + '">';
+        str += '<table class="table table-sm table-striped table-hover">';
+        str += '    <thead>';
+        str += '        <tr>';
+        str += '            <th scope="col">Período</th>';
+        str += '            <th scope="col">Importe</th>';
+        str += '            <th scope="col"></th>';
+        str += '        </tr>';
+        str += '    </thead>';
+        str += '    <tbody>';
+        if (lista.length > 0) {
+            for (let item of lista) {
+                str += '        <tr>';
+                str += '            <td class="col-3 text-center" ><input type="text" id="EntidadPeriodo" class="form-control text-center" placeholder = "MM/aaaa" /></td>';
+                str += '            <td class="col-3 text-right pr-1" ><input type="text" id="EntidadImporte" class="form-control text-center" placeholder = "Importe" onkeypress="return jsSoloNumeros(event)"/></td>';
+                str += '            <td class="col-1 text-center"><a hfre="#" id="' + item.IdEntidad + '" onclick="AgregarLinea(this);"><img src="../../Imagenes/plusVerde.png" alt="" /></a></td>';
+                str += '        </tr>';
+            }
+        }
+        str += '    </tbody>';
+        str += '</table >';
+        str += '</div >';
+        if (lista.length > 0) {
+            str += '<div class="row justify-content-center"><div class="col-10"><div class="btn btn-block btn-success">Guardar Separación de Ingreso</div></div></div>';
+        }
         return $("#" + div + "").html(str);
     }
 }

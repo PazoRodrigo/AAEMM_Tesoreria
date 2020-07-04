@@ -4,7 +4,7 @@ var _ObjIngreso;
 $(document).ready(function () {
     try {
         $("#SpanNombreFormulario").text('Ingresos');
-        $("#divCantRegistrosImprimir").css('display', 'none');
+        $("#divCantRegistrosBusqueda").css('display', 'none');
         Inicio();
     } catch (e) {
         alertAlerta(e);
@@ -60,26 +60,28 @@ function LimpiarIngreso() {
 }
 
 $('body').on('click', '#BtnBuscador', async function (e) {
+    let Result = 0;
     try {
-        $("#Seleccionado").css("display", "none");
-        $("#divCantRegistrosImprimir").css('display', 'none');
+        $("#ContenedorSeleccionado").css("display", "none");
+        $("#divCantRegistrosBusqueda").css('display', 'none');
         spinner();
         LimpiarGrilla();
         let Busqueda = await ArmarBusqueda();
         _ListaIngresos = await Ingreso.TraerTodosXBusqueda(Busqueda);
         await LlenarGrilla();
         if (_ListaIngresos.length > 0) {
-            let TextoCantidadRegistros = "Imprimir " + _ListaIngresos.length + " registro";
-            if (_ListaIngresos.length > 1) {
-                TextoCantidadRegistros += "s";
+            for (let item of _ListaIngresos) {
+                Result += item.Importe;
             }
-            $("#LblCantidadRegistrosGrilla").text(TextoCantidadRegistros);
-            $("#divCantRegistrosImprimir").css('display', 'block');
+            $("#LblCantidadRegistrosGrilla").text(_ListaIngresos.length);
+            $("#divCantRegistrosBusqueda").css('display', 'block');
         }
         spinnerClose();
     } catch (e) {
         spinnerClose();
         alertAlerta(e);
+    } finally {
+        $("#LblValorSeleccion").text(separadorMiles(Result.toFixed(2)));
     }
 });
 
@@ -133,10 +135,10 @@ async function LlenarGrilla() {
     $("#Grilla").css("display", "none");
     if (_ListaIngresos.length > 0) {
         await Ingreso.ArmarGrillaCabecera('GrillaCabecera');
-        await Ingreso.ArmarGrillaDetalle('GrillaDetalle', _ListaIngresos, 'EventoSeleccionarIngreso', 'max-height: 350px; overflow-y: scroll;');
+        await Ingreso.ArmarGrillaDetalle('GrillaDetalle', _ListaIngresos, 'EventoSeleccionarIngreso', 'height: 350px; overflow-y: scroll;');
         $("#Grilla").css("display", "block");
     } else {
-        throw ("No existen Ingresos para mostrar con esos parámetros");
+        throw "No existen Ingresos para mostrar con esos parámetros";
     }
 }
 
@@ -167,7 +169,7 @@ $('body').on('keyup', '#EntidadCUIT', async function (e) {
     _ObjIngreso.CodigoEntidad = 0;
     if (Texto.length == 11) {
         let TempEmpresa = await Empresa.TraerUnaXCUIT(Texto);
-        $("#EntidadCodigoEntidad").val(await (TempEmpresa.StrCodigo(6)));
+        $("#EntidadCodigoEntidad").val(await TempEmpresa.StrCodigo(6));
         _ObjIngreso.CodigoEntidad = TempEmpresa.CodigoEntidad;
         $("#EntidadRazonSocial").val(TempEmpresa.RazonSocial);
     }
@@ -189,6 +191,31 @@ $('body').on('click', '#BtnModificar', async function (e) {
         alertAlerta(e);
     }
 });
+$('body').on('click', '#BtnExplotar', async function (e) {
+    try {
+        // if (_ObjIngreso.CodigoEntidad == 0) {
+        //     throw 'Debe informar el CUIT del Ingreso para luego separarlo'
+        // }
+        $("#EntidadCUIT").prop('disabled', true);
+        $("#EntidadPeriodo").prop('disabled', true);
+        $("#EntidadNroCheque").prop('disabled', true);
+        $("#ContenidoSeleccionado").css("display", "none");
+        let _ListaIngresosSeparado = [_ObjIngreso];
+        await Ingreso.ArmarGrillaIngresoSeparado('GrillaIngresoSeparado', _ListaIngresosSeparado, '', 'EventoGuardarSeparacion', _ObjIngreso);
+
+        //PopUpConfirmarConCancelar('info', null, 'Desea realmente cerrar el gasto?', '<i>El mismo ya no podrá reabrirse.</i>', 'EventoConfirmarCerrarGasto', 'Cerrar Gasto', 'Cancelar');
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
+document.addEventListener('EventoGuardarSeparacion', async function (e) {
+    try {
+
+    } catch (e) {
+        alertAlerta(e);
+    }
+}, false);
 document.addEventListener('EventoSeleccionarIngreso', async function (e) {
     try {
         let objSeleccionado = e.detail;
@@ -197,7 +224,8 @@ document.addEventListener('EventoSeleccionarIngreso', async function (e) {
         await Ingreso.ArmarGrillaDetalle('GrillaDetalle', listaTempIngresos, 'EventoSeleccionarIngreso', '');
         _ObjIngreso = objSeleccionado;
         await LlenarIngreso();
-        $("#Seleccionado").css("display", "block");
+        $("#divCantRegistrosBusqueda").css("display", "none");
+        $("#ContenedorSeleccionado").css("display", "block");
     } catch (e) {
         alertAlerta(e);
     }

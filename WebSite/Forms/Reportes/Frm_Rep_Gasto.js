@@ -36,7 +36,7 @@ $('body').on('click', '#BtnBuscar', async function (e) {
             throw 'No existen Gastos para la búsqueda informada.';
         }
         await Gasto.ArmarGrillaCabecera('GrillaCabecera');
-        await Gasto.ArmarGrillaDetalle('GrillaDetalle', Lista, 'EventoSeleccionarComprobante', 'max-height: 380px; overflow-y: scroll;');
+        await Gasto.ArmarGrillaDetalle('GrillaDetalle', Lista, 'EventoSeleccionarComprobante', 'height: 350px; overflow-y: scroll;');
         if (Lista.length > 0) {
             for (let item of Lista) {
                 Result += item.Importe;

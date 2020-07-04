@@ -40,7 +40,6 @@ class Gasto extends DBE {
         try {
             let ObjU = JSON.parse(sessionStorage.getItem("User"));
             this.IdUsuarioAlta = ObjU.IdEntidad;
-            //this.IdUsuarioAlta = 1;
             let data = {
                 'entidad': this
             };
@@ -57,6 +56,7 @@ class Gasto extends DBE {
         try {
             let ObjU = JSON.parse(sessionStorage.getItem("User"));
             this.IdUsuarioBaja = ObjU.IdEntidad;
+            this.IdEstado = 11;
             let data = {
                 'entidad': this
             };
@@ -67,7 +67,6 @@ class Gasto extends DBE {
                 return entidad.IdEntidad !== id;
             });
             _Lista_Gasto = buscados;
-            this.IdEstado = 1;
             _Lista_Gasto.push(this);
             return;
         } catch (e) {

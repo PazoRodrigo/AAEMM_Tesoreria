@@ -165,12 +165,17 @@ document.addEventListener('EventoConfirmarEliminarGasto', async function (e) {
 $('body').on('click', '#LinkBtnCerrarGasto', async function (e) {
     try {
         if (_ObjGasto.IdEntidad > 0) {
-            PopUpConfirmarConCancelar('info', null, 'Desea realmente cerrar el gasto?', '<i>El mismo ya no podrá reabrirse.</i>', 'EventoConfirmarCerrarGasto', 'Cerrar Gasto', 'Cancelar');
+            if (await _ObjGasto.ListaComprobantes.length > 0) {
+                PopUpConfirmarConCancelar('info', null, 'Desea realmente cerrar el gasto?', '<i>El mismo ya no podrá reabrirse.</i>', 'EventoConfirmarCerrarGasto', 'Cerrar Gasto', 'Cancelar');
+            } else {
+                PopUpConfirmarConCancelar('alert', null, 'Desea realmente cerrar el gasto?', '<i>El mismo será anulado por no tener comprobantes y ya no podrá reabrirse.</i>', 'EventoConfirmarAnularGasto', 'Anular Gasto', 'Cancelar');
+            }
         }
     } catch (e) {
         alertAlerta(e);
     }
 });
+
 document.addEventListener('EventoConfirmarCerrarGasto', async function (e) {
     try {
         await _ObjGasto.Cerrar();
@@ -188,6 +193,24 @@ document.addEventListener('EventoConfirmarCerrarGasto', async function (e) {
         MostrarSolapaGasto();
     }
 }, false);
+document.addEventListener('EventoConfirmarAnularGasto', async function (e) {
+    try {
+        await _ObjGasto.Baja();
+        $("#SpanNroGasto").text('');
+        $("#SpanGastoImporte").text('');
+        $("#SpanGastoComprobantes").text('');
+        $("#SpanGastoEstado").text('');
+        $("#GastoDetalle").css("display", "none");
+        _ObjGasto = new Gasto;
+        alertOk('El Gasto se ha anulado.');
+    } catch (e) {
+        alertAlerta(e);
+    } finally {
+        await LlenarGrillaGasto();
+        MostrarSolapaGasto();
+    }
+}, false);
+
 // Comprobante
 async function LimpiarComprobante() {
     $(".DatoFormularioComprobante").val('');

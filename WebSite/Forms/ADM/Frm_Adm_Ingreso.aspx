@@ -25,7 +25,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-4">
-                        <div class="container border border-primary">
+                        <div class="container border border-primary" style="height: 408px;">
                             <div class="col-12 text-center">Fecha Acreditación</div>
                             <div class="container">
                                 <div class="row mt-1 justify-content-center">
@@ -127,24 +127,13 @@
                                         onkeypress="return jsSoloNumerosSinPuntos(event)" placeholder="Nro. Cheque">
                                 </div>
                             </div>
-                            <div class="row mt-3 mb-3">
-                                <div class="col-1"></div>
-                                <div class="col-10">
-                                    <a href="#" id="BtnBuscador" class="btn btn-md btn-block btn-primary">Buscar
-                                        Ingresos
-                                    </a>
-                                </div>
-                            </div>
                         </div>
-                        <div id="divCantRegistrosImprimir" style="display: none;">
-                            <div class="container">
-                                <div class="row mt-2 justify-content-center">
-                                    <div class="col-9 text-center">
-                                        <a href="#" id="BtnImprimirRegistrosGrilla"
-                                            class="btn btn-block btn-light"><span id="LblCantidadRegistrosGrilla"
-                                                class="text-bold"></span></a>
-                                    </div>
-                                </div>
+                        <div class="row mt-2">
+                            <div class="col-1"></div>
+                            <div class="col-10">
+                                <a href="#" id="BtnBuscador" class="btn btn-md btn-block btn-primary">Buscar
+                                    Ingresos
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -163,74 +152,96 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="Seleccionado" class="row" style="display: none;">
-                            <div class="container border border-primary pb-3">
-                                <div class="row mt-4">
-                                    <div class="col-3 text-center">CUIT</div>
-                                    <div class="col-2 text-center">Código</div>
-                                    <div class="col-7 text-center">Razon Social</div>
-                                </div>
-                                <div class="row mt-1">
-                                    <div class="col-3 d-flex justify-content-center">
-                                        <input type="text" id="EntidadCUIT"
-                                            onkeypress="return jsSoloNumerosSinPuntos(event)"
-                                            class="form-control text-center" placeholder="CUIT" maxlength="11"
-                                            style="width: 140px;" />
+                        <div id="divCantRegistrosBusqueda" style="display: none;">
+                            <div class="container">
+                                <div class="row mt-2 justify-content-between">
+                                    <div class="col-4 text-right text-light text-bold">
+                                        Registros : <span id="LblCantidadRegistrosGrilla" class="text-bold"></span>
                                     </div>
-                                    <div class="col-2 d-flex justify-content-center">
-                                        <input type="text" id="EntidadCodigoEntidad" class="form-control text-center"
-                                            placeholder="Código" maxlength="6" style="width: 120px;">
-                                    </div>
-                                    <div class="col-7 d-flex justify-content-center">
-                                        <input type="text" id="EntidadRazonSocial" class="form-control"
-                                            placeholder="Razon Social">
+                                    <div class="col-6 text-right text-bold">
+                                        <h4 id="LblValorSeleccion" class="text-light pr-3"></h4>
                                     </div>
                                 </div>
-                                <div class="row mt-2">
-                                    <div class="col-1">Fecha</div>
-                                    <div class="col-3">
-                                        <input type="text" id="EntidadAcred" class="form-control datepicker text-center"
-                                            placeholder="Acreditación">
+                            </div>
+                        </div>
+                        <div id="ContenedorSeleccionado" class="row" style="display: none;">
+                            <div class="container border border-primary pb-3" style="height: 296px;">
+                                <div id="ContenidoSeleccionado">
+                                    <div class="row mt-4">
+                                        <div class="col-3 text-center">CUIT</div>
+                                        <div class="col-2 text-center">Código</div>
+                                        <div class="col-7 text-center">Razon Social</div>
                                     </div>
-                                    <div class="col-1">Período</div>
-                                    <div class="col-3">
-                                        <input type="text" id="EntidadPeriodo" class="form-control text-center"
-                                            placeholder="Período">
+                                    <div class="row mt-1">
+                                        <div class="col-3 d-flex justify-content-center">
+                                            <input type="text" id="EntidadCUIT"
+                                                onkeypress="return jsSoloNumerosSinPuntos(event)"
+                                                class="form-control text-center" placeholder="CUIT" maxlength="11"
+                                                style="width: 140px;" />
+                                        </div>
+                                        <div class="col-2 d-flex justify-content-center">
+                                            <input type="text" id="EntidadCodigoEntidad"
+                                                class="form-control text-center" placeholder="Código" maxlength="6"
+                                                style="width: 120px;">
+                                        </div>
+                                        <div class="col-7 d-flex justify-content-center">
+                                            <input type="text" id="EntidadRazonSocial" class="form-control"
+                                                placeholder="Razon Social">
+                                        </div>
                                     </div>
-                                    <div class="col-1">Importe</div>
-                                    <div class="col-3">
-                                        <input type="text" id="EntidadImporte" class="form-control text-right"
-                                            placeholder="Importe">
+                                    <div class="row mt-2">
+                                        <div class="col-1">Fecha</div>
+                                        <div class="col-3">
+                                            <input type="text" id="EntidadAcred"
+                                                class="form-control datepicker text-center" placeholder="Acreditación">
+                                        </div>
+                                        <div class="col-1">Período</div>
+                                        <div class="col-3">
+                                            <input type="text" id="EntidadPeriodo" class="form-control text-center"
+                                                placeholder="Período">
+                                        </div>
+                                        <div class="col-1">Importe</div>
+                                        <div class="col-3">
+                                            <input type="text" id="EntidadImporte" class="form-control text-right"
+                                                placeholder="Importe" onkeypress="return jsSoloNumeros(event)" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mt-1">
+                                        <div class="col-1">Origen</div>
+                                        <div class="col-3">
+                                            <input type="text" id="EntidadOrigen" class="form-control text-center"
+                                                placeholder="Origen" disabled>
+                                        </div>
+                                        <div class="col-1">Cheque</div>
+                                        <div class="col-3">
+                                            <input type="text" id="EntidadNroCheque" class="form-control text-right"
+                                                placeholder="Nro. Cheque">
+                                        </div>
+                                        <div class="col-1">Estado</div>
+                                        <div class="col-3">
+                                            <input type="text" id="EntidadEstado" class="form-control text-center"
+                                                placeholder="Estado" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-1"></div>
+                                        <div class="col-6">
+                                            <a id="BtnModificar" href="#"
+                                                class="btn btn-md btn-block btn-success">Actualizar
+                                                Ingreso</a>
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="col-3">
+                                            <a id="BtnExplotar" href="#"
+                                                class="btn btn-md btn-block btn-warning">Separar
+                                                Ingreso</a>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row mt-1">
-                                    <div class="col-1">Origen</div>
-                                    <div class="col-3">
-                                        <input type="text" id="EntidadOrigen" class="form-control text-center"
-                                            placeholder="Origen" disabled>
-                                    </div>
-                                    <div class="col-1">Cheque</div>
-                                    <div class="col-3">
-                                        <input type="text" id="EntidadNroCheque" class="form-control text-right"
-                                            placeholder="Nro. Cheque">
-                                    </div>
-                                    <div class="col-1">Estado</div>
-                                    <div class="col-3">
-                                        <input type="text" id="EntidadEstado" class="form-control text-center"
-                                            placeholder="Estado" disabled>
-                                    </div>
-                                </div>
-                                <div class="row mt-4">
-                                    <div class="col-1"></div>
-                                    <div class="col-6">
-                                        <a id="BtnModificar" href="#"
-                                            class="btn btn-md btn-block btn-success">Actualizar
-                                            Ingreso</a>
-                                    </div>
-                                    <div class="col-1"></div>
-                                    <div class="col-3">
-                                        <a id="BtnExplotar" href="#" class="btn btn-md btn-block btn-warning">Separar
-                                            Ingreso</a>
+                                <div class="row">
+                                    <div class="col-7">
+                                        <div id="GrillaIngresoSeparado"></div>
                                     </div>
                                 </div>
                             </div>

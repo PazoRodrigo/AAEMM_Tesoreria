@@ -46,7 +46,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-4">
-                        <div class="container border border-primary">
+                        <div class="container border border-primary" style="height: 408px;">
                             <div id="divBuscadorGasto" style="height: 385px;">
                                 <div class="row mt-1">
                                     <div class="container">
@@ -81,19 +81,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mb-1 justify-content-end">
-                                <div class="col-8 mr-2">
-                                    <a href="#" id="BtnBuscar" class="btn btn-md btn-block btn-primary">Buscar
-                                    </a>
-                                </div>
-                            </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-6">
-                                <h5 class="text-light text-right pr-1">valor Selección : </h5>
-                            </div>
-                            <div class="col-6 text-right">
-                                <h4 id="LblValorSeleccion" class="text-light pr-3"></h4>
+                            <div class="col-1"></div>
+                            <div class="col-10">
+                                <a href="#" id="BtnBuscar" class="btn btn-md btn-block btn-primary">Buscar
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -114,11 +107,15 @@
                         </div>
                         <div id="divCantRegistrosImprimir" style="display: none;">
                             <div class="container">
-                                <div class="row mt-1 justify-content-center">
-                                    <div class="col-8 mr-2">
+                                <div class="row mt-2 justify-content-between">
+                                    <div class="col-4 text-right text-light text-bold">
                                         <a href="#" id="BtnImprimir" class="btn btn-md btn-block btn-light">Consultar
                                             para Imprimir
                                         </a>
+                                    </div>
+
+                                    <div class="col-6 text-right text-bold">
+                                        <h4 id="LblValorSeleccion" class="text-light pr-3"></h4>
                                     </div>
                                 </div>
                             </div>
