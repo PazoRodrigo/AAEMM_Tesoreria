@@ -165,10 +165,11 @@ document.addEventListener('EventoConfirmarEliminarGasto', async function (e) {
 $('body').on('click', '#LinkBtnCerrarGasto', async function (e) {
     try {
         if (_ObjGasto.IdEntidad > 0) {
-            if (await _ObjGasto.ListaComprobantes.length > 0) {
+            alert((await _ObjGasto.ListaComprobantes()).length)
+            if ((await _ObjGasto.ListaComprobantes()).length > 0) {
                 PopUpConfirmarConCancelar('info', null, 'Desea realmente cerrar el gasto?', '<i>El mismo ya no podrá reabrirse.</i>', 'EventoConfirmarCerrarGasto', 'Cerrar Gasto', 'Cancelar');
             } else {
-                PopUpConfirmarConCancelar('alert', null, 'Desea realmente cerrar el gasto?', '<i>El mismo será anulado por no tener comprobantes y ya no podrá reabrirse.</i>', 'EventoConfirmarAnularGasto', 'Anular Gasto', 'Cancelar');
+                PopUpConfirmarConCancelar('info', null, 'Desea realmente cerrar el gasto?', '<i>El mismo será anulado por no tener comprobantes y ya no podrá reabrirse.</i>', 'EventoConfirmarAnularGasto', 'Anular Gasto', 'Cancelar');
             }
         }
     } catch (e) {

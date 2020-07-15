@@ -19,7 +19,11 @@ Namespace Entidad
         Public ReadOnly Property ObjLocalidad() As Object
             Get
                 If _ObjLocalidad Is Nothing Then
-                    _ObjLocalidad = Entidad.Localidad.TraerUno(IdLocalidad)
+                    If IdLocalidad > 0 Then
+                        _ObjLocalidad = Entidad.Localidad.TraerUno(IdLocalidad)
+                    Else
+                        _ObjLocalidad = New Localidad
+                    End If
                 End If
                 Return _ObjLocalidad
             End Get

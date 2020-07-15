@@ -7,7 +7,7 @@
         "name": "Firefox Debug",
         "type": "firefox",
         "request": "launch",
-        "url": "http://localhost:14162/Forms/Login/Frm_Login.aspx",
+        "url": "http://aplicativosaaemm.dyndns.org/SitioTesoreria/Forms/Login/Frm_Login.aspx",
         "webRoot": "${workspaceFolder}",
         "pathMappings": [{
             "url": "http://localhost:14162",

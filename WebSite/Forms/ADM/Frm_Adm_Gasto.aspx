@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Gastos" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_Gasto.aspx.vb" Inherits="Forms_ADM_Frm_Adm_Gasto" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Adm_Gasto.js?version20200702_01")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_Gasto.js?version20200715_1")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -16,10 +16,10 @@
             text-decoration: none;
         }
 
-            a:hover {
-                text-decoration: none;
-                color: #fff;
-            }
+        a:hover {
+            text-decoration: none;
+            color: #fff;
+        }
 
         .btnComprobanteOn {
             display: block;
@@ -100,7 +100,8 @@
     <ul>
         <li>
             <div id="BtnIndicadores" class="Cabecera Porc10_L">
-                <a id="LinkBtnInidicadores" href='<%= ResolveClientUrl("~/Forms/Frm_Indicadores.aspx")%>' class="LinkBtn" title="Indicadores"><span class="icon-stats-dots"></span></a>
+                <a id="LinkBtnInidicadores" href='<%= ResolveClientUrl("~/Forms/Frm_Indicadores.aspx")%>'
+                    class="LinkBtn" title="Indicadores"><span class="icon-stats-dots"></span></a>
             </div>
             <div id="DivNombreFormulario" class="Cabecera Porc90_L">
                 <span id="SpanNombreFormulario"></span>
@@ -158,7 +159,8 @@
                                 <a href="#" class="btnGastoOff" data-ix="tabComprobante">Gasto</a>
                             </div>
                             <div class="col-lg-6">
-                                <a href="#" class="btnComprobanteOn" data-ix="tabComprobante" style="display: none;">Comprobantes</a>
+                                <a href="#" class="btnComprobanteOn" data-ix="tabComprobante"
+                                    style="display: none;">Comprobantes</a>
                                 <a href="#" class="btnComprobanteOff" data-ix="tabComprobante">Comprobantes</a>
                             </div>
                         </div>
@@ -174,18 +176,11 @@
                                     <a id="LinkBtnCerrarGasto" href="#"><span id="SpanBtnCerrarGasto"></span></a>
                                 </div>
                             </div>
-                            <%-- <div class="col-lg-1"></div>
-                            <div class="col-lg-4">
-                                <div class="Boton BtnImprimir">
-                                    <a id="LinkBtnImprimirGasto" href="#"><span id="SpanBtnImprimirGasto"></span></a>
-                                </div>
-                            </div>--%>
                         </div>
                     </div>
                     <div class="col-lg-8">
-                        <%-- <div id="GastoDetalle" style="max-height: 350px; overflow-y: scroll; display: none;">--%>
                         <div id="GastoDetalle" style="display:none;">
-                            <div style="width100%;">
+                            <div style="width: 100%;">
                                 <div class="row mt-1">
                                     <div class="col-lg-2 ml-3">Cuenta</div>
                                     <div class="col-lg-8">
@@ -195,24 +190,34 @@
                                 <div class="row mt-1">
                                     <div class="col-lg-2 ml-3">Fecha Gasto</div>
                                     <div class="col-lg-3">
-                                        <input id="TxtFechaGasto" class="DatoFormularioComprobante InputDatoFormulario datepicker" type="text" placeholder="Fecha Gasto" autocomplete="off" onkeypress="return jsNoEscribir(event)">
+                                        <input id="TxtFechaGasto"
+                                            class="DatoFormularioComprobante InputDatoFormulario datepicker" type="text"
+                                            placeholder="Fecha Gasto" autocomplete="off"
+                                            onkeypress="return jsNoEscribir(event)">
                                     </div>
                                     <div class="col-lg-2 ml-3">Fecha Pago</div>
                                     <div class="col-lg-3">
-                                        <input id="TxtFechaPago" class="DatoFormularioComprobante InputDatoFormulario datepicker" type="text" placeholder="Fecha Pago" autocomplete="off" onkeypress="return jsNoEscribir(event)">
+                                        <input id="TxtFechaPago"
+                                            class="DatoFormularioComprobante InputDatoFormulario datepicker" type="text"
+                                            placeholder="Fecha Pago" autocomplete="off"
+                                            onkeypress="return jsNoEscribir(event)">
                                     </div>
 
                                 </div>
                                 <div class="row mt-1">
                                     <div class="col-lg-2 ml-3">Observaciones</div>
                                     <div class="col-lg-8">
-                                        <textarea id="TxtObservaciones" class="DatoFormularioComprobante TextareaDatoFormulario" placeholder="Observaciones"></textarea>
+                                        <textarea id="TxtObservaciones"
+                                            class="DatoFormularioComprobante TextareaDatoFormulario"
+                                            placeholder="Observaciones"></textarea>
                                     </div>
                                 </div>
                                 <div class="row mt-1">
                                     <div class="col-lg-2 ml-3">Importe</div>
                                     <div class="col-lg-5">
-                                        <input id="TxtImporte" class="DatoFormularioComprobante InputDatoFormulario" type="text" placeholder="Importe" autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                                        <input id="TxtImporte" class="DatoFormularioComprobante InputDatoFormulario"
+                                            type="text" placeholder="Importe" autocomplete="off"
+                                            onkeypress="return jsSoloNumeros(event);">
                                     </div>
                                 </div>
                                 <div class="row mt-1">
@@ -236,7 +241,10 @@
                                 <div class="row mt-1">
                                     <div class="col-lg-2 ml-3">Nro. Compr.</div>
                                     <div class="col-lg-3">
-                                        <input id="TxtNroComprobante" class="DatoFormularioComprobante InputDatoFormulario" type="text" placeholder="Nro. Compr." autocomplete="off" onkeypress="return jsSoloNumeros(event);">
+                                        <input id="TxtNroComprobante"
+                                            class="DatoFormularioComprobante InputDatoFormulario" type="text"
+                                            placeholder="Nro. Compr." autocomplete="off"
+                                            onkeypress="return jsSoloNumeros(event);">
                                     </div>
                                     <div class="col-lg-2 ml-3">Tipo Pago</div>
                                     <div class="col-lg-3">
@@ -247,7 +255,8 @@
                                     <div class="col-lg-8"></div>
                                     <div class="col-lg-4">
                                         <div class="Boton BtnGuardar">
-                                            <a id="LinkBtnGuardarComprobante" href="#"><span id="SpanBtnGuardarComprobante"></span></a>
+                                            <a id="LinkBtnGuardarComprobante" href="#"><span
+                                                    id="SpanBtnGuardarComprobante"></span></a>
                                         </div>
                                     </div>
                                 </div>

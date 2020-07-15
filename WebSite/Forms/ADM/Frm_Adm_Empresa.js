@@ -5,6 +5,8 @@ $(document).ready(async function () {
     try {
         $("#SpanNombreFormulario").text('Empresas');
         $("#divCantRegistrosImprimir").css('display', 'none');
+        $("#LinkBtnNuevo").css('display', 'none');
+        $("#EntidadRazonSocial").prop('disabled', true);
         await Inicio();
     } catch (e) {
         alertAlerta(e);
@@ -59,6 +61,7 @@ $('body').on('click', '#BtnBuscador', async function (e) {
             }
             $("#LblCantidadRegistrosGrilla").text(TextoCantidadRegistros);
             $("#divCantRegistrosImprimir").css('display', 'block');
+            $("#LinkBtnNuevo").css('display', 'block');
         }
         spinnerClose();
     } catch (e) {
@@ -66,13 +69,37 @@ $('body').on('click', '#BtnBuscador', async function (e) {
         alertAlerta(e);
     }
 });
-$('body').on('click', '#BtnNuevo', async function (e) {
+$('body').on('click', '#LinkBtnNuevo', async function (e) {
     try {
         $("#Seleccionado").css("display", "block");
         $("#divCantRegistrosImprimir").css('display', 'none');
+        $("#LinkBtnNuevo").css('display', 'none');
         $("#GrillaCabecera").html('');
-        _ObjEmpresa = new Empresa;
-        LimpiarEmpresa();
+        $("#GrillaDetalle").html('');
+        $("#EntidadRazonSocial").prop('disabled', false);
+        NuevaEmpresa();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
+$('body').on('click', '#BtnGuardar', async function (e) {
+    try {
+        spinner();
+        _ObjEmpresa.CUIT = $("#EntidadCUIT").val();
+        _ObjEmpresa.RazonSocial = $("#EntidadRazonSocial").val();
+        _ObjEmpresa.ObjDomicilio = new Domicilio;
+        let TextoOK = '';
+        if (_ObjEmpresa.IdEntidad == 0) {
+            await _ObjEmpresa.Alta();
+            let CodEntidad = await _ObjEmpresa.StrCodigo(6);
+            $("#EntidadCodigoEntidad").val(CodEntidad);
+            TextoOK = 'La Empresa se ha dado de alta correctamente. Su Código de Entidad es ' + CodEntidad;
+        } else {
+            await _ObjEmpresa.Modifica();
+        }
+        spinnerClose();
+        alertOk(TextoOK);
     } catch (e) {
         spinnerClose();
         alertAlerta(e);
@@ -122,6 +149,7 @@ async function LlenarGrilla() {
         $("#LblCantidadRegistrosGrilla").text(TextoCantidadRegistros);
         $("#LblCantidadRegistrosGrilla").css("display", "block");
     } else {
+        $("#LinkBtnNuevo").css('display', 'block');
         throw ("No existen Empresas para mostrar con esos parámetros");
     }
 }
@@ -146,6 +174,8 @@ document.addEventListener('EventoSeleccionarEmpresa', async function (e) {
         _ObjEmpresa = objSeleccionado;
         await LlenarEmpresa();
         $("#Seleccionado").css("display", "block");
+        $("#LinkBtnNuevo").css('display', 'none');
+
     } catch (e) {
         alertAlerta(e);
     }
@@ -165,8 +195,3 @@ async function ArmarComboConvenio() {
     let lista = await Convenio.Todos();
     await Convenio.ArmarCombo(lista, 'CboConvenio', 'SelectorConvenio', 'EventoSeleccionConvenio', 'Convenio', 'CboConvenio');
 }
-
-// function Nuevo_Empresa() {
-//     Limpiar_Empresa();
-//     _ObjEmpresa = new Empresa;
-// }

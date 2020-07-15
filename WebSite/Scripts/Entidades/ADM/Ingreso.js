@@ -279,7 +279,7 @@ class Ingreso extends DBE {
         str += '</div >';
         return $("#" + div + "").html(str);
     }
-    static async ArmarGrillaIngresoSeparado(div, lista, estilo, evento, IngresoOriginal) {
+    static async ArmarGrillaIngresoSeparado(div, lista, estilo, evento) {
         $("#" + div + "").html('');
         let str = "";
         str += '<div style="' + estilo + '">';
@@ -296,8 +296,8 @@ class Ingreso extends DBE {
             for (let item of lista) {
                 str += '        <tr>';
                 str += '            <td class="col-3 text-center" ><input type="text" id="EntidadPeriodo" class="form-control text-center" placeholder = "MM/aaaa" /></td>';
-                str += '            <td class="col-3 text-right pr-1" ><input type="text" id="EntidadImporte" class="form-control text-center" placeholder = "Importe" onkeypress="return jsSoloNumeros(event)"/></td>';
-                str += '            <td class="col-1 text-center"><a hfre="#" id="' + item.IdEntidad + '" onclick="AgregarLinea(this);"><img src="../../Imagenes/plusVerde.png" alt="" /></a></td>';
+                str += '            <td class="col-3 text-right pr-1" ><input id="valor_' + item.IdEntidad + '" type="text" id="EntidadImporte" class="form-control text-center" placeholder="Importe" value="' + item.Importe + '" onkeypress="return jsSoloNumeros(event)"/></td>';
+                str += '            <td class="col-1 text-center"><a hfre="#" id="' + item.IdEntidad + '" data-Evento="' + evento + '" onclick="AgregarLineaExplotar(this);"><img src="../../Imagenes/plusVerde.png" alt="" /></a></td>';
                 str += '        </tr>';
             }
         }
@@ -349,6 +349,21 @@ async function SeleccionIngreso(MiElemento) {
             });
             document.dispatchEvent(event);
         }
+    } catch (e) {
+        alertAlerta(e);
+    }
+}
+async function AgregarLineaExplotar(MiElemento) {
+    try {
+        let elemento = document.getElementById(MiElemento.id);
+        let evento = elemento.getAttribute('data-Evento');
+        let Res = new Ingreso;
+        Res.IdEntidad = elemento.id;
+        Res.Importe = $("#valor_" + Res.IdEntidad).val();
+        let event = new CustomEvent(evento, {
+            detail: Res
+        });
+        document.dispatchEvent(event);
     } catch (e) {
         alertAlerta(e);
     }

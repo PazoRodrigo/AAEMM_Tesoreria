@@ -1,7 +1,7 @@
-﻿<%@ Page Title="AAEMM. Ingresos" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ADM_Ingreso.aspx.vb" Inherits="Forms_ADM_Frm_Adm_Ingreso" %>
+﻿<%@ Page Title="AAEMM. Ingresos" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_Ingreso.aspx.vb" Inherits="Forms_ADM_Frm_Adm_Ingreso" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Adm_Ingreso.js?version20200702_01")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_Ingreso.js?version20200715_1")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -206,7 +206,7 @@
                                                 placeholder="Importe" onkeypress="return jsSoloNumeros(event)" />
                                         </div>
                                     </div>
-                                    
+
                                     <div class="row mt-1">
                                         <div class="col-1">Origen</div>
                                         <div class="col-3">
@@ -234,14 +234,22 @@
                                         <div class="col-1"></div>
                                         <div class="col-3">
                                             <a id="BtnExplotar" href="#"
-                                                class="btn btn-md btn-block btn-warning">Separar
+                                                class="btn btn-md btn-block btn-warning">Explotar
                                                 Ingreso</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-7">
-                                        <div id="GrillaIngresoSeparado"></div>
+                                <div id="DivExplotacionIngreso">
+                                    <div class="row mt-2">
+                                        <div class="col-7">
+                                            <div id="GrillaIngresoSeparado"></div>
+                                        </div>
+                                        <div class="col-3 pt-4">
+                                            <div class="col-12 border border-primary text-center">
+                                                <h5 class=" text-light">Restante</h5>
+                                                <h4 id="LblImporteRestante" class="text-light"></h4>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

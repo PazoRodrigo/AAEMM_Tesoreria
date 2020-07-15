@@ -258,7 +258,7 @@ Namespace Entidad
                 Else
                     result += " AND "
                 End If
-                result += "Importe = '" + busqueda.Importe.ToString + "'"
+                result += "Importe = " + Replace(CStr(busqueda.Importe), ",", ".")
             End If
             If busqueda.NroRecibo > 0 Then
                 If Not existeParametro Then

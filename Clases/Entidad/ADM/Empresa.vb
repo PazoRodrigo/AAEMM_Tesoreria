@@ -91,6 +91,7 @@ Namespace Entidad
             ' DBE
             IdUsuarioAlta = DtODesde.IdUsuarioAlta
             IdUsuarioBaja = DtODesde.IdUsuarioBaja
+            IdUsuarioModifica = DtODesde.IdUsuarioModifica
             IdMotivoBaja = DtODesde.IdMotivoBaja
             If DtODesde.FechaAlta > 0 Then
                 Dim TempFecha As String = Right(DtODesde.FechaAlta.ToString, 2) + "/" + Left(Right(DtODesde.FechaAlta.ToString, 4), 2) + "/" + Left(DtODesde.FechaAlta.ToString, 4)
@@ -107,9 +108,11 @@ Namespace Entidad
             CorreoElectronico = DtODesde.CorreoElectronico
             IdEstado = CType(DtODesde.IdEstado, Enumeradores.EstadoEmpresa)
             ' Domicilio
-            ObjDomicilio.Direccion = DtODesde.ObjDomicilio.Direccion
-            ObjDomicilio.CodigoPostal = DtODesde.ObjDomicilio.CodigoPostal
-            ObjDomicilio.IdLocalidad = DtODesde.ObjDomicilio.IdLocalidad
+            Dim objD As New Domicilio
+            objD.Direccion = DtODesde.ObjDomicilio.Direccion
+            objD.CodigoPostal = DtODesde.ObjDomicilio.CodigoPostal
+            objD.IdLocalidad = DtODesde.ObjDomicilio.IdLocalidad
+            ObjDomicilio = objD
         End Sub
 #End Region
 #Region " Métodos Estáticos"
@@ -185,6 +188,7 @@ Namespace Entidad
 #Region " Métodos Públicos"
         ' ABM
         Public Sub Alta()
+            Me.IdEstado = Enumeradores.EstadoEmpresa.Activa
             ValidarAlta()
             DAL_Empresa.Alta(Me)
             Refresh()
@@ -256,19 +260,23 @@ Namespace Entidad
         Private Sub ValidarCampos()
             Dim sError As String = ""
             ValidarCaracteres()
-            ' Campo Integer/Decimal
-            '	If Me.VariableNumero.toString = "" Then
-            '   	sError &= "<b>VariableNumero</b> Debe ingresar VariableNumero. <br />"
-            '	ElseIf Not isnumeric(Me.VariableNumero) Then
-            '   	sError &= "<b>VariableNumero</b> Debe ser numérico. <br />"
-            '	End If
+            If Me.CUIT.ToString = "" Then
+                sError &= "<b>CUIT</b> Debe ingresar el CUIT. <br />"
+            Else
+                If Me.CUIT.ToString.Length <> 11 Then
+                    sError &= "<b>CUIT</b> Debe tener 11 dígitos. <br />"
+                Else
+                    If Not IsNumeric(Me.CUIT) Then
+                        sError &= "<b>CUIT</b> Debe ser numérico. <br />"
+                    End If
 
-            ' Campo String
-            '	If Me.VariableString = "" Then
-            '		sError &= "<b>VariableString</b> Debe ingresar VariableString. <br />"
-            '	ElseIf Me.apellido.Length > 50 Then
-            '		sError &= "<b>VariableString</b>Debe tener como máximo 50 caracteres. <br />"
-            '	End If
+                End If
+            End If
+            If Me.RazonSocial = "" Then
+                sError &= "<b>Razón Social</b> Debe ingresar la Razón Social. <br />"
+            ElseIf Me.RazonSocial.Length > 100 Then
+                sError &= "<b>Razón Social</b>Debe tener como máximo 100 caracteres. <br />"
+            End If
 
             ' Campo Date
             '	If Not Me.VariableFecha.has value Then
@@ -287,11 +295,10 @@ Namespace Entidad
             End If
         End Sub
         Private Sub ValidarNoDuplicados()
-            'Empresa.Refresh()
-            'Dim result As Empresa = Todos.Find(Function(x) x.CUIT = CUIT)
-            'If Not result Is Nothing Then
-            '    Throw New Exception("El Nombre a ingresar ya existe")
-            'End If
+            Dim result As Empresa = Todos.Find(Function(x) x.CUIT = CUIT And x.IdEntidad <> IdEntidad)
+            If Not result Is Nothing Then
+                Throw New Exception("El CUIT ya existe")
+            End If
         End Sub
 #End Region
     End Class ' Empresa
@@ -344,7 +351,8 @@ Namespace DataAccessLibrary
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
-                        entidad.Codigo = CInt(dt.Rows(0)(0))
+                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
+                        entidad.Codigo = CInt(dt.Rows(0)(1))
                     End If
                 End If
             End Using

@@ -11,7 +11,7 @@ $(document).ready(function () {
     }
 });
 
-async function Inicio() {
+function Inicio() {
     LimpiarFormulario();
 }
 
@@ -147,6 +147,7 @@ async function LlenarIngreso() {
     if (_ObjIngreso == undefined) {
         throw 'No existe Ingreso seleccionado';
     }
+    $("#DivExplotacionIngreso").css('display', 'none');
     $("#EntidadCUIT").val('');
     $("#EntidadCodigoEntidad").val('');
     $("#EntidadRazonSocial").val('');
@@ -163,6 +164,7 @@ async function LlenarIngreso() {
         $("#EntidadNroCheque").val(_ObjIngreso.NroCheque);
     }
     $("#EntidadEstado").val(await _ObjIngreso.Estado());
+    $("#ContenidoSeleccionado").css("display", "block");
 }
 $('body').on('keyup', '#EntidadCUIT', async function (e) {
     let Texto = $("#EntidadCUIT").val();
@@ -193,25 +195,66 @@ $('body').on('click', '#BtnModificar', async function (e) {
 });
 $('body').on('click', '#BtnExplotar', async function (e) {
     try {
-        // if (_ObjIngreso.CodigoEntidad == 0) {
-        //     throw 'Debe informar el CUIT del Ingreso para luego separarlo'
-        // }
-        $("#EntidadCUIT").prop('disabled', true);
-        $("#EntidadPeriodo").prop('disabled', true);
-        $("#EntidadNroCheque").prop('disabled', true);
-        $("#ContenidoSeleccionado").css("display", "none");
-        let _ListaIngresosSeparado = [_ObjIngreso];
-        await Ingreso.ArmarGrillaIngresoSeparado('GrillaIngresoSeparado', _ListaIngresosSeparado, '', 'EventoGuardarSeparacion', _ObjIngreso);
-
-        //PopUpConfirmarConCancelar('info', null, 'Desea realmente cerrar el gasto?', '<i>El mismo ya no podrá reabrirse.</i>', 'EventoConfirmarCerrarGasto', 'Cerrar Gasto', 'Cancelar');
+        alertInfo('En Desarrollo')
+        //if (_ObjIngreso.CodigoEntidad == 0) {
+        //    throw 'Debe informar el CUIT del Ingreso para luego separarlo';
+        //}
+        //PopUpConfirmarConCancelar('info', null, 'Desea realmente explotar el Ingreso?', '', 'EventoConfirmarExplotarIngreso', 'Explotar Ingreso', 'Cancelar', 'green');
     } catch (e) {
         spinnerClose();
         alertAlerta(e);
     }
 });
-document.addEventListener('EventoGuardarSeparacion', async function (e) {
+let _ListaIngresosExplotado = [];
+document.addEventListener('EventoConfirmarExplotarIngreso', async function (e) {
     try {
+        $("#EntidadCUIT").prop('disabled', true);
+        $("#EntidadPeriodo").prop('disabled', true);
+        $("#EntidadNroCheque").prop('disabled', true);
+        $("#ContenidoSeleccionado").css("display", "none");
+        $("#LblImporteRestante").text(separadorMiles((await Explotar_Resto()).toFixed(2)));
+        _ListaIngresosExplotado = [];
+        await Explotar_NuevoIngreso();
+        await Ingreso.ArmarGrillaIngresoSeparado('GrillaIngresoSeparado', _ListaIngresosExplotado, '', 'EventoAgregarExplotacion', _ObjIngreso);
+        $("#DivExplotacionIngreso").css('display', 'block')
+    } catch (e) {
+        alertAlerta(e);
+    }
+}, false);
+async function Explotar_NuevoIngreso() {
+    let NuevoIngreso = new Ingreso;
+    if (_ListaIngresosExplotado.length == 0) {
+        NuevoIngreso.IdEntidad = 1;
+    } else {
+        alertAlerta(_ListaIngresosExplotado.length - 1);
+        alertAlerta(_ListaIngresosExplotado[_ListaIngresosExplotado.length - 1].IdEntidad + 1);
+        NuevoIngreso.IdEntidad = _ListaIngresosExplotado[_ListaIngresosExplotado.length - 1].IdEntidad + 1;
+    }
+    NuevoIngreso.Importe = await Explotar_Resto();
+    _ListaIngresosExplotado.push(NuevoIngreso);
 
+}
+async function Explotar_Resto() {
+    let Result = _ObjIngreso.Importe;
+    if (_ListaIngresosExplotado.length > 0) {
+        for (let ItemIngreso of _ListaIngresosExplotado) {
+            Result -= ItemIngreso.Importe
+        }
+    }
+    return Result;
+}
+document.addEventListener('EventoAgregarExplotacion', async function (e) {
+    try {
+        let objSeleccionado = e.detail;
+        console.log(objSeleccionado);
+        buscado = $.grep(_ListaIngresosExplotado, function (entidad, index) {
+            return entidad.IdEntidad === objSeleccionado.IdEntidad;
+        });
+        buscado[0].Importe = objSeleccionado.Importe;
+        console.log(buscado[0]);
+        $("#LblImporteRestante").text(separadorMiles((await Explotar_Resto()).toFixed(2)));
+        await Explotar_NuevoIngreso();
+        await Ingreso.ArmarGrillaIngresoSeparado('GrillaIngresoSeparado', _ListaIngresosExplotado, '', 'EventoAgregarExplotacion', _ObjIngreso);
     } catch (e) {
         alertAlerta(e);
     }

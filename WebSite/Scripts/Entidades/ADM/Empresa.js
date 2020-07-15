@@ -52,16 +52,19 @@ class Empresa extends DBE {
     // ABM
     async Alta() {
         await this.ValidarCamposEmpresa();
-        this.Nombre = this.Nombre.toUpperCase();
-        this.Observaciones = this.Observaciones.toUpperCase();
+        this.RazonSocial = this.RazonSocial.toUpperCase();
+        this.CorreoElectronico = this.CorreoElectronico.toUpperCase();
         try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioAlta = ObjU.IdEntidad;
             let data = {
                 'entidad': this
             };
-            let id = await ejecutarAsync(urlWsEmpresa + "/Alta", data);
-            if (id !== undefined)
-                this.IdEntidad = id;
-            _Lista_Empresa.push(this);
+            let NuevaEmpresa = await ejecutarAsync(urlWsEmpresa + "/Alta", data);
+            if (NuevaEmpresa !== undefined) {
+                this.IdEntidad = NuevaEmpresa.IdEntidad;
+                this.Codigo = NuevaEmpresa.Codigo;
+            }
             return;
         } catch (e) {
             throw e;
@@ -69,21 +72,17 @@ class Empresa extends DBE {
     }
     async Modifica() {
         await this.ValidarCamposEmpresa();
-        this.Nombre = this.Nombre.toUpperCase();
-        this.Observaciones = this.Observaciones.toUpperCase();
         try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioModifica = ObjU.IdEntidad;
             let data = {
                 'entidad': this
             };
-            let id = await ejecutarAsync(urlWsEmpresa + "/Modifica", data);
-            if (id !== undefined)
-                this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Empresa, function (entidad, index) {
-                return entidad.IdEntidad !== id;
-            });
-            _Lista_Empresa = buscados;
-            this.IdEstado = 0;
-            _Lista_Empresa.push(this);
+            let NuevaEmpresa = await ejecutarAsync(urlWsEmpresa + "/Modifica", data);
+            if (NuevaEmpresa !== undefined) {
+                this.IdEntidad = NuevaEmpresa.IdEntidad;
+                this.Codigo = NuevaEmpresa.Codigo;
+            }
             return;
         } catch (e) {
             throw e;
@@ -91,6 +90,8 @@ class Empresa extends DBE {
     }
     async Baja() {
         try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioBaja = ObjU.IdEntidad;
             let data = {
                 'entidad': this
             };
@@ -110,9 +111,27 @@ class Empresa extends DBE {
     }
 
     async ValidarCamposEmpresa() {
+
+        //    this.IdEntidad = 0;
+        //    this.Codigo = 0;
+        //    this.RazonSocial = '';
+        //    this.CUIT = 0;
+        //    this.CorreoElectronico = '';
+        //    this.IdEstado = 0;
         let sError = '';
-        if (this.Nombre.length === 0) {
-            sError += 'Debe ingresar el Nombre';
+        if (this.RazonSocial.length === 0) {
+            sError += 'Debe ingresar la Razón Social<br/>';
+        } else {
+            if (this.RazonSocial.length <= 2) {
+                sError += 'La Razón Social debe tener al menos 3 caracteres<br/>';
+            }
+        }
+        if (this.CUIT.length === 0) {
+            sError += 'Debe ingresar el CUIT<br/>';
+        } else {
+            if (this.CUIT.length != 11) {
+                sError += 'El CUIT debe tener 11 dígitos<br/>';
+            }
         }
         if (sError !== '') {
             throw '<b> Error de grabación </b> <br/><br/>' + sError;
@@ -390,7 +409,9 @@ async function SeleccionEmpresa(MiElemento) {
             return entidad.IdEntidad == MiElemento.id;
         });
         if (buscado[0] != undefined) {
-            let event = new CustomEvent(evento, { detail: buscado[0] });
+            let event = new CustomEvent(evento, {
+                detail: buscado[0]
+            });
             document.dispatchEvent(event);
         }
     } catch (e) {
