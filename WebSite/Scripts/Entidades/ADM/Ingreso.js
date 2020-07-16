@@ -19,6 +19,7 @@ class Ingreso extends DBE {
         this.IdEntidad = 0;
         this.IdEstado = '';
         this.IdCentroCosto = 0;
+        this.IdExplotado = 0;
         this.CodigoEntidad = 0;
         this.CUIT = 0;
         this.Periodo = 0;
@@ -260,7 +261,14 @@ class Ingreso extends DBE {
                 str += '            <td style="width:45px;"><a hfre="#" id="' + item.IdEntidad + '"  data-Evento="' + evento + '" onclick="SeleccionIngreso(this);"> <img src="../../Imagenes/lupa.png" alt=""></a></td>';
                 str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrFechaAcreditacion() + '</small></td>';
                 str += '            <td class="text-center" style="width: 50px;"><small class="text-light">' + await item.StrCodigoEntidad(6) + '</small></td>';
-                str += '            <td class="text-left" style="width: 220px;"><small class="text-light">' + Left(item.RazonSocial, 25) + '</small></td>';
+                let strRazonSocial = '';
+                if (item.CUIT > 0) {
+                    strRazonSocial = item.CUIT;
+                    if (item.RazonSocial.length > 0) {
+                        strRazonSocial = Left(item.RazonSocial, 25);
+                    }
+                }
+                str += '            <td class="text-left" style="width: 220px;"><small class="text-light">' + strRazonSocial + '</small></td>';
                 str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrPeriodo() + '</small></td>';
                 str += '            <td class="text-right pr-1" style="width: 100px;"><small class="text-light">' + separadorMiles(item.Importe.toFixed(2)) + '</small></td>';
                 str += '            <td class="text-center" style="width: 100px;"><small class="text-light">' + item.NombreArchivo + '</small></td>';
@@ -322,6 +330,7 @@ function LlenarEntidadIngreso(entidad) {
     Res.IdEntidad = entidad.IdEntidad;
     Res.IdEstado = entidad.IdEstado;
     Res.IdCentroCosto = entidad.IdCentroCosto;
+    Res.IdExplotado = entidad.IdExplotado;
     Res.CodigoEntidad = entidad.CodigoEntidad;
     Res.CUIT = entidad.CUIT;
     Res.RazonSocial = entidad.RazonSocial;

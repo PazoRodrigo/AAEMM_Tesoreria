@@ -54,6 +54,7 @@ function LimpiarIngreso() {
     $("#EntidadOrigen").val('');
     $("#EntidadNroCheque").val('');
     $("#EntidadEstado").val('');
+    $("#LblExplotado").text('');
     $("#EntidadCodigoEntidad").prop('disabled', true);
     $("#EntidadRazonSocial").prop('disabled', true);
     $("#EntidadImporte").prop('disabled', true);
@@ -164,6 +165,9 @@ async function LlenarIngreso() {
         $("#EntidadNroCheque").val(_ObjIngreso.NroCheque);
     }
     $("#EntidadEstado").val(await _ObjIngreso.Estado());
+    if (_ObjIngreso.IdExplotado > 0) {
+        $("#LblExplotado").text('Ingreso proveniente de Ingreso Explotado');
+    }
     $("#ContenidoSeleccionado").css("display", "block");
 }
 $('body').on('keyup', '#EntidadCUIT', async function (e) {

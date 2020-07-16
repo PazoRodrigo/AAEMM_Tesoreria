@@ -224,6 +224,9 @@
                                                 placeholder="Estado" disabled>
                                         </div>
                                     </div>
+                                    <div class="row mt-1">
+                                        <div class="col-12"><span id="LblExplotado" class="text-light"></span></div>
+                                    </div>
                                     <div class="row mt-4">
                                         <div class="col-1"></div>
                                         <div class="col-6">

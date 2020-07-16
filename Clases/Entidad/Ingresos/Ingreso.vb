@@ -26,6 +26,7 @@ Namespace Entidad
         Public Property IdEntidad() As Integer = 0
         Public Property IdEstado() As Char = CChar("A")
         Public Property IdCentroCosto() As Integer = 0
+        Public Property IdExplotado() As Integer = 0
         Public Property CodigoEntidad() As Long = 0
         Public Property CUIT() As Long = 0
         Public Property Periodo() As Integer = 0
@@ -178,8 +179,6 @@ Namespace Entidad
             Return DAL_Ingreso.TraerTodos()
         End Function
         Public Shared Function TraerTodosXBusqueda(busqueda As StrBusquedaIngreso) As List(Of Ingreso)
-            'Dim TablaAcreditados As String = "Ingreso.Ingresos_Acreditados Ing LEFT JOIN OSEMM.dbo.Afib002 AF ON Ing.CUIT = CAST(REPLACE(AF.CUIT,'-','') AS BIGINT) AND dep='00'"
-            'Dim TablaNOAcreditados As String = "Ingreso.Ingresos_NOAcreditados Ing LEFT JOIN OSEMM.dbo.Afib002 AF ON Ing.CUIT = CAST(REPLACE(AF.CUIT,'-','') AS BIGINT) AND dep='00'"
             Dim TablaAcreditados As String = "Ingreso.Ingresos_Acreditados Ing"
             Dim TablaNOAcreditados As String = "Ingreso.Ingresos_NOAcreditados Ing"
             Dim sqlQuery As String = "SELECT * FROM "
@@ -197,17 +196,21 @@ Namespace Entidad
             If tablas < 3 Then
                 If tablas = 1 Then
                     sqlQuery += TablaAcreditados
+                    sqlQuery += " LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
                     sqlQuery += ArmarStringSQL(busqueda)
                 ElseIf tablas = 2 Then
                     sqlQuery += TablaNOAcreditados
+                    sqlQuery += " LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
                     sqlQuery += ArmarStringSQL(busqueda)
                 End If
             Else
                 sqlQuery += TablaAcreditados
+                sqlQuery += " LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
                 sqlQuery += ArmarStringSQL(busqueda)
                 sqlQuery += " UNION "
-                sqlQuery += ArmarStringSQL(busqueda)
                 sqlQuery += TablaNOAcreditados
+                sqlQuery += " LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
+                sqlQuery += ArmarStringSQL(busqueda)
             End If
             Dim result As List(Of Ingreso) = DAL_Ingreso.TraerTodosXBusqueda(sqlQuery)
             Return result
@@ -249,7 +252,7 @@ Namespace Entidad
                 Else
                     result += " AND "
                 End If
-                result += "denomina LIKE '%" + busqueda.RazonSocial + "%'"
+                result += "razonsocial LIKE '%" + busqueda.RazonSocial + "%'"
             End If
             If busqueda.Importe > 0 Then
                 If Not existeParametro Then
@@ -317,30 +320,9 @@ Namespace Entidad
             End If
             Return result
         End Function
-        'Public Shared Function TraerTodosXCentroCosto(IdCentroCosto As Integer) As List(Of Ingreso)
-        '    Dim result As List(Of Ingreso) = DAL_Ingreso.TraerTodosXCentroCosto(IdCentroCosto)
-        '    If result.Count = 0 Then
-        '        Throw New Exception("No existen Ingresos para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
-        'Public Shared Function TraerTodosXCUIT(CUIT As Long) As List(Of Ingreso)
-        '    Dim result As List(Of Ingreso) = DAL_Ingreso.TraerTodosXCUIT(CUIT)
-        '    If result.Count = 0 Then
-        '        Throw New Exception("No existen Ingresos para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
         Public Shared Function TraerTodosXFechasXAcreditacion(Desde As Date, Hasta As Date, IdOrigen As Integer) As List(Of Ingreso)
             Return DAL_Ingreso.TraerTodosXFechasXAcreditacion(Desde, Hasta, IdOrigen)
         End Function
-        'Public Shared Function TraerTodosXFechasXPago(Desde As Date, Hasta As Date) As List(Of Ingreso)
-        '    Dim result As List(Of Ingreso) = DAL_Ingreso.TraerTodosXFechasXPago(Desde, Hasta)
-        '    If result.Count = 0 Then
-        '        Throw New Exception("No existen Ingresos para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
         Friend Shared Sub ValidarNombreArchivoDuplicado(nombreArchivo As String)
             Dim ListaIngresos As List(Of Ingreso) = DAL_Ingreso.TraerTodosXNombreArchivo(nombreArchivo)
             If ListaIngresos.Count > 0 Then
@@ -350,13 +332,6 @@ Namespace Entidad
         Friend Shared Function TraerTodosXNombreArchivo(nombreArchivo As String) As List(Of Ingreso)
             Return DAL_Ingreso.TraerTodosXNombreArchivo(nombreArchivo)
         End Function
-        'Public Shared Function TraerTodosXPeriodo(Periodo As Integer) As List(Of Ingreso)
-        '    Dim result As List(Of Ingreso) = DAL_Ingreso.TraerTodosXPeriodo(Periodo)
-        '    If result.Count = 0 Then
-        '        Throw New Exception("No existen Ingresos para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
         ' Nuevos
         Friend Shared Function TraerUltimosXOrigen(IdOrigen As Enumeradores.TipoArchivo, Cantidad As Integer) As List(Of Ingreso)
             Return DAL_Ingreso.TraerUltimos30XOrigen(IdOrigen)
@@ -385,6 +360,7 @@ Namespace Entidad
                 .IdEntidad = IdEntidad,
                 .IdEstado = IdEstado,
                 .IdCentroCosto = IdCentroCosto,
+                .IdExplotado = IdExplotado,
                 .CodigoEntidad = CodigoEntidad,
                 .CUIT = CUIT,
                 .Periodo = Periodo,
@@ -505,6 +481,7 @@ Namespace DTO
         Public Property IdEntidad() As Integer = 0
         Public Property IdEstado() As Char = CChar("")
         Public Property IdCentroCosto() As Integer = 0
+        Public Property IdExplotado() As Integer = 0
         Public Property CodigoEntidad() As Long = 0
         Public Property CUIT() As Long = 0
         Public Property Periodo() As Integer = 0
@@ -828,89 +805,13 @@ Namespace DataAccessLibrary
                     entidad.IdOrigen = CInt(dr.Item("IdOrigen"))
                 End If
             End If
+            If dr.Table.Columns.Contains("IdExplotado") Then
+                If dr.Item("IdExplotado") IsNot DBNull.Value Then
+                    entidad.IdExplotado = CInt(dr.Item("IdExplotado"))
+                End If
+            End If
 
-            'If dr.Table.Columns.Contains("id_movimiento") Then
-            '    If dr.Item("id_movimiento") IsNot DBNull.Value Then
-            '        entidad.IdEntidad = CInt(dr.Item("id_movimiento"))
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("sec") Then
-            '    If dr.Item("sec") IsNot DBNull.Value Then
-            '        entidad.IdCentroCosto = CInt(dr.Item("sec"))
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("cod_ent") Then
-            '    If dr.Item("cod_ent") IsNot DBNull.Value Then
-            '        entidad.CodigoEntidad = CLng(dr.Item("cod_ent"))
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("CUIT") Then
-            '    If dr.Item("CUIT") IsNot DBNull.Value Then
-            '        entidad.CUIT = CLng(dr.Item("CUIT"))
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("Periodo") Then
-            '    If dr.Item("Periodo") IsNot DBNull.Value Then
-            '        If dr.Item("Periodo").ToString.Length = 7 Then
-            '            Dim temp As String = Replace(dr.Item("Periodo").ToString, "/", "")
-            '            temp = Right(temp, 4) & Left(temp, 2)
-            '            If IsNumeric(temp) Then
-            '                entidad.Periodo = CInt(temp)
-            '            End If
-            '        End If
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("cheque") Then
-            '    If dr.Item("cheque") IsNot DBNull.Value Then
-            '        entidad.NroCheche = CLng(dr.Item("cheque"))
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("Importe") Then
-            '    If dr.Item("Importe") IsNot DBNull.Value Then
-            '        entidad.Importe = CDec(dr.Item("Importe"))
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("origen") Then
-            '    If dr.Item("origen") IsNot DBNull.Value Then
-            '        entidad.IdOrigen = CInt(dr.Item("origen"))
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("nro_rec") Then
-            '    If dr.Item("nro_rec") IsNot DBNull.Value Then
-            '        If IsNumeric(dr.Item("nro_rec").ToString) Then
-            '            entidad.NroRecibo = CInt(dr.Item("nro_rec"))
-            '        End If
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("estado") Then
-            '    If dr.Item("estado") IsNot vbNullChar AndAlso dr.Item("estado") IsNot DBNull.Value Then
-            '        If dr.Item("estado").ToString = " " Then
-            '            entidad.IdEstado = CChar("A")
-            '        Else
-            '            entidad.IdEstado = CChar(dr.Item("estado"))
-            '        End If
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("fec_pago") Then
-            '    If dr.Item("fec_pago") IsNot DBNull.Value Then
-            '        entidad.FechaPago = CDate(dr.Item("fec_pago"))
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("fec_acr") Then
-            '    If dr.Item("fec_acr") IsNot DBNull.Value Then
-            '        entidad.FechaAcreditacion = CDate(dr.Item("fec_acr"))
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("fec_cpf") Then
-            '    If dr.Item("fec_cpf") IsNot DBNull.Value Then
-            '        entidad.FechaPagoFacil = CDate(dr.Item("fec_cpf"))
-            '    End If
-            'End If
-            'If dr.Table.Columns.Contains("NombreArchivo") Then
-            '    If dr.Item("NombreArchivo") IsNot DBNull.Value Then
-            '        entidad.NombreArchivo = dr.Item("NombreArchivo").ToString.ToUpper.Trim
-            '    End If
-            'End If
+
             Return entidad
         End Function
 #End Region

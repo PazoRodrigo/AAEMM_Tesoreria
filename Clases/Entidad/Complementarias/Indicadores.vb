@@ -28,6 +28,9 @@ Namespace Entidad
         Public Property EmpleadosDeudaMayor6Meses() As Integer = 0
         Public Property EmpleadosInactivos() As Integer = 0
 
+        Public Property RecaudacionNeta() As Decimal = 0
+        Public Property RecaudacionBruta() As Decimal = 0
+
         Public Property Recaudacion() As Decimal = 0
         Public Property RecaudacionXCobrarSinBoleta() As Decimal = 0
         Public Property RecaudacionXCobrarConBoleta() As Decimal = 0
@@ -76,6 +79,8 @@ Namespace Entidad
                 .EmpleadosDeuda6Meses = EmpleadosDeuda6Meses,
                 .EmpleadosDeudaMayor6Meses = EmpleadosDeudaMayor6Meses,
                 .EmpleadosInactivos = EmpleadosInactivos,
+                .RecaudacionNeta = RecaudacionNeta,
+                .RecaudacionBruta = RecaudacionBruta,
                 .Recaudacion = Recaudacion,
                 .RecaudacionXCobrarSinBoleta = RecaudacionXCobrarSinBoleta,
                 .RecaudacionXCobrarConBoleta = RecaudacionXCobrarConBoleta,
@@ -115,6 +120,9 @@ Namespace DTO
         Public Property EmpleadosDeuda6Meses() As Integer = 0
         Public Property EmpleadosDeudaMayor6Meses() As Integer = 0
         Public Property EmpleadosInactivos() As Integer = 0
+
+        Public Property RecaudacionNeta() As Decimal = 0
+        Public Property RecaudacionBruta() As Decimal = 0
 
         Public Property Recaudacion() As Decimal = 0
         Public Property RecaudacionXCobrarSinBoleta() As Decimal = 0
@@ -247,9 +255,14 @@ Namespace DataAccessLibrary
             End If
 
             ' Recaudacion
-            If dr.Table.Columns.Contains("Recaudacion") Then
-                If dr.Item("Recaudacion") IsNot DBNull.Value Then
-                    entidad.Recaudacion = CDec(dr.Item("Recaudacion"))
+            If dr.Table.Columns.Contains("RecaudacionNeta") Then
+                If dr.Item("RecaudacionNeta") IsNot DBNull.Value Then
+                    entidad.RecaudacionNeta = CDec(dr.Item("RecaudacionNeta"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("RecaudacionBruta") Then
+                If dr.Item("RecaudacionBruta") IsNot DBNull.Value Then
+                    entidad.RecaudacionBruta = CDec(dr.Item("RecaudacionBruta"))
                 End If
             End If
             If dr.Table.Columns.Contains("RecaudacionXCobrarSinBoleta") Then

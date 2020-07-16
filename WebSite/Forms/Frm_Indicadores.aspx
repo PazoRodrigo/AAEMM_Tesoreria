@@ -136,11 +136,17 @@
                                     <ul>
                                         <li class="MenuIndicador">
                                             <a href="#">
-                                                <div class="LblIndicador">Recaudación</div>
-                                                <div class="LblValorIndicador" id="LblRecaudacion"></div>
+                                                <div class="LblIndicador">Recaudación Neta</div>
+                                                <div class="LblValorIndicador" id="LblRecaudacionNeta"></div>
                                             </a>
                                             <ul class="SubMenuInidicador">
-                                                <li class="BtnIndicador">
+                                      <%--          <li class="BtnIndicador">
+                                                    <a href="#">
+                                                        <div class="LblIndicador">Recaudación Bruta</div>
+                                                        <div class="LblValorIndicador" id="LblRecaudacionBruta"></div>
+                                                    </a>
+                                                </li>--%>
+                                                <%--<li class="BtnIndicador">
                                                     <a href="#">
                                                         <div class="LblIndicador">Por Cobrar c/Boleta</div>
                                                         <div class="LblValorIndicador" id="LblRecaudacionXCobrarSinBoleta"></div>
@@ -187,8 +193,14 @@
                                                         <div class="LblIndicador">Fuera Término</div>
                                                         <div class="LblValorIndicador" id="LblRecaudacionFueraTermino"></div>
                                                     </a>
-                                                </li>
+                                                </li>--%>
                                             </ul>
+                                        </li>
+                                        <li class="MenuIndicador" style="margin-top:2px;">
+                                               <a href="#">
+                                                <div class="LblIndicador">Recaudación Bruta</div>
+                                                <div class="LblValorIndicador" id="LblRecaudacionBruta"></div>
+                                            </a>
                                         </li>
                                     </ul>
                                 </nav>

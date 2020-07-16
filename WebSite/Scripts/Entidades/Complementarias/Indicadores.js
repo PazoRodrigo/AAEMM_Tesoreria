@@ -21,15 +21,18 @@ class Indicadores {
         this.EmpleadosDeudaMayor6Meses = 0;
         this.EmpleadosInactivos = 0;
 
-        this.Recaudacion = 0;
-        this.RecaudacionXCobrarSinBoleta = 0;
-        this.RecaudacionXCobrarConBoleta = 0;
-        this.RecaudacionDeuda1Mes = 0;
-        this.RecaudacionDeuda3Meses = 0;
-        this.RecaudacionDeuda6Meses = 0;
-        this.RecaudacionDeudaMayor6Meses = 0;
-        this.RecaudacionInactivos = 0;
-        this.RecaudacionFueraTermino = 0;
+        this.RecaudacionNeta = 0;
+        this.RecaudacionBruta = 0;
+
+        //this.Recaudacion = 0;
+        //this.RecaudacionXCobrarSinBoleta = 0;
+        //this.RecaudacionXCobrarConBoleta = 0;
+        //this.RecaudacionDeuda1Mes = 0;
+        //this.RecaudacionDeuda3Meses = 0;
+        //this.RecaudacionDeuda6Meses = 0;
+        //this.RecaudacionDeudaMayor6Meses = 0;
+        //this.RecaudacionInactivos = 0;
+        //this.RecaudacionFueraTermino = 0;
 
         this.ChequesRechazados = 0;
     }
@@ -70,6 +73,9 @@ function LlenarEntidadIndicadores(entidad) {
     Res.EmpleadosDeudaMayor6Meses = entidad.EmpleadosDeudaMayor6Meses;
     Res.EmpleadosInactivos = entidad.EmpleadosInactivos;
 
+    Res.RecaudacionNeta = entidad.RecaudacionNeta;
+    Res.RecaudacionBruta = entidad.RecaudacionBruta;
+
     Res.Recaudacion = entidad.Recaudacion;
     Res.RecaudacionXCobrarSinBoleta = entidad.RecaudacionXCobrarSinBoleta;
     Res.RecaudacionXCobrarConBoleta = entidad.RecaudacionXCobrarConBoleta;
@@ -79,7 +85,6 @@ function LlenarEntidadIndicadores(entidad) {
     Res.RecaudacionDeudaMayor6Meses = entidad.RecaudacionDeudaMayor6Meses;
     Res.RecaudacionInactivos = entidad.RecaudacionInactivos;
     Res.RecaudacionFueraTermino = entidad.RecaudacionFueraTermino;
-
     Res.ChequesRechazados = entidad.ChequesRechazados;
     return Res;
 }

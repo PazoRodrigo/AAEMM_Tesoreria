@@ -165,7 +165,6 @@ document.addEventListener('EventoConfirmarEliminarGasto', async function (e) {
 $('body').on('click', '#LinkBtnCerrarGasto', async function (e) {
     try {
         if (_ObjGasto.IdEntidad > 0) {
-            alert((await _ObjGasto.ListaComprobantes()).length)
             if ((await _ObjGasto.ListaComprobantes()).length > 0) {
                 PopUpConfirmarConCancelar('info', null, 'Desea realmente cerrar el gasto?', '<i>El mismo ya no podrá reabrirse.</i>', 'EventoConfirmarCerrarGasto', 'Cerrar Gasto', 'Cancelar');
             } else {
