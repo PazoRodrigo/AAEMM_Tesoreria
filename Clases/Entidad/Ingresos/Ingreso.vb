@@ -6,6 +6,7 @@ Imports Clases.Entidad
 Imports LUM
 Imports Connection
 Imports System.IO
+Imports Newtonsoft.Json
 
 Namespace Entidad
     Public Class Ingreso
@@ -152,6 +153,7 @@ Namespace Entidad
             End If
             ' Entidad
             IdEntidad = DtODesde.IdEntidad
+            IdExplotado = DtODesde.IdExplotado
             IdCentroCosto = DtODesde.IdCentroCosto
             CodigoEntidad = DtODesde.CodigoEntidad
             CUIT = DtODesde.CUIT
@@ -350,8 +352,23 @@ Namespace Entidad
             ValidarBaja()
             DAL_Ingreso.Baja(Me)
         End Sub
+        Public Sub GuardarIngresoExplotado()
+            ValidarModifica()
+            DAL_Ingreso.GuardarIngresoExplotado(Me)
+        End Sub
+        Public Sub AltaExplosion()
+            ValidarModifica()
+            DAL_Ingreso.AltaExplosion(Me)
+        End Sub
+        Public Sub EliminarExplotado()
+            ValidarModifica()
+            DAL_Ingreso.EliminarExplotado(Me)
+        End Sub
         Public Sub Modifica()
             ValidarModifica()
+            If IdEstado = "T" Then
+                IdEstado = CChar("A")
+            End If
             DAL_Ingreso.Modifica(Me)
         End Sub
         ' Otros
@@ -379,6 +396,9 @@ Namespace Entidad
         ' Nuevos
         Public Shared Sub AltaArchivoMC(nombreArchivo As String)
             DAL_Ingreso.AltaArchivoMC(nombreArchivo)
+        End Sub
+        Public Shared Sub ExplotarIngreso(ByVal IdUsuario As Integer, IdEntidad As Integer, ByVal Lista As List(Of DTO.DTO_Ingreso))
+            DAL_Ingreso.ExplotarIngreso(IdUsuario, IdEntidad, Lista)
         End Sub
 #End Region
 #Region " Métodos Privados "
@@ -445,7 +465,7 @@ Namespace Entidad
                 Try
                     Dim Empresa As Empresa = Empresa.TraerUnaXCUIT(CUIT)
                     If Empresa IsNot Nothing Then
-                        CodigoEntidad = Empresa.IdEntidad
+                        CodigoEntidad = Empresa.Codigo
                     End If
                 Catch ex As Exception
                     ' No hace nada
@@ -512,6 +532,11 @@ Namespace DataAccessLibrary
         Const storeTraerTodosXBusqueda As String = "INGRESO.p_Ingreso_TraerXBusquedaLibre"
         Const storeTraerTodosXNombreArchivo As String = "INGRESO.p_Ingreso_TraerTodosXNombreArchivo"
 
+        Const storeGuardarIngresoExplotado As String = "INGRESO.p_Ingreso_GuardarIngresoExplotado"
+        Const storeAltaExplosion As String = "INGRESO.p_Ingreso_AltaExplosion"
+        Const storeEliminarExplotado As String = "INGRESO.p_Ingreso_EliminarExplotado"
+        Const storeExplotarIngresos As String = "INGRESO.p_Ingreso_ExplotarIngresos"
+
 
 
 
@@ -542,7 +567,7 @@ Namespace DataAccessLibrary
             pa.add("@NroCheque", entidad.NroCheque)
             pa.add("@IdEstado", entidad.IdEstado)
             pa.add("@Observaciones", entidad.Observaciones.Trim.ToUpper)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
                         entidad.IdEntidad = CInt(dt.Rows(0)(0))
@@ -556,7 +581,66 @@ Namespace DataAccessLibrary
             pa.add("@idUsuarioBaja", entidad.IdUsuarioBaja)
             pa.add("@id", entidad.IdEntidad)
             'pa.add("@IdMotivoBaja", entidad.IdMotivoBaja)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
+        End Sub
+        Public Structure SrtJSON
+            Public IdUsuario As Integer
+            Public IdEntidad As Integer
+            Public ListaIngresos As List(Of DTO.DTO_Ingreso)
+        End Structure
+        Public Shared Sub ExplotarIngreso(ByVal IdUsuario As Integer, IdEntidad As Integer, ByVal Lista As List(Of DTO.DTO_Ingreso))
+            Dim str As New DAL_Ingreso.SrtJSON
+            str.IdEntidad = IdEntidad
+            str.IdUsuario = IdUsuario
+            str.ListaIngresos = Lista
+            Dim EntidadAJson As String = JsonConvert.SerializeObject(str)
+            Dim store As String = storeExplotarIngresos
+            Dim pa As New parametrosArray
+                pa.add("@Json", EntidadAJson)
+
+        End Sub
+
+
+
+        Public Shared Sub GuardarIngresoExplotado(ByVal entidad As Ingreso)
+            Dim store As String = storeGuardarIngresoExplotado
+            Dim pa As New parametrosArray
+            pa.add("@idUsuarioModifica", entidad.IdUsuarioModifica)
+            pa.add("@Id_a_Explotar", entidad.IdEntidad)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
+        End Sub
+        Public Shared Sub AltaExplosion(ByVal entidad As Ingreso)
+            Dim store As String = storeAltaExplosion
+            Dim pa As New parametrosArray
+            pa.add("@idUsuarioModifica", entidad.IdUsuarioModifica)
+            pa.add("@Id_a_Explotar", entidad.IdExplotado)
+            pa.add("@Periodo", entidad.Periodo)
+            pa.add("@Importe", entidad.Importe)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
+        End Sub
+        Public Shared Sub EliminarExplotado(ByVal entidad As Ingreso)
+            Dim store As String = storeEliminarExplotado
+            Dim pa As New parametrosArray
+            pa.add("@Id_a_Explotar", entidad.IdEntidad)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
                         entidad.IdEntidad = CInt(dt.Rows(0)(0))
@@ -588,7 +672,7 @@ Namespace DataAccessLibrary
             Dim store As String = storeTraerTodos
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -601,7 +685,7 @@ Namespace DataAccessLibrary
             Dim store As String = storeTraerTodosAcreditados
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -614,7 +698,7 @@ Namespace DataAccessLibrary
             Dim store As String = storeTraerTodosNOAcreditados
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -628,7 +712,7 @@ Namespace DataAccessLibrary
             Dim result As New Ingreso
             Dim pa As New parametrosArray
             pa.add("@id", id)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
                         result = LlenarEntidad(dt.Rows(0))
@@ -688,7 +772,7 @@ Namespace DataAccessLibrary
             Dim store As String = storeAltaArchivoMC
             Dim pa As New parametrosArray
             pa.add("@nombreArchivo", nombreArchivo)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
                         result = CInt(dt.Rows(0)(0))
@@ -701,7 +785,7 @@ Namespace DataAccessLibrary
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray
             pa.add("@sqlQuery", sqlQuery)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))

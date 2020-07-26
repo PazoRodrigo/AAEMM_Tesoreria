@@ -59,6 +59,8 @@ class Ingreso extends DBE {
         }
         return Result;
     }
+
+
     // Lazy
     async ObjCentroCosto() {
         try {
@@ -126,6 +128,91 @@ class Ingreso extends DBE {
     }
 
     // ABM
+    async ExplotarIngreso(ListaIngresosExplotados) {
+        if (ListaIngresosExplotados.length == 0) {
+            throw 'No hay Explotación por realizar'
+        }
+        let Sumatoria = 0;
+        if (ListaIngresosExplotados.length > 0) {
+            let indice = 0;
+            while (indice <= ListaIngresosExplotados.length - 1) {
+                ListaIngresosExplotados[indice].IdEstado = 'A';
+                let Periodo = ListaIngresosExplotados[indice].Periodo;
+                Sumatoria += parseFloat(ListaIngresosExplotados[indice].Importe);
+                if (Periodo.length == 7) {
+                    ListaIngresosExplotados[indice].Periodo = Right(Periodo, 4) + Left(Periodo, 2)
+                }
+                indice++;
+            }
+        }
+        if (parseFloat(Sumatoria) != parseFloat(this.Importe)) {
+            throw 'La explotación no puede completarse. Existen diferencias entre el valor del Ingreso y su Explotación'
+        }
+        // Con JSon
+        // let ObjU = JSON.parse(sessionStorage.getItem("User"));
+        // let data = {
+        //     'IdUsuario': ObjU.IdEntidad,
+        //     'IdIngreso': this.IdEntidad,
+        //     'ListaIngresos': ListaIngresos
+        // };
+        // let id = await ejecutarAsync(urlWsIngreso + "/ExplotarIngreso", data);
+
+        await this.GuardarExplotado();
+        for (let NuevoIngreso of ListaIngresosExplotados) {
+            NuevoIngreso.IdExplotado = this.IdEntidad;
+            NuevoIngreso.Importe = parseFloat(NuevoIngreso.Importe);
+            NuevoIngreso.Periodo = parseInt(NuevoIngreso.Periodo);
+            await Ingreso.AltaExplosion(NuevoIngreso);
+        }
+        await this.EliminarExplotado();
+    }
+    // async Explotar(ListaIngresos) {
+
+    //     // if (id !== undefined)
+    //     //     this.IdEntidad = id;
+    //     // let buscados = $.grep(_ListaIngresos, function (entidad, index) {
+    //     //     return entidad.IdEntidad !== id;
+    //     // });
+    //     // _ListaIngresos = buscados;
+    // }
+    async GuardarExplotado() {
+        let ObjU = JSON.parse(sessionStorage.getItem("User"));
+        this.IdUsuarioModifica = ObjU.IdEntidad;
+        let data = {
+            'entidad': this
+        };
+        let id = await ejecutarAsync(urlWsIngreso + "/GuardarIngresoExplotado", data);
+        // if (id !== undefined)
+        //     this.IdEntidad = id;
+        // let buscados = $.grep(_ListaIngresos, function (entidad, index) {
+        //     return entidad.IdEntidad !== id;
+        // });
+        // _ListaIngresos = buscados;
+    }
+    static async AltaExplosion(entidad) {
+        let ObjU = JSON.parse(sessionStorage.getItem("User"));
+        entidad.IdUsuarioModifica = ObjU.IdEntidad;
+        let data = {
+            'entidad': entidad
+        };
+        let id = await ejecutarAsync(urlWsIngreso + "/AltaExplosion", data);
+        // if (id !== undefined)
+        //     this.IdEntidad = id;
+        // _ListaIngresos = buscados;
+        // _ListaIngresos.push(this);
+    }
+    async EliminarExplotado() {
+        let ObjU = JSON.parse(sessionStorage.getItem("User"));
+        this.IdUsuarioModifica = ObjU.IdEntidad;
+        let data = {
+            'entidad': this
+        };
+        let id = await ejecutarAsync(urlWsIngreso + "/EliminarExplotado", data);
+        // if (id !== undefined)
+        //     this.IdEntidad = id;
+        // _ListaIngresos = buscados;
+        // _ListaIngresos.push(this);
+    }
     async Modifica() {
         await this.ValidarCamposIngreso();
         try {
@@ -302,9 +389,13 @@ class Ingreso extends DBE {
         str += '    <tbody>';
         if (lista.length > 0) {
             for (let item of lista) {
+                let StrPeriodo = '';
+                if (item.Periodo.length > 0) {
+                    StrPeriodo = Right(item.Periodo, 2) + '/' + Left(item.Periodo, 4);
+                }
                 str += '        <tr>';
-                str += '            <td class="col-3 text-center" ><input type="text" id="EntidadPeriodo" class="form-control text-center" placeholder = "MM/aaaa" /></td>';
-                str += '            <td class="col-3 text-right pr-1" ><input id="valor_' + item.IdEntidad + '" type="text" id="EntidadImporte" class="form-control text-center" placeholder="Importe" value="' + item.Importe + '" onkeypress="return jsSoloNumeros(event)"/></td>';
+                str += '            <td class="col-3 text-center" ><input id="Periodo_' + item.IdEntidad + '" type="text" id="EntidadPeriodo" class="form-control text-center" placeholder = "MM/aaaa" value="' + StrPeriodo + '" /></td>';
+                str += '            <td class="col-3 text-right pr-1" ><input id="Importe_' + item.IdEntidad + '" type="text" id="EntidadImporte" class="form-control text-center" placeholder="Importe" value="' + separadorMiles(parseFloat(item.Importe).toFixed(2)) + '" onkeypress="return jsSoloNumeros(event)"/></td>';
                 str += '            <td class="col-1 text-center"><a hfre="#" id="' + item.IdEntidad + '" data-Evento="' + evento + '" onclick="AgregarLineaExplotar(this);"><img src="../../Imagenes/plusVerde.png" alt="" /></a></td>';
                 str += '        </tr>';
             }
@@ -313,7 +404,7 @@ class Ingreso extends DBE {
         str += '</table >';
         str += '</div >';
         if (lista.length > 0) {
-            str += '<div class="row justify-content-center"><div class="col-10"><div class="btn btn-block btn-success">Guardar Separación de Ingreso</div></div></div>';
+            str += '<div class="row justify-content-center"><div class="col-10"><div onclick="EventoGuardarExplotacion(this);"  class="btn btn-block btn-success">Guardar Explotación de Ingreso</div></div></div>';
         }
         return $("#" + div + "").html(str);
     }
@@ -368,9 +459,30 @@ async function AgregarLineaExplotar(MiElemento) {
         let evento = elemento.getAttribute('data-Evento');
         let Res = new Ingreso;
         Res.IdEntidad = elemento.id;
-        Res.Importe = $("#valor_" + Res.IdEntidad).val();
+        Res.Importe = $("#Importe_" + Res.IdEntidad).val();
+        let T_Periodo = $("#Periodo_" + Res.IdEntidad).val();
+        if (T_Periodo.length == 0) {
+            throw 'Debe completar el período';
+        } else {
+            if (T_Periodo.length != 7) {
+                throw 'Debe completar el período correctamente';
+            }
+        }
+        Res.Periodo = Right(T_Periodo, 4) + Left(T_Periodo, 2);
         let event = new CustomEvent(evento, {
             detail: Res
+        });
+        document.dispatchEvent(event);
+    } catch (e) {
+        alertAlerta(e);
+    }
+}
+async function EventoGuardarExplotacion(MiElemento) {
+    try {
+        let elemento = document.getElementById(MiElemento.id);
+        let evento = 'EventoGuardarExplotacion';
+        let event = new CustomEvent(evento, {
+            detail: ''
         });
         document.dispatchEvent(event);
     } catch (e) {

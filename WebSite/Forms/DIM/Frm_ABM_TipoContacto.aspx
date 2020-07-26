@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Tipos de Contacto" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ABM_TipoContacto.aspx.vb" Inherits="Forms_Frm_ABM_TipoContacto" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_ABM_TipoContacto.js?version20200715_1")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_ABM_TipoContacto.js?version20200716_1")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';

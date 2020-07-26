@@ -59,8 +59,7 @@ function LimpiarIngreso() {
     $("#EntidadRazonSocial").prop('disabled', true);
     $("#EntidadImporte").prop('disabled', true);
 }
-
-$('body').on('click', '#BtnBuscador', async function (e) {
+async function RealizarBusqueda() {
     let Result = 0;
     try {
         $("#ContenedorSeleccionado").css("display", "none");
@@ -84,6 +83,10 @@ $('body').on('click', '#BtnBuscador', async function (e) {
     } finally {
         $("#LblValorSeleccion").text(separadorMiles(Result.toFixed(2)));
     }
+}
+$('body').on('click', '#BtnBuscador', async function (e) {
+    await RealizarBusqueda();
+
 });
 
 async function ArmarBusqueda() {
@@ -199,11 +202,10 @@ $('body').on('click', '#BtnModificar', async function (e) {
 });
 $('body').on('click', '#BtnExplotar', async function (e) {
     try {
-        alertInfo('En Desarrollo')
-        //if (_ObjIngreso.CodigoEntidad == 0) {
-        //    throw 'Debe informar el CUIT del Ingreso para luego separarlo';
-        //}
-        //PopUpConfirmarConCancelar('info', null, 'Desea realmente explotar el Ingreso?', '', 'EventoConfirmarExplotarIngreso', 'Explotar Ingreso', 'Cancelar', 'green');
+        if (_ObjIngreso.CodigoEntidad == 0) {
+            throw 'Debe informar el CUIT del Ingreso para luego separarlo';
+        }
+        PopUpConfirmarConCancelar('info', null, 'Desea realmente explotar el Ingreso?', '', 'EventoConfirmarExplotarIngreso', 'Explotar Ingreso', 'Cancelar', 'green');
     } catch (e) {
         spinnerClose();
         alertAlerta(e);
@@ -221,6 +223,7 @@ document.addEventListener('EventoConfirmarExplotarIngreso', async function (e) {
         await Explotar_NuevoIngreso();
         await Ingreso.ArmarGrillaIngresoSeparado('GrillaIngresoSeparado', _ListaIngresosExplotado, '', 'EventoAgregarExplotacion', _ObjIngreso);
         $("#DivExplotacionIngreso").css('display', 'block')
+        $("#Periodo_" + _ListaIngresosExplotado.length).focus();
     } catch (e) {
         alertAlerta(e);
     }
@@ -230,13 +233,11 @@ async function Explotar_NuevoIngreso() {
     if (_ListaIngresosExplotado.length == 0) {
         NuevoIngreso.IdEntidad = 1;
     } else {
-        alertAlerta(_ListaIngresosExplotado.length - 1);
-        alertAlerta(_ListaIngresosExplotado[_ListaIngresosExplotado.length - 1].IdEntidad + 1);
-        NuevoIngreso.IdEntidad = _ListaIngresosExplotado[_ListaIngresosExplotado.length - 1].IdEntidad + 1;
+        let NroEntidad = _ListaIngresosExplotado[_ListaIngresosExplotado.length - 1].IdEntidad + 1;
+        NuevoIngreso.IdEntidad = parseInt(NroEntidad);
     }
     NuevoIngreso.Importe = await Explotar_Resto();
     _ListaIngresosExplotado.push(NuevoIngreso);
-
 }
 async function Explotar_Resto() {
     let Result = _ObjIngreso.Importe;
@@ -250,15 +251,16 @@ async function Explotar_Resto() {
 document.addEventListener('EventoAgregarExplotacion', async function (e) {
     try {
         let objSeleccionado = e.detail;
-        console.log(objSeleccionado);
         buscado = $.grep(_ListaIngresosExplotado, function (entidad, index) {
-            return entidad.IdEntidad === objSeleccionado.IdEntidad;
+            return entidad.IdEntidad === parseInt(objSeleccionado.IdEntidad);
         });
-        buscado[0].Importe = objSeleccionado.Importe;
-        console.log(buscado[0]);
+        let Encontrado = buscado[0];
+        Encontrado.Importe = objSeleccionado.Importe;
+        Encontrado.Periodo = objSeleccionado.Periodo;
         $("#LblImporteRestante").text(separadorMiles((await Explotar_Resto()).toFixed(2)));
         await Explotar_NuevoIngreso();
         await Ingreso.ArmarGrillaIngresoSeparado('GrillaIngresoSeparado', _ListaIngresosExplotado, '', 'EventoAgregarExplotacion', _ObjIngreso);
+        $("#Periodo_" + _ListaIngresosExplotado.length).focus();
     } catch (e) {
         alertAlerta(e);
     }
@@ -270,10 +272,24 @@ document.addEventListener('EventoSeleccionarIngreso', async function (e) {
         listaTempIngresos.push(objSeleccionado);
         await Ingreso.ArmarGrillaDetalle('GrillaDetalle', listaTempIngresos, 'EventoSeleccionarIngreso', '');
         _ObjIngreso = objSeleccionado;
+        _ListaIngresosExplotado = [];
         await LlenarIngreso();
         $("#divCantRegistrosBusqueda").css("display", "none");
         $("#ContenedorSeleccionado").css("display", "block");
     } catch (e) {
+        alertAlerta(e);
+    }
+}, false);
+document.addEventListener('EventoGuardarExplotacion', async function (e) {
+    try {
+        spinner();
+        _ListaIngresosExplotado[_ListaIngresosExplotado.length - 1].Periodo = $("#Periodo_" + _ListaIngresosExplotado.length).val();
+        await _ObjIngreso.ExplotarIngreso(_ListaIngresosExplotado);
+        await RealizarBusqueda();
+        spinnerClose();
+        alertOk('El Pago ha sido explotado correctamente');
+    } catch (e) {
+        spinnerClose();
         alertAlerta(e);
     }
 }, false);

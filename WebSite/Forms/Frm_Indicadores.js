@@ -29,7 +29,6 @@ async function Inicio() {
     $("#LblEmpleadosDeudaMayor6Meses").text(ObjIndicadores.EmpleadosDeudaMayor6Meses);
     $("#LblEmpleadosInactivos").text(ObjIndicadores.EmpleadosInactivos);
 
-    console.log(ObjIndicadores);
     $("#LblRecaudacionNeta").text(separadorMiles(ObjIndicadores.RecaudacionNeta.toFixed(2)));
     $("#LblRecaudacionBruta").text(separadorMiles(ObjIndicadores.RecaudacionBruta.toFixed(2)));
 
