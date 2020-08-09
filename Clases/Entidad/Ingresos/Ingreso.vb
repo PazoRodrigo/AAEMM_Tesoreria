@@ -313,6 +313,8 @@ Namespace Entidad
                 End While
                 result += ")"
             End If
+            result += " ORDER BY fechaAcreditacion, Periodo "
+
             Return result
         End Function
         Public Shared Function TraerUno(ByVal Id As Integer) As Ingreso
@@ -425,24 +427,35 @@ Namespace Entidad
         Private Sub ValidarCampos()
             Dim sError As String = ""
             ValidarCaracteres()
-            ' Campo Integer/Decimal
-            '	If Me.VariableNumero.toString = "" Then
-            '   	sError &= "<b>VariableNumero</b> Debe ingresar VariableNumero. <br />"
-            '	ElseIf Not isnumeric(Me.VariableNumero) Then
-            '   	sError &= "<b>VariableNumero</b> Debe ser numérico. <br />"
-            '	End If
+            If Me.CUIT.ToString = "" Then
+                sError &= "<b>CUIT</b> Debe ingresar el CUIT. <br />"
+            ElseIf Not IsNumeric(Me.CUIT) Then
+                sError &= "<b>CUIT</b> Debe ser numérico. <br />"
+            End If
+            If Me.CodigoEntidad.ToString = "" Then
+                sError &= "<b>Código Entidad</b> Debe ingresar el Código Entidad. <br />"
+            ElseIf Not IsNumeric(Me.CodigoEntidad) Then
+                sError &= "<b>Código Entidad</b> Debe ser numérico. <br />"
+            End If
+            If Not Me.FechaAcreditacion.HasValue Then
+                sError &= "<b>Fecha de Acreditación</b> Debe ingresar la Fecha de Acreditación. <br />"
+            End If
+            If Me.Periodo.ToString = "" Then
+                sError &= "<b>Período</b> Debe ingresar el Período. <br />"
+            ElseIf Not IsNumeric(Me.Periodo) Then
+                sError &= "<b>Período </b> Debe ser numérico. <br />"
+            End If
+            If Me.Periodo.ToString = "" Then
+                sError &= "<b>Importe</b> Debe ingresar el Importe. <br />"
+            ElseIf Not IsNumeric(Me.Periodo) Then
+                sError &= "<b>Importe </b> Debe ser numérico. <br />"
+            End If
+            'If Me.RazonSocial = "" Then
+            '    sError &= "<b>VariableString</b> Debe ingresar VariableString. <br />"
+            'ElseIf Me.apellido.Length > 50 Then
+            '    sError &= "<b>VariableString</b>Debe tener como máximo 50 caracteres. <br />"
+            'End If
 
-            ' Campo String
-            '	If Me.VariableString = "" Then
-            '		sError &= "<b>VariableString</b> Debe ingresar VariableString. <br />"
-            '	ElseIf Me.apellido.Length > 50 Then
-            '		sError &= "<b>VariableString</b>Debe tener como máximo 50 caracteres. <br />"
-            '	End If
-
-            ' Campo Date
-            '	If Not Me.VariableFecha.has value Then
-            '		sError &= "<b>VariableFecha</b> Debe ingresar VariableFecha. <br />"
-            '	End If
             If sError <> "" Then
                 sError = "<b>Debe corregir los siguientes errores</b> <br /> <br />" & sError
                 Throw New Exception(sError)

@@ -139,9 +139,7 @@ class Ingreso extends DBE {
                 ListaIngresosExplotados[indice].IdEstado = 'A';
                 let Periodo = ListaIngresosExplotados[indice].Periodo;
                 Sumatoria += parseFloat(ListaIngresosExplotados[indice].Importe);
-                if (Periodo.length == 7) {
-                    ListaIngresosExplotados[indice].Periodo = Right(Periodo, 4) + Left(Periodo, 2)
-                }
+                ListaIngresosExplotados[indice].Periodo = Right(Periodo, 4) + Left(Periodo, 2)
                 indice++;
             }
         }
@@ -166,15 +164,6 @@ class Ingreso extends DBE {
         }
         await this.EliminarExplotado();
     }
-    // async Explotar(ListaIngresos) {
-
-    //     // if (id !== undefined)
-    //     //     this.IdEntidad = id;
-    //     // let buscados = $.grep(_ListaIngresos, function (entidad, index) {
-    //     //     return entidad.IdEntidad !== id;
-    //     // });
-    //     // _ListaIngresos = buscados;
-    // }
     async GuardarExplotado() {
         let ObjU = JSON.parse(sessionStorage.getItem("User"));
         this.IdUsuarioModifica = ObjU.IdEntidad;
@@ -182,12 +171,6 @@ class Ingreso extends DBE {
             'entidad': this
         };
         let id = await ejecutarAsync(urlWsIngreso + "/GuardarIngresoExplotado", data);
-        // if (id !== undefined)
-        //     this.IdEntidad = id;
-        // let buscados = $.grep(_ListaIngresos, function (entidad, index) {
-        //     return entidad.IdEntidad !== id;
-        // });
-        // _ListaIngresos = buscados;
     }
     static async AltaExplosion(entidad) {
         let ObjU = JSON.parse(sessionStorage.getItem("User"));
@@ -196,10 +179,6 @@ class Ingreso extends DBE {
             'entidad': entidad
         };
         let id = await ejecutarAsync(urlWsIngreso + "/AltaExplosion", data);
-        // if (id !== undefined)
-        //     this.IdEntidad = id;
-        // _ListaIngresos = buscados;
-        // _ListaIngresos.push(this);
     }
     async EliminarExplotado() {
         let ObjU = JSON.parse(sessionStorage.getItem("User"));
@@ -208,10 +187,6 @@ class Ingreso extends DBE {
             'entidad': this
         };
         let id = await ejecutarAsync(urlWsIngreso + "/EliminarExplotado", data);
-        // if (id !== undefined)
-        //     this.IdEntidad = id;
-        // _ListaIngresos = buscados;
-        // _ListaIngresos.push(this);
     }
     async Modifica() {
         await this.ValidarCamposIngreso();
@@ -229,7 +204,7 @@ class Ingreso extends DBE {
                 return entidad.IdEntidad !== id;
             });
             _ListaIngresos = buscados;
-            this.IdEstado = 0;
+            this.IdEstado = 'A';
             _ListaIngresos.push(this);
             return;
         } catch (e) {
@@ -260,7 +235,7 @@ class Ingreso extends DBE {
                     sError += 'Debe ingresar el Período correctamente "MM/aaaa"  <br >';
                 } else {
                     let meses = Left(this.Periodo, 2);
-                    if (meses < 1 || meses > 11) {
+                    if (meses < 1 || meses > 12) {
                         sError += 'Verifique el Mes del Período  <br >';
                     }
                     let años = Right(this.Periodo, 4);
@@ -276,7 +251,14 @@ class Ingreso extends DBE {
                 }
             }
         }
+        let separadorDecimal = parseInt(this.Importe.length) - 3;
+        let b = this.Importe[separadorDecimal];
+        if (this.Importe[separadorDecimal] == '.') {
+            if (this.Importe.length > 6) {
+                this.Importe = this.Importe.replace(',', '');
+            }
 
+        }
         if (sError.length > 0) {
             throw sError;
         }
@@ -374,7 +356,7 @@ class Ingreso extends DBE {
         str += '</div >';
         return $("#" + div + "").html(str);
     }
-    static async ArmarGrillaIngresoSeparado(div, lista, estilo, evento) {
+    static async ArmarGrillaIngresoExplotado(div, lista, estilo, evento) {
         $("#" + div + "").html('');
         let str = "";
         str += '<div style="' + estilo + '">';
@@ -391,11 +373,17 @@ class Ingreso extends DBE {
             for (let item of lista) {
                 let StrPeriodo = '';
                 if (item.Periodo.length > 0) {
-                    StrPeriodo = Right(item.Periodo, 2) + '/' + Left(item.Periodo, 4);
+                    StrPeriodo = Left(item.Periodo, 2) + '/' + Right(item.Periodo, 4);
+                }
+                let deshabilitado = '';
+                if (lista.length > 1) {
+                    if (item.IdEntidad < lista.length) {
+                        deshabilitado = 'disabled'
+                    }
                 }
                 str += '        <tr>';
-                str += '            <td class="col-3 text-center" ><input id="Periodo_' + item.IdEntidad + '" type="text" id="EntidadPeriodo" class="form-control text-center" placeholder = "MM/aaaa" value="' + StrPeriodo + '" /></td>';
-                str += '            <td class="col-3 text-right pr-1" ><input id="Importe_' + item.IdEntidad + '" type="text" id="EntidadImporte" class="form-control text-center" placeholder="Importe" value="' + separadorMiles(parseFloat(item.Importe).toFixed(2)) + '" onkeypress="return jsSoloNumeros(event)"/></td>';
+                str += '            <td class="col-3 text-center" ><input ' + deshabilitado + ' id="Periodo_' + item.IdEntidad + '" type="text" id="EntidadPeriodo" class="form-control text-center" maxlength="6" placeholder="MMaaaa" onkeypress="return jsSoloNumeros(event)" value="' + StrPeriodo + '" /></td>';
+                str += '            <td class="col-3 text-right pr-1" ><input ' + deshabilitado + ' id="Importe_' + item.IdEntidad + '" type="text" id="EntidadImporte" class="form-control text-center" placeholder="Importe" value="' + separadorMiles(parseFloat(item.Importe).toFixed(2)) + '" onkeypress="return jsSoloNumeros(event)"/></td>';
                 str += '            <td class="col-1 text-center"><a hfre="#" id="' + item.IdEntidad + '" data-Evento="' + evento + '" onclick="AgregarLineaExplotar(this);"><img src="../../Imagenes/plusVerde.png" alt="" /></a></td>';
                 str += '        </tr>';
             }
@@ -403,11 +391,23 @@ class Ingreso extends DBE {
         str += '    </tbody>';
         str += '</table >';
         str += '</div >';
-        if (lista.length > 0) {
-            str += '<div class="row justify-content-center"><div class="col-10"><div onclick="EventoGuardarExplotacion(this);"  class="btn btn-block btn-success">Guardar Explotación de Ingreso</div></div></div>';
-        }
         return $("#" + div + "").html(str);
     }
+    static async MostrarBotonesExplotado(div) {
+        let str = '';
+        str += '<div class="row justify-content-center mt-4">';
+        str += '    <div class="col-10">';
+        str += '        <div onclick="EventoGuardarExplotacion(this);"  class="btn btn-block btn-success">Guardar Explotación de Ingreso</div>';
+        str += '    </div>';
+        str += '</div>';
+        str += '<div class="row justify-content-center mt-3">';
+        str += '    <div class="col-10">';
+        str += '        <div onclick="EventoRehacerExplotacion(this);"  class="btn btn-block btn-danger">Rehacer Explotación de Ingreso</div>';
+        str += '    </div>';
+        str += '</div>';
+        return $("#" + div + "").html(str);
+    }
+
 }
 
 function LlenarEntidadIngreso(entidad) {
@@ -457,20 +457,11 @@ async function AgregarLineaExplotar(MiElemento) {
     try {
         let elemento = document.getElementById(MiElemento.id);
         let evento = elemento.getAttribute('data-Evento');
-        let Res = new Ingreso;
-        Res.IdEntidad = elemento.id;
-        Res.Importe = $("#Importe_" + Res.IdEntidad).val();
-        let T_Periodo = $("#Periodo_" + Res.IdEntidad).val();
-        if (T_Periodo.length == 0) {
-            throw 'Debe completar el período';
-        } else {
-            if (T_Periodo.length != 7) {
-                throw 'Debe completar el período correctamente';
-            }
-        }
-        Res.Periodo = Right(T_Periodo, 4) + Left(T_Periodo, 2);
+        let IngresoAValidar = [];
+        IngresoAValidar.Importe = $("#Importe_" + elemento.id).val();
+        IngresoAValidar.Periodo = $("#Periodo_" + elemento.id).val();
         let event = new CustomEvent(evento, {
-            detail: Res
+            detail: IngresoAValidar
         });
         document.dispatchEvent(event);
     } catch (e) {
@@ -479,8 +470,23 @@ async function AgregarLineaExplotar(MiElemento) {
 }
 async function EventoGuardarExplotacion(MiElemento) {
     try {
+
+
         let elemento = document.getElementById(MiElemento.id);
         let evento = 'EventoGuardarExplotacion';
+        let event = new CustomEvent(evento, {
+            detail: ''
+        });
+        document.dispatchEvent(event);
+    } catch (e) {
+        throw 'La sumatoria del valor explotado es mayor al importe del Ingreso.'
+        alertAlerta(e);
+    }
+}
+async function EventoRehacerExplotacion(MiElemento) {
+    try {
+        let elemento = document.getElementById(MiElemento.id);
+        let evento = 'EventoRehacerExplotacion';
         let event = new CustomEvent(evento, {
             detail: ''
         });

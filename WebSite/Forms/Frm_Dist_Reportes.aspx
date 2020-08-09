@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Reportes" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Dist_Reportes.aspx.vb" Inherits="Forms_Frm_Dist_Reportes" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Dist_Reportes.js?version20200716_1")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Dist_Reportes.js?version20200731_1")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -13,7 +13,7 @@
             } else if (e.ctrlKey && e.altKey && (e.which == 71 || e.which == 103)) {
                 // Ctrol + Alt + G
                 redirect = '<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gastos.aspx")%>';
-             } else if (e.ctrlKey && e.altKey && (e.which == 67 || e.which == 99)) {
+            } else if (e.ctrlKey && e.altKey && (e.which == 67 || e.which == 99)) {
                 // Ctrol + Alt + C
                 redirect = '<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Comprobantes.aspx")%>';
             }
@@ -29,31 +29,29 @@
                 <span id="SpanNombreFormulario"></span>
             </div>
         </li>
-        <li>
-            <li class="linea">
-                <div class="container-fluid">
-                    <div class="row mt-1">
-                        <div class="col-lg-4">
-                            <nav>
-                                <ul class="Menu">
-                                    <li class="BtnDistribuidor">
-                                        <ul class="SubMenu">
-                                            <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>'>(Alt + I) - Ingresos</a></li>
-                                             <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gasto.aspx")%>'>(Alt + G) - Gastos</a></li> 
-                                            <%--<li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gastos2.aspx")%>'>(Alt + G) - Gastos y Comprobantes</a></li>--%>
-                                             <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Comprobante.aspx")%>'>(Alt + C) - Comprobantes</a></li> 
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <div class="col-lg-4">
-                        </div>
-                        <div class="col-lg-4">
-                        </div>
+        <li class="linea">
+            <div class="container-fluid">
+                <div class="row mt-1">
+                    <div class="col-lg-4">
+                        <nav>
+                            <ul class="Menu">
+                                <li class="BtnDistribuidor">
+                                    <ul class="SubMenu">
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Ingresos.aspx")%>'>(Alt + I) - Ingresos</a></li>
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_IngresosMensualesMenu.aspx")%>'>(Alt + M) - Ingresos Mensuales</a></li>
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Gasto.aspx")%>'>(Alt + G) - Gastos</a></li>
+                                        <li><a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_Comprobante.aspx")%>'>(Alt + C) - Comprobantes</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-lg-4">
+                    </div>
+                    <div class="col-lg-4">
                     </div>
                 </div>
-            </li>
+            </div>
         </li>
     </ul>
 </asp:Content>

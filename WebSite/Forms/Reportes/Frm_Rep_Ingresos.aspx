@@ -25,7 +25,7 @@
             </div>
         </li>
         <li class="linea">
-            <div class="container-fluid" style="height: 400px; overflow-y: scroll;">
+            <div class="container-fluid" style="height: 450px; overflow-y: scroll;">
                 <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                 <rsweb:ReportViewer ID="ReportViewer1" runat="server" Width="100%">
                 </rsweb:ReportViewer>

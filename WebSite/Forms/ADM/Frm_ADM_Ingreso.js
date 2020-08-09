@@ -1,5 +1,6 @@
 ﻿var _ListaIngresos;
 var _ObjIngreso;
+let _ListaIngresosExplotado = [];
 
 $(document).ready(function () {
     try {
@@ -57,7 +58,7 @@ function LimpiarIngreso() {
     $("#LblExplotado").text('');
     $("#EntidadCodigoEntidad").prop('disabled', true);
     $("#EntidadRazonSocial").prop('disabled', true);
-    $("#EntidadImporte").prop('disabled', true);
+    //$("#EntidadImporte").prop('disabled', true);
 }
 async function RealizarBusqueda() {
     let Result = 0;
@@ -86,7 +87,6 @@ async function RealizarBusqueda() {
 }
 $('body').on('click', '#BtnBuscador', async function (e) {
     await RealizarBusqueda();
-
 });
 
 async function ArmarBusqueda() {
@@ -176,6 +176,7 @@ async function LlenarIngreso() {
 $('body').on('keyup', '#EntidadCUIT', async function (e) {
     let Texto = $("#EntidadCUIT").val();
     _ObjIngreso.CodigoEntidad = 0;
+    $("#EntidadCodigoEntidad").val('');
     if (Texto.length == 11) {
         let TempEmpresa = await Empresa.TraerUnaXCUIT(Texto);
         $("#EntidadCodigoEntidad").val(await TempEmpresa.StrCodigo(6));
@@ -188,13 +189,16 @@ $('body').on('click', '#BtnModificar', async function (e) {
     try {
         spinner();
         _ObjIngreso.CUIT = $("#EntidadCUIT").val();
+        _ObjIngreso.CodigoEntidad = $("#EntidadCodigoEntidad").val();
         _ObjIngreso.Periodo = $("#EntidadPeriodo").val();
         _ObjIngreso.NroCheque = $("#EntidadNroCheque").val();
         _ObjIngreso.Importe = $("#EntidadImporte").val();
         await _ObjIngreso.Modifica();
-        $("#Grilla").css("display", "none");
-        alertOk('El Ingreso ha sido modificado correctamente.');
+        $("#BuscaCUIT").val(_ObjIngreso.CUIT);
+        await RealizarBusqueda();
         spinnerClose();
+
+        alertOk('El Ingreso ha sido modificado correctamente.');
     } catch (e) {
         spinnerClose();
         alertAlerta(e);
@@ -211,7 +215,6 @@ $('body').on('click', '#BtnExplotar', async function (e) {
         alertAlerta(e);
     }
 });
-let _ListaIngresosExplotado = [];
 document.addEventListener('EventoConfirmarExplotarIngreso', async function (e) {
     try {
         $("#EntidadCUIT").prop('disabled', true);
@@ -221,7 +224,7 @@ document.addEventListener('EventoConfirmarExplotarIngreso', async function (e) {
         $("#LblImporteRestante").text(separadorMiles((await Explotar_Resto()).toFixed(2)));
         _ListaIngresosExplotado = [];
         await Explotar_NuevoIngreso();
-        await Ingreso.ArmarGrillaIngresoSeparado('GrillaIngresoSeparado', _ListaIngresosExplotado, '', 'EventoAgregarExplotacion', _ObjIngreso);
+        await Ingreso.ArmarGrillaIngresoExplotado('GrillaIngresoSeparado', _ListaIngresosExplotado, '', 'EventoAgregarExplotacion', _ObjIngreso);
         $("#DivExplotacionIngreso").css('display', 'block')
         $("#Periodo_" + _ListaIngresosExplotado.length).focus();
     } catch (e) {
@@ -236,30 +239,67 @@ async function Explotar_NuevoIngreso() {
         let NroEntidad = _ListaIngresosExplotado[_ListaIngresosExplotado.length - 1].IdEntidad + 1;
         NuevoIngreso.IdEntidad = parseInt(NroEntidad);
     }
-    NuevoIngreso.Importe = await Explotar_Resto();
     _ListaIngresosExplotado.push(NuevoIngreso);
 }
+
 async function Explotar_Resto() {
     let Result = _ObjIngreso.Importe;
     if (_ListaIngresosExplotado.length > 0) {
         for (let ItemIngreso of _ListaIngresosExplotado) {
-            Result -= ItemIngreso.Importe
+            Result -= parseFloat(ItemIngreso.Importe)
         }
+    }
+    if (Result < 0) {
+        throw 'La sumatoria del valor explotado es mayor al importe del Ingreso.';
     }
     return Result;
 }
+async function Explotar_AgregarIngreso(aValidar) {
+    let NuevoIngreso = new Ingreso;
+    let sError = '';
+    let TempImporte = aValidar.Importe;
+    let TempPeriodo = aValidar.Periodo;
+    let TotalCaracteres = TempImporte.length;
+    let separadorDecimal = parseInt(TotalCaracteres) - 3;
+    let paraborrar = TempImporte[separadorDecimal];
+    if (paraborrar == ',') {
+        if (TempImporte.length > 6) {
+            TempImporte = TempImporte.replace('.', '');
+        }
+    }
+    if (parseFloat(TempImporte) <= 0) {
+        sError += 'El importe debe ser mayor a 0.00<br>';
+    }
+    if (TempPeriodo.length == 0) {
+        sError += 'Debe completar el período';
+    } else {
+        if (TempPeriodo.length != 6) {
+            sError += 'Debe completar el período correctamente';
+        }
+    }
+    if (parseInt(Left(TempPeriodo, 2)) < 1 || parseInt(Left(TempPeriodo, 2)) > 12) {
+        sError += 'Debe completar el período correctamente';
+    }
+    if (sError.length > 0) {
+        throw sError;
+    }
+    NuevoIngreso.Importe = parseFloat(TempImporte);
+    NuevoIngreso.Periodo = TempPeriodo;
+    NuevoIngreso.FechaAcreditacion = _ObjIngreso.FechaAcreditacion
+    NuevoIngreso.IdEntidad = _ListaIngresosExplotado.length;
+    _ListaIngresosExplotado[_ListaIngresosExplotado.length - 1] = NuevoIngreso;
+}
+
 document.addEventListener('EventoAgregarExplotacion', async function (e) {
     try {
-        let objSeleccionado = e.detail;
-        buscado = $.grep(_ListaIngresosExplotado, function (entidad, index) {
-            return entidad.IdEntidad === parseInt(objSeleccionado.IdEntidad);
-        });
-        let Encontrado = buscado[0];
-        Encontrado.Importe = objSeleccionado.Importe;
-        Encontrado.Periodo = objSeleccionado.Periodo;
+        let aValidar = e.detail;
+        await Explotar_AgregarIngreso(aValidar);
         $("#LblImporteRestante").text(separadorMiles((await Explotar_Resto()).toFixed(2)));
         await Explotar_NuevoIngreso();
-        await Ingreso.ArmarGrillaIngresoSeparado('GrillaIngresoSeparado', _ListaIngresosExplotado, '', 'EventoAgregarExplotacion', _ObjIngreso);
+        await Ingreso.ArmarGrillaIngresoExplotado('GrillaIngresoSeparado', _ListaIngresosExplotado, '', 'EventoAgregarExplotacion', _ObjIngreso);
+        if (_ListaIngresosExplotado.length > 0) {
+            await Ingreso.MostrarBotonesExplotado('DivBotonesExplotado');
+        }
         $("#Periodo_" + _ListaIngresosExplotado.length).focus();
     } catch (e) {
         alertAlerta(e);
@@ -283,11 +323,44 @@ document.addEventListener('EventoSeleccionarIngreso', async function (e) {
 document.addEventListener('EventoGuardarExplotacion', async function (e) {
     try {
         spinner();
-        _ListaIngresosExplotado[_ListaIngresosExplotado.length - 1].Periodo = $("#Periodo_" + _ListaIngresosExplotado.length).val();
+        let ultimo = _ListaIngresosExplotado.length;
+        let aValidar = [];
+        aValidar.Importe = $("#Importe_" + ultimo).val();;
+        aValidar.Periodo = $("#Periodo_" + ultimo).val();;
+        await Explotar_AgregarIngreso(aValidar);
+        $("#LblImporteRestante").text(separadorMiles((await Explotar_Resto()).toFixed(2)));
+        if (_ListaIngresosExplotado.length == 1) {
+            throw 'No se puede explotar un Ingreso en tan solo un registro';
+        }
+        await Explotar_Resto();
+        let validaImporte = 0;
+        if (_ListaIngresosExplotado.length > 0) {
+            for (let ItemIngreso of _ListaIngresosExplotado) {
+                validaImporte += parseFloat(ItemIngreso.Importe);
+            }
+        }
+        if (validaImporte != _ObjIngreso.Importe) {
+            throw 'La sumatoria del valor explotado es diferente al importe del Ingreso.';
+        }
+
         await _ObjIngreso.ExplotarIngreso(_ListaIngresosExplotado);
+        _ListaIngresosExplotado = [];
+        $("#BuscaCUIT").val(_ObjIngreso.CUIT);
         await RealizarBusqueda();
         spinnerClose();
         alertOk('El Pago ha sido explotado correctamente');
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+}, false);
+document.addEventListener('EventoRehacerExplotacion', async function (e) {
+    try {
+        _ListaIngresosExplotado = [];
+        await Explotar_NuevoIngreso();
+        await Ingreso.ArmarGrillaIngresoExplotado('GrillaIngresoSeparado', _ListaIngresosExplotado, '', 'EventoAgregarExplotacion', _ObjIngreso);
+        $("#DivExplotacionIngreso").css('display', 'block')
+        $("#Periodo_" + _ListaIngresosExplotado.length).focus();
     } catch (e) {
         spinnerClose();
         alertAlerta(e);
