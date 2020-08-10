@@ -21,7 +21,7 @@
                 <span id="SpanNombreFormulario">Reporte Detallado Ingresos Mensuales</span>
             </div>
             <div id="BtnVolver" class="Cabecera Porc10_L">
-                <a href='<%= ResolveClientUrl("~/Forms/Frm_Rep_IngresosMensualesMenu.aspx")%>' class="LinkBtn" title="Volver a Reportes"><span class="icon-circle-left"></span></a>
+                <a href='<%= ResolveClientUrl("~/Forms/Reportes/Frm_Rep_IngresosMensualesMenu.aspx")%>' class="LinkBtn" title="Volver a Reportes"><span class="icon-circle-left"></span></a>
             </div>
         </li>
         <li class="linea">

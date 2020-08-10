@@ -1,4 +1,4 @@
-﻿<%@ Page Title="AAEMM. Rep. Ingresos Mensuales" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Rep_IngresosMensualesMenu.aspx.vb" Inherits="Forms_Reportes_Frm_Rep_IngresosMensuales" %>
+﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Rep_IngresosMensualesMenu.aspx.vb" Inherits="Forms_Reportes_Frm_Rep_IngresosMensualesMenu" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <script>

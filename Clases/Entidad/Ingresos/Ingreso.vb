@@ -218,8 +218,8 @@ Namespace Entidad
             Return result
         End Function
         Private Shared Function ArmarStringSQL(busqueda As StrBusquedaIngreso) As String
-            Dim existeParametro As Boolean = False
-            Dim result As String = ""
+            Dim existeParametro As Boolean = True
+            Dim result As String = "WHERE Ing.FechaBaja IS NULL "
             If busqueda.Desde > 0 Then
                 Dim Fecha As String = Left(busqueda.Desde.ToString, 4) & "-" & Right("00" & Left(busqueda.Desde.ToString, 6), 2) & "-" & Right("00" & busqueda.Desde.ToString, 2)
                 If Not existeParametro Then
@@ -313,7 +313,7 @@ Namespace Entidad
                 End While
                 result += ")"
             End If
-            result += " ORDER BY fechaAcreditacion, Periodo "
+            result += "  ORDER BY fechaAcreditacion, Periodo "
 
             Return result
         End Function

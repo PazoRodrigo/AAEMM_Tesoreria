@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Cheques Propios" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_ChequesPropios.aspx.vb" Inherits="Forms_Administracion_ChequesPropios" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Adm_ChequesPropios.js?version20200731_1")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_ChequesPropios.js?version20200808")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';

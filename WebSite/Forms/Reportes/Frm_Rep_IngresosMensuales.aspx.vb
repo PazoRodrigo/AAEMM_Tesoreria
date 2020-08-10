@@ -4,9 +4,14 @@
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not Page.IsPostBack Then
             Dim parm As Microsoft.Reporting.WebForms.ReportParameter() = New Microsoft.Reporting.WebForms.ReportParameter(0) {}
-            Dim periodo As String = Today.Year.ToString & Right("00" + Today.Month.ToString, 2).ToString
+            Dim periodo As String = ""
+            Dim actual As String = Today.Year.ToString & Right("00" + Today.Month.ToString, 2).ToString
             If Request.QueryString("periodo") <> "" Then
-                periodo = Request.QueryString("periodo")
+                periodo = actual
+                Dim temp As String = Request.QueryString("periodo")
+                If temp <= actual Then
+                    periodo = temp
+                End If
             End If
             parm(0) = New Microsoft.Reporting.WebForms.ReportParameter("aaaaMM", periodo, False)
             AbrirReporte("/AAEMM2020/Rpt_IngresosMensuales", parm)
