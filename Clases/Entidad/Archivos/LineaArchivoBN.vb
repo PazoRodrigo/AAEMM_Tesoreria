@@ -29,7 +29,7 @@ Namespace Entidad
                     nroLinea += 1
                     entidad = New LineaArchivoBN
                     entidad.IdUsuarioAlta = idUsuario
-                    entidad.IdTipoArchivo = Enumeradores.TipoArchivo.BN
+                    entidad.IdTipoArchivo = Enumeradores.TipoOrigen.BN
                     entidad.NombreArchivo = nombreArchivo
                     linea = archivo.ReadLine
                     Dim linea2 As String = LTrim(linea)
@@ -77,7 +77,7 @@ Namespace Entidad
                 Throw New Exception("El nombre del Archivo no se corresponde con su composición.")
             End If
             ' No Duplicados
-            Dim Lista As List(Of Ingreso) = Ingreso.TraerTodosXFechasXAcreditacion(CDate(objEntidad.FechaAcreditacion), CDate(objEntidad.FechaAcreditacion), Enumeradores.TipoArchivo.BN)
+            Dim Lista As List(Of Ingreso) = Ingreso.TraerTodosXFechasXAcreditacion(CDate(objEntidad.FechaAcreditacion), CDate(objEntidad.FechaAcreditacion), Enumeradores.TipoOrigen.BN)
             If Lista.Count > 0 Then
                 Throw New Exception("Archivo ingresado anteriormente.")
             End If

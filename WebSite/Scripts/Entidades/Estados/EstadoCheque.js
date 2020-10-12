@@ -8,6 +8,38 @@ class EstadoCheque {
         this.Observaciones = '';
         this.IdTipoCheque = '';
     }
+    static async StrEstadoTercero(IdEstado) {
+        let Result = '';
+        switch (parseInt(IdEstado)) {
+            case 0:
+                Result = 'RECIBIDO';
+                break;
+            case 1:
+                Result = 'DEPOSITADO';
+                break;
+            case 2:
+                Result = 'ACREDITADO';
+                break;
+            case 10:
+                Result = 'RECHAZADO';
+                break;
+            case 11:
+                Result = 'VENCIDO';
+                break;
+            case 15:
+                Result = 'SALVADO';
+                break;
+            case 16:
+                Result = 'SALVADOR';
+                break;
+            case 20:
+                Result = 'ANULADO';
+                break;
+            default:
+                break;
+        }
+        return Result;
+    }
 
     // Todos
     static async TodosPropios() {

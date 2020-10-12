@@ -259,7 +259,7 @@ class Empresa extends DBE {
     static async Refresh() {
         _Lista_Empresa = await Empresa.TraerTodas();
     }
-    // HErramientas
+    // Herramientas
     static async ArmarGrillaCabecera(div) {
         $("#" + div + "").html('');
         let str = "";

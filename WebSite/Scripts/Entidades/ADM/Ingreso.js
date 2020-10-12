@@ -84,6 +84,9 @@ class Ingreso extends DBE {
             case 3:
                 result = 'MC';
                 break;
+            case 4:
+                result = 'CJ';
+                break;
             default:
         }
         return result;
@@ -99,6 +102,9 @@ class Ingreso extends DBE {
                 break;
             case 3:
                 result = 'Mov. Conformados';
+                break;
+            case 4:
+                result = 'Caja';
                 break;
             default:
         }
@@ -138,23 +144,14 @@ class Ingreso extends DBE {
             while (indice <= ListaIngresosExplotados.length - 1) {
                 ListaIngresosExplotados[indice].IdEstado = 'A';
                 let Periodo = ListaIngresosExplotados[indice].Periodo;
-                Sumatoria += parseFloat(ListaIngresosExplotados[indice].Importe);
+                Sumatoria += parseFloat(ListaIngresosExplotados[indice].Importe.toFixed(2));
                 ListaIngresosExplotados[indice].Periodo = Right(Periodo, 4) + Left(Periodo, 2)
                 indice++;
             }
         }
-        if (parseFloat(Sumatoria) != parseFloat(this.Importe)) {
+        if (parseFloat(Sumatoria.toFixed(2)) != parseFloat(this.Importe.toFixed(2))) {
             throw 'La explotación no puede completarse. Existen diferencias entre el valor del Ingreso y su Explotación'
         }
-        // Con JSon
-        // let ObjU = JSON.parse(sessionStorage.getItem("User"));
-        // let data = {
-        //     'IdUsuario': ObjU.IdEntidad,
-        //     'IdIngreso': this.IdEntidad,
-        //     'ListaIngresos': ListaIngresos
-        // };
-        // let id = await ejecutarAsync(urlWsIngreso + "/ExplotarIngreso", data);
-
         await this.GuardarExplotado();
         for (let NuevoIngreso of ListaIngresosExplotados) {
             NuevoIngreso.IdExplotado = this.IdEntidad;
@@ -187,6 +184,26 @@ class Ingreso extends DBE {
             'entidad': this
         };
         let id = await ejecutarAsync(urlWsIngreso + "/EliminarExplotado", data);
+    }
+    async Baja() {
+        try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioBaja = ObjU.IdEntidad;
+            this.IdEstado = 'A';
+            let data = {
+                'entidad': this
+            };
+            let id = await ejecutarAsync(urlWsIngreso + "/Baja", data);
+            if (id !== undefined)
+                this.IdEntidad = id;
+            let buscados = $.grep(_ListaIngresos, function (entidad, index) {
+                return entidad.IdEntidad !== id;
+            });
+            _ListaIngresos = buscados;
+            return;
+        } catch (e) {
+            throw e;
+        }
     }
     async Modifica() {
         await this.ValidarCamposIngreso();
@@ -479,7 +496,7 @@ async function EventoGuardarExplotacion(MiElemento) {
         });
         document.dispatchEvent(event);
     } catch (e) {
-        throw 'La sumatoria del valor explotado es mayor al importe del Ingreso.'
+        throw 'La sumatoria del valor explotado es mayor al importe del Ingreso.';
         alertAlerta(e);
     }
 }

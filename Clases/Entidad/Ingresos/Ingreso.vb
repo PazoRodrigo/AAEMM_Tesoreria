@@ -34,7 +34,12 @@ Namespace Entidad
         Public Property NroCheque() As Long = 0
         Public Property Importe() As Decimal = 0
         Public Property IdOrigen() As Integer = 0
-        Public Property NroRecibo() As Integer = 0
+        Public Property NroRecibo() As Long = 0
+
+        Friend Shared Function TraerTodosXRecibo(idEntidad As Integer) As List(Of Ingreso)
+            Throw New NotImplementedException()
+        End Function
+
         Public Property NombreArchivo() As String = ""
         Public Property FechaPago() As Date? = Nothing
         Public Property FechaAcreditacion() As Date? = Nothing
@@ -225,6 +230,8 @@ Namespace Entidad
                 If Not existeParametro Then
                     existeParametro = True
                     result += " WHERE "
+                Else
+                    result += " AND "
                 End If
                 result += "FechaAcreditacion >= '" + Fecha + "'"
             End If
@@ -281,7 +288,7 @@ Namespace Entidad
                 Else
                     result += " AND "
                 End If
-                result += "CUIT = '" + busqueda.NroCheque.ToString + "'"
+                result += "NroCheque = '" + busqueda.NroCheque.ToString + "'"
             End If
             If busqueda.Estados <> "" Then
                 If Not existeParametro Then
@@ -337,7 +344,7 @@ Namespace Entidad
             Return DAL_Ingreso.TraerTodosXNombreArchivo(nombreArchivo)
         End Function
         ' Nuevos
-        Friend Shared Function TraerUltimosXOrigen(IdOrigen As Enumeradores.TipoArchivo, Cantidad As Integer) As List(Of Ingreso)
+        Friend Shared Function TraerUltimosXOrigen(IdOrigen As Enumeradores.TipoOrigen, Cantidad As Integer) As List(Of Ingreso)
             Return DAL_Ingreso.TraerUltimos30XOrigen(IdOrigen)
         End Function
         Friend Shared Sub IngresarArchivoMC(nombreArchivo As String)
@@ -521,7 +528,7 @@ Namespace DTO
         Public Property NroCheque() As Long = 0
         Public Property Importe() As Decimal = 0
         Public Property IdOrigen() As Integer = 0
-        Public Property NroRecibo() As Integer = 0
+        Public Property NroRecibo() As Long = 0
         Public Property NombreArchivo() As String = ""
         Public Property FechaPago() As Long = 0
         Public Property FechaAcreditacion() As Long = 0
@@ -536,6 +543,7 @@ Namespace DataAccessLibrary
 
 #Region " Stored "
         Const storeAlta As String = "INGRESO.p_Ingreso_Alta"
+        Const storeBaja As String = "INGRESO.p_Ingreso_Baja"
         Const storeAltaArchivoMC As String = "INGRESO.p_Ingreso_AltaMC"
         Const storeModifica As String = "INGRESO.p_Ingreso_Modifica"
         Const storeTraerTodosXFechasXAcreditacion As String = "INGRESO.p_Ingreso_TraerTodosXFechasXAcreditacion"
@@ -557,7 +565,6 @@ Namespace DataAccessLibrary
 
 
 
-        Const storeBaja As String = "ADM.p_Ingreso_Baja"
         Const storeTraerUnoXId As String = "ADM.p_Ingreso_TraerUnoXId"
         Const storeTraerUltimos30XOrigen As String = "INGRESO.p_Ingreso_storeTraerUltimos30XOrigen"
 #End Region
@@ -593,7 +600,6 @@ Namespace DataAccessLibrary
             Dim pa As New parametrosArray
             pa.add("@idUsuarioBaja", entidad.IdUsuarioBaja)
             pa.add("@id", entidad.IdEntidad)
-            'pa.add("@IdMotivoBaja", entidad.IdMotivoBaja)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
@@ -752,7 +758,7 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
-        Friend Shared Function TraerUltimos30XOrigen(IdOrigen As Enumeradores.TipoArchivo) As List(Of Ingreso)
+        Friend Shared Function TraerUltimos30XOrigen(IdOrigen As Enumeradores.TipoOrigen) As List(Of Ingreso)
             Dim store As String = storeTraerUltimos30XOrigen
             Dim listaResult As New List(Of Ingreso)
             Dim pa As New parametrosArray
@@ -858,6 +864,11 @@ Namespace DataAccessLibrary
                     entidad.FechaPago = CDate(dr.Item("fechaPago"))
                 End If
             End If
+            If dr.Table.Columns.Contains("IdOrigen") Then
+                If dr.Item("IdOrigen") IsNot DBNull.Value Then
+                    entidad.IdOrigen = CInt(dr.Item("IdOrigen"))
+                End If
+            End If
             If dr.Table.Columns.Contains("NombreArchivo") Then
                 If dr.Item("NombreArchivo") IsNot DBNull.Value Then
                     entidad.NombreArchivo = dr.Item("NombreArchivo").ToString.ToUpper.Trim
@@ -897,9 +908,14 @@ Namespace DataAccessLibrary
                     End If
                 End If
             End If
-            If dr.Table.Columns.Contains("IdOrigen") Then
-                If dr.Item("IdOrigen") IsNot DBNull.Value Then
-                    entidad.IdOrigen = CInt(dr.Item("IdOrigen"))
+            If dr.Table.Columns.Contains("NroCheque") Then
+                If dr.Item("NroCheque") IsNot DBNull.Value Then
+                    entidad.NroCheque = CLng(dr.Item("NroCheque"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("NroRecibo") Then
+                If dr.Item("NroRecibo") IsNot DBNull.Value Then
+                    entidad.NroRecibo = CLng(dr.Item("NroRecibo"))
                 End If
             End If
             If dr.Table.Columns.Contains("IdExplotado") Then
@@ -907,8 +923,6 @@ Namespace DataAccessLibrary
                     entidad.IdExplotado = CInt(dr.Item("IdExplotado"))
                 End If
             End If
-
-
             Return entidad
         End Function
 #End Region

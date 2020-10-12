@@ -10,22 +10,20 @@ Namespace Entidad
     Public Class ChequeTercero
         Inherits Cheque
 
-        Private Shared _Todos As List(Of ChequeTercero)
-        Public Shared Property Todos() As List(Of ChequeTercero)
-            Get
-                If _Todos Is Nothing Then
-                    _Todos = DAL_ChequeTercero.TraerTodos
-                End If
-                Return _Todos
-            End Get
-            Set(ByVal value As List(Of ChequeTercero))
-                _Todos = value
-            End Set
-        End Property
+        Public Structure StrBusquedaChequeTercero
+            Public Desde As Long
+            Public Hasta As Long
+            Public CUIT As Long
+            Public RazonSocial As String
+            Public Importe As Decimal
+            Public NroRecibo As Long
+            Public NroCheque As Long
+        End Structure
 
 #Region " Atributos / Propiedades "
         Public Property FechaVencimiento() As Date? = Nothing
         Public Property FechaDeposito() As Date? = Nothing
+        Public Property IdRecibo() As Long = 0
         Public Property IdEstado() As Enumeradores.EstadoChequeTerceros = Nothing
 #End Region
 #Region " Lazy Load "
@@ -38,6 +36,11 @@ Namespace Entidad
                 Return result
             End Get
         End Property
+
+        Friend Shared Function TraerTodosXRecibo(idEntidad As Integer) As List(Of ChequeTercero)
+            Throw New NotImplementedException()
+        End Function
+
         Public ReadOnly Property LngFechaDeposito() As Long
             Get
                 Dim result As Long = 0
@@ -72,6 +75,7 @@ Namespace Entidad
             ' DBE
             IdUsuarioAlta = DtODesde.IdUsuarioAlta
             IdUsuarioBaja = DtODesde.IdUsuarioBaja
+            IdUsuarioModifica = DtODesde.IdUsuarioModifica
             IdMotivoBaja = DtODesde.IdMotivoBaja
             If DtODesde.FechaAlta > 0 Then
                 Dim TempFecha As String = Right(DtODesde.FechaAlta.ToString, 2) + "/" + Left(Right(DtODesde.FechaAlta.ToString, 4), 2) + "/" + Left(DtODesde.FechaAlta.ToString, 4)
@@ -87,22 +91,24 @@ Namespace Entidad
             Numero = DtODesde.Numero
             Importe = DtODesde.Importe
             Select Case DtODesde.IdEstado
-                Case 11
+                Case 0
                     IdEstado = Enumeradores.EstadoChequeTerceros.Recibido
-                Case 12
-                    IdEstado = Enumeradores.EstadoChequeTerceros.Debitado
-                Case 13
+                Case 1
+                    IdEstado = Enumeradores.EstadoChequeTerceros.Depositado
+                Case 2
+                    IdEstado = Enumeradores.EstadoChequeTerceros.Acreditado
+                Case 10
                     IdEstado = Enumeradores.EstadoChequeTerceros.Rechazado
-                Case 14
+                Case 11
                     IdEstado = Enumeradores.EstadoChequeTerceros.Vencido
                 Case 15
                     IdEstado = Enumeradores.EstadoChequeTerceros.Salvado
                 Case 16
                     IdEstado = Enumeradores.EstadoChequeTerceros.Salvador
-                Case 17
-                    IdEstado = Enumeradores.EstadoChequeTerceros.DeBaja
+                Case 20
+                    IdEstado = Enumeradores.EstadoChequeTerceros.Anulado
                 Case Else
-                    Throw New Exception("Error")
+                    Throw New Exception("EstadoChequeTerceros NO Contemplado")
             End Select
             Observaciones = DtODesde.Observaciones
             If DtODesde.FechaVencimiento > 0 Then
@@ -117,38 +123,64 @@ Namespace Entidad
 #End Region
 #Region " Métodos Estáticos"
         ' Traer
-        Public Shared Function TraerUno(ByVal Id As Integer) As ChequeTercero
-            Dim result As ChequeTercero = Todos.Find(Function(x) x.IdEntidad = Id)
-            If result Is Nothing Then
-                Throw New Exception("No existen resultados para la búsqueda")
-            End If
-            Return result
-        End Function
-        Public Shared Function TraerTodos() As List(Of ChequeTercero)
-            Return Todos
-        End Function
         'Public Shared Function TraerUno(ByVal Id As Integer) As ChequeTercero
-        '    Dim result As ChequeTercero= DAL_ChequeTercero.TraerUno(Id)
+        '    Dim result As ChequeTercero = Todos.Find(Function(x) x.IdEntidad = Id)
         '    If result Is Nothing Then
         '        Throw New Exception("No existen resultados para la búsqueda")
         '    End If
         '    Return result
         'End Function
         'Public Shared Function TraerTodos() As List(Of ChequeTercero)
-        '    Dim result As List(Of ChequeTercero) = DAL_ChequeTercero.TraerTodos()
-        '    If result Is Nothing Then
-        '        Throw New Exception("No existen resultados para la búsqueda")
-        '    End If
-        '    Return result
+        '    Return Todos
         'End Function
+        Public Shared Function TraerUno(ByVal Id As Integer) As ChequeTercero
+            Dim result As ChequeTercero = DAL_ChequeTercero.TraerUno(Id)
+            If result Is Nothing Then
+                Throw New Exception("No existen resultados para la búsqueda")
+            End If
+            Return result
+        End Function
+        Public Shared Function TraerTodos() As List(Of ChequeTercero)
+            Dim result As List(Of ChequeTercero) = DAL_ChequeTercero.TraerTodos()
+            If result Is Nothing Then
+                Throw New Exception("No existen resultados para la búsqueda")
+            End If
+            Return result
+        End Function
         ' Nuevos
+        Public Shared Function TraerTodosXBusqueda(busqueda As StrBusquedaChequeTercero) As List(Of ChequeTercero)
+            Dim sqlQuery As String = "SELECT * FROM adm.chequetercero ch  "
+            sqlQuery += "LEFT JOIN Ingreso.Recibo rec ON rec.Id = ch.Idrecibo  "
+            sqlQuery += "WHERE ch.FechaBaja IS NULL "
+            If busqueda.Desde > 0 Then
+                Dim Fecha As String = Left(busqueda.Desde.ToString, 4) & "-" & Right("00" & Left(busqueda.Desde.ToString, 6), 2) & "-" & Right("00" & busqueda.Desde.ToString, 2)
+                sqlQuery += " AND ch.FechaVencimiento >= '" + Fecha + "'"
+            End If
+            If busqueda.Hasta > 0 Then
+                Dim Fecha As String = Left(busqueda.Hasta.ToString, 4) & "-" & Right("00" & Left(busqueda.Hasta.ToString, 6), 2) & "-" & Right("00" & busqueda.Hasta.ToString, 2)
+                sqlQuery += "AND ch.FechaVencimiento <= '" + Fecha + "'"
+            End If
+            If busqueda.CUIT > 0 Then
+                sqlQuery += "AND rec.CUIT = '" + busqueda.CUIT.ToString + "'"
+            End If
+            If busqueda.Importe > 0 Then
+                sqlQuery += "AND ch.Importe = " + Replace(CStr(busqueda.Importe), ",", ".")
+            End If
+            If busqueda.NroRecibo > 0 Then
+                sqlQuery += "AND rec.NroReciboFin LIKE '%" + busqueda.NroRecibo.ToString + "%'"
+            End If
+            If busqueda.NroCheque > 0 Then
+                sqlQuery += "AND ch.Numero = '" + busqueda.NroCheque.ToString + "'"
+            End If
+            Return DAL_ChequeTercero.TraerTodosXBusqueda(sqlQuery)
+        End Function
+
 #End Region
 #Region " Métodos Públicos"
         ' ABM
-        Public Sub Alta(Desde As Long, Hasta As Long)
+        Public Sub Alta()
             ValidarAlta()
-            DAL_ChequeTercero.Alta(Me, Desde, Hasta)
-            Refresh()
+            DAL_ChequeTercero.Alta(Me)
         End Sub
         'Public Sub Baja()
         '    ValidarBaja()
@@ -158,7 +190,6 @@ Namespace Entidad
         Public Sub Modifica()
             ValidarModifica()
             DAL_ChequeTercero.Modifica(Me)
-            Refresh()
         End Sub
         ' Otros
         Public Function ToDTO() As DTO.DTO_ChequeTercero
@@ -170,8 +201,9 @@ Namespace Entidad
                 .FechaBaja = LngFechaBaja,
                 .IdEntidad = IdEntidad,
                 .IdBanco = IdBanco,
-                    .Numero = Numero,
+                .Numero = Numero,
                 .Importe = Importe,
+                .IdRecibo = IdRecibo,
                 .IdEstado = IdEstado,
                 .Observaciones = Observaciones,
                 .FechaVencimiento = LngFechaVencimiento,
@@ -179,9 +211,9 @@ Namespace Entidad
             }
             Return result
         End Function
-        Public Shared Sub Refresh()
-            _Todos = DAL_ChequeTercero.TraerTodos
-        End Sub
+        'Public Shared Sub Refresh()
+        '    _Todos = DAL_ChequeTercero.TraerTodos
+        'End Sub
         ' Nuevos
 #End Region
 #Region " Métodos Privados "
@@ -252,11 +284,10 @@ End Namespace ' Entidad
 Namespace DTO
     Public Class DTO_ChequeTercero
         Inherits DTO_Cheque
-
-
 #Region " Atributos / Propiedades"
         Public Property FechaVencimiento() As Long = 0
         Public Property FechaDeposito() As Long = 0
+        Public Property IdRecibo() As Long = 0
 #End Region
     End Class ' DTO_ChequeTercero
 End Namespace ' DTO
@@ -270,16 +301,21 @@ Namespace DataAccessLibrary
         Const storeModifica As String = "ADM.p_ChequeTercero_Modifica"
         Const storeTraerUnoXId As String = "ADM.p_ChequeTercero_TraerUnoXId"
         Const storeTraerTodos As String = "ADM.p_ChequeTercero_TraerTodos"
+        Const storeTraerTodosXBusqueda As String = "p_TraerXBusquedaLibre"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
-        Public Shared Sub Alta(entidad As ChequeTercero, desde As Long, hasta As Long)
+        Public Shared Sub Alta(entidad As ChequeTercero)
             Dim store As String = storeAlta
             Dim pa As New parametrosArray
             pa.add("@idUsuarioAlta", entidad.IdUsuarioAlta)
             pa.add("@IdBanco", entidad.IdBanco)
-            pa.add("@desde", desde)
-            pa.add("@hasta", hasta)
+            pa.add("@IdRecibo", entidad.IdRecibo)
+            pa.add("@Numero", entidad.Numero)
+            pa.add("@Importe", entidad.Importe)
+            pa.add("@IdEstado", entidad.IdEstado)
+            pa.add("@Observaciones", entidad.Observaciones)
+            pa.add("@FechaVencimiento", entidad.FechaVencimiento)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
@@ -309,6 +345,8 @@ Namespace DataAccessLibrary
             pa.add("@id", entidad.IdEntidad)
             pa.add("@Importe", entidad.Importe)
             pa.add("@IdEstado", entidad.IdEstado)
+            pa.add("@IdBanco", entidad.IdBanco)
+            pa.add("@FechaVencimiento", entidad.FechaVencimiento)
             pa.add("@FechaDeposito", entidad.FechaDeposito)
             pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
@@ -340,6 +378,20 @@ Namespace DataAccessLibrary
             Dim store As String = storeTraerTodos
             Dim pa As New parametrosArray
             Dim listaResult As New List(Of ChequeTercero)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
+        Friend Shared Function TraerTodosXBusqueda(sqlQuery As String) As List(Of ChequeTercero)
+            Dim store As String = storeTraerTodosXBusqueda
+            Dim listaResult As New List(Of ChequeTercero)
+            Dim pa As New parametrosArray
+            pa.add("@sqlQuery", sqlQuery)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
@@ -398,6 +450,11 @@ Namespace DataAccessLibrary
             If dr.Table.Columns.Contains("Numero") Then
                 If dr.Item("Numero") IsNot DBNull.Value Then
                     entidad.Numero = CLng(dr.Item("Numero"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("IdRecibo") Then
+                If dr.Item("IdRecibo") IsNot DBNull.Value Then
+                    entidad.IdRecibo = CInt(dr.Item("IdRecibo"))
                 End If
             End If
             If dr.Table.Columns.Contains("Importe") Then

@@ -4,19 +4,20 @@
         Tercero = 2
     End Enum
     Public Enum EstadoChequePropios
-        Emitido = 1
-        Vigente = 2
-        Suspendido = 3
-        Anulado = 4
+        Emitido = 0
+        Entregado = 1
+        Suspendido = 5
+        Anulado = 10
     End Enum
     Public Enum EstadoChequeTerceros
-        Recibido = 11
-        Debitado = 12
-        Rechazado = 13
-        Vencido = 14
+        Recibido = 0
+        Depositado = 1
+        Acreditado = 2
+        Rechazado = 10
+        Vencido = 11
         Salvado = 15     ' Cheque que ha sido salvado por otro
         Salvador = 16    ' Cheque que ha salvado a otro, informa el cheque salvado
-        DeBaja = 20
+        Anulado = 20
     End Enum
     Public Enum EstadoEmpresa
         Activa = 1
@@ -40,6 +41,20 @@
         Deuda6Meses = 15
         DeudaMayor6Meses = 16
     End Enum
+    Public Enum EstadoRecibo
+        Activo = 1
+        Anulado = 2
+    End Enum
+    Public Enum TipoPagoRecibo
+        Cheque = 1
+        Transferencia = 2
+    End Enum
+    Public Enum EstadoPagoRecibo
+        Recibido = 0
+        Acreditado = 1
+        Rechazado = 1
+        Devuelto = 1
+    End Enum
     Public Enum EstadoGasto
         Abierto = 1
         Cerrado = 2
@@ -48,10 +63,11 @@
     Public Enum TipoPermiso
         Pagina = 1
     End Enum
-    Public Enum TipoArchivo
+    Public Enum TipoOrigen
         BN = 1
         PF = 2
         MC = 3
+        CJ = 4
     End Enum
     Public Enum TipoMovimientoDH
         D = 1

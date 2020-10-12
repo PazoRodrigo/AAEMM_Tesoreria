@@ -76,6 +76,9 @@ Namespace Entidad
         Public Shared Function TraerTodos() As List(Of Banco)
             Return Todos
         End Function
+        Public Shared Function TraerTodos_DTO() As List(Of DTO.DTO_Banco)
+            Return ToListDTO(Todos)
+        End Function
         'Public Shared Function TraerUno(ByVal Id As Integer) As Banco
         '    Dim result As Banco= DAL_Banco.TraerUno(Id)
         '    If result Is Nothing Then
@@ -183,6 +186,15 @@ Namespace Entidad
                 Throw New Exception("El Nombre a ingresar ya existe")
             End If
         End Sub
+        Private Shared Function ToListDTO(lista As List(Of Banco)) As List(Of DTO.DTO_Banco)
+            Dim Result As New List(Of DTO.DTO_Banco)
+            If lista IsNot Nothing AndAlso lista.Count > 0 Then
+                For Each item As Banco In lista
+                    Result.Add(item.ToDTO)
+                Next
+            End If
+            Return Result
+        End Function
 #End Region
     End Class ' Banco
 End Namespace ' Entidad

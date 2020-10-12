@@ -87,6 +87,7 @@
     <Compile Include="Entidad\Archivos\LineaArchivoMC.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivoPF.vb" />
     <Compile Include="Entidad\ADM\Cta Cte\TipoMovimientoCtaCte.vb" />
+    <Compile Include="Entidad\Complementarias\TipoPagoManual.vb" />
     <Compile Include="Entidad\Ingresos\Ingreso.vb" />
     <Compile Include="Entidad\Archivos\Archivo.vb" />
     <Compile Include="Entidad\Complementarias\CuentaCorriente.vb" />
@@ -95,7 +96,7 @@
     <Compile Include="Entidad\DIM\Banco.vb" />
     <Compile Include="Entidad\DIM\CentroCosto.vb" />
     <Compile Include="Entidad\ADM\ChequePropio.vb" />
-    <Compile Include="Entidad\ADM\ChequeTercero.vb" />
+    <Compile Include="Entidad\Ingresos\ChequeTercero.vb" />
     <Compile Include="Entidad\DIM\Convenio.vb" />
     <Compile Include="Entidad\DIM\CuentaContable.vb" />
     <Compile Include="Entidad\Abstractas\DTO_DBE.vb" />
@@ -113,6 +114,8 @@
     <Compile Include="Entidad\DIM\TipoPago.vb" />
     <Compile Include="Entidad\Enumeradores.vb" />
     <Compile Include="Entidad\Estados\EstadoGasto.vb" />
+    <Compile Include="Entidad\Ingresos\PagoRecibo.vb" />
+    <Compile Include="Entidad\Ingresos\Recibo.vb" />
     <Compile Include="Entidad\USUARIO\Perfil.vb" />
     <Compile Include="Entidad\USUARIO\Formulario.vb" />
     <Compile Include="Entidad\USUARIO\Permiso.vb" />

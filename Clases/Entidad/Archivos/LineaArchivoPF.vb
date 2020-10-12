@@ -51,7 +51,7 @@ Namespace Entidad
                         nroLinea += 1
                         entidad = New LineaArchivoPF
                         entidad.IdUsuarioAlta = idUsuario
-                        entidad.IdTipoArchivo = Enumeradores.TipoArchivo.PF
+                        entidad.IdTipoArchivo = Enumeradores.TipoOrigen.PF
                         entidad.NombreArchivo = nombreArchivo
                         ' Información detallada de cada transaccion
                         entidad.Importe = CDec(linea.Substring(48, 10).Insert(8, ","))
@@ -95,7 +95,7 @@ Namespace Entidad
                 Throw New Exception("El nombre del Archivo no se corresponde con su composición.")
             End If
             ' No Duplicados
-            Dim Lista As List(Of Ingreso) = Ingreso.TraerTodosXFechasXAcreditacion(CDate(objEntidad.FechaAcreditacion), CDate(objEntidad.FechaAcreditacion), Enumeradores.TipoArchivo.PF)
+            Dim Lista As List(Of Ingreso) = Ingreso.TraerTodosXFechasXAcreditacion(CDate(objEntidad.FechaAcreditacion), CDate(objEntidad.FechaAcreditacion), Enumeradores.TipoOrigen.PF)
             If Lista.Count > 0 Then
                 Throw New Exception("Archivo ingresado anteriormente.")
             End If

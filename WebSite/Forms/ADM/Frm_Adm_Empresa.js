@@ -6,7 +6,6 @@ $(document).ready(async function () {
         $("#SpanNombreFormulario").text('Empresas');
         $("#divCantRegistrosImprimir").css('display', 'none');
         $("#LinkBtnNuevo").css('display', 'none');
-        $("#EntidadRazonSocial").prop('disabled', true);
         await Inicio();
     } catch (e) {
         alertAlerta(e);
@@ -76,7 +75,6 @@ $('body').on('click', '#LinkBtnNuevo', async function (e) {
         $("#LinkBtnNuevo").css('display', 'none');
         $("#GrillaCabecera").html('');
         $("#GrillaDetalle").html('');
-        $("#EntidadRazonSocial").prop('disabled', false);
         NuevaEmpresa();
     } catch (e) {
         spinnerClose();

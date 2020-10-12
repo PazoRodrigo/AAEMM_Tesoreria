@@ -1,6 +1,6 @@
 ﻿var _ListaIngresos;
 var _ObjIngreso;
-let _ListaIngresosExplotado = [];
+var _ListaIngresosExplotado = [];
 
 $(document).ready(function () {
     try {
@@ -58,7 +58,6 @@ function LimpiarIngreso() {
     $("#LblExplotado").text('');
     $("#EntidadCodigoEntidad").prop('disabled', true);
     $("#EntidadRazonSocial").prop('disabled', true);
-    //$("#EntidadImporte").prop('disabled', true);
 }
 async function RealizarBusqueda() {
     let Result = 0;
@@ -171,20 +170,60 @@ async function LlenarIngreso() {
     if (_ObjIngreso.IdExplotado > 0) {
         $("#LblExplotado").text('Ingreso proveniente de Ingreso Explotado');
     }
+    $("#BtnBaja").css("disabled", true);
+    if (_ObjIngreso.FechaBaja == 0) {
+        $("#LblBaja").text('Dar de Baja');
+    } else {
+        $("#LblBaja").text('Fecha de Baja');
+        $("#BtnBaja").css("disabled", false);
+    }
     $("#ContenidoSeleccionado").css("display", "block");
 }
 $('body').on('keyup', '#EntidadCUIT', async function (e) {
-    let Texto = $("#EntidadCUIT").val();
-    _ObjIngreso.CodigoEntidad = 0;
-    $("#EntidadCodigoEntidad").val('');
-    if (Texto.length == 11) {
-        let TempEmpresa = await Empresa.TraerUnaXCUIT(Texto);
-        $("#EntidadCodigoEntidad").val(await TempEmpresa.StrCodigo(6));
-        _ObjIngreso.CodigoEntidad = TempEmpresa.CodigoEntidad;
-        $("#EntidadRazonSocial").val(TempEmpresa.RazonSocial);
+    try {
+        let Texto = $("#EntidadCUIT").val();
+        _ObjIngreso.CodigoEntidad = 0;
+        $("#EntidadCodigoEntidad").val('');
+        $("#EntidadRazonSocial").val('');
+        if (e.keyCode === 13) {
+            if (Texto.length != 11) {
+                throw 'Debe ingresar 11 dígitos para buscar por CUIT';
+            }
+            spinner();
+            let TempEmpresa = await Empresa.TraerUnaXCUIT(Texto);
+            $("#EntidadCodigoEntidad").val(await TempEmpresa.StrCodigo(6));
+            _ObjIngreso.CodigoEntidad = TempEmpresa.CodigoEntidad;
+            $("#EntidadRazonSocial").val(TempEmpresa.RazonSocial);
+            spinnerClose();
+        }
+    } catch (error) {
+        spinnerClose();
+        $("#EntidadCodigoEntidad").val('');
+        _ObjIngreso.CodigoEntidad = 0;
+        $("#EntidadRazonSocial").val('');
+        alertAlerta(error);
     }
 });
 
+$('body').on('click', '#BtnBaja', async function (e) {
+    try {
+        PopUpConfirmarConCancelar('warning', null, 'Desea realmente dar de baja el Ingreso?', "$ " + _ObjIngreso.Importe.toFixed(2), 'EventoConfirmarBajaIngreso', 'Dar de Baja Ingreso', 'Cancelar', 'red');
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
+document.addEventListener('EventoConfirmarBajaIngreso', async function (e) {
+    try {
+        spinner();
+        await _ObjIngreso.Baja();
+        spinnerClose();
+        alertOk('El Ingreso ha sido dado de baja correctamente.');
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+}, false);
 $('body').on('click', '#BtnModificar', async function (e) {
     try {
         spinner();
@@ -197,7 +236,6 @@ $('body').on('click', '#BtnModificar', async function (e) {
         $("#BuscaCUIT").val(_ObjIngreso.CUIT);
         await RealizarBusqueda();
         spinnerClose();
-
         alertOk('El Ingreso ha sido modificado correctamente.');
     } catch (e) {
         spinnerClose();
@@ -215,6 +253,7 @@ $('body').on('click', '#BtnExplotar', async function (e) {
         alertAlerta(e);
     }
 });
+
 document.addEventListener('EventoConfirmarExplotarIngreso', async function (e) {
     try {
         $("#EntidadCUIT").prop('disabled', true);
@@ -245,11 +284,15 @@ async function Explotar_NuevoIngreso() {
 async function Explotar_Resto() {
     let Result = _ObjIngreso.Importe;
     if (_ListaIngresosExplotado.length > 0) {
-        for (let ItemIngreso of _ListaIngresosExplotado) {
-            Result -= parseFloat(ItemIngreso.Importe)
+        let i = 0;
+        while (i <= _ListaIngresosExplotado.length - 1) {
+            let valor = _ListaIngresosExplotado[i].Importe.toFixed(2);
+            Result = Result.toFixed(2);
+            Result = Result - valor;
+            i++;
         }
     }
-    if (Result < 0) {
+    if (Result.toFixed(2) < 0) {
         throw 'La sumatoria del valor explotado es mayor al importe del Ingreso.';
     }
     return Result;
@@ -339,7 +382,7 @@ document.addEventListener('EventoGuardarExplotacion', async function (e) {
                 validaImporte += parseFloat(ItemIngreso.Importe);
             }
         }
-        if (validaImporte != _ObjIngreso.Importe) {
+        if (validaImporte.toFixed(2) != _ObjIngreso.Importe.toFixed(2)) {
             throw 'La sumatoria del valor explotado es diferente al importe del Ingreso.';
         }
 

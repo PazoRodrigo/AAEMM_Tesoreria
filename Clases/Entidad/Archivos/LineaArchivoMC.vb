@@ -32,7 +32,7 @@ Namespace Entidad
                         contadorLinea += 1
                         entidad = New LineaArchivoMC
                         entidad.IdUsuarioAlta = idUsuario
-                        entidad.IdTipoArchivo = Enumeradores.TipoArchivo.MC
+                        entidad.IdTipoArchivo = Enumeradores.TipoOrigen.MC
                         entidad.NombreArchivo = nombreArchivo
                         'Public Property FechaMovimiento() As Date? = Nothing
                         varTempo = linea.Split(CChar(";"))(0).ToString.Trim

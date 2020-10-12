@@ -1,47 +1,84 @@
 ﻿var _Lista_ChequeTercero;
 
-class ChequeTercero extends DBE {
+class StrBusquedaChequeTercero {
+    constructor() {
+        this.Desde = 0;
+        this.Hasta = 0;
+        this.RazonSocial = '';
+        this.CUIT = 0;
+        this.Importe = 0;
+        this.NroRecibo = 0;
+        this.NroCheque = 0;
+    }
+}
+class ChequeTercero extends Cheque {
     constructor() {
         super();
-        this.IdEntidad = 0;
-        this.Nombre = '';
-        this.Observaciones = '';
+        this.FechaVencimiento = 0;
+        this.FechaDeposito = 0;
+        this.IdRecibo = 0;
+        this.IdEstado = 0;
     }
 
-    // ABM
-    async Alta() {
-        await this.ValidarCamposChequeTercero();
-        this.Nombre = this.Nombre.toUpperCase();
-        this.Observaciones = this.Observaciones.toUpperCase();
-        try {
-            let data = {
-                'entidad': this
-            };
-            let id = await ejecutarAsync(urlWsChequeTercero + "/Alta", data);
-            if (id !== undefined)
-                this.IdEntidad = id;
-            _Lista_ChequeTercero.push(this);
-            return;
-        } catch (e) {
-            throw e;
+    async StrFechaVencimiento() {
+        let Result = '';
+        if (this.FechaVencimiento > 0) {
+            Result = LongToDateString(this.FechaVencimiento);
         }
+        return Result;
     }
+    async ObjRecibo() {
+        let Result = new Recibo;
+        if (this.IdEntidad > 0) {
+            Result = await Recibo.TraerUno(this.IdRecibo);
+        }
+        return Result;
+    }
+    async StrNumero(cantCaracteres) {
+        let Result = '';
+        if (this.Numero > 0) {
+            Result = Right('00000000000' + this.Numero, cantCaracteres);
+        }
+        return Result;
+    }
+    async StrEstado() {
+        let Result = await EstadoCheque.StrEstadoTercero(this.IdEstado);
+        return Result;
+    }
+    // ABM
+    // async Alta() {
+    //     await this.ValidarCamposChequeTercero();
+    //     this.Numero = Right('0000000000' + this.Numero, 10);
+    //     this.Observaciones = this.Observaciones.toUpperCase();
+    //     try {
+    //         let data = {
+    //             'entidad': this
+    //         };
+    //         let id = await ejecutarAsync(urlWsChequeTercero + "/Alta", data);
+    //         if (id !== undefined)
+    //             this.IdEntidad = id;
+    //         _Lista_ChequeTercero.push(this);
+    //         return;
+    //     } catch (e) {
+    //         throw e;
+    //     }
+    // }
     async Modifica() {
         await this.ValidarCamposChequeTercero();
-        this.Nombre = this.Nombre.toUpperCase();
+        this.Numero = Right('0000000000' + this.Numero, 10);
         this.Observaciones = this.Observaciones.toUpperCase();
         try {
+            let ObjU = JSON.parse(sessionStorage.getItem("User"));
+            this.IdUsuarioModifica = ObjU.IdEntidad;
             let data = {
                 'entidad': this
             };
             let id = await ejecutarAsync(urlWsChequeTercero + "/Modifica", data);
             if (id !== undefined)
                 this.IdEntidad = id;
-            let buscados = $.grep(_Lista_ChequeTercero, function (entidad, index) {
+            _Lista_ChequeTercero = $.grep(_Lista_ChequeTercero, function (entidad, index) {
                 return entidad.IdEntidad !== id;
             });
-            _Lista_ChequeTercero = buscados;
-            this.IdEstado = 0;
             _Lista_ChequeTercero.push(this);
             return;
         } catch (e) {
@@ -70,17 +107,25 @@ class ChequeTercero extends DBE {
 
     async ValidarCamposChequeTercero() {
         let sError = '';
-        if (this.Nombre.length === 0) {
-            sError += 'Debe ingresar el Nombre';
+        if (this.Numero.length == 0) {
+            sError += 'Debe ingresar el Número del Cheque';
+        } else {
+            if (parseInt(this.Numero) == 0) {
+                sError += 'El Número del Cheque debe ser mayor a 0';
+            }
+        }
+        if (this.FechaVencimiento.length == 0) {
+            sError += 'Debe ingresar la Fecha de Vencimiento';
+        }
+        if (this.IdBanco == 0) {
+            sError += 'Debe ingresar el Banco del Cheque';
         }
         if (sError !== '') {
             throw '<b> Error de grabación </b> <br/><br/>' + sError;
         }
     }
-
     // Todos
     static async Todos() {
-        console.log('_Lista_ChequeTercero');
         if (_Lista_ChequeTercero === undefined) {
             _Lista_ChequeTercero = await ChequeTercero.TraerTodas();
         }
@@ -89,9 +134,8 @@ class ChequeTercero extends DBE {
 
     // Traer
     static async TraerUno(IdEntidad) {
-        _Lista_ChequeTercero = await ChequeTercero.TraerTodos();
-        let buscado = $.grep(_Lista_ChequeTercero, function (entidad, index) {
-            return entidad.IdEntidad === IdEntidad;
+        let buscado = $.grep(await ChequeTercero.Todos(), function (entidad, index) {
+            return entidad.IdEntidad == IdEntidad;
         });
         let Encontrado = buscado[0];
         return Encontrado;
@@ -99,51 +143,91 @@ class ChequeTercero extends DBE {
     static async TraerTodos() {
         return await ChequeTercero.Todos();
     }
+    static async TraerTodosXEstado(IdEstado) {
+        let buscado = $.grep(await ChequeTercero.Todos(), function (entidad, index) {
+            return entidad.IdEstado == IdEstado;
+        });
+        return buscado;
+    }
+
     static async TraerTodosActivos() {
         _Lista_ChequeTercero = await ChequeTercero.TraerTodos();
         let buscado = $.grep(_Lista_ChequeTercero, function (entidad, index) {
-            return entidad.IdEstado === 0;
+            return entidad.IdEstado == 0;
         });
         return buscado;
     }
     static async TraerTodas() {
         let lista = await ejecutarAsync(urlWsChequeTercero + "/TraerTodos");
-        _Lista_ChequeTercero = [];
         let result = [];
         if (lista.length > 0) {
             $.each(lista, function (key, value) {
                 result.push(LlenarEntidadChequeTercero(value));
             });
         }
-        _Lista_ChequeTercero = result;
-        return _Lista_ChequeTercero;
+        return result;
     }
+    static async TraerTodosXBusqueda(Busqueda) {
+        let data = {
+            'Busqueda': Busqueda
+        };
+        let lista = await ejecutarAsync(urlWsChequeTercero + "/TraerTodosXBusqueda", data);
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadChequeTercero(value));
+            });
+        }
+        return result;
+    }
+
     // Otros
     static async Refresh() {
         _Lista_ChequeTercero = await ChequeTercero.TraerTodas();
     }
     // Herramientas
-    static async ArmarGrilla(lista, div, eventoSeleccion, eventoEliminar, estilo) {
-        $('#' + div + '').html('');
-        let str = '';
-        lista.sort(SortXNombre);
+    static async ArmarGrillaCabecera(div) {
+        $("#" + div + "").html('');
+        let str = "";
+        str += '<table class="table table-sm">';
+        str += '    <thead>';
+        str += '        <tr>';
+        str += '            <th class="" style="width:49px;"></th>';
+        str += '            <th class="text-center" style="width: 80px;">Cheque</th>';
+        str += '            <th class="text-center" style="width: 80px;">Vencimiento</th>';
+        str += '            <th class="text-center" style="width: 220px;">CUIT</th>';
+        str += '            <th class="text-center" style="width: 110px;">Importe</th>';
+        str += '            <th class="text-center" style="width: 100px;">Nro. Recibo</th>';
+        str += '            <th class="text-center" style="width: 40px;">Estado</th>';
+        str += '        </tr>';
+        str += '    </thead>';
+        str += '</table >';
+        return $("#" + div + "").html(str);
+    }
+    static async ArmarGrillaDetalle(div, lista, evento, estilo) {
+        $("#" + div + "").html('');
+        let str = "";
+        str += '<div style="' + estilo + '">';
+        str += '<table class="table table-sm table-striped table-hover">';
+        str += '    <tbody>';
         if (lista.length > 0) {
-            str += '<div style="' + estilo + '">';
-            str += '    <ul class="ListaGrilla">';
-            let estiloItem = '';
             for (let item of lista) {
-                estiloItem = 'LinkListaGrillaObjeto';
-                if (item.IdEstado === 1) {
-                    estiloItem = 'LinkListaGrillaObjetoEliminado';
-                }
-                let aItem = '<a href="#" class="mibtn-seleccionChequeTercero" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.Nombre + '</a>';
-                let aEliminar = '<a href="#" class="mibtn-EliminarChequeTercero" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
-                str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
+                str += '        <tr>';
+                str += '            <td style="width:45px;"><a hfre="#" id="' + item.IdEntidad + '" data-Id="' + item.IdEntidad + '" data-Evento="' + evento + '" onclick="SeleccionChequeTerceroGrilla(this);"> <img src="../../Imagenes/lupa.png" alt=""></a></td>';
+                str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrNumero(10) + '</small></td>';
+                str += '            <td class="text-center" style="width: 120px;"><small class="text-light">' + await item.StrFechaVencimiento() + '</small></td>';
+                let ObjRecibo = await item.ObjRecibo();
+                str += '            <td class="text-left" style="width: 220px;"><small class="text-light">' + ObjRecibo.CUIT + '</small></td>';
+                str += '            <td class="text-right pr-1" style="width: 100px;"><small class="text-light">' + separadorMiles(item.Importe.toFixed(2)) + '</small></td>';
+                str += '            <td class="text-center" style="width: 100px;"><small class="text-light">' + await ObjRecibo.StrNumero() + '</small></td>';
+                str += '            <td class="text-center" style="width: 40px;"><small class="text-light">' + await item.StrEstado() + '</small></td>';
+                str += '        </tr>';
             }
-            str += '    </ul>';
-            str += '</div>';
         }
-        return $('#' + div + '').html(str);
+        str += '    </tbody>';
+        str += '</table >';
+        str += '</div >';
+        return $("#" + div + "").html(str);
     }
     static async ArmarRadios(lista, div, evento, estilo) {
         $('#' + div + '').html('');
@@ -181,6 +265,7 @@ class ChequeTercero extends DBE {
         str += '</div>';
         return $('#' + div + '').html(str);
     }
+
 }
 function LlenarEntidadChequeTercero(entidad) {
     let Res = new ChequeTercero;
@@ -190,11 +275,36 @@ function LlenarEntidadChequeTercero(entidad) {
     Res.FechaAlta = entidad.FechaAlta;
     Res.FechaBaja = entidad.FechaBaja;
     Res.IdMotivoBaja = entidad.IdMotivoBaja;
+    // Cheque
     Res.IdEntidad = entidad.IdEntidad;
-    Res.Nombre = entidad.Nombre;
+    Res.IdBanco = entidad.IdBanco;
+    Res.Numero = entidad.Numero;
+    Res.Importe = entidad.Importe;
     Res.Observaciones = entidad.Observaciones;
+    // Entidad
+    Res.FechaVencimiento = entidad.FechaVencimiento;
+    Res.FechaDeposito = entidad.FechaDeposito;
+    Res.IdRecibo = entidad.IdRecibo;
     Res.IdEstado = entidad.IdEstado;
     return Res;
+}
+async function SeleccionChequeTerceroGrilla(MiElemento) {
+    try {
+        let elemento = document.getElementById(MiElemento.id);
+        let IdBuscado = elemento.getAttribute('data-Id');
+        let evento = elemento.getAttribute('data-Evento');
+        let buscado = $.grep(_Lista_ChequeTercero, function (entidad, index) {
+            return entidad.IdEntidad == IdBuscado;
+        });
+        if (buscado[0] != undefined) {
+            let event = new CustomEvent(evento, {
+                detail: buscado[0]
+            });
+            document.dispatchEvent(event);
+        }
+    } catch (e) {
+        alertAlerta(e);
+    }
 }
 $('body').on('click', ".mibtn-seleccionChequeTercero", async function () {
     try {

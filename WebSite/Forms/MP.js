@@ -11,6 +11,7 @@
         TipoGasto.Refresh();
         TipoPago.Refresh();
         Gasto.Refresh();
+        Banco.Refresh();
         spinnerClose();
     } catch (e) {
         spinnerClose();

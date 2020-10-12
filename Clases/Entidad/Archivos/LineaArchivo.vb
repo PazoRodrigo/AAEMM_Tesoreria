@@ -7,7 +7,7 @@ Namespace Entidad
     Public MustInherit Class LineaArchivo
         Inherits LUM.DBE
 #Region " Atributos / Propiedades "
-        Public Property IdTipoArchivo() As Enumeradores.TipoArchivo = Nothing
+        Public Property IdTipoArchivo() As Enumeradores.TipoOrigen = Nothing
         Public Property NombreArchivo() As String = ""
         Protected ContadorLinea As Integer = 0
 #End Region

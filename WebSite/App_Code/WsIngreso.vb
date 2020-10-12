@@ -54,6 +54,22 @@ Public Class WsIngreso
         Return ws
     End Function
     <WebMethod()>
+    Public Function Baja(entidad As DTO.DTO_Ingreso) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim objGuardar As New Entidad.Ingreso(entidad)
+            objGuardar.Baja()
+            ws.data = objGuardar.IdEntidad
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
     Public Function Modifica(entidad As DTO.DTO_Ingreso) As Transfer
         Dim ws As New Transfer
         Try

@@ -29,14 +29,14 @@ class Provincia {
     }
     static async TraerTodas() {
         let lista = await ejecutarAsync(urlWsProvincia + "/TraerTodos");
-        _Lista_CentroCosto = [];
+        _ListaProvincias = [];
         let result = [];
         if (lista.length > 0) {
             $.each(lista, function (key, value) {
                 result.push(llenarEntidadProvincia(value));
             });
         }
-        _Lista_CentroCosto = result;
+        _ListaProvincias = result;
         return _ListaProvincias;
     }
     static async Refresh() {

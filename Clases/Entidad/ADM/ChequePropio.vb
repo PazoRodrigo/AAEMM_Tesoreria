@@ -54,8 +54,8 @@ Namespace Entidad
                     Select Case IdEstado
                         Case Enumeradores.EstadoChequePropios.Emitido
                             result = "Emitido"
-                        Case Enumeradores.EstadoChequePropios.Vigente
-                            result = "Vigente"
+                        Case Enumeradores.EstadoChequePropios.Entregado
+                            result = "Entregado"
                         Case Enumeradores.EstadoChequePropios.Suspendido
                             result = "Suspendido"
                         Case Enumeradores.EstadoChequePropios.Anulado
@@ -110,13 +110,13 @@ Namespace Entidad
             Numero = DtODesde.Numero
             Importe = DtODesde.Importe
             Select Case DtODesde.IdEstado
-                Case 1
+                Case 0
                     IdEstado = Enumeradores.EstadoChequePropios.Emitido
-                Case 2
-                    IdEstado = Enumeradores.EstadoChequePropios.Vigente
-                Case 3
+                Case 1
+                    IdEstado = Enumeradores.EstadoChequePropios.Entregado
+                Case 5
                     IdEstado = Enumeradores.EstadoChequePropios.Suspendido
-                Case 4
+                Case 10
                     IdEstado = Enumeradores.EstadoChequePropios.Anulado
                 Case Else
                     Throw New Exception("Error")
@@ -187,7 +187,7 @@ Namespace Entidad
         End Function
         Public Sub Alta()
             ValidarAlta()
-            Me.IdEstado = Enumeradores.EstadoChequePropios.Vigente
+            Me.IdEstado = Enumeradores.EstadoChequePropios.Emitido
             DAL_ChequePropio.Alta(Me)
             Refresh()
         End Sub
