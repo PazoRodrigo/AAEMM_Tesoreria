@@ -178,7 +178,7 @@
                                     <div class="col-7">
                                         <div class="row justify-content-center">
                                             <div class="col-10">
-                                                <a href="#" class="btn btn-block btn-primary">Cuenta Corriente
+                                                <a href="#" id="BtnCuentaCorriente" class="btn btn-block btn-primary">Cuenta Corriente
                                                     <br />
                                                     $ 150.000,00
                                                 </a>

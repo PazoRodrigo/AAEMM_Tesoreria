@@ -81,6 +81,16 @@ $('body').on('click', '#LinkBtnNuevo', async function (e) {
         alertAlerta(e);
     }
 });
+
+$('body').on('click', '#BtnCuentaCorriente', async function (e) {
+    try {
+        sessionStorage.setItem("ObjEmpresaCUIT", _ObjEmpresa.CUIT);
+        window.location.href = "../ADM/Frm_Adm_EmpresaCtaCte.aspx";
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
 $('body').on('click', '#BtnGuardar', async function (e) {
     try {
         spinner();

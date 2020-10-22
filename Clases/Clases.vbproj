@@ -90,7 +90,7 @@
     <Compile Include="Entidad\Complementarias\TipoPagoManual.vb" />
     <Compile Include="Entidad\Ingresos\Ingreso.vb" />
     <Compile Include="Entidad\Archivos\Archivo.vb" />
-    <Compile Include="Entidad\Complementarias\CuentaCorriente.vb" />
+    <Compile Include="Entidad\ADM\Cta Cte\CuentaCorriente.vb" />
     <Compile Include="Entidad\Complementarias\DatosCalculados.vb" />
     <Compile Include="Entidad\Complementarias\Sexo.vb" />
     <Compile Include="Entidad\DIM\Banco.vb" />

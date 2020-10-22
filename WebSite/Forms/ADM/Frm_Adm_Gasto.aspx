@@ -16,10 +16,10 @@
             text-decoration: none;
         }
 
-        a:hover {
-            text-decoration: none;
-            color: #fff;
-        }
+            a:hover {
+                text-decoration: none;
+                color: #fff;
+            }
 
         .btnComprobanteOn {
             display: block;
@@ -179,7 +179,7 @@
                         </div>
                     </div>
                     <div class="col-lg-8">
-                        <div id="GastoDetalle" style="display:none;">
+                        <div id="GastoDetalle" style="display: none;">
                             <div style="width: 100%;">
                                 <div class="row mt-1">
                                     <div class="col-lg-2 ml-3">Cuenta</div>
@@ -256,7 +256,7 @@
                                     <div class="col-lg-4">
                                         <div class="Boton BtnGuardar">
                                             <a id="LinkBtnGuardarComprobante" href="#"><span
-                                                    id="SpanBtnGuardarComprobante"></span></a>
+                                                id="SpanBtnGuardarComprobante"></span></a>
                                         </div>
                                     </div>
                                 </div>

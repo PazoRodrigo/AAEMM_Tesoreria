@@ -32,6 +32,10 @@ Inherits="Forms_Frm_Dist_Configuracion" %>
         // Ctrol + Alt + H
         redirect =
           '<%= ResolveClientUrl("~/Forms/Conf/Frm_ChequesPropios.aspx")%>';
+      } else if (e.ctrlKey && e.altKey && (e.which == 77 || e.which == 109)) {
+        // Ctrol + Alt + M
+        redirect =
+          '<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_TipoMovimientoCtaCte.aspx")%>';
       } else if (e.ctrlKey && e.altKey && (e.which == 79 || e.which == 111)) {
         // Ctrol + Alt + O
         redirect =
@@ -155,6 +159,12 @@ Inherits="Forms_Frm_Dist_Configuracion" %>
                       <a
                         href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_Banco.aspx")%>'
                         >(Alt + B) - Banco</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href='<%= ResolveClientUrl("~/Forms/DIM/Frm_ABM_TipoMovimientoCtaCte.aspx")%>'
+                        >(Alt + M) - Tipo Movimiento Cta. Cte.</a
                       >
                     </li>
                   </ul>

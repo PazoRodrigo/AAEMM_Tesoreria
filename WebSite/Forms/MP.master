@@ -43,6 +43,7 @@
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empresa.js?version20201012")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Gasto.js?version20201012")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Ingreso.js?version20201012")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/MovimientoCtaCte.js?version20201012")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Recibo.js?version20201012")%>' type="text/javascript"></script>
 
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Domicilio.js?version20201012")%>' type="text/javascript"></script>
@@ -57,6 +58,7 @@
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoContacto.js?version20201012")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoDomicilio.js?version20201012")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoGasto.js?version20201012")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoMovimientoCtaCte.js?version20201012")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoPago.js?version20201012")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoPagoManual.js?version20201012")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Estados/EstadoCheque.js?version20201012")%>' type="text/javascript"></script>
@@ -81,6 +83,7 @@
         var urlWsRecibo = '<%= ResolveClientUrl("~/WebServices/WsRecibo.asmx")%>';
         var urlWsTipoContacto = '<%= ResolveClientUrl("~/WebServices/WsTipoContacto.asmx")%>';
         var urlWsTipoDomicilio = '<%= ResolveClientUrl("~/WebServices/WsTipoDomicilio.asmx")%>';
+        var urlWsTipoMovimientoCtaCte = '<%= ResolveClientUrl("~/WebServices/WsTipoMovimientoCtaCte.asmx")%>';
         var urlWsTipoGasto = '<%= ResolveClientUrl("~/WebServices/WsTipoGasto.asmx")%>';
         var urlWsTipoPago = '<%= ResolveClientUrl("~/WebServices/WsTipoPago.asmx")%>';
         var urlWsTipoPagoManual = '<%= ResolveClientUrl("~/WebServices/WsTipoPagoManual.asmx")%>';
@@ -90,7 +93,7 @@
         $(document).ready(function () {
             let temp = JSON.parse(sessionStorage.getItem("User"));
             if (temp == null) {
-                window.location.href = 'http://aplicativosaaemm.dyndns.org/SitioTesoreria/Forms/Login/Frm_Login.aspx';
+                window.location.href = 'http://localhost:14162/Forms/Login/Frm_Login.aspx';
             } else {
                 $("body").css('display', 'block');
                 let str = temp.Apellido + ', ' + temp.Nombre
@@ -102,7 +105,7 @@
         }
         document.addEventListener('EventoInicio', async function (e) {
             try {
-                window.location.href = 'http://aplicativosaaemm.dyndns.org/SitioTesoreria/Forms/Login/Frm_Login.aspx';
+                window.location.href = 'http://localhost:14162/Forms/Login/Frm_Login.aspx';
             } catch (e) {
                 alertAlerta(e);
             }

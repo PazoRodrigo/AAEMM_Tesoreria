@@ -10,28 +10,16 @@ Namespace Entidad
     Public Class TipoMovimientoCtaCte
         Inherits DBE
 
-        Private Shared _TodosD As List(Of TipoMovimientoCtaCte)
-        Public Shared Property TodosD() As List(Of TipoMovimientoCtaCte)
+        Private Shared _Todos As List(Of TipoMovimientoCtaCte)
+        Public Shared Property Todos() As List(Of TipoMovimientoCtaCte)
             Get
-                If _TodosD Is Nothing Then
-                    _TodosD = DAL_TipoMovimientoCtaCte.TraerTodosD
+                If _Todos Is Nothing Then
+                    _Todos = DAL_TipoMovimientoCtaCte.TraerTodos
                 End If
-                Return _TodosD
+                Return _Todos
             End Get
             Set(ByVal value As List(Of TipoMovimientoCtaCte))
-                _TodosD = value
-            End Set
-        End Property
-        Private Shared _TodosH As List(Of TipoMovimientoCtaCte)
-        Public Shared Property TodosH() As List(Of TipoMovimientoCtaCte)
-            Get
-                If _TodosH Is Nothing Then
-                    _TodosH = DAL_TipoMovimientoCtaCte.TraerTodosH
-                End If
-                Return _TodosH
-            End Get
-            Set(ByVal value As List(Of TipoMovimientoCtaCte))
-                _TodosH = value
+                _Todos = value
             End Set
         End Property
 #Region " Atributos / Propiedades "
@@ -76,6 +64,7 @@ Namespace Entidad
             ' Entidad
             IdEntidad = objImportar.IdEntidad
             Nombre = objImportar.Nombre
+            IdTipo = objImportar.IdTipo
             Observaciones = objImportar.Observaciones
         End Sub
         Sub New(ByVal DtODesde As DTO.DTO_TipoMovimientoCtaCte)
@@ -93,6 +82,7 @@ Namespace Entidad
             End If
             ' Entidad
             IdEntidad = DtODesde.IdEntidad
+            IdTipo = DtODesde.IdTipo
             Nombre = DtODesde.Nombre
             Observaciones = DtODesde.Observaciones
         End Sub
@@ -100,15 +90,15 @@ Namespace Entidad
 #Region " Métodos Estáticos"
         ' Traer
         Public Shared Function TraerUno(ByVal Id As Integer) As TipoMovimientoCtaCte
-            Dim result As TipoMovimientoCtaCte = TodosD.Find(Function(x) x.IdEntidad = Id)
+            Dim result As TipoMovimientoCtaCte = Todos.Find(Function(x) x.IdEntidad = Id)
             If result Is Nothing Then
                 Throw New Exception("No existen resultados para la búsqueda")
             End If
             Return result
         End Function
-        Public Shared Function TraerTodos() As List(Of TipoMovimientoCtaCte)
-            Return TodosD
-        End Function
+        'Public Shared Function TraerTodos() As List(Of TipoMovimientoCtaCte)
+        '    Return Todos
+        'End Function
         'Public Shared Function TraerUno(ByVal Id As Integer) As TipoMovimientoCtaCte
         '    Dim result As TipoMovimientoCtaCte= DAL_TipoMovimientoCtaCte.TraerUno(Id)
         '    If result Is Nothing Then
@@ -116,13 +106,9 @@ Namespace Entidad
         '    End If
         '    Return result
         'End Function
-        'Public Shared Function TraerTodos() As List(Of TipoMovimientoCtaCte)
-        '    Dim result As List(Of TipoMovimientoCtaCte) = DAL_TipoMovimientoCtaCte.TraerTodos()
-        '    If result Is Nothing Then
-        '        Throw New Exception("No existen resultados para la búsqueda")
-        '    End If
-        '    Return result
-        'End Function
+        Public Shared Function TraerTodos() As List(Of TipoMovimientoCtaCte)
+            Return DAL_TipoMovimientoCtaCte.TraerTodos()
+        End Function
         ' Nuevos
 #End Region
 #Region " Métodos Públicos"
@@ -150,9 +136,9 @@ Namespace Entidad
             }
             Return result
         End Function
-        Public Shared Sub RefreshD()
-            _TodosD = DAL_TipoMovimientoCtaCte.TraerTodosD
-        End Sub
+        'Public Shared Sub Refresh()
+        '    Todos = DAL_TipoMovimientoCtaCte.TraerTodos
+        'End Sub
         ' Nuevos
 #End Region
 #Region " Métodos Privados "
@@ -160,7 +146,7 @@ Namespace Entidad
         Private Sub ValidarAlta()
             ValidarUsuario(Me.IdUsuarioAlta)
             ValidarCampos()
-            ValidarNoDuplicadosD()
+            ValidarNoDuplicados()
         End Sub
         Private Sub ValidarBaja()
             ValidarUsuario(Me.IdUsuarioBaja)
@@ -168,7 +154,7 @@ Namespace Entidad
         Private Sub ValidarModifica()
             ValidarUsuario(Me.IdUsuarioModifica)
             ValidarCampos()
-            ValidarNoDuplicadosD()
+            ValidarNoDuplicados()
         End Sub
         ' Validaciones
         Private Sub ValidarUsuario(ByVal idUsuario As Integer)
@@ -209,9 +195,8 @@ Namespace Entidad
                 Throw New Exception(sError)
             End If
         End Sub
-        Private Sub ValidarNoDuplicadosD()
-            TipoMovimientoCtaCte.RefreshD()
-            Dim result As TipoMovimientoCtaCte = TodosD.Find(Function(x) x.Nombre.ToUpper = Nombre And x.IdEntidad <> IdEntidad)
+        Private Sub ValidarNoDuplicados()
+            Dim result As TipoMovimientoCtaCte = Todos.Find(Function(x) x.Nombre.ToUpper = Nombre And x.IdEntidad <> IdEntidad)
             If Not result Is Nothing Then
                 Throw New Exception("El Nombre a ingresar ya existe")
             End If
@@ -242,8 +227,7 @@ Namespace DataAccessLibrary
         Const storeBaja As String = "DIM.p_TipoMovimientoCtaCte_Baja"
         Const storeModifica As String = "DIM.p_TipoMovimientoCtaCte_Modifica"
         Const storeTraerUnoXId As String = "DIM.p_TipoMovimientoCtaCte_TraerUnoXId"
-        Const storeTraerTodosD As String = "DIM.p_TipoMovimientoCtaCte_TraerTodosD"
-        Const storeTraerTodosH As String = "DIM.p_TipoMovimientoCtaCte_TraerTodosH"
+        Const storeTraerTodos As String = "DIM.p_TipoMovimientoCtaCte_TraerTodos"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
@@ -251,7 +235,7 @@ Namespace DataAccessLibrary
             Dim store As String = storeAlta
             Dim pa As New parametrosArray
             pa.add("@idUsuarioAlta", entidad.IdUsuarioAlta)
-            pa.add("@IdTipo", entidad.IdTipo)
+            pa.add("@DH", entidad.IdTipo)
             pa.add("@Nombre", entidad.Nombre)
             pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
             Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
@@ -275,6 +259,7 @@ Namespace DataAccessLibrary
             Dim pa As New parametrosArray
             pa.add("@idUsuarioModifica", entidad.IdUsuarioModifica)
             pa.add("@id", entidad.IdEntidad)
+            pa.add("@DH", entidad.IdTipo)
             pa.add("@Nombre", entidad.Nombre)
             pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
             Connection.Connection.Ejecutar(store, pa)
@@ -296,24 +281,11 @@ Namespace DataAccessLibrary
             End Using
             Return result
         End Function
-        Public Shared Function TraerTodosD() As List(Of TipoMovimientoCtaCte)
-            Dim store As String = storeTraerTodosD
+        Public Shared Function TraerTodos() As List(Of TipoMovimientoCtaCte)
+            Dim store As String = storeTraerTodos
             Dim pa As New parametrosArray
             Dim listaResult As New List(Of TipoMovimientoCtaCte)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
-                If dt.Rows.Count > 0 Then
-                    For Each dr As DataRow In dt.Rows
-                        listaResult.Add(LlenarEntidad(dr))
-                    Next
-                End If
-            End Using
-            Return listaResult
-        End Function
-        Public Shared Function TraerTodosH() As List(Of TipoMovimientoCtaCte)
-            Dim store As String = storeTraerTodosH
-            Dim pa As New parametrosArray
-            Dim listaResult As New List(Of TipoMovimientoCtaCte)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -366,6 +338,11 @@ Namespace DataAccessLibrary
             If dr.Table.Columns.Contains("Nombre") Then
                 If dr.Item("Nombre") IsNot DBNull.Value Then
                     entidad.Nombre = dr.Item("Nombre").ToString.ToUpper.Trim
+                End If
+            End If
+            If dr.Table.Columns.Contains("DH") Then
+                If dr.Item("DH") IsNot DBNull.Value Then
+                    entidad.IdTipo = CType(CInt(dr.Item("DH")), Enumeradores.TipoMovimientoDH)
                 End If
             End If
             If dr.Table.Columns.Contains("Observaciones") Then
