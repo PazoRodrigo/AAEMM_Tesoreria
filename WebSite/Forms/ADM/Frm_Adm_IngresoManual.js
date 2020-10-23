@@ -110,6 +110,25 @@ async function ArmarBusqueda() {
     }
     return Buscador;
 }
+async function MostrarRecibo() {
+    $("#divCantRegistrosBusqueda").css("display", "none");
+    $("#Grilla").css("display", "none");
+    $("#EntidadCUIT").val(_ObjRecibo.CUIT);
+    let TempEmpresa = await Empresa.TraerUnaXCUIT(_ObjRecibo.CUIT);
+    $("#EntidadCodigoEntidad").val(await TempEmpresa.StrCodigo(6));
+    $("#EntidadRazonSocial").val(TempEmpresa.RazonSocial);
+    $("#EntidadFecha").val(_ObjRecibo.Fecha);
+    $("#EntidadNroRecibo").val(Right('0000000000' + _ObjRecibo.NroReciboFin, 10));
+    $("#EntidadImporteTotal").val(separadorMiles(_ObjRecibo.ImporteTotal.toFixed(2)));
+    $("#EntidadImporteEfectivo").val(separadorMiles(_ObjRecibo.ImporteEfectivo.toFixed(2)));
+    $("#EntidadObservaciones").val(_ObjRecibo.Observaciones);
+    _ListaPagos = await _ObjRecibo.ListaPagos();
+    _ListaPeriodos = await _ObjRecibo.ListaPeriodos();
+    await MostrarPagos();
+    await MostrarPeriodos();
+    $("#ContenedorSeleccionadoManual").css("display", "block");
+    $("#BtnGuardarRecibo").css("display", "none");
+}
 async function LlenarGrilla() {
     $("#Grilla").css("display", "none");
     if (_ListaIngresosManuales.length > 0) {
@@ -356,6 +375,19 @@ $('body').on('click', '#BtnAgregarTransferencia', async function (e) {
         alertAlerta(error);
     }
 });
+document.addEventListener('EventoSeleccionarIngresoManual', async function (e) {
+    try {
+        let objSeleccionado = e.detail;
+        let buscado = $.grep(_ListaIngresosManuales, function (entidad, index) {
+            return entidad.IdEntidad == objSeleccionado.IdEntidad;
+        });
+        _ObjRecibo = buscado[0];
+        await MostrarRecibo();
+
+    } catch (e) {
+        alertAlerta(e);
+    }
+}, false);
 document.addEventListener('EventoEliminarPago', async function (e) {
     try {
         let objSeleccionado = e.detail;

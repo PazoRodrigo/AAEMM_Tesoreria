@@ -135,7 +135,7 @@ Namespace Entidad
         End Function
         ' Nuevos
         Public Shared Function TraerTodosXBusqueda(busqueda As StrBusquedaRecibo) As List(Of Recibo)
-            Dim sqlQuery As String = "SELECT DISTINCT rec.Id, rec.CUIT, rec.fecha, rec.importeTotal, rec.nroReciboFin FROM Ingreso.Recibo rec "
+            Dim sqlQuery As String = "SELECT DISTINCT rec.Id, rec.CUIT, rec.fecha, rec.importeTotal, rec.importeEfectivo, rec.nroReciboFin FROM Ingreso.Recibo rec "
             sqlQuery += "INNER JOIN ingreso.Recibo_Periodo rpe ON rpe.IdRecibo = rec.Id  "
             sqlQuery += "LEFT JOIN adm.chequetercero ch ON ch.IdRecibo = rec.Id "
             sqlQuery += "WHERE rec.FechaBaja IS NULL "
@@ -155,7 +155,7 @@ Namespace Entidad
                 sqlQuery += "AND rec.ImporteTotal = " + Replace(CStr(busqueda.Importe), ",", ".")
             End If
             If busqueda.NroRecibo > 0 Then
-                sqlQuery += "AND rec.NroReciboFin LIKE = '" + busqueda.NroRecibo.ToString + "'"
+                sqlQuery += "AND rec.NroReciboFin LIKE '%" + busqueda.NroRecibo.ToString + "%'"
             End If
             If busqueda.NroCheque > 0 Then
                 sqlQuery += "AND ch.Numero = '" + busqueda.NroCheque.ToString + "'"
@@ -163,7 +163,12 @@ Namespace Entidad
             sqlQuery += "  ORDER BY fecha desc "
             Return DAL_Recibo.TraerTodosXBusqueda(sqlQuery)
         End Function
-
+        Public Shared Function TraerTodosPagosXRecibo(idRecibo As Integer) As List(Of StrPago)
+            Return DAL_Recibo.TraerTodosPagosXRecibo(idRecibo)
+        End Function
+        Public Shared Function TraerTodosPeriodosXRecibo(idRecibo As Integer) As List(Of StrPeriodo)
+            Return DAL_Recibo.TraerTodosPeriodosXRecibo(idRecibo)
+        End Function
 #End Region
 #Region " Métodos Públicos"
         ' ABM
@@ -326,6 +331,8 @@ Namespace DataAccessLibrary
         Const storeModifica As String = "p_Recibo_Modifica"
         Const storeTraerUnoXId As String = "[INGRESO].p_Recibo_TraerUnoXId"
         Const storeTraerTodos As String = "INGRESO.p_Recibo_TraerTodos"
+        Const storeTraerTodosPagosXRecibo As String = "INGRESO.p_Recibo_TraerTodosPagosXRecibo"
+        Const storeTraerTodosPeriodosXRecibo As String = "INGRESO.p_Recibo_TraerTodosPeriodosXRecibo"
         Const storeTraerTodosActivos As String = "p_Recibo_TraerTodosActivos"
         Const storeTraerTodosXBusqueda As String = "p_TraerXBusquedaLibre"
 #End Region
@@ -456,6 +463,34 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
+        Friend Shared Function TraerTodosPeriodosXRecibo(IdRecibo As Integer) As List(Of Recibo.StrPeriodo)
+            Dim store As String = storeTraerTodosPeriodosXRecibo
+            Dim listaResult As New List(Of Recibo.StrPeriodo)
+            Dim pa As New parametrosArray
+            pa.add("@IdRecibo", IdRecibo)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidadPeriodo(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
+        Friend Shared Function TraerTodosPagosXRecibo(IdRecibo As Integer) As List(Of Recibo.StrPago)
+            Dim store As String = storeTraerTodosPagosXRecibo
+            Dim listaResult As New List(Of Recibo.StrPago)
+            Dim pa As New parametrosArray
+            pa.add("@IdRecibo", IdRecibo)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidadPago(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
 #End Region
 #Region " Métodos Privados "
         Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Recibo
@@ -535,6 +570,74 @@ Namespace DataAccessLibrary
             If dr.Table.Columns.Contains("IdEstado") Then
                 If dr.Item("IdEstado") IsNot DBNull.Value Then
                     entidad.IdEstado = CType(dr.Item("IdEstado"), Enumeradores.EstadoRecibo)
+                End If
+            End If
+            If dr.Table.Columns.Contains("Observaciones") Then
+                If dr.Item("Observaciones") IsNot DBNull.Value Then
+                    entidad.Observaciones = dr.Item("Observaciones").ToString.ToUpper.Trim
+                End If
+            End If
+            Return entidad
+        End Function
+        Private Shared Function LlenarEntidadPago(ByVal dr As DataRow) As Recibo.StrPago
+            Dim entidad As New Recibo.StrPago
+            If dr.Table.Columns.Contains("IdEntidad") Then
+                If dr.Item("IdEntidad") IsNot DBNull.Value Then
+                    entidad.IdEntidad = CInt(dr.Item("IdEntidad"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("IdBanco") Then
+                If dr.Item("IdBanco") IsNot DBNull.Value Then
+                    entidad.IdBanco = CInt(dr.Item("IdBanco"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("IdRecibo") Then
+                If dr.Item("IdRecibo") IsNot DBNull.Value Then
+                    entidad.IdRecibo = CInt(dr.Item("IdRecibo"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("IdTipoPagoManual") Then
+                If dr.Item("IdTipoPagoManual") IsNot DBNull.Value Then
+                    entidad.IdTipoPagoManual = CInt(dr.Item("IdTipoPagoManual"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("Numero") Then
+                If dr.Item("Numero") IsNot DBNull.Value Then
+                    entidad.Numero = CLng(dr.Item("Numero"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("Importe") Then
+                If dr.Item("Importe") IsNot DBNull.Value Then
+                    entidad.Importe = CDec(dr.Item("Importe"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("Vencimiento") Then
+                If dr.Item("Vencimiento") IsNot DBNull.Value Then
+                    entidad.Vencimiento = CLng(dr.Item("Vencimiento"))
+                End If
+            End If
+            Return entidad
+        End Function
+        Private Shared Function LlenarEntidadPeriodo(ByVal dr As DataRow) As Recibo.StrPeriodo
+            Dim entidad As New Recibo.StrPeriodo
+            If dr.Table.Columns.Contains("IdEntidad") Then
+                If dr.Item("IdEntidad") IsNot DBNull.Value Then
+                    entidad.IdEntidad = CInt(dr.Item("IdEntidad"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("IdRecibo") Then
+                If dr.Item("IdRecibo") IsNot DBNull.Value Then
+                    entidad.IdRecibo = CInt(dr.Item("IdRecibo"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("Importe") Then
+                If dr.Item("Importe") IsNot DBNull.Value Then
+                    entidad.Importe = CDec(dr.Item("Importe"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("Periodo") Then
+                If dr.Item("Periodo") IsNot DBNull.Value Then
+                    entidad.Periodo = dr.Item("Periodo").ToString.ToUpper.Trim
                 End If
             End If
             Return entidad

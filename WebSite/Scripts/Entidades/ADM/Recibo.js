@@ -61,6 +61,12 @@ class Recibo extends DBE {
         }
         return Result;
     }
+    async ListaPagos() {
+        return Recibo.TraerTodosPagosXRecibo(this.IdEntidad);
+    }
+    async ListaPeriodos() {
+        return Recibo.TraerTodosPeriodosXRecibo(this.IdEntidad);
+    }
     // ABM
     async Alta(ListaPagos, ListaPeriodos) {
         await this.ValidarCampos();
@@ -180,6 +186,34 @@ class Recibo extends DBE {
         }
         return result;
     }
+    static async TraerTodosPagosXRecibo(IdRecibo) {
+        let data = {
+            'IdRecibo': IdRecibo
+        };
+        let lista = await ejecutarAsync(urlWsRecibo + "/TraerTodosPagosXRecibo", data);
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadPago(value));
+            });
+        }
+        _ListaRecibos = result;
+        return result;
+    }
+    static async TraerTodosPeriodosXRecibo(IdRecibo) {
+        let data = {
+            'IdRecibo': IdRecibo
+        };
+        let lista = await ejecutarAsync(urlWsRecibo + "/TraerTodosPeriodosXRecibo", data);
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadPeriodo(value));
+            });
+        }
+        _ListaRecibos = result;
+        return result;
+    }
     static async TraerTodosXBusqueda(Busqueda) {
         let data = {
             'Busqueda': Busqueda
@@ -191,6 +225,7 @@ class Recibo extends DBE {
                 result.push(LlenarEntidadRecibo(value));
             });
         }
+        _ListaRecibos = result;
         return result;
     }
     static async ArmarGrillaPeriodos(div, lista, estilo, eventoEliminar) {
@@ -259,7 +294,9 @@ class Recibo extends DBE {
         str += '<table class="table table-sm">';
         str += '    <thead>';
         str += '        <tr>';
+        str += '            <th style="width:25px;"></th>';
         str += '            <th class="text-center" style="width: 80px;">Fecha</th>';
+        str += '            <th class="text-center" style="width: 50px;">Nro. Recibo</th>';
         str += '            <th class="text-center" style="width: 50px;">CUIT</th>';
         str += '            <th class="text-center" style="width: 220px;">Empresa</th>';
         str += '            <th class="text-center" style="width: 110px;">Importe Total</th>';
@@ -277,7 +314,9 @@ class Recibo extends DBE {
         if (lista.length > 0) {
             for (let item of lista) {
                 str += '        <tr>';
+                str += '            <td style="width:5px;"><a hfre="#" id="' + item.IdEntidad + '"  data-Evento="' + evento + '" onclick="SeleccionReciboGrilla(this);"> <img src="../../Imagenes/lupa.png" alt=""></a></td>';
                 str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrFecha() + '</small></td>';
+                str += '            <td class="text-center" style="width: 50px;"><small class="text-light">' + Right("000000" + item.NroReciboFin, 6) + '</small></td>';
                 str += '            <td class="text-center" style="width: 50px;"><small class="text-light">' + await item.CUIT + '</small></td>';
                 let strRazonSocial = (await item.ObjEmpresa()).RazonSocial;
                 if (strRazonSocial.length > 0) {
@@ -315,22 +354,42 @@ function LlenarEntidadRecibo(entidad) {
     Res.Observaciones = entidad.Observaciones;
     return Res;
 }
+function LlenarEntidadPago(entidad) {
+    let Res = new Array;
+    Res.IdEntidad = entidad.IdEntidad;
+    Res.IdRecibo = entidad.IdRecibo;
+    Res.IdBanco = entidad.IdBanco;
+    Res.IdTipoPagoManual = entidad.IdTipoPagoManual;
+    Res.Numero = entidad.Numero;
+    Res.Importe = entidad.Importe;
+    Res.Vencimiento = entidad.Vencimiento;
+    return Res;
+}
+function LlenarEntidadPeriodo(entidad) {
+    let Res = new Array;
+    console.log(entidad);
+    Res.IdEntidad = entidad.IdEntidad;
+    Res.IdRecibo = entidad.IdRecibo;
+    Res.Importe = entidad.Importe;
+    Res.Periodo = entidad.Periodo;
+    return Res;
+}
 async function SeleccionReciboGrilla(MiElemento) {
-    // try {
-    //     let elemento = document.getElementById(MiElemento.id);
-    //     let evento = elemento.getAttribute('data-Evento');
-    //     let buscado = $.grep(_ListaIngresos, function (entidad, index) {
-    //         return entidad.IdEntidad == MiElemento.id;
-    //     });
-    //     if (buscado[0] != undefined) {
-    //         let event = new CustomEvent(evento, {
-    //             detail: buscado[0]
-    //         });
-    //         document.dispatchEvent(event);
-    //     }
-    // } catch (e) {
-    //     alertAlerta(e);
-    // }
+    try {
+        let elemento = document.getElementById(MiElemento.id);
+        let evento = elemento.getAttribute('data-Evento');
+        let buscado = $.grep(_ListaRecibos, function (entidad, index) {
+            return entidad.IdEntidad == MiElemento.id;
+        });
+        if (buscado[0] != undefined) {
+            let event = new CustomEvent(evento, {
+                detail: buscado[0]
+            });
+            document.dispatchEvent(event);
+        }
+    } catch (e) {
+        alertAlerta(e);
+    }
 }
 async function EliminarPago(MiElemento) {
     try {
