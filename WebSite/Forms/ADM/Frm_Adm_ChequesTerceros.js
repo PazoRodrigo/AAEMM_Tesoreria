@@ -131,6 +131,27 @@ async function LlenarEntidad(ObjCheque) {
     $("#EntidadCodigoEntidad").val(await ObjRecibo.StrCodigoEntidad(10));
     $("#EntidadRazonSocial").val((await ObjRecibo.ObjEmpresa()).RazonSocial)
     $("input[name=RadioEstado][value=" + ObjCheque.IdEstado + "]").prop('checked', true);
+    switch (ObjCheque.IdEstado) {
+        case 0:
+            //Recibido
+            $(".DivEstadoRecibido").css('display', 'block');
+            $(".DivEstadoDepositado").css('display', 'block');
+            break;
+        case 1:
+            //Depositado
+            $(".DivEstadoDepositado").css('display', 'block');
+            $(".DivEstadoAcreditado").css('display', 'block');
+            $(".DivEstadoRechazado").css('display', 'block');
+            break;
+        case 2:
+            //Acreditado
+            $(".DivEstadoAcreditado").css('display', 'block');
+        case 10:
+            //Rechazado
+            $(".DivEstadoRechazado").css('display', 'block');
+        default:
+            break;
+    }
     $("#ContenedorSeleccionado").css('display', 'block')
 }
 async function LimpiarEntidad() {

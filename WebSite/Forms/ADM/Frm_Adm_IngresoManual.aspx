@@ -163,9 +163,9 @@
                                                 placeholder="Nro. Recibo" onkeypress="return jsSoloNumeros(event)" />
 
                                         </div>
-                                        <div class="col-1">Estado</div>
+                                        <div style="visibility: hidden" class="col-1">Estado</div>
                                         <div class="col-2">
-                                            <input type="text" id="EntidadEstado" class="form-control text-center"
+                                            <input style="visibility: hidden" type="text" id="EntidadEstado" class="form-control text-center"
                                                 placeholder="Estado" disabled>
                                         </div>
                                     </div>
@@ -187,9 +187,7 @@
                                                         placeholder="Efectivo" onkeypress="return jsSoloNumeros(event)" />
                                                 </div>
                                             </div>
-
                                         </div>
-
                                         <div class="col-7">
                                             <textarea type="text" id="EntidadObservaciones" class="form-control"
                                                 placeholder="Observaciones"></textarea>

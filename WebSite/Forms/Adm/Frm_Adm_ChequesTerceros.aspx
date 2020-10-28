@@ -92,7 +92,7 @@
                         <div id="BotoneraSuperior" class="row border border-primary">
                             <div class="col-12">
                                 <div class="row justify-content-between mt-1">
-                                     <div class="col-3">
+                                    <div class="col-3">
                                         <a id="BtnChequesRecibidos" class="btn btn-md btn-block btn-primary" href="#">Recibidos <span id="LblChequesRecibidos"></span></a>
                                     </div>
                                     <div class="col-3">
@@ -101,7 +101,7 @@
                                     <div class="col-3">
                                         <a id="BtnChequesAcreditados" class="btn btn-md btn-block btn-success" href="#">Acreditados <span id="LblChequesAcreditados"></span></a>
                                     </div>
-                                      <div class="col-3">
+                                    <div class="col-3">
                                         <a id="BtnChequesRechazados" class="btn btn-md btn-block btn-danger" href="#">Rechazados <span id="LblChequesRechazados"></span></a>
                                     </div>
                                 </div>
@@ -141,35 +141,34 @@
                                         <div class="col-1">Cheque</div>
                                         <div class="col-3">
                                             <input type="text"
-                                                id="EntidadNroCheque" 
+                                                id="EntidadNroCheque"
                                                 onkeypress="return jsSoloNumeros(event)"
                                                 class="form-control text-center datoCheque"
                                                 placeholder="Nro. Cheque">
                                         </div>
                                         <div class="col-1">Banco</div>
                                         <div class="col-3">
-                                            <div Id="CboBanco"></div>
+                                            <div id="CboBanco"></div>
                                         </div>
                                         <div class="col-1">Importe</div>
                                         <div class="col-3">
                                             <input type="text" id="EntidadImporte" class="form-control text-right datoCheque"
                                                 placeholder="Importe"
-                                                 readonly="readonly"
-                                                  onkeypress="return jsSoloNumeros(event)" />
+                                                readonly="readonly"
+                                                onkeypress="return jsSoloNumeros(event)" />
                                         </div>
-                                    </div class="row" >
-                                      <div class="row mt-1">
+                                    </div>
+                                    <div class="row mt-1">
                                         <div class="col-1">Fecha</div>
                                         <div class="col-3">
                                             <input type="text" id="EntidadVenc"
                                                 class="form-control datepicker text-center datoCheque" placeholder="Vencimiento">
                                         </div>
-                                           <div class="col-1">Recibo</div>
+                                        <div class="col-1">Recibo</div>
                                         <div class="col-3">
                                             <input type="text" id="EntidadNroRecibo"
                                                 readonly="readonly"
-
-                                 class="form-control text-center datoCheque"placeholder="Nro. Recibo">
+                                                class="form-control text-center datoCheque" placeholder="Nro. Recibo">
                                         </div>
                                         <div class="col-1">Estado</div>
                                         <div class="col-3">
@@ -208,31 +207,27 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-2">Nuevo Estado</div>
+                                        <div class="col-2 text-light">Nuevo Estado</div>
                                         <div class="col-10">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="RadioEstado" id="inlineRadioRecibido" value="0">
-                                                <label class="form-check-label" for="inlineRadioRecibido">Recibido</label>
+                                                <input class="form-check-input DivEstadoRecibido" style="display: none;" type="radio" name="RadioEstado" id="inlineRadioRecibido" value="0">
+                                                <label class="form-check-label DivEstadoRecibido" style="display: none;" for="inlineRadioRecibido">Recibido</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="RadioEstado" id="inlineRadioDepositado" value="1">
-                                                <label class="form-check-label" for="inlineRadioDepositado">Depositado</label>
+                                                <input class="form-check-input DivEstadoDepositado" style="display: none;" type="radio" name="RadioEstado" id="inlineRadioDepositado" value="1">
+                                                <label class="form-check-label DivEstadoDepositado" style="display: none;" for="inlineRadioDepositado">Depositado</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="RadioEstado" id="inlineRadioAcreditado" value="2">
-                                                <label class="form-check-label" for="inlineRadioAcreditado">Acreditado </label>
+                                                <input class="form-check-input DivEstadoAcreditado" style="display: none;" type="radio" name="RadioEstado" id="inlineRadioAcreditado" value="2">
+                                                <label class="form-check-label DivEstadoAcreditado" style="display: none;" for="inlineRadioAcreditado">Acreditado </label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="RadioEstado" id="inlineRadioRechazado" value="10">
-                                                <label class="form-check-label" for="inlineRadioRechazado">Rechazado</label>
+                                                <input class="form-check-input DivEstadoRechazado" style="display: none;" type="radio" name="RadioEstado" id="inlineRadioRechazado" value="10">
+                                                <label class="form-check-label DivEstadoRechazado" style="display: none;" for="inlineRadioRechazado">Rechazado</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="RadioEstado" id="inlineRadioVencido" value="11">
-                                                <label class="form-check-label" for="inlineRadioVencido">Vencido</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="RadioEstado" id="inlineRadioAcreditado" value="2">
-                                                <label class="form-check-label" for="inlineRadioAcreditado">Acreditado </label>
+                                                <input class="form-check-input DivEstadoVencido" style="display: none;" type="radio" name="RadioEstado" id="inlineRadioVencido" value="11">
+                                                <label class="form-check-label DivEstadoVencido" style="display: none;" for="inlineRadioVencido">Vencido</label>
                                             </div>
                                         </div>
                                     </div>
@@ -244,7 +239,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="DivSalvarCheque" style="display: block;"></div>
+                                <!-- <div id="DivSalvarCheque" style="display: block;"></div> -->
                             </div>
                         </div>
                     </div>

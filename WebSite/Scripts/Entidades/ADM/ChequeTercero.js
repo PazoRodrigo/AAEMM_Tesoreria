@@ -217,7 +217,8 @@ class ChequeTercero extends Cheque {
                 str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrNumero(10) + '</small></td>';
                 str += '            <td class="text-center" style="width: 120px;"><small class="text-light">' + await item.StrFechaVencimiento() + '</small></td>';
                 let ObjRecibo = await item.ObjRecibo();
-                str += '            <td class="text-left" style="width: 220px;"><small class="text-light">' + ObjRecibo.CUIT + '</small></td>';
+                let ObjEmpresa = await Empresa.TraerUnaXCUIT(ObjRecibo.CUIT);
+                str += '            <td class="text-left" style="width: 220px;"><small class="text-light">' + ObjRecibo.CUIT + ' - ' + Left(ObjEmpresa.RazonSocial, 30) + '</small></td>';
                 str += '            <td class="text-right pr-1" style="width: 100px;"><small class="text-light">' + separadorMiles(item.Importe.toFixed(2)) + '</small></td>';
                 str += '            <td class="text-center" style="width: 100px;"><small class="text-light">' + await ObjRecibo.StrNumero() + '</small></td>';
                 str += '            <td class="text-center" style="width: 40px;"><small class="text-light">' + await item.StrEstado() + '</small></td>';
