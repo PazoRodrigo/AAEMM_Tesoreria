@@ -30,7 +30,7 @@ async function ArmarGrillas(lista) {
             valor = parseFloat(valor) + parseFloat(lista[i].Importe);
             i++;
         }
-        await ChequeTercero.ArmarGrillaDetalle('GrillaDetalle', lista, 'SeleccionChequeTercero', 'height: 350px; overflow-y: scroll;');
+        await ChequeTercero.ArmarGrillaDetalle('GrillaDetalle', lista, 'SeleccionChequeTercero', 'height: 320px; overflow-y: scroll;');
         $("#GrilGrillaCabecerala").css('display', 'block');
         $("#Grilla").css('display', 'block');
         $("#LblCantidadRegistrosGrilla").text(lista.length);
