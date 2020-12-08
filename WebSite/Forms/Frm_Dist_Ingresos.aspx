@@ -8,7 +8,7 @@ CodeFile="Frm_Dist_Ingresos.aspx.vb" Inherits="Forms_Frm_Dist_Ingresos" %>
   runat="Server"
 >
   <script
-    src='<%= ResolveClientUrl("Frm_Dist_Ingresos.js?version20201012")%>'
+    src='<%= ResolveClientUrl("Frm_Dist_Ingresos.js?version20201028")%>'
   ></script>
   <script>
     document.onkeyup = function (e) {

@@ -70,6 +70,7 @@
         CJ = 4
     End Enum
     Public Enum TipoMovimientoDH
+        SinDH = 0
         D = 1
         H = 2
     End Enum

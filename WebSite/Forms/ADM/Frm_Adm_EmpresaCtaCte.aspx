@@ -8,7 +8,7 @@
     ContentPlaceHolderID="ContentPlaceHolder1"
     runat="Server">
     <script
-        src='<%= ResolveClientUrl("Frm_Adm_EmpresaCtaCte.js?version20201012")%>'></script>
+        src='<%= ResolveClientUrl("Frm_Adm_EmpresaCtaCte.js?version20201028")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = "";
