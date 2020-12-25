@@ -29,10 +29,8 @@ class Gasto extends DBE {
     async ListaComprobantes() {
         try {
             return await Comprobante.TraerTodasXGasto(this.IdEntidad);
-
         } catch (e) {
             return new Comprobante;
-
         }
     }
     // ABM

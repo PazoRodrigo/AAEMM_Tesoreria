@@ -118,7 +118,6 @@ Namespace Entidad
             'End If
             Return Nothing
         End Function
-
         Public Shared Function TraerTodosXBusqueda(busqueda As StrBusquedaGasto) As List(Of Gasto)
             Dim existeParametro As Boolean = False
             Dim resultStr As String = ""
@@ -166,7 +165,6 @@ Namespace Entidad
             Dim result As List(Of Gasto) = DAL_Gasto.TraerTodosXBusqueda(resultStr)
             Return result
         End Function
-
         Private Shared Function TraerTodosXEstado(idEstado As Enumeradores.EstadoGasto) As List(Of Gasto)
             Dim result As New List(Of Gasto)
             Dim Todos As List(Of Gasto) = TraerTodos()

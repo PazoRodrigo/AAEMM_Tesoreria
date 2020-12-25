@@ -45,7 +45,6 @@ async function LlenarCboCuentasCorrientes() {
 }
 async function LlenarSaldosCuentas() {
     let SaldosCuentaCorriente = await CuentaCorriente.TraerTodosSaldos();
-    console.log(SaldosCuentaCorriente);
     $("#spanSaldoCAJA").text(separadorMiles(separadorMiles(SaldosCuentaCorriente[0].Saldo.toFixed(2))));
     $("#spanSaldoFONDOFIJO").text(separadorMiles(separadorMiles(SaldosCuentaCorriente[1].Saldo.toFixed(2))));
     $("#spanSaldoPAGADORA").text(separadorMiles(separadorMiles(SaldosCuentaCorriente[2].Saldo.toFixed(2))));
@@ -64,24 +63,31 @@ async function AgregarLineaAsiento() {
     LimpiarLineaAsiento();
 }
 async function ValidarLineaAsiento() {
+    let ch = $('input[name="radioDH"]:checked').val();
+    if (ch == undefined)
+        throw ("Debe seleccionar si es Debe o Haber");
 }
 async function LlenarGrillaAsientoLineas() {
-    $("#DivGrillaLineasAsiento").html('');
-    let str = '';
-
     let SumaD = parseFloat(0);
     let SumaH = parseFloat(0);
+    //if (_ListaAsientoLineas.length > 0) {
+    //    await AsientoLinea.ArmarAsiento(div, _ListaAsientoLineas, SumaD, SumaH);
+    //    await MostrarImportesTotalAsiento(SumaD, SumaH);
+    //}
+
+    $("#DivGrillaLineasAsiento").html('');
+    let str = '';
     if (_ListaAsientoLineas.length > 0) {
         let i = 0;
+        let borrar = 1;
         while (i <= _ListaAsientoLineas.length - 1) {
             str += '<div class="row border-light border-bottom">';
             let valorLinea = parseFloat(_ListaAsientoLineas[i].Importe);
             let ObjCuentaCorriente = await _ListaAsientoLineas[i].ObjCuentaCorriente();
             let textoLinea = ObjCuentaCorriente.Nombre;
-            str += '<div class="col-1 text-light text-center bg-danger"><a href="#"class="LinkBorrarLinea" data-IdRegistro="' + i + '" >...</a></div>';
+            str += '<a href="#"class="LinkBorrarLinea col-1 bg-danger text-light" data-IdRegistro="' + i + '" ><span class="icon-bin"></span></a>';
             switch (parseInt(_ListaAsientoLineas[i].TipoDH)) {
                 case 0:
-
                     str += '<div class="col-7 text-light pl-3"><h5>' + textoLinea + '</h5></div>';
                     str += '<div class="col-4 text-right text-light pr-1">' + separadorMiles(valorLinea.toFixed(2)) + '</div>';
                     SumaD += valorLinea;
@@ -95,6 +101,7 @@ async function LlenarGrillaAsientoLineas() {
                 default:
             }
             i++;
+            borrar++;
             str += '</div>';
         }
     }
@@ -139,14 +146,37 @@ $('body').on('click', '#BtnAgregarLinea', async function (e) {
         alertAlerta(e);
     }
 });
+$('body').on('click', ".LinkBorrarLinea", async function () {
+    try {
+        $this = $(this);
+        let posicionEliminar = parseInt($this.attr("data-IdRegistro"));
+        let LineasNuevas = new Array;
+        let ind = 0;
+        spinner();
+        while (ind <= _ListaAsientoLineas.length - 1) {
+            if (ind != posicionEliminar) {
+                LineasNuevas.push(_ListaAsientoLineas[ind]);
+                console.log(LineasNuevas);
+            }
+            ind++;
+        }
+        spinnerClose();
+        _ListaAsientoLineas = [];
+        _ListaAsientoLineas = LineasNuevas;
+        await LlenarGrillaAsientoLineas();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
 $('body').on('click', '#BtnGuardarAsiento', async function (e) {
     try {
         let Debe = $("#LblImporteTotalAsientoD").text();
         let Haber = $("#LblImporteTotalAsientoH").text();
-        if (_ListaAsientoLineas?.length == 0)
+        if (_ListaAsientoLineas ?.length == 0)
             throw ('El DAsiento debe contener lineas');
 
-        if (Debe?.length == 0 || Haber?.length == 0) {
+        if (Debe ?.length == 0 || Haber ?.length == 0) {
             throw ('El Debe y el Haber deben ser mayores a 0');
         }
         if (parseFloat(Debe) != parseFloat(Haber)) {

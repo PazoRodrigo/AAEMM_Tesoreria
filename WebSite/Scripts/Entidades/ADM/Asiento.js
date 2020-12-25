@@ -29,11 +29,8 @@ class Asiento extends DBE {
                 await Linea.Alta();
                 i++;
             }
-
-
         } catch (e) {
             throw e;
         }
-
     }
 }

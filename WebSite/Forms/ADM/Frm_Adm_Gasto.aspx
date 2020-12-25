@@ -27,8 +27,8 @@
             padding-top: 10px;
             padding-bottom: 10px;
             float: left;
-            background-image: -webkit-gradient(linear, left top, left bottom, from(#263238), to(#007aff)), url('../images/Line2.png'), url('../images/Line2.png');
-            background-image: linear-gradient(180deg, #263238, #007aff), url('../images/Line2.png'), url('../images/Line2.png');
+            background-image: -webkit-gradient(linear, left top, left bottom, from(#263238), to(#007aff));
+            background-image: linear-gradient(180deg, #263238, #007aff);
             background-position: 0px 0px, 0% 50%, 100% 50%;
             background-size: auto, 1px, 1px;
             background-repeat: repeat, no-repeat, no-repeat;
@@ -45,7 +45,6 @@
             padding-top: 10px;
             padding-bottom: 10px;
             float: left;
-            background-image: url('../images/Line2.png'), url('../images/Line2.png');
             background-position: 0% 50%, 100% 50%;
             background-size: 1px, 1px;
             background-repeat: no-repeat, no-repeat;
@@ -63,8 +62,8 @@
             padding-top: 10px;
             padding-bottom: 10px;
             float: left;
-            background-image: -webkit-gradient(linear, left top, left bottom, from(#263238), to(#007aff)), url('../images/Line2.png'), url('../images/Line2.png');
-            background-image: linear-gradient(180deg, #263238, #007aff), url('../images/Line2.png'), url('../images/Line2.png');
+            background-image: -webkit-gradient(linear, left top, left bottom, from(#263238), to(#007aff));
+            background-image: linear-gradient(180deg, #263238, #007aff);
             background-position: 0px 0px, 0% 50%, 100% 50%;
             background-size: auto, 1px, 1px;
             background-repeat: repeat, no-repeat, no-repeat;
@@ -81,7 +80,6 @@
             padding-top: 10px;
             padding-bottom: 10px;
             float: left;
-            background-image: url('../images/Line2.png'), url('../images/Line2.png');
             background-position: 0% 50%, 100% 50%;
             background-size: 1px, 1px;
             background-repeat: no-repeat, no-repeat;
