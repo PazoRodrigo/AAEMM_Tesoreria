@@ -71,150 +71,13 @@
                         </div>
                     </div>
                     <div class="col-2">
-                           <input type="text" id="TxtFecha"                                                class="form-control datepicker text-center" placeholder="Fecha">
+                        <input type="text" id="TxtFecha" class="form-control datepicker text-center" placeholder="Fecha">
                     </div>
                 </div>
                 <div class="row mt-1">
                     <div class="col-5">
-                        <div id="DivGrillaAsientos" style="height: 300px; overflow-y: scroll;">
-                            <div class="row bg-primary text-light">
-                                <div class="col-7 pl-3">
-                                    <span>10/12/2020</span>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <span>$ 100.000.00</span>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <span>FONDO FIJO</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <span>$ 100.000.00</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-1">
-                                            <span>A</span>
-                                        </div>
-                                        <div class="col-8">
-                                            <span>CAJA</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <span>$ 100.000.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row bg-primary text-light">
-                                <div class="col-7 pl-3">
-                                    <span>05/12/2020</span>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <span>$ 50.000.00</span>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <span>FONDO FIJO</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <span>$ 50.000.00</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-1">
-                                            <span>A</span>
-                                        </div>
-                                        <div class="col-8">
-                                            <span>CAJA</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <span>$ 50.000.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row bg-primary text-light">
-                                <div class="col-7 pl-3">
-                                    <span>01/12/2020</span>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <span>$ 70.000.00</span>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <span>FONDO FIJO</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <span>$ 200.000.00</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-1">
-                                            <span>A</span>
-                                        </div>
-                                        <div class="col-8">
-                                            <span>CAJA</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <span>$ 100.000.00</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-1">
-                                            <span>A</span>
-                                        </div>
-                                        <div class="col-8">
-                                            <span>PAGADORA</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <span>$ 100.000.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row bg-primary text-light">
-                                <div class="col-7 pl-3">
-                                    <span>30/11/2020</span>
-                                </div>
-                                <div class="col-4 text-right">
-                                    <span>$ 150.000.00</span>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-12">
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <span>FONDO FIJO</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <span>$ 150.000.00</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-1">
-                                            <span>A</span>
-                                        </div>
-                                        <div class="col-8">
-                                            <span>CAJA</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <span>$ 150.000.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div style="height: 300px; overflow-y: scroll;">
+                            <div id="DivGrillaAsientos"></div>
                         </div>
                     </div>
                     <div class="col-7">
@@ -229,8 +92,8 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <div id="CboCuentaCorriente"></div>
-                                          
+                                            <div id="CboCuentaContable"></div>
+
                                         </div>
                                     </div>
                                     <div class="col-3">
@@ -251,14 +114,14 @@
                         <div class="row mt-1">
                             <div class="col-2 text-right text-light">
                             </div>
-                             <div class="col-1 text-right text-light">
-                                <h6> Debe:</h6>
+                            <div class="col-1 text-right text-light">
+                                <h6>Debe:</h6>
                             </div>
                             <div class="col-4 text-right text-light">
                                 <h5 id="LblImporteTotalAsientoD"></h5>
                             </div>
-                              <div class="col-1 text-right text-light">
-                                <h6> Haber:</h6>
+                            <div class="col-1 text-right text-light">
+                                <h6>Haber:</h6>
                             </div>
                             <div class="col-4 text-right text-light">
                                 <h5 id="LblImporteTotalAsientoH"></h5>

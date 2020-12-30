@@ -16,9 +16,8 @@ $(document).ready(function () {
 });
 async function Inicio() {
     await LlenarSaldosCuentas();
-    await LlenarCboCuentasCorrientes();
+    await LlenarCboCuentasContables();
     LimpiarFormulario();
-    //await LlenarGrilla_CuentaCorriente();
 }
 
 function LimpiarFormulario() {
@@ -28,7 +27,7 @@ function LimpiarFormulario() {
 function LimpiarLineaAsiento() {
     $("#TxtImporte").val('');
     $('input[name="radioDH"]').prop('checked', false);
-    $("#IdCboCuentaCorriente").val(0);
+    $("#_CboCuentaContable").val(0);
 }
 function LimpiarAsiento() {
     _ListaAsientoLineas = [];
@@ -39,9 +38,8 @@ function LimpiarAsiento() {
     $("#LblImporteTotalAsientoH").text('');
 }
 
-async function LlenarCboCuentasCorrientes() {
-    await CuentaCorriente.ArmarCombo(await CuentaCorriente.Todos(), 'CboCuentaCorriente', 'IdCboCuentaCorriente', 'Seleccione Cuenta', '', 'form-control');
-
+async function LlenarCboCuentasContables() {
+    await CuentaContable.ArmarCombo(await CuentaContable.Todos(), 'CboCuentaContable', 'IdCuentaContable', '', 'Seleccione Cuenta', 'form-control');
 }
 async function LlenarSaldosCuentas() {
     let SaldosCuentaCorriente = await CuentaCorriente.TraerTodosSaldos();
@@ -50,12 +48,11 @@ async function LlenarSaldosCuentas() {
     $("#spanSaldoPAGADORA").text(separadorMiles(separadorMiles(SaldosCuentaCorriente[2].Saldo.toFixed(2))));
     $("#spanSaldoRECAUDADORA").text(separadorMiles(separadorMiles(SaldosCuentaCorriente[3].Saldo.toFixed(2))));
 }
-
 async function AgregarLineaAsiento() {
-    await ValidarLineaAsiento();
+        await ValidarLineaAsiento();
     let ObjLinea = new AsientoLinea;
     ObjLinea.IdAsiento = _ObjAsiento.IdEntidad;
-    ObjLinea.IdCuentaCorriente = $("#IdCboCuentaCorriente").val();
+    ObjLinea.IdCuentaContable = parseInt($("#_CboCuentaContable").val());
     ObjLinea.TipoDH = $('input[name="radioDH"]:checked').val();
     ObjLinea.Importe = $("#TxtImporte").val();
     _ListaAsientoLineas.push(ObjLinea);
@@ -70,21 +67,15 @@ async function ValidarLineaAsiento() {
 async function LlenarGrillaAsientoLineas() {
     let SumaD = parseFloat(0);
     let SumaH = parseFloat(0);
-    //if (_ListaAsientoLineas.length > 0) {
-    //    await AsientoLinea.ArmarAsiento(div, _ListaAsientoLineas, SumaD, SumaH);
-    //    await MostrarImportesTotalAsiento(SumaD, SumaH);
-    //}
-
     $("#DivGrillaLineasAsiento").html('');
     let str = '';
     if (_ListaAsientoLineas.length > 0) {
         let i = 0;
-        let borrar = 1;
         while (i <= _ListaAsientoLineas.length - 1) {
             str += '<div class="row border-light border-bottom">';
             let valorLinea = parseFloat(_ListaAsientoLineas[i].Importe);
-            let ObjCuentaCorriente = await _ListaAsientoLineas[i].ObjCuentaCorriente();
-            let textoLinea = ObjCuentaCorriente.Nombre;
+            let ObjCuentaContable = await CuentaContable.TraerUno(parseInt(_ListaAsientoLineas[i].IdCuentaContable));
+            let textoLinea = ObjCuentaContable.Nombre;
             str += '<a href="#"class="LinkBorrarLinea col-1 bg-danger text-light" data-IdRegistro="' + i + '" ><span class="icon-bin"></span></a>';
             switch (parseInt(_ListaAsientoLineas[i].TipoDH)) {
                 case 0:
@@ -101,7 +92,6 @@ async function LlenarGrillaAsientoLineas() {
                 default:
             }
             i++;
-            borrar++;
             str += '</div>';
         }
     }
@@ -134,6 +124,7 @@ async function MostrarImportesTotalAsiento(ImporteD, ImporteH) {
 
 $('body').on('click', '#BtnAgregarLinea', async function (e) {
     try {
+
         if (_ObjAsiento == undefined) {
             _ObjAsiento = new Asiento;
             _ListaAsientoLineas = new Array;
@@ -141,9 +132,9 @@ $('body').on('click', '#BtnAgregarLinea', async function (e) {
         spinner();
         await AgregarLineaAsiento();
         spinnerClose();
-    } catch (e) {
+    } catch (err) {
         spinnerClose();
-        alertAlerta(e);
+        alertAlerta(err);
     }
 });
 $('body').on('click', ".LinkBorrarLinea", async function () {
@@ -164,39 +155,91 @@ $('body').on('click', ".LinkBorrarLinea", async function () {
         _ListaAsientoLineas = [];
         _ListaAsientoLineas = LineasNuevas;
         await LlenarGrillaAsientoLineas();
-    } catch (e) {
+    } catch (err) {
         spinnerClose();
-        alertAlerta(e);
+        alertAlerta(err);
     }
 });
 $('body').on('click', '#BtnGuardarAsiento', async function (e) {
     try {
         let Debe = $("#LblImporteTotalAsientoD").text();
         let Haber = $("#LblImporteTotalAsientoH").text();
-        if (_ListaAsientoLineas ?.length == 0)
-            throw ('El DAsiento debe contener lineas');
+        if (_ListaAsientoLineas?.length == 0)
+            throw 'El Asiento debe contener lineas';
 
-        if (Debe ?.length == 0 || Haber ?.length == 0) {
+        if (Debe?.length == 0 || Haber?.length == 0) {
             throw ('El Debe y el Haber deben ser mayores a 0');
         }
         if (parseFloat(Debe) != parseFloat(Haber)) {
-            throw ('El Debe y el Haber deben ser iguales');
+            throw 'El Debe y el Haber deben ser iguales';
         }
         let Fecha = dateStringToLong($("#TxtFecha").val());
         if (Fecha.length == 0)
-            throw ('Debe ingresar la fecha');
-
+            throw 'Debe ingresar la fecha';
         spinner();
+        if (Fecha > FechaHoyLng())
+            throw 'La fecha del Asiento no puede ser mayor de hoy';
         let _ObjAsiento = new Asiento;
+        console.log(Debe);
+        console.log(parseFloat(Debe));
         _ObjAsiento.Importe = parseFloat(Debe);
-
+        console.log(_ObjAsiento.Importe);
         _ObjAsiento.Fecha = dateStringToLong($("#TxtFecha").val());
         await _ObjAsiento.Alta(_ListaAsientoLineas);
         await LlenarSaldosCuentas();
         LimpiarAsiento();
         spinnerClose();
-    } catch (e) {
+    } catch (err) {
         spinnerClose();
-        alertAlerta(e);
+        alertAlerta(err);
     }
 });
+$('body').on('click', '#LinkCAJA', async function (e) {
+    try {
+        spinner();
+        $("#DivGrillaAsientos").html('');
+        let ListaAsientos = await Asiento.TraerTodosXCuenta(61);
+        await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+        spinnerClose();
+    } catch (err) {
+        spinnerClose();
+        alertAlerta(err);
+    }
+});
+$('body').on('click', '#LinkFONDOFIJO', async function (e) {
+    try {
+        spinner();
+        $("#DivGrillaAsientos").html('');
+        let ListaAsientos = await Asiento.TraerTodosXCuenta(62);
+        await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+        spinnerClose();
+    } catch (err) {
+        spinnerClose();
+        alertAlerta(err);
+    }
+});
+$('body').on('click', '#LinkPAGADORA', async function (e) {
+    try {
+        spinner();
+        $("#DivGrillaAsientos").html('');
+        let ListaAsientos = await Asiento.TraerTodosXCuenta(63);
+        await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+        spinnerClose();
+    } catch (err) {
+        spinnerClose();
+        alertAlerta(err);
+    }
+});
+$('body').on('click', '#LinkRECAUDADORA', async function (e) {
+    try {
+        spinner();
+        $("#DivGrillaAsientos").html('');
+        let ListaAsientos = await Asiento.TraerTodosXCuenta(64);
+        await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+        spinnerClose();
+    } catch (err) {
+        spinnerClose();
+        alertAlerta(err);
+    }
+});
+

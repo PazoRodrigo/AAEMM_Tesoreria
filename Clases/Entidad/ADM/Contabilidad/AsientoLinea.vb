@@ -14,7 +14,7 @@ Namespace Entidad_Asiento
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
         Public Property IdAsiento() As Integer = 0
-        Public Property IdCuentaCorriente() As Integer = 0
+        Public Property IdCuentaContable() As Integer = 0
         Public Property TipoDH() As Enumeradores.TipoMovimientoDH = Enumeradores.TipoMovimientoDH.SinDH
         Public Property Importe() As Decimal = 0
 #End Region
@@ -46,7 +46,7 @@ Namespace Entidad_Asiento
             ' Entidad
             IdEntidad = objImportar.IdEntidad
             IdAsiento = objImportar.IdAsiento
-            IdCuentaCorriente = objImportar.IdCuentaCorriente
+            IdCuentaContable = objImportar.IdCuentaContable
             TipoDH = objImportar.TipoDH
             Importe = objImportar.Importe
         End Sub
@@ -67,7 +67,7 @@ Namespace Entidad_Asiento
             ' Entidad
             IdEntidad = ObjDesde.IdEntidad
             IdAsiento = ObjDesde.IdAsiento
-            IdCuentaCorriente = ObjDesde.IdCuentaCorriente
+            IdCuentaContable = ObjDesde.IdCuentaContable
             TipoDH = ObjDesde.TipoDH
             Importe = ObjDesde.Importe
         End Sub
@@ -79,6 +79,9 @@ Namespace Entidad_Asiento
         End Function
         Public Shared Function TraerTodos() As List(Of AsientoLinea)
             Return DAL_AsientoLinea.TraerTodos()
+        End Function
+        Friend Shared Function TraerTodosXAsiento(IdAsiento As Integer) As List(Of AsientoLinea)
+            Return DAL_AsientoLinea.TraerTodosXAsiento(IdAsiento)
         End Function
         ' Nuevos
 #End Region
@@ -101,7 +104,7 @@ Namespace Entidad_Asiento
             Dim result As New DTO_Entidad.DTO_AsientoLinea
             result.IdEntidad = IdEntidad
             result.IdAsiento = IdAsiento
-            result.IdCuentaCorriente = IdCuentaCorriente
+            result.IdCuentaContable = IdCuentaContable
             result.TipoDH = TipoDH
             result.Importe = Importe
             Return result
@@ -178,6 +181,8 @@ Namespace Entidad_Asiento
             '    End If
             'End If
         End Sub
+
+
 #End Region
     End Class ' AsientoLinea
 End Namespace ' Entidad
@@ -189,7 +194,7 @@ Namespace DTO_Entidad
 #Region " Atributos / Propiedades"
         Public Property IdEntidad() As Integer = 0
         Public Property IdAsiento() As Integer = 0
-        Public Property IdCuentaCorriente() As Integer = 0
+        Public Property IdCuentaContable() As Integer = 0
         Public Property TipoDH() As Enumeradores.TipoMovimientoDH = Enumeradores.TipoMovimientoDH.SinDH
         Public Property Importe() As Decimal = 0
 #End Region
@@ -205,6 +210,7 @@ Namespace DataAccessLibrary_Asiento
         Const storeModifica As String = "p_AsientoLinea_Modifica"
         Const storeTraerUnoXId As String = "p_AsientoLinea_TraerUnoXId"
         Const storeTraerTodos As String = "p_AsientoLinea_TraerTodos"
+        Const storeTraerTodosXAsiento As String = "Contable.p_AsientoLinea_TraerTodosXAsiento"
         Const storeTraerTodosActivos As String = "p_AsientoLinea_TraerTodosActivos"
 #End Region
 #Region " Métodos Públicos "
@@ -214,7 +220,7 @@ Namespace DataAccessLibrary_Asiento
             Dim pa As New parametrosArray
             pa.add("@idUsuarioAlta", entidad.IdUsuarioAlta)
             pa.add("@IdAsiento", entidad.IdAsiento)
-            pa.add("@IdTipoCuentaCorriente", entidad.IdCuentaCorriente)
+            pa.add("@IdCuentaContable", entidad.IdCuentaContable)
             pa.add("@TipoDH", entidad.TipoDH)
             pa.add("@Importe", entidad.Importe)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
@@ -238,7 +244,7 @@ Namespace DataAccessLibrary_Asiento
             pa.add("@idUsuarioModifica", entidad.IdUsuarioModifica)
             pa.add("@id", entidad.IdEntidad)
             pa.add("@IdAsiento", entidad.IdAsiento)
-            pa.add("@IdTipoCuentaCorriente", entidad.IdCuentaCorriente)
+            pa.add("@IdCuentaContable", entidad.IdCuentaContable)
             pa.add("@TipoDH", entidad.TipoDH)
             pa.add("@Importe", entidad.Importe)
             Connection.Connection.Ejecutar(store, pa)
@@ -271,6 +277,21 @@ Namespace DataAccessLibrary_Asiento
             End Using
             Return listaResult
         End Function
+        Public Shared Function TraerTodosXAsiento(IdAsiento As Integer) As List(Of AsientoLinea)
+            Dim store As String = storeTraerTodosXAsiento
+            Dim pa As New parametrosArray
+            pa.add("@IdAsiento", IdAsiento)
+            Dim listaResult As New List(Of AsientoLinea)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
+
 #End Region
 #Region " Métodos Privados "
         Private Shared Function LlenarEntidad(ByVal dr As DataRow) As AsientoLinea
@@ -317,14 +338,14 @@ Namespace DataAccessLibrary_Asiento
                     entidad.IdAsiento = CInt(dr.Item("IdAsiento"))
                 End If
             End If
-            If dr.Table.Columns.Contains("IdCuentaCorriente") Then
-                If dr.Item("IdCuentaCorriente") IsNot DBNull.Value Then
-                    entidad.IdCuentaCorriente = CInt(dr.Item("IdCuentaCorriente"))
+            If dr.Table.Columns.Contains("IdCuentaContable") Then
+                If dr.Item("IdCuentaContable") IsNot DBNull.Value Then
+                    entidad.IdCuentaContable = CInt(dr.Item("IdCuentaContable"))
                 End If
             End If
-            If dr.Table.Columns.Contains("TipoDH") Then
-                If dr.Item("TipoDH") IsNot DBNull.Value Then
-                    entidad.TipoDH = CType(CInt(dr.Item("TipoDH")), Enumeradores.TipoMovimientoDH)
+            If dr.Table.Columns.Contains("DH") Then
+                If dr.Item("DH") IsNot DBNull.Value Then
+                    entidad.TipoDH = CType(CInt(dr.Item("DH")), Enumeradores.TipoMovimientoDH)
                 End If
             End If
             If dr.Table.Columns.Contains("Importe") Then

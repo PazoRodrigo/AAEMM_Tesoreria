@@ -15,6 +15,7 @@ Namespace Entidad_Asiento
         Public Property IdEntidad() As Integer = 0
         Public Property Fecha() As Date? = Nothing
         Public Property Importe() As Decimal = 0
+        Public Property ListaLineas() As List(Of Entidad_Asiento.AsientoLinea)
 #End Region
 #Region " Lazy Load / ReadOnly"
         Public ReadOnly Property LngFecha() As Long
@@ -76,6 +77,9 @@ Namespace Entidad_Asiento
         Public Shared Function TraerTodos() As List(Of Asiento)
             Return DAL_Asiento.TraerTodos()
         End Function
+        Public Shared Function TraerTodosXCuenta_DTO(IdCuenta As Integer) As List(Of Asiento)
+            Return DAL_Asiento.TraerTodosXCuenta(IdCuenta)
+        End Function
         ' Nuevos
 #End Region
 #Region " Métodos Públicos"
@@ -98,6 +102,13 @@ Namespace Entidad_Asiento
             result.IdEntidad = IdEntidad
             result.Fecha = LngFecha
             result.Importe = Importe
+            Dim lista As New List(Of DTO_Entidad.DTO_AsientoLinea)
+            If Not IsNothing(ListaLineas) AndAlso ListaLineas.Count > 0 Then
+                For Each item As Entidad_Asiento.AsientoLinea In ListaLineas
+                    lista.Add(item.ToDTO)
+                Next
+                result.ListaLineas = lista
+            End If
             Return result
         End Function
         Public Shared Function ToListDTO(ListaOriginal As List(Of Asiento)) As List(Of DTO_Asiento.DTO_Asiento)
@@ -183,6 +194,7 @@ Namespace DTO_Asiento
         Public Property IdEntidad() As Integer = 0
         Public Property Fecha() As Long = 0
         Public Property Importe() As Decimal = 0
+        Public Property ListaLineas() As List(Of DTO_Entidad.DTO_AsientoLinea)
 #End Region
     End Class ' DTO_Asiento
 End Namespace ' DTO
@@ -197,6 +209,7 @@ Namespace DataAccessLibrary_Asiento
         Const storeTraerUnoXId As String = "p_Asiento_TraerUnoXId"
         Const storeTraerTodos As String = "p_Asiento_TraerTodos"
         Const storeTraerTodosActivos As String = "p_Asiento_TraerTodosActivos"
+        Const storeTraerTodosXCuenta As String = "Contable.p_Asiento_TraerTodosXCuenta"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
@@ -258,6 +271,20 @@ Namespace DataAccessLibrary_Asiento
             End Using
             Return listaResult
         End Function
+        Friend Shared Function TraerTodosXCuenta(IdCuenta As Integer) As List(Of Asiento)
+            Dim store As String = storeTraerTodosXCuenta
+            Dim pa As New parametrosArray
+            pa.add("@IdCuenta", IdCuenta)
+            Dim listaResult As New List(Of Asiento)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
 #End Region
 #Region " Métodos Privados "
         Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Asiento
@@ -308,6 +335,10 @@ Namespace DataAccessLibrary_Asiento
                 If dr.Item("Importe") IsNot DBNull.Value Then
                     entidad.Importe = CDec(dr.Item("Importe"))
                 End If
+            End If
+            Dim lista As List(Of Entidad_Asiento.AsientoLinea) = Entidad_Asiento.AsientoLinea.TraerTodosXAsiento(entidad.IdEntidad)
+            If Not IsNothing(lista) AndAlso lista.Count > 0 Then
+                entidad.ListaLineas = lista
             End If
             Return entidad
         End Function

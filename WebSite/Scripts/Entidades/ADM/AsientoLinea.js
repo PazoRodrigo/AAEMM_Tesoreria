@@ -3,22 +3,24 @@
         super();
         this.IdEntidad = 0;
         this.IdAsiento = 0;
-        this.IdCuentaCorriente = 0;
+        this.IdCuentaContable = 0;
         this.TipoDH = 0;
         this.Importe = 0;
 
-        this._ObjTipoCuentaCorriente;
+        this._ObjTipoCuentaContable;
     }
 
 
-    async ObjCuentaCorriente() {
+    async ObjCuentaContable() {
         try {
-            if (this._ObjTipoCuentaCorriente == undefined) {
-                this._ObjTipoCuentaCorriente = await CuentaCorriente.TraerUno(this.IdCuentaCorriente);
+                console.log(_ObjTipoCuentaContable, this.IdCuentaContable);
+            if (this._ObjTipoCuentaContable == undefined) {
+                console.log(_ObjTipoCuentaContable, this.IdCuentaContable);
+                this._ObjTipoCuentaContable = await CuentaContable.TraerUno(this.IdCuentaContable);
             }
-            return this._ObjTipoCuentaCorriente;
+            return this._ObjTipoCuentaContable;
         } catch (error) {
-            return new CuentaCorriente;
+            return new CuentaContable;
         }
     }
     async Alta() {

@@ -27,6 +27,7 @@ Namespace Entidad
         Public Property IdEntidad() As Integer = 0
         Public Property Nombre() As String = ""
         Public Property Observaciones() As String = ""
+        Public Property IdTipoCuenta() As Enumeradores.TipoCuenta
 #End Region
 #Region " Lazy Load "
         'Public Property IdLazy() As Integer
@@ -48,6 +49,8 @@ Namespace Entidad
                 Return result
             End Get
         End Property
+
+
 #End Region
 #Region " Constructores "
         Sub New()
@@ -63,6 +66,7 @@ Namespace Entidad
             FechaBaja = objImportar.FechaBaja
             ' Entidad
             IdEntidad = objImportar.IdEntidad
+            IdTipoCuenta = objImportar.IdTipoCuenta
             Nombre = objImportar.Nombre
             Observaciones = objImportar.Observaciones
         End Sub
@@ -81,6 +85,7 @@ Namespace Entidad
             End If
             ' Entidad
             IdEntidad = DtODesde.IdEntidad
+            IdTipoCuenta = DtODesde.IdTipoCuenta
             Nombre = DtODesde.Nombre
             Observaciones = DtODesde.Observaciones
         End Sub
@@ -132,6 +137,7 @@ Namespace Entidad
             Dim result As New DTO.DTO_CuentaContable With {
                 .IdEntidad = IdEntidad,
                 .Nombre = Nombre,
+                .IdTipoCuenta = IdTipoCuenta,
                 .Observaciones = Observaciones,
                 .IdEstado = IdEstado
             }
@@ -216,6 +222,7 @@ Namespace DTO
         Public Property IdEntidad() As Integer = 0
         Public Property Nombre() As String = ""
         Public Property Observaciones() As String = ""
+        Public Property IdTipoCuenta() As Enumeradores.TipoCuenta
 #End Region
     End Class ' DTO_CuentaContable
 End Namespace ' DTO
@@ -229,6 +236,7 @@ Namespace DataAccessLibrary
         Const storeModifica As String = "DIM.p_CuentaContable_Modifica"
         Const storeTraerUnoXId As String = "DIM.p_CuentaContable_TraerUnoXId"
         Const storeTraerTodos As String = "DIM.p_CuentaContable_TraerTodos"
+
 #End Region
 #Region " Métodos Públicos "
         ' ABM
@@ -332,6 +340,11 @@ Namespace DataAccessLibrary
             If dr.Table.Columns.Contains("id") Then
                 If dr.Item("id") IsNot DBNull.Value Then
                     entidad.IdEntidad = CInt(dr.Item("id"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("IdTipoCuenta") Then
+                If dr.Item("IdTipoCuenta") IsNot DBNull.Value Then
+                    entidad.IdTipoCuenta = CType(CInt(dr.Item("IdTipoCuenta")), Enumeradores.TipoCuenta)
                 End If
             End If
             If dr.Table.Columns.Contains("Nombre") Then

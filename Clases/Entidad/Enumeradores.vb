@@ -3,6 +3,11 @@
         Propio = 1
         Tercero = 2
     End Enum
+    Public Enum TipoCuenta
+        Principal = 1
+        Gasto = 2
+        Resultado = 3
+    End Enum
     Public Enum EstadoChequePropios
         Emitido = 0
         Entregado = 1

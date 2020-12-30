@@ -9,6 +9,7 @@ class CuentaCorriente extends DBE {
     }
     // Todos
     static async Todos() {
+        console.log(_Lista_CuentaCorriente)
         if (_Lista_CuentaCorriente === undefined) {
             _Lista_CuentaCorriente = await CuentaCorriente.TraerTodas();
         }
@@ -18,16 +19,21 @@ class CuentaCorriente extends DBE {
     // Traer
     static async TraerUno(IdEntidad) {
         _Lista_CuentaCorriente = await CuentaCorriente.TraerTodos();
+        console.log(_Lista_CuentaCorriente);
+        console.log(IdEntidad);
+
         let buscado = $.grep(_Lista_CuentaCorriente, function (entidad, index) {
             return entidad.IdEntidad == IdEntidad;
         });
         let Encontrado = buscado[0];
+        console.log(Encontrado);
         return Encontrado;
     }
     static async TraerTodos() {
         return await CuentaCorriente.Todos();
     }
     static async TraerTodas() {
+        console.log(_Lista_CuentaCorriente)
         let lista = await ejecutarAsync(urlWsCuentaCorriente + "/TraerTodos");
         _Lista_CuentaCorriente = [];
         let result = [];
@@ -36,6 +42,8 @@ class CuentaCorriente extends DBE {
                 result.push(LlenarEntidadCuentaCorriente(value));
             });
         }
+        console.log(_Lista_CuentaCorriente)
+
         _Lista_CuentaCorriente = result;
         return _Lista_CuentaCorriente;
     }

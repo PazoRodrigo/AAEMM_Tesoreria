@@ -35,10 +35,9 @@ async function LlenarGrillaGasto() {
 }
 async function LlenarGrillaComprobante() {
     Comprobante.ArmarGrilla(_ListaC, 'GrillaComprobantesRegistrados', 'EventoSeleccionarComprobante', 'EventoEliminarComprobante');
-    //Comprobante.ArmarGrilla(_ListaC, 'GrillaComprobantesRegistrados', 'EventoSeleccionarComprobante', 'EventoEliminarComprobante', 'height:300px; overflow-y: scroll');
 }
 async function LlenarCboCuenta() {
-    let lista = await CuentaContable.TraerTodos();
+    let lista = await CuentaContable.TraerTodosGasto();
     CuentaContable.ArmarCombo(lista, 'CboCuenta', 'SelectorCuentaContable', 'EventoSeleccionCuentaContable', 'Seleccione Cuenta', '');
 }
 async function LlenarCboOriginario() {
