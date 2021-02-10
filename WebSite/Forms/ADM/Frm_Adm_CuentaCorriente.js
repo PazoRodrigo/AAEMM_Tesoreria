@@ -47,6 +47,8 @@ async function LlenarSaldosCuentas() {
     $("#spanSaldoFONDOFIJO").text(separadorMiles(separadorMiles(SaldosCuentaCorriente[1].Saldo.toFixed(2))));
     $("#spanSaldoPAGADORA").text(separadorMiles(separadorMiles(SaldosCuentaCorriente[2].Saldo.toFixed(2))));
     $("#spanSaldoRECAUDADORA").text(separadorMiles(separadorMiles(SaldosCuentaCorriente[3].Saldo.toFixed(2))));
+    $("#spanSaldoANTICIPOS").text(separadorMiles(separadorMiles(SaldosCuentaCorriente[4].Saldo.toFixed(2))));
+    $("#spanSaldoPRESTAMOS").text(separadorMiles(separadorMiles(SaldosCuentaCorriente[5].Saldo.toFixed(2))));
 }
 async function AgregarLineaAsiento() {
         await ValidarLineaAsiento();
@@ -242,4 +244,27 @@ $('body').on('click', '#LinkRECAUDADORA', async function (e) {
         alertAlerta(err);
     }
 });
-
+$('body').on('click', '#LinkANTICIPO', async function (e) {
+    try {
+        spinner();
+        $("#DivGrillaAsientos").html('');
+        let ListaAsientos = await Asiento.TraerTodosXCuenta(1001);
+        await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+        spinnerClose();
+    } catch (err) {
+        spinnerClose();
+        alertAlerta(err);
+    }
+});
+$('body').on('click', '#LinkPRESTAMO', async function (e) {
+    try {
+        spinner();
+        $("#DivGrillaAsientos").html('');
+        let ListaAsientos = await Asiento.TraerTodosXCuenta(1002);
+        await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+        spinnerClose();
+    } catch (err) {
+        spinnerClose();
+        alertAlerta(err);
+    }
+});

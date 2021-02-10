@@ -245,6 +245,7 @@ Namespace DataAccessLibrary
             Dim pa As New parametrosArray
             pa.add("@idUsuarioAlta", entidad.IdUsuarioAlta)
             pa.add("@Nombre", entidad.Nombre)
+            pa.add("@IdTipoCuenta", entidad.IdTipoCuenta)
             pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
@@ -268,6 +269,7 @@ Namespace DataAccessLibrary
             pa.add("@idUsuarioModifica", entidad.IdUsuarioModifica)
             pa.add("@id", entidad.IdEntidad)
             pa.add("@Nombre", entidad.Nombre)
+            pa.add("@IdTipoCuenta", entidad.IdTipoCuenta)
             pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
             Connection.Connection.Ejecutar(store, pa)
         End Sub

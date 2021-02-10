@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Cuenta Contable" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ABM_CuentaContable.aspx.vb" Inherits="Forms_Frm_ABM_CuentaContable" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_ABM_CuentaContable.js?version20201028")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_ABM_CuentaContable.js?version20210209")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -71,6 +71,14 @@
                                 </div>
                                 <div class="col-7">
                                     <input id="TxtNombre" class="DatoFormulario InputDatoFormulario" type="text" placeholder="Nombre" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <span class="SpanDatoFormulario">Tipo</span>
+                                </div>
+                                <div class="col-8">
+                                    <div id="CboTipoCuenta"></div>
                                 </div>
                             </div>
                             <div class="row mt-2">

@@ -9,7 +9,7 @@ TagPrefix="cc1" %>
   runat="Server"
 >
   <script
-    src='<%= ResolveClientUrl("Frm_Indicadores.js?version20201028")%>'
+    src='<%= ResolveClientUrl("Frm_Indicadores.js?version20210209")%>'
   ></script>
   <asp:Button
     ID="btnSubirOculto"

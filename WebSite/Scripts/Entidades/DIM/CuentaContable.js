@@ -113,6 +113,18 @@ class CuentaContable extends DBE {
         });
         return buscado;
     }
+    static async TraerTodosAnticipo() {
+        let buscado = $.grep(await CuentaContable.Todos(), function (entidad, index) {
+            return entidad.IdTipoCuenta == 4;
+        });
+        return buscado;
+    }
+    static async TraerTodosPrestamo() {
+        let buscado = $.grep(await CuentaContable.Todos(), function (entidad, index) {
+            return entidad.IdTipoCuenta == 5;
+        });
+        return buscado;
+    }
     static async TraerTodosPrincipal() {
         let buscado = $.grep(await CuentaContable.Todos(), function (entidad, index) {
             return entidad.IdTipoCuenta == 1;

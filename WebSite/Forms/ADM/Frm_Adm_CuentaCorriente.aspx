@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Cuenta Corriente" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_CuentaCorriente.aspx.vb" Inherits="Forms_ADM_Frm_Adm_CuentaCorriente" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Adm_CuentaCorriente.js?version20201028")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_CuentaCorriente.js?version20210209")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -26,37 +26,61 @@
         <li class="linea">
             <div class="container-fluid">
                 <div class="row mt-1">
-                    <div class="col-3">
-                        <a href="#" id="LinkCAJA">
-                            <div class="col-10 bg-primary text-center font-italic text-light">CAJA</div>
-                            <div class="col-10 bg-dark text-right text-light pt-3 pb-1">
-                                <h3 id="spanSaldoCAJA"></h3>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-3">
+                                <a href="#" id="LinkRECAUDADORA">
+                                    <div class="col-10 bg-primary text-center font-italic text-light">RECAUDADORA</div>
+                                    <div class="col-10 bg-dark text-right text-light pt-3 pb-1">
+                                        <h5 id="spanSaldoRECAUDADORA"></h5>
+                                    </div>
+                                </a>
                             </div>
-                        </a>
+                            <div class="col-3">
+                                <a href="#" id="LinkPAGADORA">
+                                    <div class="col-10 bg-primary text-center font-italic text-light">PAGADORA</div>
+                                    <div class="col-10 bg-dark text-right text-light pt-3 pb-1">
+                                        <h5 id="spanSaldoPAGADORA"></h5>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-3">
+                                <a href="#" id="LinkCAJA">
+                                    <div class="col-10 bg-primary text-center font-italic text-light">CAJA</div>
+                                    <div class="col-10 bg-dark text-right text-light pt-3 pb-1">
+                                        <h5 id="spanSaldoCAJA"></h5>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-3">
+                                <a href="#" id="LinkFONDOFIJO">
+                                    <div class="col-10 bg-primary text-center font-italic text-light">FONDO FIJO</div>
+                                    <div class="col-10 bg-dark text-right text-light pt-3 pb-1">
+                                        <h5 id="spanSaldoFONDOFIJO"></h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-3">
-                        <a href="#" id="LinkFONDOFIJO">
-                            <div class="col-10 bg-primary text-center font-italic text-light">FONDO FIJO</div>
-                            <div class="col-10 bg-dark text-right text-light pt-3 pb-1">
-                                <h3 id="spanSaldoFONDOFIJO"></h3>
+                        <div class="row">
+                            <div class="col-6">
+                                <a href="#" id="LinkANTICIPO">
+                                    <div class="col-10 bg-primary text-center font-italic text-light">ANTICIPOS</div>
+                                    <div class="col-10 bg-dark text-right text-light pt-3 pb-1">
+                                        <h6 id="spanSaldoANTICIPOS"></h6>
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="col-3">
-                        <a href="#" id="LinkPAGADORA">
-                            <div class="col-10 bg-primary text-center font-italic text-light">PAGADORA</div>
-                            <div class="col-10 bg-dark text-right text-light pt-3 pb-1">
-                                <h3 id="spanSaldoPAGADORA"></h3>
+                            <div class="col-6">
+                                <a href="#" id="LinkPRESTAMO">
+                                    <div class="col-10 bg-primary text-center font-italic text-light">PRESTAMOS</div>
+                                    <div class="col-10 bg-dark text-right text-light pt-3 pb-1">
+                                        <h6 id="spanSaldoPRESTAMOS"></h6>
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="col-3">
-                        <a href="#" id="LinkRECAUDADORA">
-                            <div class="col-10 bg-primary text-center font-italic text-light">RECAUDADORA</div>
-                            <div class="col-10 bg-dark text-right text-light pt-3 pb-1">
-                                <h3 id="spanSaldoRECAUDADORA"></h3>
-                            </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
                 <div class="row mt-3">

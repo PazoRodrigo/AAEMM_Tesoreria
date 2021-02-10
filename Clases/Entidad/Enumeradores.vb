@@ -7,6 +7,8 @@
         Principal = 1
         Gasto = 2
         Resultado = 3
+        Anticipos = 4
+        Prestamos = 5
     End Enum
     Public Enum EstadoChequePropios
         Emitido = 0

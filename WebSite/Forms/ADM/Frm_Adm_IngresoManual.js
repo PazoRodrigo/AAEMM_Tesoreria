@@ -186,16 +186,16 @@ $('body').on('click', '#BtnGuardarRecibo', async function (e) {
         await ValidarCampos();
         let TempNroRecibo = Right('0000000000' + $("#EntidadNroRecibo").val(), 10);
         _ObjRecibo.NroReciboInicio = Left(TempNroRecibo, 4);
-        _ObjRecibo.NroReciboFin = Right(TempNroRecibo, 6)
+        _ObjRecibo.NroReciboFin = Right(TempNroRecibo, 6);
         let Fecha = $("#EntidadFecha").val();
         _ObjRecibo.Fecha = dateStringToLong($("#EntidadFecha").val());
         _ObjRecibo.ImporteTotal = parseFloat($("#EntidadImporteTotal").val());
         _ObjRecibo.ImporteEfectivo = parseFloat($("#EntidadImporteEfectivo").val());
         _ObjRecibo.Observaciones = $("#EntidadObservaciones").val();
-        await _ObjRecibo.Alta(_ListaPagos, _ListaPeriodos)
+        await _ObjRecibo.Alta(_ListaPagos, _ListaPeriodos);
         await LimpiarFormulario();
         spinnerClose();
-        alertOk('El recibo se ha guardado correctamente')
+        alertOk('El recibo se ha guardado correctamente');
     } catch (error) {
         spinnerClose();
         alertAlerta(error);

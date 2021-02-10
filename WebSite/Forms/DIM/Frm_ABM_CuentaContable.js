@@ -16,9 +16,11 @@ $(document).ready(function () {
 async function Inicio() {
     Nuevo_CuentaContable();
     await LlenarGrilla_CuentaContable();
+    await LlenarCboTipoCuenta();
 }
 function Limpiar_CuentaContable() {
     $(".DatoFormulario").val('');
+    $("#SelectorTipoCuentaContable").val(0);
 }
 function Nuevo_CuentaContable() {
     Limpiar_CuentaContable();
@@ -30,20 +32,26 @@ function Llenar_CuentaContable(Obj_CuentaContable) {
     _ObjCuentaContable.IdEntidad = Obj_CuentaContable.IdEntidad;
     _ObjCuentaContable.Nombre = Obj_CuentaContable.Nombre;
     _ObjCuentaContable.Observaciones = Obj_CuentaContable.Observaciones;
+    _ObjCuentaContable.IdTipoCuenta = Obj_CuentaContable.IdTipoCuenta;
     $("#TxtNombre").val(_ObjCuentaContable.Nombre);
     $("#TxtObservaciones").val(_ObjCuentaContable.Observaciones);
+    $("#SelectorTipoCuentaContable").val(Obj_CuentaContable.IdTipoCuenta);
 
 }
 async function LlenarGrilla_CuentaContable() {
     let lista = await CuentaContable.TraerTodos();
     CuentaContable.ArmarGrilla(lista, 'GrillaRegistrados', 'SeleccionarCuentaContable', 'EliminarCuentaContable', 'height:350px; overflow-y: scroll');
 }
-
+async function LlenarCboTipoCuenta() {
+    let lista = await TipoCuentaContable.TraerTodos();
+    TipoCuentaContable.ArmarCombo(lista, 'CboTipoCuenta', 'SelectorTipoCuentaContable', 'Seleccione Tipo Cuenta', 'EventoSeleccionCuentaContable','');
+}
 $('body').on('click', '#LinkBtnGuardar', async function (e) {
     try {
         spinner();
         _ObjCuentaContable.Nombre = $("#TxtNombre").val();
         _ObjCuentaContable.Observaciones = $("#TxtObservaciones").val();
+        _ObjCuentaContable.IdTipoCuenta = $("#SelectorTipoCuentaContable").val();
         let Mensaje = '';
         if (_ObjCuentaContable.IdEntidad === 0) {
             // Es Alta
@@ -74,6 +82,7 @@ document.addEventListener('SeleccionarCuentaContable', async function (e) {
     try {
         let objSeleccionado = e.detail;
         Llenar_CuentaContable(objSeleccionado);
+
     } catch (e) {
         alertAlerta(e);
     }

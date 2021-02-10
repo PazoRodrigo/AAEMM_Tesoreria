@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Originario de Gasto" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ABM_OriginarioGasto.aspx.vb" Inherits="Forms_Frm_ABM_OriginarioGasto" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_ABM_OriginarioGasto.js?version20201028")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_ABM_OriginarioGasto.js?version20210209")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
