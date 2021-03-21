@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Gastos" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_Gasto.aspx.vb" Inherits="Forms_ADM_Frm_Adm_Gasto" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Adm_Gasto.js?version20210209")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_Gasto.js?version20210321")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';

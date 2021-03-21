@@ -53,7 +53,62 @@ Public Class WsEmpresa
         End Try
         Return ws
     End Function
-
+    <WebMethod()>
+    Public Function TraerTodosSinDeuda() As Transfer
+        Dim ws As New Transfer
+        Try
+            ws.data = Entidad.Empresa.TraerTodosDeuda0_DTO()
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
+    Public Function TraerTodosDeuda1() As Transfer
+        Dim ws As New Transfer
+        Try
+            ws.data = Entidad.Empresa.TraerTodosDeuda1_DTO()
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
+    Public Function TraerTodosDeuda3() As Transfer
+        Dim ws As New Transfer
+        Try
+            ws.data = Entidad.Empresa.TraerTodosDeuda3_DTO()
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
+    Public Function TraerTodosDeuda6() As Transfer
+        Dim ws As New Transfer
+        Try
+            ws.data = Entidad.Empresa.TraerTodosDeuda6_DTO()
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
     <WebMethod()>
     Public Function TraerUnaXCUIT(CUIT As Long) As Transfer
         Dim ws As New Transfer

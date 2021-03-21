@@ -255,6 +255,46 @@ class Empresa extends DBE {
         _ListaEmpresas = result;
         return result;
     }
+    static async TraerTodosSinDeuda() {
+        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosSinDeuda");
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpresa(value));
+            });
+        }
+        return result;
+    }
+    static async TraerTodosDeuda1() {
+        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosDeuda1");
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpresa(value));
+            });
+        }
+        return result;
+    }
+    static async TraerTodosDeuda3() {
+        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosDeuda3");
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpresa(value));
+            });
+        }
+        return result;
+    }
+    static async TraerTodosDeuda6() {
+        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosDeuda6");
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpresa(value));
+            });
+        }
+        return result;
+    }
     // Otros
     static async Refresh() {
         _Lista_Empresa = await Empresa.TraerTodas();

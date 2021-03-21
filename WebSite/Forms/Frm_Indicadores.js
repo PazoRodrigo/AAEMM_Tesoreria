@@ -45,3 +45,50 @@ async function Inicio() {
     $("#LblChequesRechazados").text(ObjIndicadores.ChequesRechazados);
     spinnerClose();
 }
+
+
+$('body').on('click', '#Indicadores_Empresas_SinDeuda', async function (e) {
+    try {
+        spinner();
+        let ListaEmpresas =  await Empresa.TraerTodosSinDeuda();
+        await Empresa.ArmarGrillaDetalle('ContainerPrincipal', ListaEmpresas, '', 'max-height: 350px; overflow-y: scroll;');
+        spinnerClose();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
+
+$('body').on('click', '#Indicadores_Empresas_Deuda1', async function (e) {
+    try {
+        spinner();
+        let ListaEmpresas = await Empresa.TraerTodosDeuda1();
+        await Empresa.ArmarGrillaDetalle('ContainerPrincipal', ListaEmpresas, '', 'max-height: 350px; overflow-y: scroll;');
+        spinnerClose();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
+$('body').on('click', '#Indicadores_Empresas_Deuda3', async function (e) {
+    try {
+        spinner();
+        let ListaEmpresas = await Empresa.TraerTodosDeuda3();
+        await Empresa.ArmarGrillaDetalle('ContainerPrincipal', ListaEmpresas, '', 'max-height: 350px; overflow-y: scroll;');
+        spinnerClose();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
+$('body').on('click', '#Indicadores_Empresas_Deuda6', async function (e) {
+    try {
+        spinner();
+        let ListaEmpresas = await Empresa.TraerTodosDeuda6();
+        await Empresa.ArmarGrillaDetalle('ContainerPrincipal', ListaEmpresas, '', 'max-height: 350px; overflow-y: scroll;');
+        spinnerClose();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});

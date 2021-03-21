@@ -54,6 +54,7 @@ Namespace Entidad
                 Return result
             End Get
         End Property
+
         'Private _DatosCalculados As DatosCalculados
         'Public ReadOnly Property DatosCalculados() As DatosCalculados
         '    Get
@@ -183,6 +184,59 @@ Namespace Entidad
         End Function
         Public Shared Function TraerUnaXCUIT(CUIT As Long) As Empresa
             Return DAL_Empresa.TraerUnoXCUIT(CUIT)
+        End Function
+        'Son para reportes, por eso estan duplicados en DTO.
+        Public Shared Function TraerTodosDeuda0() As List(Of Empresa)
+            Return DAL_Empresa.TraerTodosDeuda(0)
+        End Function
+        Public Shared Function TraerTodosDeuda0_DTO() As List(Of DTO.DTO_Empresa)
+            Dim lista As List(Of Empresa) = TraerTodosDeuda0()
+            Dim result As New List(Of DTO.DTO_Empresa)
+            If lista.Count > 0 Then
+                For Each item As Entidad.Empresa In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            Return result
+        End Function
+        Public Shared Function TraerTodosDeuda1() As List(Of Empresa)
+            Return DAL_Empresa.TraerTodosDeuda(1)
+        End Function
+        Public Shared Function TraerTodosDeuda1_DTO() As List(Of DTO.DTO_Empresa)
+            Dim lista As List(Of Empresa) = TraerTodosDeuda1()
+            Dim result As New List(Of DTO.DTO_Empresa)
+            If lista.Count > 0 Then
+                For Each item As Entidad.Empresa In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            Return result
+        End Function
+        Public Shared Function TraerTodosDeuda3() As List(Of Empresa)
+            Return DAL_Empresa.TraerTodosDeuda(3)
+        End Function
+        Public Shared Function TraerTodosDeuda3_DTO() As List(Of DTO.DTO_Empresa)
+            Dim lista As List(Of Empresa) = TraerTodosDeuda3()
+            Dim result As New List(Of DTO.DTO_Empresa)
+            If lista.Count > 0 Then
+                For Each item As Entidad.Empresa In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            Return result
+        End Function
+        Public Shared Function TraerTodosDeuda6() As List(Of Empresa)
+            Return DAL_Empresa.TraerTodosDeuda(6)
+        End Function
+        Public Shared Function TraerTodosDeuda6_DTO() As List(Of DTO.DTO_Empresa)
+            Dim lista As List(Of Empresa) = TraerTodosDeuda6()
+            Dim result As New List(Of DTO.DTO_Empresa)
+            If lista.Count > 0 Then
+                For Each item As Entidad.Empresa In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            Return result
         End Function
 #End Region
 #Region " Métodos Públicos"
@@ -331,6 +385,7 @@ Namespace DataAccessLibrary
         Const storeTraerUnoXId As String = "ADM.p_Empresa_TraerUnoXId"
         Const storeTraerUnoXCUIT As String = "ADM.p_Empresa_TraerUnoXCUIT"
         Const storeTraerTodos As String = "ADM.p_Empresa_TraerTodos"
+        Const storeTraerTodosDeuda As String = "ADM.p_Empresa_TraerTodosDeuda"
         Const storeTraerTodosXBusqueda As String = "ADM.p_Empresa_TraerXBusquedaLibre"
 #End Region
 #Region " Métodos Públicos "
@@ -453,7 +508,20 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
-
+        Friend Shared Function TraerTodosDeuda(MesesDeuda As Integer) As List(Of Empresa)
+            Dim store As String = storeTraerTodosDeuda
+            Dim pa As New parametrosArray
+            pa.add("@MesesDeuda", MesesDeuda)
+            Dim listaResult As New List(Of Empresa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
 
 
 
@@ -576,6 +644,8 @@ Namespace DataAccessLibrary
             entidad.ObjDomicilio = Domicilio.LlenarDomicilio(dr)
             Return entidad
         End Function
+
+
 #End Region
     End Class ' DAL_Empresa
 End Namespace ' DataAccessLibrary

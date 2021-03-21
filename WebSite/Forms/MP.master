@@ -37,38 +37,38 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
     <!-- Entidades -->
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Cheque.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Domicilio.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Indicadores.js?version20210209")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Cheque.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Domicilio.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Complementarias/Indicadores.js?version20210321")%>' type="text/javascript"></script>
 
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Asiento.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/AsientoLinea.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/ChequePropio.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/ChequeTercero.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Comprobante.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/CuentaCorriente.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empleado.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empresa.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Gasto.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Ingreso.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/MovimientoCtaCte.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Recibo.js?version20210209")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Asiento.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/AsientoLinea.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/ChequePropio.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/ChequeTercero.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Comprobante.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/CuentaCorriente.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empleado.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Empresa.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Gasto.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Ingreso.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/MovimientoCtaCte.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/ADM/Recibo.js?version20210321")%>' type="text/javascript"></script>
     
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Banco.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/CentroCosto.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Convenio.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/CuentaContable.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/OriginarioGasto.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Proveedor.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoContacto.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoCuentaContable.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoDomicilio.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoGasto.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoMovimientoCtaCte.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoPago.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoPagoManual.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Estados/EstadoCheque.js?version20210209")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/USUARIO/Usuario.js?version20210209")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Banco.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/CentroCosto.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Convenio.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/CuentaContable.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/OriginarioGasto.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/Proveedor.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoContacto.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoCuentaContable.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoDomicilio.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoGasto.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoMovimientoCtaCte.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoPago.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/DIM/TipoPagoManual.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/Estados/EstadoCheque.js?version20210321")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/USUARIO/Usuario.js?version20210321")%>' type="text/javascript"></script>
     <!-- WebServices-->
     <script type="text/javascript">
         var urlWsAsiento = '<%= ResolveClientUrl("~/WebServices/WsAsiento.asmx")%>';
@@ -187,7 +187,7 @@
 
 
     <header>
-        <script src='<%= ResolveClientUrl("MP.js?version20210209")%>'></script>
+        <script src='<%= ResolveClientUrl("MP.js?version20210321")%>'></script>
         <div id="DivHeaderLogo">
             <img id="LogoHeader" src='<%= ResolveClientUrl("~/imagenes/Logo_AAEMM.jpg")%>' alt="Logo AAEMM">
         </div>
