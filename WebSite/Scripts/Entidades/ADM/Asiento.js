@@ -20,11 +20,9 @@ class Asiento extends DBE {
         try {
             let ObjU = JSON.parse(sessionStorage.getItem("User"));
             this.IdUsuarioAlta = ObjU.IdEntidad;
-
             let data = {
                 'entidad': this
             };
-
             let id = await ejecutarAsync(urlWsAsiento + "/Alta", data);
             if (id !== undefined)
                 this.IdEntidad = id;
@@ -66,6 +64,8 @@ class Asiento extends DBE {
                 str += '		<span>' + await objAsiento.StrFecha() + '</span>';
                 str += '	</div>';
                 str += '	<div class="col-4 text-right">';
+                console.log(separadorMiles(objAsiento.Importe));
+
                 str += '		<span>' + separadorMiles(objAsiento.Importe.toFixed(2)) + '</span>';
                 str += '	</div>';
                 str += '</div>';
@@ -74,7 +74,6 @@ class Asiento extends DBE {
                 for (let Objlinea of objAsiento.ListaLineas) {
                     str += '		<div class="row">';
                     let ObjCuentaContable = await CuentaContable.TraerUno(Objlinea.IdCuentaContable);
-                    console.log(ObjCuentaContable);
                     if (Objlinea.TipoDH == 0) {
                         str += '			<div class="col-9">';
                         str += '				<span class="text-light">' + ObjCuentaContable.Nombre + '</span>';

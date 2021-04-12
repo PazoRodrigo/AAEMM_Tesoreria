@@ -340,7 +340,14 @@ class Empresa extends DBE {
         }
         str += '    </tbody>';
         str += '</table >';
-        str += '</div >';
+        str += '</div>';
+        str += '<div class="row justify-content-center">';
+        str += '    <div class="col-3"><a id="Indicadores_Empresas_Limpiar" href="#" class="btn btn-block btn-danger">Cerrar</a></div>';
+        str += '    <div class="col-3"></div>';
+        //str += '    <div class="col-3"><a href="#" class="btn btn-block btn-success">Imprimir</a></div>';
+        str += '    <div class="col-3"></div>';
+        str += '</div>';
+
         return $("#" + div + "").html(str);
 
     }

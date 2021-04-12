@@ -92,3 +92,12 @@ $('body').on('click', '#Indicadores_Empresas_Deuda6', async function (e) {
         alertAlerta(e);
     }
 });
+$('body').on('click', '#Indicadores_Empresas_Limpiar', async function (e) {
+    try {
+        let ListaEmpresas = [];
+        $("#ContainerPrincipal").html("");
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});

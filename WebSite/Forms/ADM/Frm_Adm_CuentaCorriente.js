@@ -181,11 +181,18 @@ $('body').on('click', '#BtnGuardarAsiento', async function (e) {
         spinner();
         if (Fecha > FechaHoyLng())
             throw 'La fecha del Asiento no puede ser mayor de hoy';
+        lista = $.grep(_ListaAsientoLineas, function (entidad, index) {
+            return (entidad.TipoDH == 1);
+        });
+        console.log(lista);
+        let TempImporteAsiento = 0;
+        let iLineas = 0;
+        while (iLineas <= lista.length - 1) {
+            TempImporteAsiento += parseFloat(lista[iLineas].Importe);
+            iLineas++;
+        }
         let _ObjAsiento = new Asiento;
-        console.log(Debe);
-        console.log(parseFloat(Debe));
-        _ObjAsiento.Importe = parseFloat(Debe);
-        console.log(_ObjAsiento.Importe);
+        _ObjAsiento.Importe = TempImporteAsiento;
         _ObjAsiento.Fecha = dateStringToLong($("#TxtFecha").val());
         await _ObjAsiento.Alta(_ListaAsientoLineas);
         await LlenarSaldosCuentas();
