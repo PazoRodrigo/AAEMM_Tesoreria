@@ -258,7 +258,7 @@ class Empresa extends DBE {
     static async TraerTodosSinDeuda() {
         let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosSinDeuda");
         let result = [];
-        if (lista.length > 0) {
+        if (lista?.length > 0) {
             $.each(lista, function (key, value) {
                 result.push(LlenarEntidadEmpresa(value));
             });
@@ -341,12 +341,60 @@ class Empresa extends DBE {
         str += '    </tbody>';
         str += '</table >';
         str += '</div>';
-        str += '<div class="row justify-content-center">';
-        str += '    <div class="col-3"><a id="Indicadores_Empresas_Limpiar" href="#" class="btn btn-block btn-danger">Cerrar</a></div>';
-        str += '    <div class="col-3"></div>';
-        //str += '    <div class="col-3"><a href="#" class="btn btn-block btn-success">Imprimir</a></div>';
-        str += '    <div class="col-3"></div>';
+        // str += '<div class="row justify-content-center">';
+        // str += '    <div class="col-3"><a id="Indicadores_Empresas_Limpiar" href="#" class="btn btn-block btn-danger">Cerrar</a></div>';
+        // str += '    <div class="col-3"></div>';
+        // str += '    <div class="col-3"><a href="#" id="Indicadores_Empresas_Imprimir" class="btn btn-block btn-success">Imprimir</a></div>';
+        // str += '    <div class="col-3"></div>';
+        // str += '</div>';
+
+        return $("#" + div + "").html(str);
+
+    }
+    static async ArmarGrillaImpresion(div, lista, estilo) {
+        $("#" + div + "").html('');
+        let str = "";
+         str += '<table class="table table-sm">';
+        str += '    <thead>';
+        str += '        <tr>';
+        str += '            <th class="text-center" style="width: 100px;">CUIT</th>';
+        str += '            <th class="text-center" style="width: 50px;">Cód.</th>';
+        str += '            <th class="text-center" style="width: 400px;">Razon Social</th>';
+        str += '        </tr>';
+        str += '    </thead>';
+        str += '</table >';
+        if (lista.length > 0) {
+        str += '<div style="' + estilo + '">';       
+        str += '<table class="table table-sm table-striped table-hover">';
+        str += '    <tbody>';
+            for (let item of lista) {
+                str += '        <tr>';
+                str += '            <td class="text-center" style="width: 120px;"><div class="text-light">' + item.CUIT + '</div></td>';
+                str += '            <td class="text-center" style="width: 50px;"><div class="text-light">' + await item.StrCodigo(6) + '</div></td>';
+                str += '            <td class="text-left pl-3" style="width: 500px;"><div class="text-light">' + item.RazonSocial + '</div></td>';
+                let strFechaBaja = '';
+                if (item.FechaBaja > 0) {
+                    console.log(item.FechaBaja);
+                    strFechaBaja = LongToDateString(item.FechaBaja);
+                }
+                str += '        </tr>';
+            }
+            str += '    </tbody>';
+        str += '</table >';
         str += '</div>';
+        }
+        if (lista.length > 0) {
+            str += '<div class="row justify-content-center">';
+            str += '    <div class="col-3"><a id="Indicadores_Empresas_Limpiar" href="#" class="btn btn-block btn-danger">Cerrar</a></div>';
+            str += '    <div class="col-3"></div>';
+            str += '    <div class="col-3"><a href="#" id="Indicadores_Empresas_Imprimir" class="btn btn-block btn-success">Imprimir</a></div>';
+            str += '    <div class="col-3"></div>';
+            str += '</div>';
+        } else {
+            str += '<div class="row justify-content-center">';
+            str += '    <div class="col-4"><a href="#" class="btn btn-block btn-info">Sin Registros para informar</a></div>';
+            str += '</div>';
+        }
 
         return $("#" + div + "").html(str);
 

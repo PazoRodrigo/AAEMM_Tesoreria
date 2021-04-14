@@ -18,6 +18,11 @@ Namespace Entidad
             Public IncluirBaja As Integer
             Public Incluir0 As Integer
         End Structure
+        Public Structure StrImpresion
+            Public CUIT As Long
+            Public RazonSocial As String
+            Public Codigo As String
+        End Structure
 
         Private Shared _Todos As List(Of Empresa)
         Public Shared Property Todos() As List(Of Empresa)
@@ -186,11 +191,11 @@ Namespace Entidad
             Return DAL_Empresa.TraerUnoXCUIT(CUIT)
         End Function
         'Son para reportes, por eso estan duplicados en DTO.
-        Public Shared Function TraerTodosDeuda0() As List(Of Empresa)
+        Public Shared Function TraerTodosDeuda(intDeuda As Integer) As List(Of Empresa)
             Return DAL_Empresa.TraerTodosDeuda(0)
         End Function
-        Public Shared Function TraerTodosDeuda0_DTO() As List(Of DTO.DTO_Empresa)
-            Dim lista As List(Of Empresa) = TraerTodosDeuda0()
+        Public Shared Function TraerTodosDeuda_DTO(intDeuda As Integer) As List(Of DTO.DTO_Empresa)
+            Dim lista As List(Of Empresa) = TraerTodosDeuda(intDeuda)
             Dim result As New List(Of DTO.DTO_Empresa)
             If lista.Count > 0 Then
                 For Each item As Entidad.Empresa In lista
@@ -198,6 +203,9 @@ Namespace Entidad
                 Next
             End If
             Return result
+        End Function
+        Public Shared Function TraerTodosDeuda_Impresion(intDeuda As Integer) As List(Of StrImpresion)
+            Return DAL_Empresa.TraerTodosDeuda_Impresion(intDeuda)
         End Function
         Public Shared Function TraerTodosDeuda1() As List(Of Empresa)
             Return DAL_Empresa.TraerTodosDeuda(1)
@@ -386,6 +394,7 @@ Namespace DataAccessLibrary
         Const storeTraerUnoXCUIT As String = "ADM.p_Empresa_TraerUnoXCUIT"
         Const storeTraerTodos As String = "ADM.p_Empresa_TraerTodos"
         Const storeTraerTodosDeuda As String = "ADM.p_Empresa_TraerTodosDeuda"
+        Const storeTraerTodosDeudaImpresion As String = "ADM.p_Empresa_TraerTodosDeudaImpresion"
         Const storeTraerTodosXBusqueda As String = "ADM.p_Empresa_TraerXBusquedaLibre"
 #End Region
 #Region " Métodos Públicos "
@@ -522,7 +531,20 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
-
+        Friend Shared Function TraerTodosDeuda_Impresion(MesesDeuda As Integer) As List(Of Empresa.StrImpresion)
+            Dim store As String = storeTraerTodosDeudaImpresion
+            Dim pa As New parametrosArray
+            pa.add("@MesesDeuda", MesesDeuda)
+            Dim listaResult As New List(Of Empresa.StrImpresion)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidadImpresion(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
 
 
 
@@ -645,6 +667,25 @@ Namespace DataAccessLibrary
             Return entidad
         End Function
 
+        Private Shared Function LlenarEntidadImpresion(ByVal dr As DataRow) As Empresa.StrImpresion
+            Dim entidadImpresion As New Empresa.StrImpresion
+            If dr.Table.Columns.Contains("CUIT") Then
+                If dr.Item("CUIT") IsNot DBNull.Value Then
+                    entidadImpresion.CUIT = CLng(Replace(dr.Item("CUIT").ToString, "-", ""))
+                End If
+            End If
+            If dr.Table.Columns.Contains("Codigo") Then
+                If dr.Item("Codigo") IsNot DBNull.Value Then
+                    entidadImpresion.Codigo = Right("00000" + dr.Item("Codigo").ToString, 5)
+                End If
+            End If
+            If dr.Table.Columns.Contains("RazonSocial") Then
+                If dr.Item("RazonSocial") IsNot DBNull.Value Then
+                    entidadImpresion.RazonSocial = dr.Item("RazonSocial").ToString.ToUpper.Trim
+                End If
+            End If
+            Return entidadImpresion
+        End Function
 
 #End Region
     End Class ' DAL_Empresa

@@ -53,11 +53,25 @@ Public Class WsEmpresa
         End Try
         Return ws
     End Function
+    '<WebMethod()>
+    'Public Function TraerTodosConDeudaImpresion(intDeuda As Integer) As Transfer
+    '    Dim ws As New Transfer
+    '    Try
+    '        ws.data = Entidad.Empresa.TraerTodosDeuda_DTO(intDeuda)
+    '        ws.todoOk = True
+    '        ws.mensaje = ""
+    '    Catch ex As Exception
+    '        ws.todoOk = False
+    '        ws.mensaje = ex.Message
+    '        ws.data = Nothing
+    '    End Try
+    '    Return ws
+    'End Function
     <WebMethod()>
     Public Function TraerTodosSinDeuda() As Transfer
         Dim ws As New Transfer
         Try
-            ws.data = Entidad.Empresa.TraerTodosDeuda0_DTO()
+            ws.data = Entidad.Empresa.TraerTodosDeuda_Impresion(0)
             ws.todoOk = True
             ws.mensaje = ""
         Catch ex As Exception
@@ -71,7 +85,7 @@ Public Class WsEmpresa
     Public Function TraerTodosDeuda1() As Transfer
         Dim ws As New Transfer
         Try
-            ws.data = Entidad.Empresa.TraerTodosDeuda1_DTO()
+            ws.data = Entidad.Empresa.TraerTodosDeuda_Impresion(1)
             ws.todoOk = True
             ws.mensaje = ""
         Catch ex As Exception
@@ -85,7 +99,7 @@ Public Class WsEmpresa
     Public Function TraerTodosDeuda3() As Transfer
         Dim ws As New Transfer
         Try
-            ws.data = Entidad.Empresa.TraerTodosDeuda3_DTO()
+            ws.data = Entidad.Empresa.TraerTodosDeuda_Impresion(3)
             ws.todoOk = True
             ws.mensaje = ""
         Catch ex As Exception
@@ -99,7 +113,7 @@ Public Class WsEmpresa
     Public Function TraerTodosDeuda6() As Transfer
         Dim ws As New Transfer
         Try
-            ws.data = Entidad.Empresa.TraerTodosDeuda6_DTO()
+            ws.data = Entidad.Empresa.TraerTodosDeuda_Impresion(6)
             ws.todoOk = True
             ws.mensaje = ""
         Catch ex As Exception

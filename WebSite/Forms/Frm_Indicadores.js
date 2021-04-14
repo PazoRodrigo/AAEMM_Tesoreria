@@ -51,7 +51,7 @@ $('body').on('click', '#Indicadores_Empresas_SinDeuda', async function (e) {
     try {
         spinner();
         let ListaEmpresas =  await Empresa.TraerTodosSinDeuda();
-        await Empresa.ArmarGrillaDetalle('ContainerPrincipal', ListaEmpresas, '', 'max-height: 350px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -63,7 +63,7 @@ $('body').on('click', '#Indicadores_Empresas_Deuda1', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeuda1();
-        await Empresa.ArmarGrillaDetalle('ContainerPrincipal', ListaEmpresas, '', 'max-height: 350px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas,'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -74,7 +74,7 @@ $('body').on('click', '#Indicadores_Empresas_Deuda3', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeuda3();
-        await Empresa.ArmarGrillaDetalle('ContainerPrincipal', ListaEmpresas, '', 'max-height: 350px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas,  'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -85,7 +85,7 @@ $('body').on('click', '#Indicadores_Empresas_Deuda6', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeuda6();
-        await Empresa.ArmarGrillaDetalle('ContainerPrincipal', ListaEmpresas, '', 'max-height: 350px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -101,3 +101,17 @@ $('body').on('click', '#Indicadores_Empresas_Limpiar', async function (e) {
         alertAlerta(e);
     }
 });
+$('body').on('click', '#Indicadores_Empresas_Imprimir', async function (e) {
+    try {
+        spinner()
+        // tableToExcel('GrillaReporte2', 'Reporte Entregas Solicitadas');
+        let nombreArchivo = "Reporte Empresas-" + FechaHoyLng() + ".xls";
+        $("#ContainerPrincipal").table2excel({ filename: nombreArchivo, sheetName: "Reporte Empresas" });
+        spinnerClose();
+        // $("#GrillaReporte2").table2excel({ filename: "TableRodrigo.xls", sheetName: "Reporte Empresas" });
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
+

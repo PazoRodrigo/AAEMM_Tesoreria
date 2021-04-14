@@ -9,6 +9,9 @@
     ID="Content1"
     ContentPlaceHolderID="ContentPlaceHolder1"
     runat="Server">
+    <script type="text/javascript">
+
+</script>
     <script
         src='<%= ResolveClientUrl("Frm_Indicadores.js?version20210321")%>'></script>
     <asp:Button
@@ -52,7 +55,7 @@
                                                     </a>
                                                 </li>--%>
                                                 <li class="BtnIndicador">
-                                                  <a href="#" id="Indicadores_Empresas_Deuda1">
+                                                    <a href="#" id="Indicadores_Empresas_Deuda1">
                                                         <div class="LblIndicador">Deuda 1 Mes</div>
                                                         <div
                                                             class="LblValorIndicador"
@@ -70,7 +73,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="BtnIndicador">
-                                                   <a href="#" id="Indicadores_Empresas_Deuda6">
+                                                    <a href="#" id="Indicadores_Empresas_Deuda6">
                                                         <div class="LblIndicador">Deuda 6 Meses</div>
                                                         <div
                                                             class="LblValorIndicador"
@@ -78,7 +81,7 @@
                                                         </div>
                                                     </a>
                                                 </li>
-                                               <%-- <li class="BtnIndicador">
+                                                <%-- <li class="BtnIndicador">
                                                     <a href="#">
                                                         <div class="LblIndicador">Deuda > 6 Meses</div>
                                                         <div
