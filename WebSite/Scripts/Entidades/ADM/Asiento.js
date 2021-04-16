@@ -1,4 +1,60 @@
 ﻿
+class AsientoImpresion {
+    constructor() {
+        this.IdAsiento = 0;
+        this.Fecha = '';
+        this.ImporteTotal = 0;
+        this.IdCuenta = 0;
+        this.Cuenta = '';
+        this.DH = 0;
+        this.ImporteLinea = 0;
+    }
+    static async TraerTodosXCuentaImpresion(IdCuenta) {
+        let data = {
+            'IdCuenta': IdCuenta
+        };
+        let lista = await ejecutarAsync(urlWsAsiento + "/TraerTodosXCuentaImpresion", data);
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadAsientoImpresion(value));
+            });
+        }
+        return result;
+    }
+    static async ArmarImpresionAsientosOculta(div, Lista) {       
+        let str = '';
+        $("#" + div + "").html('');
+        if (Lista?.length > 0) {
+            str += '<table>'
+            let iAsiento = 0;
+            let IdAsiento = Lista[0].IdAsiento;
+            str += '';
+            while (iAsiento <= Lista.length - 1) {
+                let item = Lista[iAsiento];
+                if (IdAsiento != item.IdAsiento) {
+                    IdAsiento = item.IdAsiento;
+                    // Cabecera
+                    str += '<tr class="bg-info"><th>Asiento</th><th colspan="2">Fecha</th><th>Importe Asiento</th></tr>';
+                    str += '<tr><td>' + Right('0000000' + item.IdAsiento, 7) + '</td><td colspan="2">' + item.Fecha + '</td><td>' + separadorMiles(item.ImporteTotal) + '</td></tr>';
+                    str += '<tr><th>Id Cta</th><th>DH</th><th>Cuenta</th><th>Importe Linea</th></tr>';
+
+                }
+                let DebeHaber = 'D';
+                if (item.DH == 1) {
+                    DebeHaber = 'H';
+                 }
+                str += '<tr><td>' + item.IdCuenta + '</td><td>' + DebeHaber + '</td><td>' + item.Cuenta + '</td><td>' + separadorMiles(item.ImporteLinea)  + '</td></tr>';
+                iAsiento++;
+            }
+            str += '</table>'
+
+        }
+        return $("#" + div + "").html(str);
+    }
+
+
+}
 class Asiento extends DBE {
     constructor() {
         super();
@@ -54,6 +110,8 @@ class Asiento extends DBE {
         }
         return result;
     }
+
+    
     static async ArmarGrilla(lista, div) {
         $("#" + div + "").html('');
         let str = "";
@@ -64,8 +122,6 @@ class Asiento extends DBE {
                 str += '		<span>' + await objAsiento.StrFecha() + '</span>';
                 str += '	</div>';
                 str += '	<div class="col-4 text-right">';
-                console.log(separadorMiles(objAsiento.Importe));
-
                 str += '		<span>' + separadorMiles(objAsiento.Importe.toFixed(2)) + '</span>';
                 str += '	</div>';
                 str += '</div>';
@@ -111,5 +167,16 @@ function LlenarEntidadAsiento(entidad) {
     Res.Fecha = entidad.Fecha;
     Res.Importe = entidad.Importe;
     Res.ListaLineas = entidad.ListaLineas;
+    return Res;
+}
+function LlenarEntidadAsientoImpresion(entidad) {
+    let Res = new AsientoImpresion;
+    Res.IdAsiento = entidad.IdAsiento;
+    Res.Fecha = entidad.Fecha;
+    Res.ImporteTotal = entidad.ImporteTotal;
+    Res.IdCuenta = entidad.IdCuenta;
+    Res.Cuenta = entidad.Cuenta;
+    Res.DH = entidad.DH;
+    Res.ImporteLinea = entidad.ImporteLinea;
     return Res;
 }

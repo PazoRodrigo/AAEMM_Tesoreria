@@ -100,6 +100,8 @@
                 </div>
                 <div class="row mt-1">
                     <div class="col-5">
+                            <span id="IdCuentaImprimir" style="display: none;"></span>
+                            <a href="#" id="BtnImprimirAsiento" style="display: none;" class="btn btn-md btn-block btn-success">Imprimir</a>
                         <div style="height: 300px; overflow-y: scroll;">
                             <div id="DivGrillaAsientos"></div>
                         </div>
@@ -162,6 +164,7 @@
             </div>
         </li>
     </ul>
+    <div id="DivImpresionAsientosOculta" style="display: none;"></div>
 </asp:Content>
 
 

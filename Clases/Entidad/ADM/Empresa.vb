@@ -666,7 +666,6 @@ Namespace DataAccessLibrary
             entidad.ObjDomicilio = Domicilio.LlenarDomicilio(dr)
             Return entidad
         End Function
-
         Private Shared Function LlenarEntidadImpresion(ByVal dr As DataRow) As Empresa.StrImpresion
             Dim entidadImpresion As New Empresa.StrImpresion
             If dr.Table.Columns.Contains("CUIT") Then

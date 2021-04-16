@@ -21,6 +21,7 @@ async function Inicio() {
 }
 
 function LimpiarFormulario() {
+    $("#IdCuentaImprimir").text(0);
     LimpiarAsiento();
 }
 
@@ -205,10 +206,22 @@ $('body').on('click', '#BtnGuardarAsiento', async function (e) {
 });
 $('body').on('click', '#LinkCAJA', async function (e) {
     try {
+        // spinner();
+        // $("#DivGrillaAsientos").html('');
+        // let ListaAsientos = await Asiento.TraerTodosXCuenta(61);
+        // $("#IdCuentaImprimir").text(64);
+        // await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+        // spinnerClose();
         spinner();
+        $("#BtnImprimirAsiento").css('display', 'none');
+        let IdCuenta = 61;
         $("#DivGrillaAsientos").html('');
-        let ListaAsientos = await Asiento.TraerTodosXCuenta(61);
+        let ListaAsientos = await Asiento.TraerTodosXCuenta(IdCuenta);
         await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+              let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
+        await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
+        $("#IdCuentaImprimir").text(IdCuenta);
+        $("#BtnImprimirAsiento").css('display', 'block');
         spinnerClose();
     } catch (err) {
         spinnerClose();
@@ -217,10 +230,22 @@ $('body').on('click', '#LinkCAJA', async function (e) {
 });
 $('body').on('click', '#LinkFONDOFIJO', async function (e) {
     try {
+        // spinner();
+        // $("#DivGrillaAsientos").html('');
+        // let ListaAsientos = await Asiento.TraerTodosXCuenta(62);
+        // $("#IdCuentaImprimir").text(62);
+        // await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+        // spinnerClose();
         spinner();
+        $("#BtnImprimirAsiento").css('display', 'none');
+        let IdCuenta = 62;
         $("#DivGrillaAsientos").html('');
-        let ListaAsientos = await Asiento.TraerTodosXCuenta(62);
+        let ListaAsientos = await Asiento.TraerTodosXCuenta(IdCuenta);
         await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+              let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
+        await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
+        $("#IdCuentaImprimir").text(IdCuenta);
+        $("#BtnImprimirAsiento").css('display', 'block');
         spinnerClose();
     } catch (err) {
         spinnerClose();
@@ -230,9 +255,15 @@ $('body').on('click', '#LinkFONDOFIJO', async function (e) {
 $('body').on('click', '#LinkPAGADORA', async function (e) {
     try {
         spinner();
+        $("#BtnImprimirAsiento").css('display', 'none');
+        let IdCuenta = 63;
         $("#DivGrillaAsientos").html('');
-        let ListaAsientos = await Asiento.TraerTodosXCuenta(63);
+        let ListaAsientos = await Asiento.TraerTodosXCuenta(IdCuenta);
         await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+              let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
+        await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
+        $("#IdCuentaImprimir").text(IdCuenta);
+        $("#BtnImprimirAsiento").css('display', 'block');
         spinnerClose();
     } catch (err) {
         spinnerClose();
@@ -241,10 +272,24 @@ $('body').on('click', '#LinkPAGADORA', async function (e) {
 });
 $('body').on('click', '#LinkRECAUDADORA', async function (e) {
     try {
+        // spinner();
+        // $("#DivGrillaAsientos").html('');
+        // let ListaAsientos = await Asiento.TraerTodosXCuenta(64);
+        // $("#IdCuentaImprimir").text(64);
+        // await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+        // let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(64);
+        // await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
+        // spinnerClose();
         spinner();
+        $("#BtnImprimirAsiento").css('display', 'none');
+        let IdCuenta = 64;
         $("#DivGrillaAsientos").html('');
-        let ListaAsientos = await Asiento.TraerTodosXCuenta(64);
+        let ListaAsientos = await Asiento.TraerTodosXCuenta(IdCuenta);
         await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+        let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
+        await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
+        $("#IdCuentaImprimir").text(IdCuenta);
+        $("#BtnImprimirAsiento").css('display', 'block');
         spinnerClose();
     } catch (err) {
         spinnerClose();
@@ -257,6 +302,8 @@ $('body').on('click', '#LinkANTICIPO', async function (e) {
         $("#DivGrillaAsientos").html('');
         let ListaAsientos = await Asiento.TraerTodosXCuenta(1001);
         await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+              let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
+        await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
         spinnerClose();
     } catch (err) {
         spinnerClose();
@@ -269,6 +316,19 @@ $('body').on('click', '#LinkPRESTAMO', async function (e) {
         $("#DivGrillaAsientos").html('');
         let ListaAsientos = await Asiento.TraerTodosXCuenta(1002);
         await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
+              let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
+        await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
+        spinnerClose();
+    } catch (err) {
+        spinnerClose();
+        alertAlerta(err);
+    }
+});
+$('body').on('click', '#BtnImprimirAsiento', async function (e) {
+    try {
+         spinner()
+        let nombreArchivo = "Asientos-" + FechaHoyLng() + ".xls";
+        $("#DivImpresionAsientosOculta").table2excel({ filename: nombreArchivo, sheetName: "Asientos" });
         spinnerClose();
     } catch (err) {
         spinnerClose();

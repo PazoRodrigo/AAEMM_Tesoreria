@@ -48,4 +48,19 @@ Public Class WsAsiento
         End Try
         Return ws
     End Function
+    <WebMethod()>
+    Public Function TraerTodosXCuentaImpresion(IdCuenta As Integer) As Transfer
+        Dim ws As New Transfer
+        Try
+            ws.data = Entidad_Asiento.Asiento.TraerTodosXCuentaImpresion(IdCuenta)
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    '
 End Class

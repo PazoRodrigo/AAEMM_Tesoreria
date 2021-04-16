@@ -104,11 +104,9 @@ $('body').on('click', '#Indicadores_Empresas_Limpiar', async function (e) {
 $('body').on('click', '#Indicadores_Empresas_Imprimir', async function (e) {
     try {
         spinner()
-        // tableToExcel('GrillaReporte2', 'Reporte Entregas Solicitadas');
         let nombreArchivo = "Reporte Empresas-" + FechaHoyLng() + ".xls";
         $("#ContainerPrincipal").table2excel({ filename: nombreArchivo, sheetName: "Reporte Empresas" });
         spinnerClose();
-        // $("#GrillaReporte2").table2excel({ filename: "TableRodrigo.xls", sheetName: "Reporte Empresas" });
     } catch (e) {
         spinnerClose();
         alertAlerta(e);

@@ -11,6 +11,15 @@ Namespace Entidad_Asiento
     Public Class Asiento
         Inherits DBE
 
+        Public Structure strAsientoImpresion
+            Public IdAsiento As Integer
+            Public Fecha As Long
+            Public ImporteTotal As Decimal
+            Public IdCuenta As Integer
+            Public Cuenta As String
+            Public DH As Integer
+            Public ImporteLinea As Decimal
+        End Structure
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
         Public Property Fecha() As Date? = Nothing
@@ -79,6 +88,9 @@ Namespace Entidad_Asiento
         End Function
         Public Shared Function TraerTodosXCuenta_DTO(IdCuenta As Integer) As List(Of Asiento)
             Return DAL_Asiento.TraerTodosXCuenta(IdCuenta)
+        End Function
+        Public Shared Function TraerTodosXCuentaImpresion(IdCuenta As Integer) As List(Of Asiento.strAsientoImpresion)
+            Return DAL_Asiento.TraerTodosXCuentaImpresion(IdCuenta)
         End Function
         ' Nuevos
 #End Region
@@ -210,6 +222,7 @@ Namespace DataAccessLibrary_Asiento
         Const storeTraerTodos As String = "p_Asiento_TraerTodos"
         Const storeTraerTodosActivos As String = "p_Asiento_TraerTodosActivos"
         Const storeTraerTodosXCuenta As String = "Contable.p_Asiento_TraerTodosXCuenta"
+        Const storeTraerTodosXCuentaImpresion As String = "Contable.p_Asiento_TraerTodosXCuentaImpresion"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
@@ -285,6 +298,20 @@ Namespace DataAccessLibrary_Asiento
             End Using
             Return listaResult
         End Function
+        Friend Shared Function TraerTodosXCuentaImpresion(IdCuenta As Integer) As List(Of Asiento.strAsientoImpresion)
+            Dim store As String = storeTraerTodosXCuentaImpresion
+            Dim pa As New parametrosArray
+            pa.add("@IdCuenta", IdCuenta)
+            Dim listaResult As New List(Of Asiento.strAsientoImpresion)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidadImpresion(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
 #End Region
 #Region " Métodos Privados "
         Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Asiento
@@ -341,6 +368,50 @@ Namespace DataAccessLibrary_Asiento
                 entidad.ListaLineas = lista
             End If
             Return entidad
+        End Function
+        Private Shared Function LlenarEntidadImpresion(ByVal dr As DataRow) As Asiento.strAsientoImpresion
+            Dim entidadImpresion As New Asiento.strAsientoImpresion
+            If dr.Table.Columns.Contains("IdAsiento") Then
+                If dr.Item("IdAsiento") IsNot DBNull.Value Then
+                    entidadImpresion.IdAsiento = CInt(dr.Item("IdAsiento").ToString)
+                End If
+            End If
+            If dr.Table.Columns.Contains("Fecha") Then
+                If dr.Item("Fecha") IsNot DBNull.Value Then
+                    Dim result As Long = 0
+                    Dim resultFecha As Date? = CDate(dr.Item("Fecha").ToString.Trim)
+                    If resultFecha.HasValue Then
+                        result = CLng(Year(resultFecha.Value).ToString & Right("00" & Month(resultFecha.Value).ToString, 2) & Right("00" & Day(resultFecha.Value).ToString, 2))
+                    End If
+                    entidadImpresion.Fecha = result
+                End If
+            End If
+            If dr.Table.Columns.Contains("ImporteAsiento") Then
+                If dr.Item("ImporteAsiento") IsNot DBNull.Value Then
+                    entidadImpresion.ImporteTotal = CDec(dr.Item("ImporteAsiento").ToString.Trim)
+                End If
+            End If
+            If dr.Table.Columns.Contains("IdCuentaContable") Then
+                If dr.Item("IdCuentaContable") IsNot DBNull.Value Then
+                    entidadImpresion.IdCuenta = CInt(dr.Item("IdCuentaContable").ToString.Trim)
+                End If
+            End If
+            If dr.Table.Columns.Contains("Cuenta") Then
+                If dr.Item("Cuenta") IsNot DBNull.Value Then
+                    entidadImpresion.Cuenta = dr.Item("Cuenta").ToString.ToUpper.Trim
+                End If
+            End If
+            If dr.Table.Columns.Contains("DH") Then
+                If dr.Item("DH") IsNot DBNull.Value Then
+                    entidadImpresion.DH = CInt(dr.Item("DH").ToString.Trim)
+                End If
+            End If
+            If dr.Table.Columns.Contains("ImporteLinea") Then
+                If dr.Item("ImporteLinea") IsNot DBNull.Value Then
+                    entidadImpresion.ImporteLinea = CDec(dr.Item("ImporteLinea").ToString.Trim)
+                End If
+            End If
+            Return entidadImpresion
         End Function
 #End Region
     End Class ' DAL_Asiento
