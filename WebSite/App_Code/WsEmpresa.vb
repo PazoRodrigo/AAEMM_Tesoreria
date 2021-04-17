@@ -68,6 +68,20 @@ Public Class WsEmpresa
     '    Return ws
     'End Function
     <WebMethod()>
+    Public Function TraerTodosSinBaja() As Transfer
+        Dim ws As New Transfer
+        Try
+            ws.data = Entidad.Empresa.TraerTodosSinBaja_Impresion()
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
     Public Function TraerTodosSinDeuda() As Transfer
         Dim ws As New Transfer
         Try

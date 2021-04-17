@@ -46,6 +46,17 @@ async function Inicio() {
     spinnerClose();
 }
 
+$('body').on('click', '#Indicadores_Empresas', async function (e) {
+    try {
+        spinner();
+        let ListaEmpresas = await Empresa.TraerTodosSinBaja();
+        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
+        spinnerClose();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
 
 $('body').on('click', '#Indicadores_Empresas_SinDeuda', async function (e) {
     try {

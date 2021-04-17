@@ -255,6 +255,16 @@ class Empresa extends DBE {
         _ListaEmpresas = result;
         return result;
     }
+    static async TraerTodosSinBaja() {
+        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosSinBaja");
+        let result = [];
+        if (lista?.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpresa(value));
+            });
+        }
+        return result;
+    }    
     static async TraerTodosSinDeuda() {
         let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosSinDeuda");
         let result = [];

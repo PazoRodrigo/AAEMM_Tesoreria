@@ -60,6 +60,8 @@ Namespace Entidad
             End Get
         End Property
 
+
+
         'Private _DatosCalculados As DatosCalculados
         'Public ReadOnly Property DatosCalculados() As DatosCalculados
         '    Get
@@ -204,9 +206,13 @@ Namespace Entidad
             End If
             Return result
         End Function
+        Public Shared Function TraerTodosSinBaja_Impresion() As List(Of StrImpresion)
+            Return DAL_Empresa.TraerTodosSinBaja_Impresion()
+        End Function
         Public Shared Function TraerTodosDeuda_Impresion(intDeuda As Integer) As List(Of StrImpresion)
             Return DAL_Empresa.TraerTodosDeuda_Impresion(intDeuda)
         End Function
+
         Public Shared Function TraerTodosDeuda1() As List(Of Empresa)
             Return DAL_Empresa.TraerTodosDeuda(1)
         End Function
@@ -395,6 +401,7 @@ Namespace DataAccessLibrary
         Const storeTraerTodos As String = "ADM.p_Empresa_TraerTodos"
         Const storeTraerTodosDeuda As String = "ADM.p_Empresa_TraerTodosDeuda"
         Const storeTraerTodosDeudaImpresion As String = "ADM.p_Empresa_TraerTodosDeudaImpresion"
+        Const storeTraerTodosSinBajaImpresion As String = "ADM.p_Empresa_TraerTodosSinBajaImpresion"
         Const storeTraerTodosXBusqueda As String = "ADM.p_Empresa_TraerXBusquedaLibre"
 #End Region
 #Region " Métodos Públicos "
@@ -526,6 +533,19 @@ Namespace DataAccessLibrary
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
+        Friend Shared Function TraerTodosSinBaja_Impresion() As List(Of Empresa.StrImpresion)
+            Dim store As String = storeTraerTodosSinBajaImpresion
+            Dim pa As New parametrosArray
+            Dim listaResult As New List(Of Empresa.StrImpresion)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidadImpresion(dr))
                     Next
                 End If
             End Using

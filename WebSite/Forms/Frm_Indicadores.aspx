@@ -13,7 +13,7 @@
 
 </script>
     <script
-        src='<%= ResolveClientUrl("Frm_Indicadores.js?version20210321")%>'></script>
+        src='<%= ResolveClientUrl("Frm_Indicadores.js?version20210417")%>'></script>
     <asp:Button
         ID="btnSubirOculto"
         runat="server"
@@ -31,7 +31,7 @@
                                 <nav>
                                     <ul>
                                         <li class="MenuIndicador">
-                                            <a href="#">
+                                            <a href="#" id="Indicadores_Empresas">
                                                 <div class="LblIndicador">Empresas</div>
                                                 <div class="LblValorIndicador" id="LblEmpresas"></div>
                                             </a>
