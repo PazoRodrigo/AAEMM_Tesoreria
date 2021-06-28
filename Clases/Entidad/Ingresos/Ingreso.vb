@@ -406,6 +406,9 @@ Namespace Entidad
         Public Shared Sub AltaArchivoMC(nombreArchivo As String)
             DAL_Ingreso.AltaArchivoMC(nombreArchivo)
         End Sub
+        Public Shared Sub AltaArchivoMP(nombreArchivo As String)
+            DAL_Ingreso.AltaArchivoMP(nombreArchivo)
+        End Sub
         Public Shared Sub ExplotarIngreso(ByVal IdUsuario As Integer, IdEntidad As Integer, ByVal Lista As List(Of DTO.DTO_Ingreso))
             DAL_Ingreso.ExplotarIngreso(IdUsuario, IdEntidad, Lista)
         End Sub
@@ -545,6 +548,7 @@ Namespace DataAccessLibrary
         Const storeAlta As String = "INGRESO.p_Ingreso_Alta"
         Const storeBaja As String = "INGRESO.p_Ingreso_Baja"
         Const storeAltaArchivoMC As String = "INGRESO.p_Ingreso_AltaMC"
+        Const storeAltaArchivoMP As String = "INGRESO.p_Ingreso_AltaMP"
         Const storeModifica As String = "INGRESO.p_Ingreso_Modifica"
         Const storeTraerTodosXFechasXAcreditacion As String = "INGRESO.p_Ingreso_TraerTodosXFechasXAcreditacion"
         Const storeTraerTodos As String = "INGRESO.p_Ingreso_TraerTodos"
@@ -789,6 +793,20 @@ Namespace DataAccessLibrary
         Friend Shared Sub AltaArchivoMC(nombreArchivo As String)
             Dim result As Integer = 0
             Dim store As String = storeAltaArchivoMC
+            Dim pa As New parametrosArray
+            pa.add("@nombreArchivo", nombreArchivo)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        result = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
+        End Sub
+
+        Friend Shared Sub AltaArchivoMP(nombreArchivo As String)
+            Dim result As Integer = 0
+            Dim store As String = storeAltaArchivoMP
             Dim pa As New parametrosArray
             pa.add("@nombreArchivo", nombreArchivo)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)

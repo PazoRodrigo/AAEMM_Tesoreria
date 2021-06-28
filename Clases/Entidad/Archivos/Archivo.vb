@@ -29,6 +29,8 @@ Namespace Entidad
                     objLinea = New LineaArchivoPF
                 Case "MC"
                     objLinea = New LineaArchivoMC
+                Case "MP"
+                    objLinea = New LineaArchivoMP
                 Case Else
                     Throw New Exception("Archivo NO soportado")
             End Select

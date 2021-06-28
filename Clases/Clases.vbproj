@@ -87,6 +87,7 @@
     <Compile Include="Entidad\ADM\Cta Cte\MovimientoCtaCte.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivo.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivoBN.vb" />
+    <Compile Include="Entidad\Archivos\LineaArchivoMP.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivoMC.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivoPF.vb" />
     <Compile Include="Entidad\ADM\Cta Cte\TipoMovimientoCtaCte.vb" />

@@ -118,6 +118,10 @@
                                             <a
                                                 href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_CuentaCorriente.aspx")%>'>(Alt + A) - Cuentas Corrientes</a>
                                         </li>
+                                         <li>
+                                            <a
+                                                href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Sueldos.aspx")%>'>Sueldos</a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>

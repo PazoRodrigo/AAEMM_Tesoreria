@@ -302,8 +302,8 @@ $('body').on('click', '#LinkANTICIPO', async function (e) {
         $("#DivGrillaAsientos").html('');
         let ListaAsientos = await Asiento.TraerTodosXCuenta(1001);
         await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
-              let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
-        await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
+        //      let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
+        //await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
         spinnerClose();
     } catch (err) {
         spinnerClose();
@@ -316,8 +316,8 @@ $('body').on('click', '#LinkPRESTAMO', async function (e) {
         $("#DivGrillaAsientos").html('');
         let ListaAsientos = await Asiento.TraerTodosXCuenta(1002);
         await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
-              let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
-        await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
+        //let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
+        //await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
         spinnerClose();
     } catch (err) {
         spinnerClose();

@@ -75,6 +75,7 @@
         PF = 2
         MC = 3
         CJ = 4
+        MP = 5
     End Enum
     Public Enum TipoMovimientoDH
         SinDH = 0

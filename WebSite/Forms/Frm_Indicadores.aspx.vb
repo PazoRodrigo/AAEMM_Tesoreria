@@ -31,15 +31,15 @@ Partial Class Forms_Frm_Indicadores
             nombreArchivo = strArchivo.Substring(0, 2)
             fechaArchivo = strArchivo.Substring(2, 8)
             Dim extension As String = System.IO.Path.GetExtension(FileUpload1.PostedFile.FileName).ToLower()
-            If Not (nombreArchivo = "BN" Or nombreArchivo = "PF" Or nombreArchivo = "MC") Then
-                Throw New Exception("Por favor seleccione un archivo BN, PF o TR")
+            If Not (nombreArchivo = "BN" Or nombreArchivo = "PF" Or nombreArchivo = "MC" Or nombreArchivo = "MP") Then
+                Throw New Exception("Por favor seleccione un archivo BN, PF, MC o MP")
             End If
             If nombreArchivo = "BN" Or nombreArchivo = "PF" Then
                 If Not (LCase(extension) = ".txt") Then
                     Throw New Exception("Por favor seleccione un archivo PF o BN de extensión txt")
                 End If
             End If
-            If nombreArchivo = "MC" Then
+            If nombreArchivo = "MC" Or nombreArchivo = "MP" Then
                 If Not (LCase(extension) = ".csv") Then
                     Throw New Exception("Por favor seleccione un archivo TF de extensión csv")
                 End If
