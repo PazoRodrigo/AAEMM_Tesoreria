@@ -85,6 +85,7 @@
     <Compile Include="Entidad\ADM\Empleado.vb" />
     <Compile Include="Entidad\ADM\Gasto.vb" />
     <Compile Include="Entidad\ADM\Cta Cte\MovimientoCtaCte.vb" />
+    <Compile Include="Entidad\ADM\PlazoFijo.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivo.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivoBN.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivoMP.vb" />

@@ -318,20 +318,18 @@ class Comprobante extends DBE {
         str += '<table class="table table-sm table-striped table-hover">';
         str += '    <tbody>';
         if (lista.length > 0) {
-            console.log(lista);
-
             for (let item of lista) {
-                let Proveedor = Left((await item.ObjProveedor()).Nombre, 20);
-                let strToolTip = 'Comp.:' +  Right("00000" + item.NroComprobante, 5);
-                if (item.Observaciones.length > 0) {
-                    strToolTip += ' -- ' + item.Observaciones;
-                    Proveedor += '. Obs.';
-                }
                 let ColorClase = 'text-light';
                 if (item.FechaBaja > 0) {
                     ColorClase = 'text-danger bg-light';
                 }
-                str += '        <tr title="' + strToolTip+ '">';
+                let Proveedor = Left((await item.ObjProveedor()).Nombre, 20);
+                let strToolTip = 'Comp.: ' + Right("00000" + item.NroComprobante, 5);
+                if (item.Observaciones.length > 0) {
+                    strToolTip += ' -- ' + item.Observaciones;
+                    ColorClase = 'text-warning'
+                }
+                str += '        <tr title="' + strToolTip + '">';
                 str += '            <td class="text-center" style="width: 55px;"><div class="small text-light" t>' + item.IdGasto + '</div></td>';
                 str += '            <td class="text-center" style="width: 110px;"><div class="small text-light">' + LongToDateString(item.FechaGasto) + '</div></td>';
                 str += '            <td class="text-center" style="width: 75px;"><div class="small text-light">' + item.StrPagado() + '</div></td>';
@@ -339,7 +337,6 @@ class Comprobante extends DBE {
                 str += '            <td class="text-left pl-1" style="width: 200px;"><div class="small text-light">' + Proveedor  + '</div></td>';
                 str += '            <td class="text-right pr-2" style="width: 105px;"><div class="' + ColorClase + '">' + separadorMiles(item.Importe.toFixed(2)) + '</div></td>';
                 str += '        </tr>';
-
             }
         }
         str += '    </tbody>';

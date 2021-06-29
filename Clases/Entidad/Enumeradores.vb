@@ -67,6 +67,11 @@
         Cerrado = 2
         Anulado = 11
     End Enum
+    Public Enum EstadoFlazoFijo
+        NoVigente = 0
+        Vigente = 1
+        ProximoVencer = 2
+    End Enum
     Public Enum TipoPermiso
         Pagina = 1
     End Enum

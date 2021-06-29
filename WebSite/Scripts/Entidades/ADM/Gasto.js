@@ -181,7 +181,10 @@ class Gasto extends DBE {
             str += '<div style="' + estilo + '">';
             str += '    <ul class="ListaGrilla">';
             let estiloItem = '';
-            for (let item of lista) {
+            let i = 0;
+            while (i <= lista.length - 1) {
+                let item = lista[i];
+                let strCantComprobantes = 'Cant. Comprobantes: ' + await item.CantidadComprobantes;
                 estiloItem = 'LinkListaGrillaObjeto';
                 if (item.IdEstado === 11) {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
@@ -189,7 +192,8 @@ class Gasto extends DBE {
                 let periodo = Right(Left(item.FechaGasto, 6), 2) + '/' + Left(item.FechaGasto, 4);
                 let aItem = '<a href="#" class="mibtn-seleccionGasto" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.IdEntidad + '  ' + periodo + ' - ' + item.Estado + ' - ' + separadorMiles(item.Importe.toFixed(2)) + ' </a>';
                 let aEliminar = '<a href="#" class="mibtn-EliminarGasto" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
-                str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div > <div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li > ', aItem, aEliminar);
+                str += String.format('<li title="' + strCantComprobantes + '"><div class="LinkListaGrilla ' + estiloItem + '">{0}</div > <div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li > ', aItem, aEliminar);
+                i++;
             }
             str += '    </ul>';
             str += '</div>';
