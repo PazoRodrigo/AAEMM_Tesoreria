@@ -195,7 +195,7 @@ Namespace Entidad
                 Else
                     sqlQuery += " AND "
                 End If
-                sqlQuery += "IdOriginarioGasto = '" + busqueda.IdOriginarioGasto.ToString + "'"
+                sqlQuery += "IdOriginario = '" + busqueda.IdOriginarioGasto.ToString + "'"
             End If
             If busqueda.IdProveedor > 0 Then
                 If Not existeParametro Then

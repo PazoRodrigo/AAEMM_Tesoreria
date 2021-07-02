@@ -163,10 +163,12 @@
                                                 placeholder="Nro. Recibo" onkeypress="return jsSoloNumeros(event)" />
 
                                         </div>
-                                        <div style="visibility: hidden" class="col-1">Estado</div>
-                                        <div class="col-2">
-                                            <input style="visibility: hidden" type="text" id="EntidadEstado" class="form-control text-center"
-                                                placeholder="Estado" disabled>
+                                        <%--<div style="visibility: hidden" class="col-1">Estado</div>--%>
+                                        <div class="col-3">
+                                            <a id="BtnAnularRecibo" style="display:none" href="#" class="btn btn-md btn-block btn-danger">Anular  </a>
+                                            <%--<input style="visibility: hidden" type="text" id="EntidadEstado" class="form-control text-center"
+                                                placeholder="Estado" disabled>--%>
+                                            
                                         </div>
                                     </div>
                                     <div class="row mt-1 justify-content-end">

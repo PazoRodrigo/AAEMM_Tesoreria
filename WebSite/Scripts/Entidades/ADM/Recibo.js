@@ -38,6 +38,13 @@ class Recibo extends DBE {
         }
         return Result;
     }
+    async StrEstado() {
+        let Result = 'Vigente';
+        if (this.FechaBaja > 0) {
+            Result = 'Anulado';
+        }
+        return Result;
+    }
     async StrCodigoEntidad(cantCaracteres) {
         let Result = '';
         if (this.CodigoEntidad > 0) {
@@ -129,7 +136,6 @@ class Recibo extends DBE {
         try {
             let ObjU = JSON.parse(sessionStorage.getItem("User"));
             this.IdUsuarioBaja = ObjU.IdEntidad;
-            this.IdEstado = 'A';
             let data = {
                 'entidad': this
             };
@@ -313,17 +319,22 @@ class Recibo extends DBE {
         str += '    <tbody>';
         if (lista.length > 0) {
             for (let item of lista) {
-                str += '        <tr>';
+                console.log(item);
+                let ColorClase = 'text-light';
+                if (item.FechaBaja > 0) {
+                    ColorClase = 'class="bg-light text-danger"';
+                }
+                str += '        <tr ' + ColorClase + '>';
                 str += '            <td style="width:5px;"><a hfre="#" id="' + item.IdEntidad + '"  data-Evento="' + evento + '" onclick="SeleccionReciboGrilla(this);"> <img src="../../Imagenes/lupa.png" alt=""></a></td>';
-                str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrFecha() + '</small></td>';
-                str += '            <td class="text-center" style="width: 50px;"><small class="text-light">' + Right("000000" + item.NroReciboFin, 6) + '</small></td>';
-                str += '            <td class="text-center" style="width: 50px;"><small class="text-light">' + await item.CUIT + '</small></td>';
+                str += '            <td class="text-center" style="width: 80px;"><small class="' + ColorClase+'">' + await item.StrFecha() + '</small></td>';
+                str += '            <td class="text-center" style="width: 50px;"><small class="' + ColorClase +'">' + Right("000000" + item.NroReciboFin, 6) + '</small></td>';
+                str += '            <td class="text-center" style="width: 50px;"><small class="' + ColorClase +'">' + await item.CUIT + '</small></td>';
                 let strRazonSocial = (await item.ObjEmpresa()).RazonSocial;
                 if (strRazonSocial.length > 0) {
                     strRazonSocial = Left(strRazonSocial, 40);
                 }
-                str += '            <td class="text-left" style="width: 220px;"><small class="text-light">' + strRazonSocial + '</small></td>';
-                str += '            <td class="text-right pr-1" style="width: 100px;"><small class="text-light">' + separadorMiles(item.ImporteTotal.toFixed(2)) + '</small></td>';
+                str += '            <td class="text-left" style="width: 220px;"><small class="' + ColorClase +'">' + strRazonSocial + '</small></td>';
+                str += '            <td class="text-right pr-1" style="width: 100px;"><small class="' + ColorClase +'">' + separadorMiles(item.ImporteTotal.toFixed(2)) + '</small></td>';
                 str += '        </tr>';
             }
         }

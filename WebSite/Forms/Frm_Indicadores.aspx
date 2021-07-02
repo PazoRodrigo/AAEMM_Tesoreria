@@ -14,6 +14,10 @@
 </script>
     <script
         src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210628_1")%>'></script>
+    <div id="PopUp">        
+
+    </div>
+
     <asp:Button
         ID="btnSubirOculto"
         runat="server"
@@ -194,99 +198,16 @@
                                 <nav>
                                     <ul>
                                         <li class="MenuIndicador">
-                                            <a href="#">
+                                            <a href="#" id="BtnRecadudacionNeta">
                                                 <div class="LblIndicador">Recaudación Neta</div>
                                                 <div class="LblValorIndicador" id="LblRecaudacionNeta"></div>
                                             </a>
                                             <ul class="SubMenuInidicador">
-                                                <%--
-                        <li class="BtnIndicador">
-                          <a href="#">
-                            <div class="LblIndicador">Recaudación Bruta</div>
-                            <div
-                              class="LblValorIndicador"
-                              id="LblRecaudacionBruta"
-                            ></div>
-                          </a>
-                        </li>
-                                                --%> <%--
-                        <li class="BtnIndicador">
-                          <a href="#">
-                            <div class="LblIndicador">Por Cobrar c/Boleta</div>
-                            <div
-                              class="LblValorIndicador"
-                              id="LblRecaudacionXCobrarSinBoleta"
-                            ></div>
-                          </a>
-                        </li>
-                        <li class="BtnIndicador">
-                          <a href="#">
-                            <div class="LblIndicador">Por Cobrar s/Boleta</div>
-                            <div
-                              class="LblValorIndicador"
-                              id="LblRecaudacionXCobrarConBoleta"
-                            ></div>
-                          </a>
-                        </li>
-                        <li class="BtnIndicador">
-                          <a href="#">
-                            <div class="LblIndicador">Deuda 1 Mes</div>
-                            <div
-                              class="LblValorIndicador"
-                              id="LblRecaudacionDeuda1Mes"
-                            ></div>
-                          </a>
-                        </li>
-                        <li class="BtnIndicador">
-                          <a href="#">
-                            <div class="LblIndicador">Deuda 3 Meses</div>
-                            <div
-                              class="LblValorIndicador"
-                              id="LblRecaudacionDeuda3Meses"
-                            ></div>
-                          </a>
-                        </li>
-                        <li class="BtnIndicador">
-                          <a href="#">
-                            <div class="LblIndicador">Deuda 6 Meses</div>
-                            <div
-                              class="LblValorIndicador"
-                              id="LblRecaudacionDeuda6Meses"
-                            ></div>
-                          </a>
-                        </li>
-                        <li class="BtnIndicador">
-                          <a href="#">
-                            <div class="LblIndicador">Deuda > 6 Meses</div>
-                            <div
-                              class="LblValorIndicador"
-                              id="LblRecaudacionDeudaMayor6Meses"
-                            ></div>
-                          </a>
-                        </li>
-                        <li class="BtnIndicadorDanger">
-                          <a href="#">
-                            <div class="LblIndicador">Inactivos</div>
-                            <div
-                              class="LblValorIndicador"
-                              id="LblRecaudacionInactivos"
-                            ></div>
-                          </a>
-                        </li>
-                        <li class="BtnIndicadorWarning">
-                          <a href="#">
-                            <div class="LblIndicador">Fuera Término</div>
-                            <div
-                              class="LblValorIndicador"
-                              id="LblRecaudacionFueraTermino"
-                            ></div>
-                          </a>
-                        </li>
-                                                --%>
+
                                             </ul>
                                         </li>
                                         <li class="MenuIndicador" style="margin-top: 2px">
-                                            <a href="#">
+                                            <a href="#" id="BtnRecadudacionBruta">
                                                 <div class="LblIndicador">Recaudación Bruta</div>
                                                 <div
                                                     class="LblValorIndicador"

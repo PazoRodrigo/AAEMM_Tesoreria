@@ -29,6 +29,22 @@ Public Class WsRecibo
         Return ws
     End Function
     <WebMethod()>
+    Public Function Baja(entidad As DTO.DTO_Recibo) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim obj As New Entidad.Recibo(entidad)
+            obj.Baja()
+            ws.data = obj.IdEntidad
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
     Public Function TraerTodosXBusqueda(Busqueda As Entidad.Recibo.StrBusquedaRecibo) As Transfer
         Dim ws As New Transfer
         Try

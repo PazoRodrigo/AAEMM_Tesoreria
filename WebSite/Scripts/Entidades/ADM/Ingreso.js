@@ -13,6 +13,58 @@ class StrBusquedaIngreso {
         this.Tipos = '';
     }
 }
+class IngresoReporte {
+    constructor() {
+        this.FechaPago = 0;
+        this.FechaAcreditacion = 0;
+        this.CUIT = 0;
+        this.RazonSocial = '';
+        this.Importe = 0;
+        this.Estado = '';
+    }
+    // Traer
+    static async TraerRecaudacionNeta(strDesde, strHasta) {
+        console.log(strDesde);
+
+        let data = {
+            'strDesde': strDesde,
+            'strHasta': strHasta
+        };
+        let lista = await ejecutarAsync(urlWsIngreso + "/TraerRecaudacionNeta", data);
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadIngresoReporte(value));
+            });
+        }
+        return result;
+    }
+    static async TraerRecaudacionBruta(strDesde, strHasta) {
+        let data = {
+            'strDesde': strDesde,
+            'strHasta': strHasta
+        };
+        let lista = await ejecutarAsync(urlWsIngreso + "/TraerRecaudacionBruta", data);
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadIngresoReporte(value));
+            });
+        }
+        return result;
+    }
+
+}
+function LlenarEntidadIngresoReporte(entidad) {
+    let Res = new IngresoReporte;
+    Res.FechaPago = entidad.FechaPago;
+    Res.FechaAcreditacion = entidad.FechaAcreditacion;
+    Res.CUIT = entidad.CUIT;
+    Res.RazonSocial = entidad.RazonSocial;
+    Res.Importe = entidad.Importe;
+    Res.Origen = entidad.Origen;
+    return Res;
+}
 class Ingreso extends DBE {
     constructor() {
         super();
@@ -453,6 +505,7 @@ function LlenarEntidadIngreso(entidad) {
     Res.Observaciones = entidad.Observaciones;
     return Res;
 }
+
 async function SeleccionIngreso(MiElemento) {
     try {
         let elemento = document.getElementById(MiElemento.id);

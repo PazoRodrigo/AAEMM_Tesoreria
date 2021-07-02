@@ -523,3 +523,27 @@ function _mapUrlParams(queryString) {
             return urlParams;
         }, {});
 }
+
+function Date_UltimoDiaMes_LngToLng(fecha) {
+    var date = fecha;
+    var UltimoDia = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    let result =
+        UltimoDia.getFullYear() +
+        "" +
+        ("0" + (UltimoDia.getMonth() + 1)).slice(-2) +
+        "" +
+        ("0" + UltimoDia.getDate()).slice(-2);
+    return result;
+}
+function Date_PrimerDiaMes_LngToLng(fecha) {
+    var date = fecha;
+    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+                    
+    let result =
+        firstDay.getFullYear() +
+        "" +
+        ("0" + (firstDay.getMonth() + 1)).slice(-2) +
+        "" +
+        ("0" + firstDay.getDate()).slice(-2);
+    return result;
+}

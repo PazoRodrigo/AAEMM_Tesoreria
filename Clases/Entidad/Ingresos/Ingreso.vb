@@ -142,6 +142,8 @@ Namespace Entidad
             FechaPago = ObjLineaArchivo.FechaPago
             FechaAcreditacion = ObjLineaArchivo.FechaAcreditacion
         End Sub
+
+
         Sub New(ByVal DtODesde As DTO.DTO_Ingreso)
             ' DBE
             IdUsuarioAlta = DtODesde.IdUsuarioAlta
@@ -350,6 +352,32 @@ Namespace Entidad
         Friend Shared Sub IngresarArchivoMC(nombreArchivo As String)
             AltaArchivoMC(nombreArchivo)
         End Sub
+        Public Shared Function TraerRecaudacionNeta(strDesde As Integer, strHasta As Integer) As List(Of DTO.DTO_IngresoReporte)
+            Dim FechaDesde As Date
+            Dim FechaHasta As Date
+            If strDesde > 0 Then
+                Dim TempFecha As String = Right(strDesde.ToString, 2) + "/" + Left(Right(strDesde.ToString, 4), 2) + "/" + Left(strDesde.ToString, 4)
+                FechaDesde = CDate(TempFecha)
+            End If
+            If strHasta > 0 Then
+                Dim TempFecha As String = Right(strHasta.ToString, 2) + "/" + Left(Right(strHasta.ToString, 4), 2) + "/" + Left(strHasta.ToString, 4)
+                FechaHasta = CDate(TempFecha)
+            End If
+            Return DAL_Ingreso.TraerRecaudacionNeta(FechaDesde, FechaHasta)
+        End Function
+        Public Shared Function TraerRecaudacionBruta(strDesde As Integer, strHasta As Integer) As List(Of DTO.DTO_IngresoReporte)
+            Dim FechaDesde As Date
+            Dim FechaHasta As Date
+            If strDesde > 0 Then
+                Dim TempFecha As String = Right(strDesde.ToString, 2) + "/" + Left(Right(strDesde.ToString, 4), 2) + "/" + Left(strDesde.ToString, 4)
+                FechaDesde = CDate(TempFecha)
+            End If
+            If strHasta > 0 Then
+                Dim TempFecha As String = Right(strHasta.ToString, 2) + "/" + Left(Right(strHasta.ToString, 4), 2) + "/" + Left(strHasta.ToString, 4)
+                FechaHasta = CDate(TempFecha)
+            End If
+            Return DAL_Ingreso.TraerRecaudacionBruta(FechaDesde, FechaHasta)
+        End Function
 #End Region
 #Region " Métodos Públicos"
         ' ABM
@@ -539,6 +567,17 @@ Namespace DTO
         Public Property RazonSocial() As String = ""
 #End Region
     End Class ' DTO_Ingreso
+    Public Class DTO_IngresoReporte
+        Inherits DTO_DBE
+#Region " Atributos / Propiedades"
+        Public Property FechaPago() As Long = 0
+        Public Property FechaAcreditacion() As Long = 0
+        Public Property CUIT() As Long = 0
+        Public Property RazonSocial() As String = ""
+        Public Property Importe() As Decimal = 0
+        Public Property Origen() As String = ""
+#End Region
+    End Class ' DTO_Ingreso
 End Namespace ' DTO
 
 Namespace DataAccessLibrary
@@ -555,6 +594,7 @@ Namespace DataAccessLibrary
         Const storeTraerTodosAcreditados As String = "INGRESO.p_Ingreso_TraerTodosAcreditados"
         Const storeTraerTodosNOAcreditados As String = "INGRESO.p_Ingreso_TraerTodosNOAcreditados"
         Const storeTraerTodosXBusqueda As String = "INGRESO.p_Ingreso_TraerXBusquedaLibre"
+
         Const storeTraerTodosXNombreArchivo As String = "INGRESO.p_Ingreso_TraerTodosXNombreArchivo"
 
         Const storeGuardarIngresoExplotado As String = "INGRESO.p_Ingreso_GuardarIngresoExplotado"
@@ -562,7 +602,8 @@ Namespace DataAccessLibrary
         Const storeEliminarExplotado As String = "INGRESO.p_Ingreso_EliminarExplotado"
         Const storeExplotarIngresos As String = "INGRESO.p_Ingreso_ExplotarIngresos"
 
-
+        Const storeTraerRecaudacionNeta As String = "[Ingreso].[p_Ingreso_RecaudacionNeta]"
+        Const storeTraerRecaudacionBruta As String = "[Ingreso].[p_Ingreso_RecaudacionBruta]"
 
 
 
@@ -831,6 +872,37 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
+        Friend Shared Function TraerRecaudacionNeta(strDesde As Date, strHasta As Date) As List(Of DTO.DTO_IngresoReporte)
+            Dim store As String = storeTraerRecaudacionNeta
+            Dim listaResult As New List(Of DTO.DTO_IngresoReporte)
+            Dim pa As New parametrosArray
+            pa.add("@FechaDesde", strDesde)
+            pa.add("@FechaHasta", strHasta)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidadIngresoReporte(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
+
+        Friend Shared Function TraerRecaudacionBruta(strDesde As Date, strHasta As Date) As List(Of DTO.DTO_IngresoReporte)
+            Dim store As String = storeTraerRecaudacionBruta
+            Dim listaResult As New List(Of DTO.DTO_IngresoReporte)
+            Dim pa As New parametrosArray
+            pa.add("@strDesde", strDesde)
+            pa.add("@strHasta", strHasta)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidadIngresoReporte(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
 #End Region
 #Region " Métodos Privados "
         Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Ingreso
@@ -943,6 +1015,47 @@ Namespace DataAccessLibrary
             End If
             Return entidad
         End Function
+
+        Private Shared Function LlenarEntidadIngresoReporte(ByVal dr As DataRow) As DTO.DTO_IngresoReporte
+            Dim entidad As New DTO.DTO_IngresoReporte
+            ' DBE
+            If dr.Table.Columns.Contains("fechaPago") Then
+                If dr.Item("fechaPago") IsNot DBNull.Value Then
+                    Dim FechaTemp As Date? = CDate(dr.Item("fechaPago"))
+                    entidad.FechaPago = CLng(Year(FechaTemp.Value).ToString & Right("00" & Month(FechaTemp.Value).ToString, 2) & Right("00" & Day(FechaTemp.Value).ToString, 2))
+                End If
+            End If
+
+            If dr.Table.Columns.Contains("fechaAcreditacion") Then
+                If dr.Item("fechaAcreditacion") IsNot DBNull.Value Then
+                    Dim FechaTemp As Date? = CDate(dr.Item("fechaAcreditacion"))
+                    entidad.FechaAcreditacion = CLng(Year(FechaTemp.Value).ToString & Right("00" & Month(FechaTemp.Value).ToString, 2) & Right("00" & Day(FechaTemp.Value).ToString, 2))
+                End If
+            End If
+            If dr.Table.Columns.Contains("CUIT") Then
+                If dr.Item("CUIT") IsNot DBNull.Value Then
+                    entidad.CUIT = CLng(dr.Item("CUIT"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("RazonSocial") Then
+                If dr.Item("RazonSocial") IsNot DBNull.Value Then
+                    entidad.RazonSocial = dr.Item("RazonSocial").ToString.ToUpper.Trim
+                End If
+            End If
+            If dr.Table.Columns.Contains("Importe") Then
+                If dr.Item("Importe") IsNot DBNull.Value Then
+                    entidad.Importe = CDec(dr.Item("Importe"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("Origen") Then
+                If dr.Item("Origen") IsNot DBNull.Value Then
+                    entidad.Origen = dr.Item("Origen").ToString.ToUpper.Trim
+                End If
+            End If
+
+            Return entidad
+        End Function
+
 #End Region
     End Class ' DAL_Ingreso
 End Namespace ' DataAccessLibrary

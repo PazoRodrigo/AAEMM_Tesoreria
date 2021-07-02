@@ -111,6 +111,9 @@ async function ArmarBusqueda() {
     return Buscador;
 }
 async function MostrarRecibo() {
+    if (_ObjRecibo.FechaBaja == 0) {
+        $("#BtnAnularRecibo").css('display', 'block');
+    }
     $("#divCantRegistrosBusqueda").css("display", "none");
     $("#Grilla").css("display", "none");
     $("#EntidadCUIT").val(_ObjRecibo.CUIT);
@@ -201,6 +204,22 @@ $('body').on('click', '#BtnGuardarRecibo', async function (e) {
         alertAlerta(error);
     }
 });
+$('body').on('click', '#BtnAnularRecibo', async function (e) {
+    try {
+        spinner();
+        if (_ObjRecibo == null) {
+            throw 'Debe informar un Recibo para anularlo';
+        }
+        await _ObjRecibo.Baja();
+        $("#BtnAnularRecibo").css('display', 'none')
+        spinnerClose();
+        alertOk('El recibo se ha anulado correctamente');
+    } catch (error) {
+        spinnerClose();
+        alertAlerta(error);
+    }
+});
+
 async function ValidarCampos() {
     if (_ObjRecibo.CUIT == 0) {
         throw 'Debe ingresar la Entidad';

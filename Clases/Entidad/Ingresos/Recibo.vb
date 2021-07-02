@@ -135,10 +135,10 @@ Namespace Entidad
         End Function
         ' Nuevos
         Public Shared Function TraerTodosXBusqueda(busqueda As StrBusquedaRecibo) As List(Of Recibo)
-            Dim sqlQuery As String = "SELECT DISTINCT rec.Id, rec.CUIT, rec.fecha, rec.importeTotal, rec.importeEfectivo, rec.nroReciboFin FROM Ingreso.Recibo rec "
+            Dim sqlQuery As String = "SELECT DISTINCT rec.Id, rec.CUIT, rec.fecha, rec.importeTotal, rec.importeEfectivo, rec.nroReciboFin, rec.fechaBaja FROM Ingreso.Recibo rec "
             sqlQuery += "INNER JOIN ingreso.Recibo_Periodo rpe ON rpe.IdRecibo = rec.Id  "
             sqlQuery += "LEFT JOIN adm.chequetercero ch ON ch.IdRecibo = rec.Id "
-            sqlQuery += "WHERE rec.FechaBaja IS NULL "
+            sqlQuery += "WHERE 1 = 1 "
             If busqueda.Desde > 0 Then
                 'SELECT * FROM Ingreso.Recibo rec LEFT JOIN ingreso.Recibo_Periodo rpe ON rpe.IdRecibo = rec.Id INNER JOIN adm.chequetercero ch ON ch.IdRecibo = rec.Id WHERE rec.FechaBaja IS NULL  ORDER BY fecha desc 
                 Dim Fecha As String = Left(busqueda.Desde.ToString, 4) & "-" & Right("00" & Left(busqueda.Desde.ToString, 6), 2) & "-" & Right("00" & busqueda.Desde.ToString, 2)
@@ -234,6 +234,7 @@ Namespace Entidad
             result.ImporteEfectivo = ImporteEfectivo
             result.IdEstado = IdEstado
             result.Observaciones = Observaciones
+            result.FechaBaja = LngFechaBaja
             Return result
         End Function
         ' Nuevos
@@ -327,7 +328,7 @@ Namespace DataAccessLibrary
         Const storeAlta As String = "[INGRESO].[p_Recibo_Alta]"
         Const storeAltaPago As String = "[INGRESO].[p_Recibo_AltaPago]"
         Const storeAltaPeriodo As String = "[INGRESO].[p_Recibo_AltaPeriodo]"
-        Const storeBaja As String = "p_Recibo_Baja"
+        Const storeBaja As String = "[INGRESO].p_Recibo_Baja"
         Const storeModifica As String = "p_Recibo_Modifica"
         Const storeTraerUnoXId As String = "[INGRESO].p_Recibo_TraerUnoXId"
         Const storeTraerTodos As String = "INGRESO.p_Recibo_TraerTodos"

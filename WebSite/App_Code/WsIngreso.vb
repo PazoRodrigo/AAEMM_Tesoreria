@@ -148,4 +148,38 @@ Public Class WsIngreso
         End Try
         Return ws
     End Function
+
+
+    <WebMethod()>
+    Public Function TraerRecaudacionNeta(strDesde As Integer, strHasta As Integer) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As List(Of DTO.DTO_IngresoReporte) = Entidad.Ingreso.TraerRecaudacionNeta(strDesde, strHasta)
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
+    Public Function TraerRecaudacionBruta(strDesde As Integer, strHasta As Integer) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As List(Of DTO.DTO_IngresoReporte) = Entidad.Ingreso.TraerRecaudacionBruta(strDesde, strHasta)
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+
+
 End Class

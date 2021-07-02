@@ -61,7 +61,7 @@ $('body').on('click', '#Indicadores_Empresas', async function (e) {
 $('body').on('click', '#Indicadores_Empresas_SinDeuda', async function (e) {
     try {
         spinner();
-        let ListaEmpresas =  await Empresa.TraerTodosSinDeuda();
+        let ListaEmpresas = await Empresa.TraerTodosSinDeuda();
         await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
@@ -74,7 +74,7 @@ $('body').on('click', '#Indicadores_Empresas_Deuda1', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeuda1();
-        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas,'max-height: 300px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -85,7 +85,7 @@ $('body').on('click', '#Indicadores_Empresas_Deuda3', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeuda3();
-        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas,  'max-height: 300px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -123,4 +123,77 @@ $('body').on('click', '#Indicadores_Empresas_Imprimir', async function (e) {
         alertAlerta(e);
     }
 });
+$('body').on('click', '#BtnRecadudacionNeta', async function (e) {
+    try {
+        spinner()
+        await ArmarPopRecaudacion(0);
+        spinnerClose();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
+$('body').on('click', '#BtnRecadudacionBruta', async function (e) {
+    try {
+        spinner()
+        await ArmarPopRecaudacion(0);
+        spinnerClose();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
 
+
+async function ArmarPopRecaudacion(Tipo) {
+    //    spinner();
+    let lista = [];
+    let Titulo = '';
+    let fecha = new Date();
+    //let fecha = new Date('2021-01-01');
+    if (Tipo == 0) {
+        lista = await IngresoReporte.TraerRecaudacionNeta(Date_PrimerDiaMes_LngToLng(fecha), Date_UltimoDiaMes_LngToLng(fecha));
+        Titulo = 'Recaudación Neta';
+    } else {
+        lista = await IngresoReporte.TraerRecaudacionBruta(dateToLong(strDesde), dateToLong(strHasta));
+        Titulo = 'Recaudación Bruta';
+    }
+    let control = "";
+    ($("#Modal-PopUpConsumosAfiliado").remove());
+    control += '<div id="Modal-PopUpConsumosAfiliado" class="modal" tabindex="-1" role="dialog" >';
+    control += '    <div class="modal-dialog modal-lg">';
+    control += '        <div class="modal-content">';
+    control += '            <div class="modal-header bg-primary">';
+    control += '                <h3 class="modal-title ">' + Titulo + '</h3>';
+    control += '            </div>';
+    control += '            <div class="row">';
+    control += '                <div class="modal-body">';
+    control += '                    <div class="container col-md-12">';
+    control += '                        <div class="row">';
+    control += '                            <div class="col-md-12">';
+    control += '                                <h4>' + '' + '</h4>';
+    control += '                            </div>';
+    control += '                        </div>';
+    control += '                    </div>';
+    control += '                        <div class="row">';
+    control += '                            <div class="col-md-12" style="max-height: 400px; overflow: auto;">';
+    control += '                        <table class="table table-bordered">';
+    control += '                            <tr><th>Fecha Pago</th><th>Fecha Acreditación</th><th>CUIT</th><th>Razón Social</th><th>Importe</th><th>Origen</th></tr>';
+    for (let item of lista) {
+        control += String.format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>", item.FechaPago, item.FechaAcreditacion, item.CUIT, item.RazonSocial, item.Importe, item.Origen);
+    }
+    control += '                        </table>';
+    control += '                        </div>';
+    control += '                    </div>';
+    control += '                </div>';
+    control += '            </div>';
+    control += '            <div class="modal-footer">';
+    control += '                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>';
+    control += '            </div>';
+    control += '        </div>';
+    control += '    </div>';
+    control += '</div>';
+    $("body").append(control);
+    $("#Modal-PopUpConsumosAfiliado").modal({ show: true, backdrop: 'static', keyboard: false })
+    spinnerClose();
+}
