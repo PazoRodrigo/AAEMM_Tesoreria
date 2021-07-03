@@ -13,9 +13,8 @@
 
 </script>
     <script
-        src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210628_1")%>'></script>
-    <div id="PopUp">        
-
+        src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210703")%>'></script>
+    <div id="PopUp">
     </div>
 
     <asp:Button
@@ -45,19 +44,10 @@
                                                         <div class="LblIndicador">Sin Deuda</div>
                                                         <div
                                                             class="LblValorIndicador"
-                                                            id="LblEmpresasSinDeudaSinBoleta">
+                                                            id="LblEmpresasSinDeuda">
                                                         </div>
                                                     </a>
                                                 </li>
-                                                <%--<li class="BtnIndicador">
-                                                    <a href="#" id="">
-                                                        <div class="LblIndicador">Sin Deuda c/Boleta</div>
-                                                        <div
-                                                            class="LblValorIndicador"
-                                                            id="LblEmpresasSinDeudaConBoleta">
-                                                        </div>
-                                                    </a>
-                                                </li>--%>
                                                 <li class="BtnIndicador">
                                                     <a href="#" id="Indicadores_Empresas_Deuda1">
                                                         <div class="LblIndicador">Deuda 1 Mes</div>
@@ -85,8 +75,8 @@
                                                         </div>
                                                     </a>
                                                 </li>
-                                                <%-- <li class="BtnIndicador">
-                                                    <a href="#">
+                                                <li class="BtnIndicador">
+                                                    <a href="#" id="Indicadores_Empresas_DeudaMayor6">
                                                         <div class="LblIndicador">Deuda > 6 Meses</div>
                                                         <div
                                                             class="LblValorIndicador"
@@ -94,7 +84,16 @@
                                                         </div>
                                                     </a>
                                                 </li>
-                                                <li class="BtnIndicadorWarning">
+                                                 <li class="BtnIndicadorWarning">
+                                                    <a href="#" id="Indicadores_Empresas_SinPagosUltimos12">
+                                                        <div class="LblIndicador">Sin Pagos Últimos 12 Meses</div>
+                                                        <div
+                                                            class="LblValorIndicador"
+                                                            id="LblEmpresasSinPagosUltimos12Meses">
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <%--<li class="BtnIndicadorWarning">
                                                     <a href="#">
                                                         <div class="LblIndicador">Pagos Intercalados</div>
                                                         <div
@@ -203,7 +202,6 @@
                                                 <div class="LblValorIndicador" id="LblRecaudacionNeta"></div>
                                             </a>
                                             <ul class="SubMenuInidicador">
-
                                             </ul>
                                         </li>
                                         <li class="MenuIndicador" style="margin-top: 2px">

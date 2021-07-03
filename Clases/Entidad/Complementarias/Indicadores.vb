@@ -10,12 +10,13 @@ Namespace Entidad
 
 #Region " Atributos / Propiedades "
         Public Property Empresas() As Integer = 0
-        Public Property EmpresasSinDeudaSinBoleta() As Integer = 0
-        Public Property EmpresasSinDeudaConBoleta() As Integer = 0
+        Public Property PagoUltimoMes() As Integer = 0
+        Public Property EmpresasSinDeuda() As Integer = 0
         Public Property EmpresasDeuda1Mes() As Integer = 0
         Public Property EmpresasDeuda3Meses() As Integer = 0
         Public Property EmpresasDeuda6Meses() As Integer = 0
         Public Property EmpresasDeudaMayor6Meses() As Integer = 0
+        Public Property EmpresasSinPagosUltimos12Meses() As Integer = 0
         Public Property EmpresasPagosIntercalados() As Integer = 0
         Public Property EmpresasInactivas() As Integer = 0
 
@@ -63,13 +64,14 @@ Namespace Entidad
         Public Function ToDTO() As DTO.DTO_Indicadores
             Dim result As New DTO.DTO_Indicadores With {
                 .Empresas = Empresas,
-                .EmpresasSinDeudaSinBoleta = EmpresasSinDeudaSinBoleta,
-                .EmpresasSinDeudaConBoleta = EmpresasSinDeudaConBoleta,
+                .PagoUltimoMes = PagoUltimoMes,
+                .EmpresasSinDeuda = EmpresasSinDeuda,
                 .EmpresasDeuda1Mes = EmpresasDeuda1Mes,
                 .EmpresasDeuda3Meses = EmpresasDeuda3Meses,
                 .EmpresasDeuda6Meses = EmpresasDeuda6Meses,
                 .EmpresasDeudaMayor6Meses = EmpresasDeudaMayor6Meses,
                 .EmpresasPagosIntercalados = EmpresasPagosIntercalados,
+                .EmpresasSinPagosUltimos12Meses = EmpresasSinPagosUltimos12Meses,
                 .EmpresasInactivas = EmpresasInactivas,
                 .Empleados = Empleados,
                 .EmpleadosSinDeudaSinBoleta = EmpleadosSinDeudaSinBoleta,
@@ -103,12 +105,13 @@ Namespace DTO
 
 #Region " Atributos / Propiedades"
         Public Property Empresas() As Integer = 0
-        Public Property EmpresasSinDeudaSinBoleta() As Integer = 0
-        Public Property EmpresasSinDeudaConBoleta() As Integer = 0
+        Public Property PagoUltimoMes() As Integer = 0
+        Public Property EmpresasSinDeuda() As Integer = 0
         Public Property EmpresasDeuda1Mes() As Integer = 0
         Public Property EmpresasDeuda3Meses() As Integer = 0
         Public Property EmpresasDeuda6Meses() As Integer = 0
         Public Property EmpresasDeudaMayor6Meses() As Integer = 0
+        Public Property EmpresasSinPagosUltimos12Meses() As Integer = 0
         Public Property EmpresasPagosIntercalados() As Integer = 0
         Public Property EmpresasInactivas() As Integer = 0
 
@@ -165,20 +168,21 @@ Namespace DataAccessLibrary
 #Region " Métodos Privados "
         Private Shared Function LlenarEntidad(ByVal dr As DataRow) As Indicadores
             Dim entidad As New Indicadores
+
             ' Empresas
             If dr.Table.Columns.Contains("Empresas") Then
                 If dr.Item("Empresas") IsNot DBNull.Value Then
                     entidad.Empresas = CInt(dr.Item("Empresas"))
                 End If
             End If
-            If dr.Table.Columns.Contains("EmpresasSinDeudaSinBoleta") Then
-                If dr.Item("EmpresasSinDeudaSinBoleta") IsNot DBNull.Value Then
-                    entidad.EmpresasSinDeudaSinBoleta = CInt(dr.Item("EmpresasSinDeudaSinBoleta"))
+            If dr.Table.Columns.Contains("PagoUltimoMes") Then
+                If dr.Item("PagoUltimoMes") IsNot DBNull.Value Then
+                    entidad.PagoUltimoMes = CInt(dr.Item("PagoUltimoMes"))
                 End If
             End If
-            If dr.Table.Columns.Contains("EmpresasSinDeudaConBoleta") Then
-                If dr.Item("EmpresasSinDeudaConBoleta") IsNot DBNull.Value Then
-                    entidad.EmpresasSinDeudaConBoleta = CInt(dr.Item("EmpresasSinDeudaConBoleta"))
+            If dr.Table.Columns.Contains("EmpresasSinDeuda") Then
+                If dr.Item("EmpresasSinDeuda") IsNot DBNull.Value Then
+                    entidad.EmpresasSinDeuda = CInt(dr.Item("EmpresasSinDeuda"))
                 End If
             End If
             If dr.Table.Columns.Contains("EmpresasDeuda1Mes") Then
@@ -199,6 +203,11 @@ Namespace DataAccessLibrary
             If dr.Table.Columns.Contains("EmpresasDeudaMayor6Meses") Then
                 If dr.Item("EmpresasDeudaMayor6Meses") IsNot DBNull.Value Then
                     entidad.EmpresasDeudaMayor6Meses = CInt(dr.Item("EmpresasDeudaMayor6Meses"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("EmpresasSinPagosUltimos12Meses") Then
+                If dr.Item("EmpresasSinPagosUltimos12Meses") IsNot DBNull.Value Then
+                    entidad.EmpresasSinPagosUltimos12Meses = CInt(dr.Item("EmpresasSinPagosUltimos12Meses"))
                 End If
             End If
             If dr.Table.Columns.Contains("EmpresasPagosIntercalados") Then

@@ -10,15 +10,26 @@
 async function Inicio() {
     spinner();
     let ObjIndicadores = await Indicadores.Todos();
+    console.log(ObjIndicadores);;
     $("#LblEmpresas").text(ObjIndicadores.Empresas);
-    $("#LblEmpresasSinDeudaSinBoleta").text(ObjIndicadores.EmpresasSinDeudaSinBoleta);
-    $("#LblEmpresasSinDeudaConBoleta").text(ObjIndicadores.EmpresasSinDeudaConBoleta);
+    $("#LblPagoUltimoMes").text(ObjIndicadores.PagoUltimoMes);
+    $("#LblEmpresasSinDeuda").text(ObjIndicadores.EmpresasSinDeuda);
     $("#LblEmpresasDeuda1Mes").text(ObjIndicadores.EmpresasDeuda1Mes);
     $("#LblEmpresasDeuda3Meses").text(ObjIndicadores.EmpresasDeuda3Meses);
     $("#LblEmpresasDeuda6Meses").text(ObjIndicadores.EmpresasDeuda6Meses);
     $("#LblEmpresasDeudaMayor6Meses").text(ObjIndicadores.EmpresasDeudaMayor6Meses);
+    $("#LblEmpresasSinPagosUltimos12Meses").text(ObjIndicadores.EmpresasSinPagosUltimos12Meses);
     $("#LblEmpresasPagosIntercalados").text(ObjIndicadores.EmpresasPagosIntercalados);
     $("#LblEmpresasInactivas").text(ObjIndicadores.EmpresasInactivas);
+
+    //$("#LblEmpresasSinDeudaSinBoleta").text(ObjIndicadores.EmpresasSinDeudaSinBoleta);
+    //$("#LblEmpresasSinDeudaConBoleta").text(ObjIndicadores.EmpresasSinDeudaConBoleta);
+    //$("#LblEmpresasDeuda1Mes").text(ObjIndicadores.EmpresasDeuda1Mes);
+    //$("#LblEmpresasDeuda3Meses").text(ObjIndicadores.EmpresasDeuda3Meses);
+    //$("#LblEmpresasDeuda6Meses").text(ObjIndicadores.EmpresasDeuda6Meses);
+    //$("#LblEmpresasDeudaMayor6Meses").text(ObjIndicadores.EmpresasDeudaMayor6Meses);
+    //$("#LblEmpresasPagosIntercalados").text(ObjIndicadores.EmpresasPagosIntercalados);
+    //$("#LblEmpresasInactivas").text(ObjIndicadores.EmpresasInactivas);
 
     $("#LblEmpleados").text(ObjIndicadores.Empleados);
     $("#LblEmpleadosSinDeudaSinBoleta").text(ObjIndicadores.EmpleadosSinDeudaSinBoleta);
@@ -96,6 +107,28 @@ $('body').on('click', '#Indicadores_Empresas_Deuda6', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeuda6();
+        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
+        spinnerClose();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
+$('body').on('click', '#Indicadores_Empresas_DeudaMayor6', async function (e) {
+    try {
+        spinner();
+        let ListaEmpresas = await Empresa.TraerTodosDeudaMayor6();
+        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
+        spinnerClose();
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
+$('body').on('click', '#Indicadores_Empresas_SinPagosUltimos12', async function (e) {
+    try {
+        spinner();
+        let ListaEmpresas = await Empresa.TraerTodosSinPagoUltimos12();
         await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {

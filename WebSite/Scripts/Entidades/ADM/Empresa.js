@@ -305,6 +305,27 @@ class Empresa extends DBE {
         }
         return result;
     }
+    static async TraerTodosDeudaMayor6() {
+        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosDeudaMayor6");
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpresa(value));
+            });
+        }
+        return result;
+    }
+    static async TraerTodosSinPagoUltimos12() {
+        let lista = await ejecutarAsync(urlWsEmpresa + "/TraerTodosSinPagoUltimos12");
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadEmpresa(value));
+            });
+        }
+        return result;
+    }
+    
     // Otros
     static async Refresh() {
         _Lista_Empresa = await Empresa.TraerTodas();

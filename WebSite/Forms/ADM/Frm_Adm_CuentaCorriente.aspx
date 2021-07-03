@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Cuenta Corriente" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_CuentaCorriente.aspx.vb" Inherits="Forms_ADM_Frm_Adm_CuentaCorriente" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Adm_CuentaCorriente.js?version=20210628_1")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_CuentaCorriente.js?version=20210703")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';

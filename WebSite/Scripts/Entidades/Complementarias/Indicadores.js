@@ -3,12 +3,13 @@
 class Indicadores {
     constructor() {
         this.Empresas = 0;
-        this.EmpresasSinDeudaSinBoleta = 0;
-        this.EmpresasSinDeudaConBoleta = 0;
+        this.PagoUltimoMes = 0;
+        this.EmpresasSinDeuda = 0;
         this.EmpresasDeuda1Mes = 0;
         this.EmpresasDeuda3Meses = 0;
         this.EmpresasDeuda6Meses = 0;
         this.EmpresasDeudaMayor6Meses = 0;
+        this.EmpresasSinPagosUltimos12Meses = 0;
         this.EmpresasPagosIntercalados = 0;
         this.EmpresasInactivas = 0;
 
@@ -55,12 +56,13 @@ class Indicadores {
 function LlenarEntidadIndicadores(entidad) {
     let Res = new Indicadores;
     Res.Empresas = entidad.Empresas;
-    Res.EmpresasSinDeudaSinBoleta = entidad.EmpresasSinDeudaSinBoleta;
-    Res.EmpresasSinDeudaConBoleta = entidad.EmpresasSinDeudaConBoleta;
+    Res.PagoUltimoMes = entidad.PagoUltimoMes;
+    Res.EmpresasSinDeuda = entidad.EmpresasSinDeuda;
     Res.EmpresasDeuda1Mes = entidad.EmpresasDeuda1Mes;
     Res.EmpresasDeuda3Meses = entidad.EmpresasDeuda3Meses;
     Res.EmpresasDeuda6Meses = entidad.EmpresasDeuda6Meses;
     Res.EmpresasDeudaMayor6Meses = entidad.EmpresasDeudaMayor6Meses;
+    Res.EmpresasSinPagosUltimos12Meses = entidad.EmpresasSinPagosUltimos12Meses;
     Res.EmpresasPagosIntercalados = entidad.EmpresasPagosIntercalados;
     Res.EmpresasInactivas = entidad.EmpresasInactivas;
 
