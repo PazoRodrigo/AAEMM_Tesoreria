@@ -113,6 +113,28 @@ $('body').on('click', '#BtnGuardar', async function (e) {
         alertAlerta(e);
     }
 });
+$('body').on('click', '#BtnEmpresaReactivar', async function (e) {
+    try {
+        spinner();
+        await _ObjEmpresa.Baja();
+        spinnerClose();
+        alertOk('La Empresa se ha reactivado correctamente.');
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
+$('body').on('click', '#BtnEmpresaBaja', async function (e) {
+    try {
+        spinner();
+        await _ObjEmpresa.Baja();
+        spinnerClose();
+        alertOk('La Empresa se ha dado de baja correctamente.');
+    } catch (e) {
+        spinnerClose();
+        alertAlerta(e);
+    }
+});
 
 async function ArmarBusqueda() {
     let CUIT = $("#BuscaCUIT").val();

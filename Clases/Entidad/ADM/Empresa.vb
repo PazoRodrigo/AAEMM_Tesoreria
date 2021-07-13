@@ -163,6 +163,7 @@ Namespace Entidad
                 End If
                 sqlQuery += "RazonSocial LIKE '%" + busqueda.RazonSocial + "%'"
             End If
+
             'If busqueda.IdCentroCosto > 0 Then
             '    If Not existeParametro Then
             '        existeParametro = True
@@ -173,19 +174,20 @@ Namespace Entidad
             '    sqlQuery += "IdCentroCosto = '" + busqueda.IdCentroCosto.ToString + "'"
             'End If
             ' Fecha Baja
-            If Not existeParametro Then
-                existeParametro = True
-                sqlQuery += " WHERE "
-            Else
-                sqlQuery += " AND "
+            If busqueda.IncluirAlta <> busqueda.IncluirBaja Then
+                If Not existeParametro Then
+                    existeParametro = True
+                    sqlQuery += " WHERE "
+                Else
+                    sqlQuery += " AND "
+                End If
+                If busqueda.IncluirAlta = 1 AndAlso busqueda.IncluirBaja = 0 Then
+                    sqlQuery += " FechaBaja IS NULL"
+                ElseIf busqueda.IncluirAlta = 0 AndAlso busqueda.IncluirBaja = 1 Then
+                    sqlQuery += " FechaBaja IS NOT NULL"
+                End If
             End If
-            If busqueda.IncluirAlta = 1 AndAlso busqueda.IncluirBaja = 0 Then
-                sqlQuery += " FechaBaja IS NULL"
-            ElseIf busqueda.IncluirAlta = 0 AndAlso busqueda.IncluirBaja = 1 Then
-                sqlQuery += " FechaBaja IS NOT NULL"
-            Else
-                sqlQuery += " FechaBaja IS NULL"
-            End If
+
             Dim result As List(Of Empresa) = DAL_Empresa.TraerTodosXBusqueda(sqlQuery)
             Return result
         End Function
@@ -282,8 +284,8 @@ Namespace Entidad
                 .IdEstado = IdEstado,
                 .FechaReactivacion = LngFechaReactivacion,
                 .ObjDomicilio = ObjDomicilio.ToDto,
-                .FechaAlta = LngFechaAlta(),
-                .FechaBaja = LngFechaBaja()
+                .FechaAlta = LngFechaAlta,
+                .FechaBaja = LngFechaBaja
             }
             Return result
         End Function
@@ -470,7 +472,7 @@ Namespace DataAccessLibrary
             Dim result As New Empresa
             Dim pa As New parametrosArray
             pa.add("@id", id)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
                         result = LlenarEntidad(dt.Rows(0))
@@ -486,7 +488,7 @@ Namespace DataAccessLibrary
             Dim result As New Empresa
             Dim pa As New parametrosArray
             pa.add("@CUIT", CUIT)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If Not dt Is Nothing Then
                     If dt.Rows.Count = 1 Then
                         result = LlenarEntidad(dt.Rows(0))
@@ -501,7 +503,7 @@ Namespace DataAccessLibrary
             Dim store As String = storeTraerTodos
             Dim pa As New parametrosArray
             Dim listaResult As New List(Of Empresa)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -515,7 +517,7 @@ Namespace DataAccessLibrary
             Dim listaResult As New List(Of Empresa)
             Dim pa As New parametrosArray
             pa.add("@sqlQuery", sqlQuery)
-            Using dt As DataTable = Connection.Connection.TraerDT(store, pa)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
                         listaResult.Add(LlenarEntidad(dr))
@@ -641,9 +643,9 @@ Namespace DataAccessLibrary
                     entidad.FechaAlta = CDate(dr.Item("fechaAlta"))
                 End If
             End If
-            If dr.Table.Columns.Contains("fec_Baja") Then
-                If dr.Item("fec_Baja") IsNot DBNull.Value Then
-                    entidad.FechaBaja = CDate(dr.Item("fec_Baja"))
+            If dr.Table.Columns.Contains("fechaBaja") Then
+                If dr.Item("fechaBaja") IsNot DBNull.Value Then
+                    entidad.FechaBaja = CDate(dr.Item("fechaBaja"))
                 End If
             End If
             ' Entidad

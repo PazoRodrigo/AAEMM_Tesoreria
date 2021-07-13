@@ -213,11 +213,12 @@ Public Class WsEmpresa
         Return ws
     End Function
     <WebMethod()>
-    Public Function Baja(entidad As Entidad.Empresa) As Transfer
+    Public Function Baja(entidad As DTO.DTO_Empresa) As Transfer
         Dim ws As New Transfer
         Try
-            entidad.Baja()
-            ws.data = entidad.IdEntidad
+            Dim objEntidad As New Entidad.Empresa(entidad)
+            objEntidad.Baja()
+            ws.data = objEntidad.IdEntidad
             ws.todoOk = True
             ws.mensaje = ""
         Catch ex As Exception

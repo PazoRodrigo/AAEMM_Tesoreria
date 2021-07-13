@@ -95,16 +95,7 @@ class Empresa extends DBE {
             let data = {
                 'entidad': this
             };
-            let id = await ejecutarAsync(urlWsEmpresa + "/Baja", data);
-            if (id !== undefined)
-                this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Empresa, function (entidad, index) {
-                return entidad.IdEntidad !== id;
-            });
-            _Lista_Empresa = buscados;
-            this.IdEstado = 1;
-            _Lista_Empresa.push(this);
-            return;
+            await ejecutarAsync(urlWsEmpresa + "/Baja", data);
         } catch (e) {
             throw e;
         }
@@ -348,6 +339,7 @@ class Empresa extends DBE {
         return $("#" + div + "").html(str);
     }
     static async ArmarGrillaDetalle(div, lista, evento, estilo) {
+        console.log(lista);
         $("#" + div + "").html('');
         let str = "";
         str += '<div style="' + estilo + '">';

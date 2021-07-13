@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Empresas" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ADM_Empresa.aspx.vb" Inherits="Forms_Adm_Frm_Adm_Empresa" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Adm_Empresa.js?version=20210703")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_Empresa.js?version=20210712")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -224,10 +224,10 @@
                                     </div>
 
                                     <div class="col-3 mb-2">
-                                        <a href="#" class="btn btn-block btn-success">Reactivar</a>
+                                        <a href="#" id="BtnEmpresaReactivar" class="btn btn-block btn-success">Reactivar</a>
                                     </div>
                                     <div class="col-3 mb-2">
-                                        <a href="#" class="btn btn-block btn-danger">Dar de Baja</a>
+                                        <a href="#" id="BtnEmpresaBaja" class="btn btn-block btn-danger">Dar de Baja</a>
                                     </div>
                                 </div>
                             </div>

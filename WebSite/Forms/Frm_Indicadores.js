@@ -10,7 +10,6 @@
 async function Inicio() {
     spinner();
     let ObjIndicadores = await Indicadores.Todos();
-    console.log(ObjIndicadores);;
     $("#LblEmpresas").text(ObjIndicadores.Empresas);
     $("#LblPagoUltimoMes").text(ObjIndicadores.PagoUltimoMes);
     $("#LblEmpresasSinDeuda").text(ObjIndicadores.EmpresasSinDeuda);
@@ -209,13 +208,37 @@ async function ArmarPopRecaudacion(Tipo) {
     control += '                        </div>';
     control += '                    </div>';
     control += '                        <div class="row">';
-    control += '                            <div class="col-md-12" style="max-height: 400px; overflow: auto;">';
-    control += '                        <table class="table table-bordered">';
-    control += '                            <tr><th>Fecha Pago</th><th>Fecha Acreditación</th><th>CUIT</th><th>Razón Social</th><th>Importe</th><th>Origen</th></tr>';
-    for (let item of lista) {
-        control += String.format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>", item.FechaPago, item.FechaAcreditacion, item.CUIT, item.RazonSocial, item.Importe, item.Origen);
+    control += '                            <div class="col-md-12">';
+    control += '                                <div style="max-height: 400px; overflow-y: scroll;width:100%;">';
+    control += '                                    <table class="table table-bordered">';
+    control += '                                        <tr><th style="text-align: center;">Fecha <br> Acreditación</th><th style="text-align: center;">CUIT</th><th>Razón Social</th><th style="text-align: center;width: 150px;">Importe</th><th style="text-align: center;">Origen</th></tr>';
+    let i = 0;
+    let totalDia = 0;
+    let total = 0;
+    let dia;
+    while (i <= lista.length - 1) {
+        dia = lista[i].FechaAcreditacion;
+        totalDia = 0;
+        while (i <= lista.length - 1 && dia == lista[i].FechaAcreditacion) {
+            totalDia += lista[i].Importe;
+            total += lista[i].Importe;
+            let color = '';
+            let CUIT = lista[i].CUIT;
+            let RazonSocial = lista[i].RazonSocial;
+            if (lista[i].CUIT == 0) {
+                color = 'color: red;';
+                CUIT = '';
+                RazonSocial = 'A DETERMINAR';
+            }
+            control += String.format("<tr><td>{0}</td><td style='" + color + "'>{1}</td><td style='" + color + "'>{2}</td><td style='text-align: right;" + color + "'>{3}</td><td style='text-align: center;'>{4}</td></tr>", Date_LongToString(lista[i].FechaAcreditacion), CUIT, RazonSocial, MonedaDecimales2(lista[i].Importe), lista[i].Origen);
+
+            i++;
+        }
+        control += '<tr><td colspan=3 style="text-align:right"><span>Total Parcial  ' + Date_LongToString(dia) + ': </td><th colspan=2>' + MonedaDecimales2(totalDia) + '</span></th></tr>';
     }
-    control += '                        </table>';
+    control += '<tr><th colspan=5 style="text-align:right">' + MonedaDecimales2(total) + '</span></th></tr>';
+    control += '                            </table>';
+    control += '                        </div>';
     control += '                        </div>';
     control += '                    </div>';
     control += '                </div>';
