@@ -30,7 +30,7 @@
                 <div class="row mt-1" style="height: 290px">
                     <div class="col-lg-10">
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 col-md-12">
                                 <nav>
                                     <ul>
                                         <li class="MenuIndicador">
@@ -84,7 +84,7 @@
                                                         </div>
                                                     </a>
                                                 </li>
-                                                 <li class="BtnIndicadorWarning">
+                                                <li class="BtnIndicadorWarning">
                                                     <a href="#" id="Indicadores_Empresas_SinPagosUltimos12">
                                                         <div class="LblIndicador">Sin Pagos Últimos 12 Meses</div>
                                                         <div
@@ -116,7 +116,7 @@
                                     </ul>
                                 </nav>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 col-md-12">
                                 <nav>
                                     <ul>
                                         <li class="MenuIndicador">
@@ -193,7 +193,7 @@
                                     </ul>
                                 </nav>
                             </div>
-                            <div class="col-lg-4">
+                        <div class="col-lg-4 col-md-12">
                                 <nav>
                                     <ul>
                                         <li class="MenuIndicador">
@@ -217,7 +217,7 @@
                                 </nav>
                             </div>
                         </div>
-                        <div class="col-lg-10" style="max-height: 300px;">
+                        <div class="col-lg-10 d-none d-lg-block" style="max-height: 300px;">
                             <div id="ContainerPrincipal"></div>
                         </div>
                     </div>
@@ -275,12 +275,11 @@
                             <div class="col-lg-12">
                                 <div id="PnlResultado" style="display: none"></div>
                                 <div id="PnlArchivos">
-                                    <div
-                                        style="width: 90%; margin-left: auto; margin-right: auto; text-align: center; padding-top: 10px;">
+                                    <div class="d-none d-lg-block">
                                         <span
                                             id="SpanIngresoArchivos"
                                             class="AAEMM"
-                                            style="font-size: 18px; color: #fff">Ingreso de Archivos</span>
+                                            style="font-size: 18px; color: #fff">Ingreso de Archivos.</span>
                                         <div
                                             style="width: 95%; margin-right: auto; margin-left: auto">
                                             <asp:FileUpload
