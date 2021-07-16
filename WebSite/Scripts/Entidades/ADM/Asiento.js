@@ -22,7 +22,7 @@ class AsientoImpresion {
         }
         return result;
     }
-    static async ArmarImpresionAsientosOculta(div, Lista) {       
+    static async ArmarImpresionAsientosOculta(div, Lista) {
         let str = '';
         $("#" + div + "").html('');
         if (Lista?.length > 0) {
@@ -30,23 +30,44 @@ class AsientoImpresion {
             let iAsiento = 0;
             let IdAsiento = Lista[0].IdAsiento;
             str += '';
+            // Version 2
             while (iAsiento <= Lista.length - 1) {
                 let item = Lista[iAsiento];
                 if (IdAsiento != item.IdAsiento) {
                     IdAsiento = item.IdAsiento;
                     // Cabecera
-                    str += '<tr class="bg-info"><th>Asiento</th><th colspan="2">Fecha</th><th>Importe Asiento</th></tr>';
-                    str += '<tr><td>' + Right('0000000' + item.IdAsiento, 7) + '</td><td colspan="2">' + item.Fecha + '</td><td>' + separadorMiles(item.ImporteTotal) + '</td></tr>';
-                    str += '<tr><th>Id Cta</th><th>DH</th><th>Cuenta</th><th>Importe Linea</th></tr>';
-
+                    str += '<tr class="bg-info"><th>Asiento</th><td>' + Right('0000000' + item.IdAsiento, 7) + '</td>';
+                    str += '<tr class="bg-info"><th>Fecha</th><td>' + Date_LongToString(item.Fecha) + '</td>';
+                    str += '<tr class="bg-info"><th>Importe Asiento</th><td>' + separadorMiles(item.ImporteTotal) + '</td>';
+                    str += '<tr><th>Id Cta</th><th>Cuenta</th><th colspan="2">Importe Linea</th></tr>';
                 }
                 let DebeHaber = 'D';
                 if (item.DH == 1) {
-                    DebeHaber = 'H';
-                 }
-                str += '<tr><td>' + item.IdCuenta + '</td><td>' + DebeHaber + '</td><td>' + item.Cuenta + '</td><td>' + separadorMiles(item.ImporteLinea)  + '</td></tr>';
+                    str += '<tr><td>' + item.IdCuenta + '</td><td>' + item.Cuenta + '</td><td>' + separadorMiles(item.ImporteLinea) + '</td><td></td></tr>';
+
+                } else {
+                    str += '<tr><td>' + item.IdCuenta + '</td><td>' + item.Cuenta + '</td><td></td><td>' + separadorMiles(item.ImporteLinea) + '</td></tr>';
+                }
                 iAsiento++;
             }
+            // Version 1
+            //while (iAsiento <= Lista.length - 1) {
+            //    let item = Lista[iAsiento];
+            //    if (IdAsiento != item.IdAsiento) {
+            //        IdAsiento = item.IdAsiento;
+            //        // Cabecera
+            //        str += '<tr class="bg-info"><th>Asiento</th><th colspan="2">Fecha</th><th>Importe Asiento</th></tr>';
+            //        str += '<tr><td>' + Right('0000000' + item.IdAsiento, 7) + '</td><td colspan="2">' + item.Fecha + '</td><td>' + separadorMiles(item.ImporteTotal) + '</td></tr>';
+            //        str += '<tr><th>Id Cta</th><th>DH</th><th>Cuenta</th><th>Importe Linea</th></tr>';
+
+            //    }
+            //    let DebeHaber = 'D';
+            //    if (item.DH == 1) {
+            //        DebeHaber = 'H';
+            //     }
+            //    str += '<tr><td>' + item.IdCuenta + '</td><td>' + DebeHaber + '</td><td>' + item.Cuenta + '</td><td>' + separadorMiles(item.ImporteLinea)  + '</td></tr>';
+            //    iAsiento++;
+            //}
             str += '</table>'
 
         }
@@ -111,7 +132,7 @@ class Asiento extends DBE {
         return result;
     }
 
-    
+
     static async ArmarGrilla(lista, div) {
         $("#" + div + "").html('');
         let str = "";

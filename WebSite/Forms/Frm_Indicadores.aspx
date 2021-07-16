@@ -13,7 +13,7 @@
 
 </script>
     <script
-        src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210712")%>'></script>
+        src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210715")%>'></script>
     <div id="PopUp">
     </div>
 

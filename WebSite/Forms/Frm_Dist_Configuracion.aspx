@@ -9,7 +9,7 @@ Inherits="Forms_Frm_Dist_Configuracion" %>
   runat="Server"
 >
   <script
-    src='<%= ResolveClientUrl("Frm_Dist_Configuracion.js?version=20210712")%>'
+    src='<%= ResolveClientUrl("Frm_Dist_Configuracion.js?version=20210715")%>'
   ></script>
   <script>
     document.onkeyup = function (e) {

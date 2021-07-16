@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Tipos de Gasto" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ABM_TipoGasto.aspx.vb" Inherits="Forms_Frm_ABM_TipoGasto" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_ABM_TipoGasto.js?version=20210712")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_ABM_TipoGasto.js?version=20210715")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
