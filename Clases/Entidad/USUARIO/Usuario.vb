@@ -296,7 +296,7 @@ Namespace Entidad
                     "Usuario: " & Me.UserName & vbCrLf &
                     "Contraseña: " & Me.Password & vbCrLf &
                     vbCrLf & "Saludos !!" & vbCrLf & vbCrLf & vbCrLf & vbCrLf &
-                    "Ingreso al Sistema: http://localhost:14162/Forms/Login/Frm_Login.aspx"
+                    "Ingreso al Sistema: http://aplicativosaaemm.dyndns.org/SitioTesoreria/Forms/Login/Frm_Login.aspx"
                 Dim Smtp = New SmtpClient
                 Mail.From = New MailAddress(smtpFromSecAdm, fromSecAdm)
                 Mail.To.Add(New MailAddress(CorreoElectronico))
@@ -325,7 +325,7 @@ Namespace Entidad
                     "Correo Electrónico: " & Me.CorreoElectronico & vbCrLf &
                     "Nro. Interno: " & Me.NroInterno & vbCrLf &
                     vbCrLf & "Saludos !!" & vbCrLf & vbCrLf & vbCrLf & vbCrLf &
-                    "Ingreso al Sistema: http://localhost:14162/Forms/Login/Frm_Login.aspx"
+                    "Ingreso al Sistema: http://aplicativosaaemm.dyndns.org/SitioTesoreria/Forms/Login/Frm_Login.aspx"
                 Dim Smtp = New SmtpClient
                 Mail.From = New MailAddress(smtpFromSecAdm, fromSecAdm)
                 Mail.To.Add(New MailAddress(CorreoElectronico))
@@ -352,7 +352,7 @@ Namespace Entidad
                     "Correo Electrónico: " & Me.CorreoElectronico & vbCrLf &
                     "Contraseña: " & Me.Password & vbCrLf &
                     vbCrLf & "Saludos !!" & vbCrLf & vbCrLf & vbCrLf & vbCrLf &
-                    "Ingreso al Sistema: http://localhost:14162/Forms/Login/Frm_Login.aspx"
+                    "Ingreso al Sistema: http://aplicativosaaemm.dyndns.org/SitioTesoreria/Forms/Login/Frm_Login.aspx"
                 Dim Smtp = New SmtpClient
                 Mail.From = New MailAddress(smtpFromSecAdm, fromSecAdm)
                 Mail.To.Add(New MailAddress(CorreoElectronico))

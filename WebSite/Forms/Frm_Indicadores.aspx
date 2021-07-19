@@ -13,7 +13,7 @@
 
 </script>
     <script src='<%= ResolveClientUrl("Eventos_Formularios.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210717")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210718")%>'></script>
     <div id="PopUp">
     </div>
 

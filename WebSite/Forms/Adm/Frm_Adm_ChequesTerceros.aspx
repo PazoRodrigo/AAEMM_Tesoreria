@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Cheques Terceros" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Adm_ChequesTerceros.aspx.vb" Inherits="Forms_Administracion_Frm_Adm_ChequesTerceros" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Adm_ChequesTerceros.js?version=20210717")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Adm_ChequesTerceros.js?version=20210718")%>'></script>
     <script type="text/javascript">
         var tableToExcel = (function () {
             var uri = "data:application/vnd.ms-excel;base64,",

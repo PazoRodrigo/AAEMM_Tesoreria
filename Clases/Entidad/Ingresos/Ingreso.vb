@@ -188,45 +188,58 @@ Namespace Entidad
             Return DAL_Ingreso.TraerTodos()
         End Function
         Public Shared Function TraerTodosXBusqueda(busqueda As StrBusquedaIngreso) As List(Of Ingreso)
+            Dim sqlQuery As String = ""
+            sqlQuery += ";WITH CTE (cuit, FechaAcreditacion, RazonSocial, CodigoEntidad, Periodo, Importe, IdOrigen, NombreArchivo, IdEstado) as "
+            sqlQuery += "("
+            sqlQuery += " Select emp.cuit, Ing.FechaAcreditacion, emp.RazonSocial, Ing.CodigoEntidad, Ing.Periodo, Ing.Importe, Ing.IdOrigen, Ing.NombreArchivo, Ing.IdEstado "
+            sqlQuery += " FROM Ingreso.Ingresos_Acreditados Ing Left JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
+            sqlQuery += " WHERE Ing.FechaBaja IS NULL And idOrigen <> 2 And idOrigen <> 1 And idOrigen <> 4  "
+            sqlQuery += "UNION"
+            sqlQuery += " Select emp.cuit, Ing.FechaAcreditacion, emp.RazonSocial, Ing.CodigoEntidad, Ing.Periodo, Ing.Importe, Ing.IdOrigen, Ing.NombreArchivo, Ing.IdEstado "
+            sqlQuery += " FROM Ingreso.Ingresos_Acreditados Ing LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
+            sqlQuery += " WHERE Ing.FechaBaja IS NULL AND IdOrigen IN (2) "
+            sqlQuery += ")"
+            sqlQuery += "SELECT * FROM CTE "
+            Dim Tabla12 As String = "SELECT emp.cuit, Ing.FechaAcreditacion, emp.RazonSocial, Ing.CodigoEntidad, Ing.Periodo, Ing.Importe, Ing.IdOrigen, Ing.IdEstado FROM Ingreso.Ingresos_Acreditados Ing LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
             Dim TablaAcreditados As String = "Ingreso.Ingresos_Acreditados Ing"
             Dim TablaNOAcreditados As String = "Ingreso.Ingresos_NOAcreditados Ing"
-            Dim sqlQuery As String = "SELECT * FROM "
             Dim tablas As Integer = 0
-            If busqueda.Estados.Length = 0 Then
-                tablas = 1
-            Else
-                If (busqueda.Estados.Contains("A") Or busqueda.Estados.Contains("L") Or busqueda.Estados.Contains("T")) Then
-                    tablas += 1
-                End If
-                If (busqueda.Estados.Contains("P") Or busqueda.Estados.Contains("R")) Then
-                    tablas += 2
-                End If
-            End If
-            If tablas < 3 Then
-                If tablas = 1 Then
-                    sqlQuery += TablaAcreditados
-                    sqlQuery += " LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
-                    sqlQuery += ArmarStringSQL(busqueda)
-                ElseIf tablas = 2 Then
-                    sqlQuery += TablaNOAcreditados
-                    sqlQuery += " LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
-                    sqlQuery += ArmarStringSQL(busqueda)
-                End If
-            Else
-                sqlQuery += TablaAcreditados
-                sqlQuery += " LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
-                sqlQuery += ArmarStringSQL(busqueda)
-                sqlQuery += " UNION "
-                sqlQuery += TablaNOAcreditados
-                sqlQuery += " LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
-                sqlQuery += ArmarStringSQL(busqueda)
-            End If
+            'If busqueda.Estados.Length = 0 Then
+            '    tablas = 1
+            'Else
+            '    If (busqueda.Estados.Contains("A") Or busqueda.Estados.Contains("L") Or busqueda.Estados.Contains("T")) Then
+            '        tablas += 1
+            '    End If
+            '    If (busqueda.Estados.Contains("P") Or busqueda.Estados.Contains("R")) Then
+            '        tablas += 2
+            '    End If
+            'End If
+            'If tablas < 3 Then
+            '    If tablas = 1 Then
+            '        sqlQuery += TablaAcreditados
+            '        sqlQuery += " LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
+            '        sqlQuery += ArmarStringSQL(busqueda)
+            '    ElseIf tablas = 2 Then
+            '        sqlQuery += TablaNOAcreditados
+            '        sqlQuery += " LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
+            '        sqlQuery += ArmarStringSQL(busqueda)
+            '    End If
+            'Else
+            '    sqlQuery += TablaAcreditados
+            '    sqlQuery += " LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
+            '    sqlQuery += ArmarStringSQL(busqueda)
+            '    sqlQuery += " UNION "
+            '    sqlQuery += TablaNOAcreditados
+            '    sqlQuery += " LEFT JOIN ADM.Empresa emp ON emp.cuit = ing.cuit "
+            '    sqlQuery += ArmarStringSQL(busqueda)
+            'End If
+            sqlQuery += ArmarStringSQL(busqueda)
             Dim result As List(Of Ingreso) = DAL_Ingreso.TraerTodosXBusqueda(sqlQuery)
             Return result
         End Function
         Private Shared Function ArmarStringSQL(busqueda As StrBusquedaIngreso) As String
-            Dim existeParametro As Boolean = True
-            Dim result As String = "WHERE Ing.FechaBaja IS NULL And idOrigen <> 2 And idOrigen <> 1 And idOrigen <> 4 "
+            Dim existeParametro As Boolean = False
+            Dim result As String = ""
             If busqueda.Desde > 0 Then
                 Dim Fecha As String = Left(busqueda.Desde.ToString, 4) & "-" & Right("00" & Left(busqueda.Desde.ToString, 6), 2) & "-" & Right("00" & busqueda.Desde.ToString, 2)
                 If Not existeParametro Then

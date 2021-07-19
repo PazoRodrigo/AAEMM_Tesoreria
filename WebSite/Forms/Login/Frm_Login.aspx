@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Acceso al Sistema" Language="VB" MasterPageFile="~/Forms/MP_Inicio.master" AutoEventWireup="false" CodeFile="Frm_Login.aspx.vb" Inherits="Forms_Login_Frm_Login" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Login.js?version=20210717")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Login.js?version=20210718")%>'></script>
 
     <%-- <div id="Contenido">
         <div id="DivNombreFormulario100"><span id="NombreFormulario"></span></div>
