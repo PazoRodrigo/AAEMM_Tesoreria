@@ -31,6 +31,12 @@ class AsientoImpresion {
             let IdAsiento = Lista[0].IdAsiento;
             str += '';
             // Version 2
+            IdAsiento = Lista[0].IdAsiento;
+            // Cabecera
+            str += '<tr class="bg-info"><th>Asiento</th><td>' + Right('0000000' + Lista[0].IdAsiento, 7) + '</td>';
+            str += '<tr class="bg-info"><th>Fecha</th><td>' + Date_LongToString(Lista[0].Fecha) + '</td>';
+            str += '<tr class="bg-info"><th>Importe Asiento</th><td style="text-align: right;">' + separadorMiles(Decimales2(Lista[0].ImporteTotal)) + '</td>';
+            str += '<tr><th>Id Cta</th><th>Cuenta</th><th colspan="2">Importe Linea</th></tr>';
             while (iAsiento <= Lista.length - 1) {
                 let item = Lista[iAsiento];
                 if (IdAsiento != item.IdAsiento) {
@@ -38,15 +44,14 @@ class AsientoImpresion {
                     // Cabecera
                     str += '<tr class="bg-info"><th>Asiento</th><td>' + Right('0000000' + item.IdAsiento, 7) + '</td>';
                     str += '<tr class="bg-info"><th>Fecha</th><td>' + Date_LongToString(item.Fecha) + '</td>';
-                    str += '<tr class="bg-info"><th>Importe Asiento</th><td>' + separadorMiles(item.ImporteTotal) + '</td>';
+                    str += '<tr class="bg-info"><th>Importe Asiento</th><td style="text-align: right;">' + separadorMiles(Decimales2(item.ImporteTotal))  + '</td>';
                     str += '<tr><th>Id Cta</th><th>Cuenta</th><th colspan="2">Importe Linea</th></tr>';
                 }
-                let DebeHaber = 'D';
-                if (item.DH == 1) {
-                    str += '<tr><td>' + item.IdCuenta + '</td><td>' + item.Cuenta + '</td><td>' + separadorMiles(item.ImporteLinea) + '</td><td></td></tr>';
+                if (item.DH == 0) {
+                    str += '<tr><td>' + item.IdCuenta + '</td><td>' + item.Cuenta + '</td><td style="text-align: right;">' + separadorMiles(Decimales2(item.ImporteLinea)) + '</td><td></td></tr>';
 
                 } else {
-                    str += '<tr><td>' + item.IdCuenta + '</td><td>' + item.Cuenta + '</td><td></td><td>' + separadorMiles(item.ImporteLinea) + '</td></tr>';
+                    str += '<tr><td>' + item.IdCuenta + '</td><td>' + item.Cuenta + '</td><td></td><td style="text-align: right;">' + separadorMiles(Decimales2(item.ImporteLinea)) + '</td></tr>';
                 }
                 iAsiento++;
             }

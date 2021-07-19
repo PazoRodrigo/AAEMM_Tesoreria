@@ -180,6 +180,16 @@ class ChequeTercero extends Cheque {
         }
         return result;
     }
+    static async TraerTodosADepositar() {
+        let lista = await ejecutarAsync(urlWsChequeTercero + "/TraerTodosADepositar");
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadChequeTercero(value));
+            });
+        }
+        return result;
+    }
 
     // Otros
     static async Refresh() {

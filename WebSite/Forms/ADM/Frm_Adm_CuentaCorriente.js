@@ -52,7 +52,7 @@ async function LlenarSaldosCuentas() {
     $("#spanSaldoPRESTAMOS").text(separadorMiles(separadorMiles(SaldosCuentaCorriente[5].Saldo.toFixed(2))));
 }
 async function AgregarLineaAsiento() {
-        await ValidarLineaAsiento();
+    await ValidarLineaAsiento();
     let ObjLinea = new AsientoLinea;
     ObjLinea.IdAsiento = _ObjAsiento.IdEntidad;
     ObjLinea.IdCuentaContable = parseInt($("#_CboCuentaContable").val());
@@ -218,7 +218,7 @@ $('body').on('click', '#LinkCAJA', async function (e) {
         $("#DivGrillaAsientos").html('');
         let ListaAsientos = await Asiento.TraerTodosXCuenta(IdCuenta);
         await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
-              let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
+        let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
         await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
         $("#IdCuentaImprimir").text(IdCuenta);
         $("#BtnImprimirAsiento").css('display', 'block');
@@ -242,7 +242,7 @@ $('body').on('click', '#LinkFONDOFIJO', async function (e) {
         $("#DivGrillaAsientos").html('');
         let ListaAsientos = await Asiento.TraerTodosXCuenta(IdCuenta);
         await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
-              let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
+        let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
         await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
         $("#IdCuentaImprimir").text(IdCuenta);
         $("#BtnImprimirAsiento").css('display', 'block');
@@ -260,7 +260,7 @@ $('body').on('click', '#LinkPAGADORA', async function (e) {
         $("#DivGrillaAsientos").html('');
         let ListaAsientos = await Asiento.TraerTodosXCuenta(IdCuenta);
         await Asiento.ArmarGrilla(ListaAsientos, 'DivGrillaAsientos');
-              let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
+        let ListaImpresion = await AsientoImpresion.TraerTodosXCuentaImpresion(IdCuenta);
         await AsientoImpresion.ArmarImpresionAsientosOculta('DivImpresionAsientosOculta', ListaImpresion);
         $("#IdCuentaImprimir").text(IdCuenta);
         $("#BtnImprimirAsiento").css('display', 'block');
@@ -326,7 +326,7 @@ $('body').on('click', '#LinkPRESTAMO', async function (e) {
 });
 $('body').on('click', '#BtnImprimirAsiento', async function (e) {
     try {
-         spinner()
+        spinner()
         let nombreArchivo = "Asientos-" + FechaHoyLng() + ".xls";
         $("#DivImpresionAsientosOculta").table2excel({ filename: nombreArchivo, sheetName: "Asientos" });
         spinnerClose();

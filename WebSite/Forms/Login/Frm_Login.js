@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿var _Us;
+$(document).ready(function () {
     try {
         $("#NombreFormulario").text('Acceso al Sistema');
         Inicio();
@@ -37,6 +38,7 @@ async function AlmacenarUsuario() {
         }
         spinner();
         let usuValido = await Usuario.AccederAlSistema(u, p);
+        _Us = usuValido;
         spinnerClose();
         sessionStorage.setItem("User", JSON.stringify(usuValido));
         window.location.href = 'http://localhost:14162/Forms/Frm_Indicadores.aspx';

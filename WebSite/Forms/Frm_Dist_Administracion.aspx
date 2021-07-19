@@ -8,7 +8,7 @@
     ContentPlaceHolderID="ContentPlaceHolder1"
     runat="Server">
     <script
-        src='<%= ResolveClientUrl("Frm_Dist_Administracion.js?version=20210715")%>'></script>
+        src='<%= ResolveClientUrl("Frm_Dist_Administracion.js?version=20210717")%>'></script>
 
     <script>
         document.onkeyup = function (e) {

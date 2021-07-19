@@ -311,7 +311,8 @@ Namespace DataAccessLibrary
         Const storeTraerUnoXId As String = "USUARIO.p_Perfil_TraerUnoXId"
         Const storeTraerTodos As String = "USUARIO.p_Perfil_TraerTodos"
         ' Otros
-        Const storeTraerTodosXUsuario As String = "USUARIO.p_Usuario_TraerTodosXUsuario"
+        Const storeTraerTodosXUsuario As String = "USUARIO.[p_Perfil_TraerTodosXUsuario]"
+        'Const storeTraerTodosXUsuario As String = "USUARIO.p_Usuario_TraerTodosXUsuario"
         Const storeAltaPerfilEnUsuario As String = "USUARIO.p_Usuario_PerfilEnUsuarioAlta"
         Const storeModificarPerfilEnUsuario As String = "USUARIO.p_Usuario_PerfilEnUsuarioModifica"
         Const storeBajaPerfilEnUsuario As String = "USUARIO.p_Usuario_PerfilEnUsuarioBaja"

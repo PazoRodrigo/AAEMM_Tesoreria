@@ -28,6 +28,7 @@ Namespace Entidad
         Public Property IdEntidad() As Integer = 0
         Public Property IdTipoPermiso() As Enumeradores.TipoPermiso = Enumeradores.TipoPermiso.Pagina
         Public Property Nombre() As String = ""
+        Public Property Codigo() As String = ""
         Public Property Observaciones() As String = ""
 #End Region
 #Region " Lazy Load "
@@ -65,7 +66,8 @@ Namespace Entidad
             ' Entidad
             IdEntidad = objImportar.IdEntidad
             IdTipoPermiso = objImportar.IdTipoPermiso
-            IdTipoPermiso = objImportar.IdTipoPermiso
+            Nombre = objImportar.Nombre
+            Codigo = objImportar.Codigo
             Observaciones = objImportar.Observaciones
         End Sub
         Sub New(ByVal DtODesde As DTO.DTO_Permiso)
@@ -85,6 +87,7 @@ Namespace Entidad
             IdEntidad = DtODesde.IdEntidad
             IdTipoPermiso = DtODesde.IdTipoPermiso
             Nombre = DtODesde.Nombre
+            Codigo = DtODesde.Codigo
             Observaciones = DtODesde.Observaciones
         End Sub
 #End Region
@@ -146,6 +149,7 @@ Namespace Entidad
             Dim result As New DTO.DTO_Permiso With {
                 .IdEntidad = IdEntidad,
                 .IdTipoPermiso = IdTipoPermiso,
+                .Codigo = Codigo,
                 .Nombre = Nombre,
                 .Observaciones = Observaciones,
                 .ObjFormulario = ObjFormulario.ToDTO,
@@ -252,6 +256,7 @@ Namespace DTO
         Public Property IdEntidad() As Integer = 0
         Public Property IdTipoPermiso() As Enumeradores.TipoPermiso = Enumeradores.TipoPermiso.Pagina
         Public Property Nombre() As String = ""
+        Public Property Codigo() As String = ""
         Public Property Observaciones() As String = ""
         Public Property ObjFormulario() As DTO_Formulario
 #End Region
@@ -451,6 +456,11 @@ Namespace DataAccessLibrary
             If dr.Table.Columns.Contains("id") Then
                 If dr.Item("id") IsNot DBNull.Value Then
                     entidad.IdEntidad = CInt(dr.Item("id"))
+                End If
+            End If
+            If dr.Table.Columns.Contains("Codigo") Then
+                If dr.Item("Codigo") IsNot DBNull.Value Then
+                    entidad.Codigo = dr.Item("Codigo").ToString.ToUpper.Trim
                 End If
             End If
             If dr.Table.Columns.Contains("Nombre") Then

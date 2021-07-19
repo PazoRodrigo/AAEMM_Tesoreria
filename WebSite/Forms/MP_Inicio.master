@@ -23,7 +23,7 @@
     </noscript>
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src='<%= ResolveClientUrl("~/Scripts/LUM.js?version=20210715")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/LUM.js?version=20210717")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/DBE.js")%>' type="text/javascript"></script>
     <script src='<%= ResolveClientUrl("~/Scripts/Conexion.js")%>' type="text/javascript"></script>
     <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js' type="text/javascript"></script>
@@ -32,7 +32,7 @@
     <script src='<%= ResolveClientUrl("~/Scripts/jquery-ui-1.12.1/jquery-ui.js") %>' type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <!-- Entidades -->
-    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/USUARIO/Usuario.js?version=20210715")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("~/Scripts/Entidades/USUARIO/Usuario.js?version=20210717")%>' type="text/javascript"></script>
     <!-- WebServices-->
     <script type="text/javascript">
         var urlWsUsuario = '<%= ResolveClientUrl("~/WebServices/WsUsuario.asmx")%>';

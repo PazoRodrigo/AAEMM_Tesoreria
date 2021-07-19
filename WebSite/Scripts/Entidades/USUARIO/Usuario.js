@@ -11,6 +11,9 @@ class Usuario extends DBE {
         this.NroInterno = 0;
         this.AccesosSistema = 0;
         this.Observaciones = "";
+
+        this.ListaPerfiles;
+        this.ListaPermisos;
     }
 
     async Alta() {
@@ -102,5 +105,7 @@ function LlenarEntidadUsuario(entidad) {
     res.NroInterno = entidad.NroInterno;
     res.AccesosSistema = entidad.AccesosSistema;
     res.Observaciones = entidad.Observaciones;
+
+    res.ListaPerfiles = entidad.ListaPerfiles;
     return res;
 }

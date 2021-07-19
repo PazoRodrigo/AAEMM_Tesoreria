@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Acceso al Sistema" Language="VB" MasterPageFile="~/Forms/MP_Inicio.master" AutoEventWireup="false" CodeFile="Frm_Login.aspx.vb" Inherits="Forms_Login_Frm_Login" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Login.js?version=20210715")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Login.js?version=20210717")%>'></script>
 
     <%-- <div id="Contenido">
         <div id="DivNombreFormulario100"><span id="NombreFormulario"></span></div>
@@ -46,7 +46,7 @@
                             </div>
                             <div class="DivInputLogIN">
                                 <span class="icon-key2 IconoLogIN"></span>
-                                <input class="InputLogIN" id="txtPass" type="password" placeholder="Contraseña" maxlength="8">
+                                <input class="InputLogIN" id="txtPass" type="password" placeholder="Contraseña" maxlength="10">
                             </div>
                             <div id="BtnInputLogIN">
                                 <a id="BtnLogin" style="display: block;">Acceder al Sistema</a>

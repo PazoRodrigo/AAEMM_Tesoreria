@@ -41,10 +41,6 @@ Namespace Entidad
         Public ReadOnly Property ListaPerfiles() As List(Of Perfil)
             Get
                 Return Perfil.TraerTodosXUsuario(IdEntidad)
-                'If _ListaPerfiles Is Nothing Then
-                '    _ListaPerfiles = Perfil.TraerTodosXUsuario(IdEntidad)
-                'End If
-                'Return _ListaPerfiles
             End Get
         End Property
         Public ReadOnly Property IdEstado() As Integer

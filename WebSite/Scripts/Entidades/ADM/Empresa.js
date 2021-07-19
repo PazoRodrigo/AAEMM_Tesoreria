@@ -397,7 +397,6 @@ class Empresa extends DBE {
                 str += '            <td class="text-left pl-3" style="width: 500px;"><div class="text-light">' + item.RazonSocial + '</div></td>';
                 let strFechaBaja = '';
                 if (item.FechaBaja > 0) {
-                    console.log(item.FechaBaja);
                     strFechaBaja = LongToDateString(item.FechaBaja);
                 }
                 str += '        </tr>';
@@ -407,14 +406,13 @@ class Empresa extends DBE {
         str += '</div>';
         }
         if (lista.length > 0) {
-            str += '<div class="row justify-content-center">';
-            str += '    <div class="col-3"><a id="Indicadores_Empresas_Limpiar" href="#" class="btn btn-block btn-danger">Cerrar</a></div>';
-            str += '    <div class="col-3"></div>';
-            str += '    <div class="col-3"><a href="#" id="Indicadores_Empresas_Imprimir" class="btn btn-block btn-success">Imprimir</a></div>';
-            str += '    <div class="col-3"></div>';
+            str += '<div class="row justify-content-center" style="margin-top: 15px;">';
+            str += '    <div class="col-4"><a id="Indicadores_Empresas_Limpiar" href="#" class="btn btn-block btn-danger">Cerrar</a></div>';
+            str += '    <div class="col-2"></div>';
+            str += '    <div class="col-4"><a href="#" id="Indicadores_Empresas_Imprimir" class="btn btn-block btn-success">Imprimir</a></div>';
             str += '</div>';
         } else {
-            str += '<div class="row justify-content-center">';
+            str += '<div class="row justify-content-center" style="margin-top: 3px;">';
             str += '    <div class="col-4"><a href="#" class="btn btn-block btn-info">Sin Registros para informar</a></div>';
             str += '</div>';
         }

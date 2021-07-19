@@ -174,7 +174,13 @@ Namespace Entidad
             End If
             Return DAL_ChequeTercero.TraerTodosXBusqueda(sqlQuery)
         End Function
-
+        Public Shared Function TraerTodosADepositar() As List(Of ChequeTercero)
+            Dim result As List(Of ChequeTercero) = DAL_ChequeTercero.TraerTodosADepositar()
+            If result Is Nothing Then
+                Throw New Exception("No existen resultados para la búsqueda")
+            End If
+            Return result
+        End Function
 #End Region
 #Region " Métodos Públicos"
         ' ABM
@@ -301,6 +307,7 @@ Namespace DataAccessLibrary
         Const storeModifica As String = "ADM.p_ChequeTercero_Modifica"
         Const storeTraerUnoXId As String = "ADM.p_ChequeTercero_TraerUnoXId"
         Const storeTraerTodos As String = "ADM.p_ChequeTercero_TraerTodos"
+        Const storeTraerTodosADepositar As String = "ADM.p_ChequeTercero_TraerTodosADepositar"
         Const storeTraerTodosXBusqueda As String = "p_TraerXBusquedaLibre"
 #End Region
 #Region " Métodos Públicos "
@@ -376,6 +383,20 @@ Namespace DataAccessLibrary
         End Function
         Public Shared Function TraerTodos() As List(Of ChequeTercero)
             Dim store As String = storeTraerTodos
+            Dim pa As New parametrosArray
+            Dim listaResult As New List(Of ChequeTercero)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
+
+        Public Shared Function TraerTodosADepositar() As List(Of ChequeTercero)
+            Dim store As String = storeTraerTodosADepositar
             Dim pa As New parametrosArray
             Dim listaResult As New List(Of ChequeTercero)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)

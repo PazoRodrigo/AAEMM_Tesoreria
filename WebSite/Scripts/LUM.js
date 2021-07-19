@@ -104,11 +104,19 @@ function MonedaDecimales2(valor) {
         if (valor !== null) {
             result = ('$ ' + valor.toFixed(2));
         }
-
     }
     return result;
 }
 
+function Decimales2(valor) {
+    let result = '0.00';
+    if (valor !== undefined) {
+        if (valor !== null) {
+            result = (valor.toFixed(2));
+        }
+    }
+    return result;
+}
 // Validaciones
 function validarTelefono(nroIngresado1, nroIngresado2, nroIngresado3) {
     var result = true;

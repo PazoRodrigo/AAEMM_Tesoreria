@@ -1,6 +1,9 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(async function () {
     try {
+        spinner();
+        await ValidarPermisosXPerfil();
         $("#NombreFormulario").text('Indicadores');
+        spinnerClose();
         Inicio();
     } catch (e) {
         spinnerClose();
@@ -21,14 +24,6 @@ async function Inicio() {
     $("#LblEmpresasPagosIntercalados").text(ObjIndicadores.EmpresasPagosIntercalados);
     $("#LblEmpresasInactivas").text(ObjIndicadores.EmpresasInactivas);
 
-    //$("#LblEmpresasSinDeudaSinBoleta").text(ObjIndicadores.EmpresasSinDeudaSinBoleta);
-    //$("#LblEmpresasSinDeudaConBoleta").text(ObjIndicadores.EmpresasSinDeudaConBoleta);
-    //$("#LblEmpresasDeuda1Mes").text(ObjIndicadores.EmpresasDeuda1Mes);
-    //$("#LblEmpresasDeuda3Meses").text(ObjIndicadores.EmpresasDeuda3Meses);
-    //$("#LblEmpresasDeuda6Meses").text(ObjIndicadores.EmpresasDeuda6Meses);
-    //$("#LblEmpresasDeudaMayor6Meses").text(ObjIndicadores.EmpresasDeudaMayor6Meses);
-    //$("#LblEmpresasPagosIntercalados").text(ObjIndicadores.EmpresasPagosIntercalados);
-    //$("#LblEmpresasInactivas").text(ObjIndicadores.EmpresasInactivas);
 
     $("#LblEmpleados").text(ObjIndicadores.Empleados);
     $("#LblEmpleadosSinDeudaSinBoleta").text(ObjIndicadores.EmpleadosSinDeudaSinBoleta);
@@ -42,16 +37,6 @@ async function Inicio() {
     $("#LblRecaudacionNeta").text(separadorMiles(ObjIndicadores.RecaudacionNeta.toFixed(2)));
     $("#LblRecaudacionBruta").text(separadorMiles(ObjIndicadores.RecaudacionBruta.toFixed(2)));
 
-    //$("#LblRecaudacion").text(separadorMiles(ObjIndicadores.Recaudacion.toFixed(2)));
-    //$("#LblRecaudacionXCobrarSinBoleta").text(ObjIndicadores.RecaudacionXCobrarSinBoleta);
-    //$("#LblRecaudacionXCobrarConBoleta").text(ObjIndicadores.RecaudacionXCobrarConBoleta);
-    //$("#LblRecaudacionDeuda1Mes").text(ObjIndicadores.RecaudacionDeuda1Mes);
-    //$("#LblRecaudacionDeuda3Meses").text(ObjIndicadores.RecaudacionDeuda3Meses);
-    //$("#LblRecaudacionDeuda6Meses").text(ObjIndicadores.RecaudacionDeuda6Meses);
-    //$("#LblRecaudacionDeudaMayor6Meses").text(ObjIndicadores.RecaudacionDeudaMayor6Meses);
-    //$("#LblRecaudacionInactivos").text(ObjIndicadores.RecaudacionInactivos);
-    //$("#LblRecaudacionFueraTermino").text(ObjIndicadores.RecaudacionFueraTermino);
-
     $("#LblChequesRechazados").text(ObjIndicadores.ChequesRechazados);
     spinnerClose();
 }
@@ -60,7 +45,7 @@ $('body').on('click', '#Indicadores_Empresas', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosSinBaja();
-        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPop', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -72,7 +57,7 @@ $('body').on('click', '#Indicadores_Empresas_SinDeuda', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosSinDeuda();
-        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPop', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -84,7 +69,7 @@ $('body').on('click', '#Indicadores_Empresas_Deuda1', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeuda1();
-        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPop', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -95,7 +80,7 @@ $('body').on('click', '#Indicadores_Empresas_Deuda3', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeuda3();
-        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPop', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -106,7 +91,7 @@ $('body').on('click', '#Indicadores_Empresas_Deuda6', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeuda6();
-        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPop', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -117,7 +102,7 @@ $('body').on('click', '#Indicadores_Empresas_DeudaMayor6', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeudaMayor6();
-        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPop', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -128,7 +113,7 @@ $('body').on('click', '#Indicadores_Empresas_SinPagosUltimos12', async function 
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosSinPagoUltimos12();
-        await Empresa.ArmarGrillaImpresion('ContainerPrincipal', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
+        await Empresa.ArmarGrillaImpresion('ContainerPop', ListaEmpresas, 'max-height: 300px; overflow-y: scroll;');
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -138,7 +123,7 @@ $('body').on('click', '#Indicadores_Empresas_SinPagosUltimos12', async function 
 $('body').on('click', '#Indicadores_Empresas_Limpiar', async function (e) {
     try {
         let ListaEmpresas = [];
-        $("#ContainerPrincipal").html("");
+        $("#ContainerPop").html("");
     } catch (e) {
         spinnerClose();
         alertAlerta(e);
@@ -148,14 +133,14 @@ $('body').on('click', '#Indicadores_Empresas_Imprimir', async function (e) {
     try {
         spinner()
         let nombreArchivo = "Reporte Empresas-" + FechaHoyLng() + ".xls";
-        $("#ContainerPrincipal").table2excel({ filename: nombreArchivo, sheetName: "Reporte Empresas" });
+        $("#ContainerPop").table2excel({ filename: nombreArchivo, sheetName: "Reporte Empresas" });
         spinnerClose();
     } catch (e) {
         spinnerClose();
         alertAlerta(e);
     }
 });
-$('body').on('click', '#BtnRecadudacionNeta', async function (e) {
+$('body').on('click', '#FORM0_RECAUDACIONNETA', async function (e) {
     try {
         spinner()
         await ArmarPopRecaudacion(0);
@@ -165,10 +150,10 @@ $('body').on('click', '#BtnRecadudacionNeta', async function (e) {
         alertAlerta(e);
     }
 });
-$('body').on('click', '#BtnRecadudacionBruta', async function (e) {
+$('body').on('click', '#FORM0_RECAUDACIONBRUTA', async function (e) {
     try {
         spinner()
-        await ArmarPopRecaudacion(0);
+        await ArmarPopRecaudacion(1);
         spinnerClose();
     } catch (e) {
         spinnerClose();
@@ -178,18 +163,17 @@ $('body').on('click', '#BtnRecadudacionBruta', async function (e) {
 
 
 async function ArmarPopRecaudacion(Tipo) {
-    //    spinner();
     let lista = [];
     let Titulo = '';
     let fecha = new Date();
-    //let fecha = new Date('2021-01-01');
     if (Tipo == 0) {
         lista = await IngresoReporte.TraerRecaudacionNeta(Date_PrimerDiaMes_LngToLng(fecha), Date_UltimoDiaMes_LngToLng(fecha));
         Titulo = 'Recaudación Neta';
     } else {
-        lista = await IngresoReporte.TraerRecaudacionBruta(dateToLong(strDesde), dateToLong(strHasta));
+        lista = await IngresoReporte.TraerRecaudacionBruta(Date_PrimerDiaMes_LngToLng(fecha), Date_UltimoDiaMes_LngToLng(fecha));
         Titulo = 'Recaudación Bruta';
     }
+    let valorCheque = lista[0].ValorChequesNoDepositados;
     let control = "";
     ($("#Modal-PopUpConsumosAfiliado").remove());
     control += '<div id="Modal-PopUpConsumosAfiliado" class="modal" tabindex="-1" role="dialog" >';
@@ -231,7 +215,6 @@ async function ArmarPopRecaudacion(Tipo) {
                 RazonSocial = 'A DETERMINAR';
             }
             control += String.format("<tr><td>{0}</td><td style='" + color + "'>{1}</td><td style='" + color + "'>{2}</td><td style='text-align: right;" + color + "'>{3}</td><td style='text-align: center;'>{4}</td></tr>", Date_LongToString(lista[i].FechaAcreditacion), CUIT, RazonSocial, MonedaDecimales2(lista[i].Importe), lista[i].Origen);
-
             i++;
         }
         control += '<tr><td colspan=3 style="text-align:right"><span>Total Parcial  ' + Date_LongToString(dia) + ': </td><th colspan=2>' + MonedaDecimales2(totalDia) + '</span></th></tr>';
@@ -241,6 +224,12 @@ async function ArmarPopRecaudacion(Tipo) {
     control += '                        </div>';
     control += '                        </div>';
     control += '                    </div>';
+    //if (valorCheque == 0) {
+    //control += '                        <div class="row" style="margin-top: 15px">';
+    //control += '                            <div class="col-md-8 text-primary text-right"> Cheques No Depositados: </div>';
+    //control += '                            <div class="col-md-4 text-primary"> ' + MonedaDecimales2(valorCheque) + '</div>';
+    //control += '                        </div>';
+    //}   
     control += '                </div>';
     control += '            </div>';
     control += '            <div class="modal-footer">';

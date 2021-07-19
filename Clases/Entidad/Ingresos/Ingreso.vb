@@ -226,7 +226,7 @@ Namespace Entidad
         End Function
         Private Shared Function ArmarStringSQL(busqueda As StrBusquedaIngreso) As String
             Dim existeParametro As Boolean = True
-            Dim result As String = "WHERE Ing.FechaBaja IS NULL "
+            Dim result As String = "WHERE Ing.FechaBaja IS NULL And idOrigen <> 2 And idOrigen <> 1 And idOrigen <> 4 "
             If busqueda.Desde > 0 Then
                 Dim Fecha As String = Left(busqueda.Desde.ToString, 4) & "-" & Right("00" & Left(busqueda.Desde.ToString, 6), 2) & "-" & Right("00" & busqueda.Desde.ToString, 2)
                 If Not existeParametro Then
@@ -892,8 +892,8 @@ Namespace DataAccessLibrary
             Dim store As String = storeTraerRecaudacionBruta
             Dim listaResult As New List(Of DTO.DTO_IngresoReporte)
             Dim pa As New parametrosArray
-            pa.add("@strDesde", strDesde)
-            pa.add("@strHasta", strHasta)
+            pa.add("@FechaDesde", strDesde)
+            pa.add("@FechaHasta", strHasta)
             Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
                 If dt.Rows.Count > 0 Then
                     For Each dr As DataRow In dt.Rows
