@@ -1,9 +1,9 @@
 ﻿$(document).ready(function () {
     try {
         $("#SpanNombreFormulario").text('Banco');
-        $("#SpanTituloGrillaDimensional").text('Centros de Costo Registrados');
-        $("#SpanTituloDimensional").text('Centros de Costo');
-        $("#SpanBtnImprimir").text('Imprimir Centros de Costo');
+        $("#SpanTituloGrillaDimensional").text('Bancos Registrados');
+        $("#SpanTituloDimensional").text('Banco');
+        $("#SpanBtnImprimir").text('Imprimir Bancos');
         $("#SpanBtnNuevo").text('Nuevo');
         $("#SpanBtnGuardar").text('Guardar');
    //     Inicio();
