@@ -13,7 +13,7 @@
 
 </script>
     <script src='<%= ResolveClientUrl("Eventos_Formularios.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210718")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210718_")%>'></script>
     <div id="PopUp">
     </div>
 
@@ -24,7 +24,7 @@
 
     <div class="container-fluid">
 
-        <div class="row">
+        <div class="row mb-2">
             <div class="d-none d-md-block col-12">
                 <div id="DivNombreFormulario100">
                     <span id="NombreFormulario"></span>
@@ -61,13 +61,13 @@
                         <nav>
                             <ul>
                                 <li class="MenuIndicador">
-                                    <a href="#" id="Indicadores_Empresas" style="display: block;">
+                                    <a href="#" id="FORM0_INDICADORES_EMPRESAS" style="display: none;">
                                         <div class="LblIndicador">Empresas</div>
                                         <div class="LblValorIndicador" id="LblEmpresas"></div>
                                     </a>
                                     <ul class="SubMenuInidicador">
                                         <li class="BtnIndicador">
-                                            <a href="#" id="Indicadores_Empresas_SinDeuda" style="display: block;">
+                                            <a href="#" id="FORM0_INDICADORES_EMPRESAS_SINDEUDA" style="display: none;">
                                                 <div class="LblIndicador">Sin Deuda</div>
                                                 <div
                                                     class="LblValorIndicador"
@@ -76,7 +76,7 @@
                                             </a>
                                         </li>
                                         <li class="BtnIndicador">
-                                            <a href="#" id="Indicadores_Empresas_Deuda1" style="display: block;">
+                                            <a href="#" id="FORM0_INDICADORES_EMPRESAS_DEUDA1" style="display: none;">
                                                 <div class="LblIndicador">Deuda 1 Mes</div>
                                                 <div
                                                     class="LblValorIndicador"
@@ -85,7 +85,7 @@
                                             </a>
                                         </li>
                                         <li class="BtnIndicador">
-                                            <a href="#" id="Indicadores_Empresas_Deuda3" style="display: block;">
+                                            <a href="#" id="FORM0_INDICADORES_EMPRESAS_DEUDA3" style="display: none;">
                                                 <div class="LblIndicador">Deuda 3 Meses</div>
                                                 <div
                                                     class="LblValorIndicador"
@@ -94,7 +94,7 @@
                                             </a>
                                         </li>
                                         <li class="BtnIndicador">
-                                            <a href="#" id="Indicadores_Empresas_Deuda6" style="display: block;">
+                                            <a href="#" id="FORM0_INDICADORES_EMPRESAS_DEUDA6" style="display: none;">
                                                 <div class="LblIndicador">Deuda 6 Meses</div>
                                                 <div
                                                     class="LblValorIndicador"
@@ -103,7 +103,7 @@
                                             </a>
                                         </li>
                                         <li class="BtnIndicador">
-                                            <a href="#" id="Indicadores_Empresas_DeudaMayor6" style="display: block;">
+                                            <a href="#" id="FORM0_INDICADORES_EMPRESAS_DEUDAMAYOR6" style="display: none;">
                                                 <div class="LblIndicador">Deuda > 6 Meses</div>
                                                 <div
                                                     class="LblValorIndicador"
@@ -112,7 +112,7 @@
                                             </a>
                                         </li>
                                         <li class="BtnIndicadorWarning">
-                                            <a href="#" id="Indicadores_Empresas_SinPagosUltimos12" style="display: block;">
+                                            <a href="#" id="FORM0_INDICADORES_EMPRESAS_SINPAGOSULTIMOS12" style="display: none;">
                                                 <div class="LblIndicador">Sin Pagos Últimos 12 Meses</div>
                                                 <div
                                                     class="LblValorIndicador"
@@ -121,7 +121,7 @@
                                             </a>
                                         </li>
                                         <li class="BtnIndicadorWarning">
-                                            <a href="#" id="Indicadores_Empresas_PagosIntercalados" style="display: block;">
+                                            <a href="#" id="FORM0_INDICADORES_EMPRESAS_PAGOSINTERCALADOS" style="display: none;">
                                                 <div class="LblIndicador">Pagos Intercalados</div>
                                                 <div
                                                     class="LblValorIndicador"
@@ -130,7 +130,7 @@
                                             </a>
                                         </li>
                                         <li class="BtnIndicadorDanger">
-                                            <a href="#" id="Indicadores_Empresas_Inactivas" style="display: block;">
+                                            <a href="#" id="FORM0_INDICADORES_EMPRESAS_INACTIVAS" style="display: none;">
                                                 <div class="LblIndicador">Inactivas</div>
                                                 <div
                                                     class="LblValorIndicador"
@@ -156,7 +156,7 @@
                         <nav>
                             <ul>
                                 <li class="MenuIndicador">
-                                    <a href="#" id="Indicadores_Empleados" style="display: block;">
+                                    <a href="#" id="FORM0_INDICADORES_EMPLEADOS" style="display: none;">
                                         <div class="LblIndicador">Empleados</div>
                                         <div class="LblValorIndicador" id="LblEmpleados"></div>
                                     </a>
@@ -235,31 +235,31 @@
                                 <nav>
                                     <ul id="UlDistribuidorIndicadores">
                                         <li class="BtnDistribuidorIndicadores">
-                                            <a id="BtnConfiguracion"
-                                                style="display: block;"
+                                            <a id="FORM0_BTNCONFIGURACION"
+                                                style="display: none;"
                                                 href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Configuracion.aspx")%>'>Configuración</a>
                                         </li>
                                         <li class="BtnDistribuidorIndicadores">
-                                            <a id="BtnAdministracion"
-                                                style="display: block;"
+                                            <a id="FORM0_BTNADMINISTRACION"
+                                                style="display: none;"
                                                 href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Administracion.aspx")%>'>Administración</a>
                                         </li>
                                         <li class="BtnDistribuidorIndicadores">
-                                            <a id="BtnReportes"
-                                                style="display: block;"
+                                            <a id="FORM0_BTNREPORTES"
+                                                style="display: none"
                                                 href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Reportes.aspx")%>'>Reportes</a>
                                         </li>
                                         <li class="BtnDistribuidorIndicadores">
-                                            <a id="BtnIngresos"
-                                                style="display: block;"
+                                            <a id="FORM0_BTNINGRESOS"
+                                                style="display: none;"
                                                 href='<%= ResolveClientUrl("~/Forms/Frm_Dist_Ingresos.aspx")%>'>Ingresos</a>
                                         </li>
                                         <li class="BtnDistribuidorIndicadores">
-                                            <a id="BtnGastos"
-                                                style="display: block;"
+                                            <a id="FORM0_BTNGASTOS"
+                                                style="display: none;"
                                                 href='<%= ResolveClientUrl("~/Forms/ADM/Frm_Adm_Gasto.aspx")%>'>Gastos</a>
                                         </li>
-                                        <li id="BtnArchivos"
+                                        <li id="FORM0_BTNARCHIVOS"
                                             class="BtnDistribuidorIndicadores"
                                             style="display: none">
                                             <a
@@ -281,7 +281,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-right" id="DivIngresoArchivos" style="display: block;">
+                <div class="row justify-content-right" id="FORM0_DIVINGRESOARCHIVOS" style="display: none;">
                     <div class="d-none d-lg-block col-lg-10 text-right align-items-end">
                         <div id="PnlResultado" style="display: none"></div>
                         <div id="PnlArchivos">

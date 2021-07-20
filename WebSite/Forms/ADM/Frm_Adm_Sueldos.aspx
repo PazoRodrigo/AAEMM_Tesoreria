@@ -11,7 +11,7 @@
 
     </script>
     <script
-        src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210718")%>'></script>
+        src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210718_")%>'></script>
     <asp:Button
         ID="btnSubirSueuldosOculto"
         runat="server"

@@ -7,26 +7,25 @@
     ID="Contenido"
     ContentPlaceHolderID="ContentPlaceHolder1"
     runat="Server">
-    <script
-        src='<%= ResolveClientUrl("Frm_Dist_Administracion.js?version=20210718")%>'></script>
-
-    <script>
+    <script src='<%= ResolveClientUrl("Eventos_Formularios.js")%>' type="text/javascript"></script>
+    <script src='<%= ResolveClientUrl("Frm_Dist_Administracion.js?version=20210718_")%>'></script>
+<script>
         document.onkeyup = function (e) {
             let redirect = '';
             if (e.which == 27) {
                 redirect = '<%= ResolveClientUrl("~/Forms/Frm_Indicadores.aspx")%>';
-        } else if (e.ctrlKey && e.altKey && (e.which == 69 || e.which == 101)) {
-            // Ctrol + Alt + E
-            redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empresa.aspx")%>';
-        } else if (e.ctrlKey && e.altKey && (e.which == 72 || e.which == 104)) {
-            // Ctrol + Alt + H
-            redirect = '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Chequera.aspx")%>';
-        } else if (e.ctrlKey && e.altKey && (e.which == 73 || e.which == 105)) {
-            // Ctrol + Alt + I
-            redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Ingreso.aspx")%>';
-        } else if (e.ctrlKey && e.altKey && (e.which == 77 || e.which == 109)) {
-            // Ctrol + Alt + M
-            redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empleado.aspx")%>';
+            } else if (e.ctrlKey && e.altKey && (e.which == 69 || e.which == 101)) {
+                // Ctrol + Alt + E
+                redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empresa.aspx")%>';
+            } else if (e.ctrlKey && e.altKey && (e.which == 72 || e.which == 104)) {
+                // Ctrol + Alt + H
+                redirect = '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Chequera.aspx")%>';
+            } else if (e.ctrlKey && e.altKey && (e.which == 73 || e.which == 105)) {
+                // Ctrol + Alt + I
+                redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Ingreso.aspx")%>';
+            } else if (e.ctrlKey && e.altKey && (e.which == 77 || e.which == 109)) {
+                // Ctrol + Alt + M
+                redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empleado.aspx")%>';
        <%-- } else if (e.ctrlKey && e.altKey && (e.which == 80 || e.which == 112)) {
             // Ctrol + Alt + P
             redirect =  '<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesPropios.aspx")%>';
@@ -68,11 +67,11 @@
                                 <li class="BtnDistribuidor">
                                     <ul class="SubMenu">
                                         <li>
-                                            <a
+                                            <a id="FORM2_BTNEMPRESAS" style="display: none;"
                                                 href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empresa.aspx")%>'>(Alt + E) - Empresas</a>
                                         </li>
                                         <li>
-                                            <a
+                                            <a id="FORM2_BTNEMPLEADOS" style="display: none;"
                                                 href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Empleado.aspx")%>'>(Alt + M) - Empleados</a>
                                         </li>
                                         <%--
@@ -101,7 +100,7 @@
                                 <li class="BtnDistribuidor">
                                     <ul class="SubMenu">
                                         <li>
-                                            <a
+                                            <a id="FORM2_BTNCHEQUESTERCEROS" style="display: none;"
                                                 href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_ChequesTerceros.aspx")%>'>(Alt + T) - Cheques de Terceros</a>
                                         </li>
                                     </ul>
@@ -115,11 +114,11 @@
                                 <li class="BtnDistribuidor">
                                     <ul class="SubMenu">
                                         <li>
-                                            <a
+                                            <a id="FORM2_BTNCUENTASCORRIENTES" style="display: none;"
                                                 href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_CuentaCorriente.aspx")%>'>(Alt + A) - Cuentas Corrientes</a>
                                         </li>
-                                         <li>
-                                            <a
+                                        <li>
+                                            <a id="FORM2_BTNSUELDOS" style="display: none;"
                                                 href='<%= ResolveClientUrl("~/Forms/Adm/Frm_Adm_Sueldos.aspx")%>'>Sueldos</a>
                                         </li>
                                     </ul>

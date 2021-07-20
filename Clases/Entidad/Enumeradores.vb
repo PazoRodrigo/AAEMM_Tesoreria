@@ -74,6 +74,7 @@
     End Enum
     Public Enum TipoPermiso
         Pagina = 1
+        Boton = 2
     End Enum
     Public Enum TipoOrigen
         BN = 1

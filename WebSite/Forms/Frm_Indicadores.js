@@ -41,7 +41,7 @@ async function Inicio() {
     spinnerClose();
 }
 
-$('body').on('click', '#Indicadores_Empresas', async function (e) {
+$('body').on('click', '#FORM0_INDICADORES_EMPRESAS', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosSinBaja();
@@ -53,7 +53,7 @@ $('body').on('click', '#Indicadores_Empresas', async function (e) {
     }
 });
 
-$('body').on('click', '#Indicadores_Empresas_SinDeuda', async function (e) {
+$('body').on('click', '#FORM0_INDICADORES_EMPRESAS_SINDEUDA', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosSinDeuda();
@@ -65,7 +65,7 @@ $('body').on('click', '#Indicadores_Empresas_SinDeuda', async function (e) {
     }
 });
 
-$('body').on('click', '#Indicadores_Empresas_Deuda1', async function (e) {
+$('body').on('click', '#FORM0_INDICADORES_EMPRESAS_DEUDA1', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeuda1();
@@ -76,7 +76,7 @@ $('body').on('click', '#Indicadores_Empresas_Deuda1', async function (e) {
         alertAlerta(e);
     }
 });
-$('body').on('click', '#Indicadores_Empresas_Deuda3', async function (e) {
+$('body').on('click', '#FORM0_INDICADORES_EMPRESAS_DEUDA3', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeuda3();
@@ -87,7 +87,7 @@ $('body').on('click', '#Indicadores_Empresas_Deuda3', async function (e) {
         alertAlerta(e);
     }
 });
-$('body').on('click', '#Indicadores_Empresas_Deuda6', async function (e) {
+$('body').on('click', '#FORM0_INDICADORES_EMPRESAS_DEUDA6', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeuda6();
@@ -98,7 +98,7 @@ $('body').on('click', '#Indicadores_Empresas_Deuda6', async function (e) {
         alertAlerta(e);
     }
 });
-$('body').on('click', '#Indicadores_Empresas_DeudaMayor6', async function (e) {
+$('body').on('click', '#FORM0_INDICADORES_EMPRESAS_DEUDAMAYOR6', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosDeudaMayor6();
@@ -109,7 +109,7 @@ $('body').on('click', '#Indicadores_Empresas_DeudaMayor6', async function (e) {
         alertAlerta(e);
     }
 });
-$('body').on('click', '#Indicadores_Empresas_SinPagosUltimos12', async function (e) {
+$('body').on('click', '#FORM0_INDICADORES_EMPRESAS_SINPAGOSULTIMOS12', async function (e) {
     try {
         spinner();
         let ListaEmpresas = await Empresa.TraerTodosSinPagoUltimos12();
