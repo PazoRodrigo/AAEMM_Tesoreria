@@ -14,7 +14,6 @@
             let iPermiso = 0;
             while (iPermiso <= ObjPerfil.ListaPermisos.length - 1) {
                 let ObjPermiso = ObjPerfil.ListaPermisos[iPermiso];
-                console.log(ObjPermiso.Codigo);
                 switch (ObjPermiso.Codigo) {
                     case 'FORM0_RECAUDACIONNETA':
                         $("#FORM0_RECAUDACIONNETA").css('display', 'block');

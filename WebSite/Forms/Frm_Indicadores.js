@@ -173,7 +173,10 @@ async function ArmarPopRecaudacion(Tipo) {
         lista = await IngresoReporte.TraerRecaudacionBruta(Date_PrimerDiaMes_LngToLng(fecha), Date_UltimoDiaMes_LngToLng(fecha));
         Titulo = 'Recaudación Bruta';
     }
-    let valorCheque = lista[0].ValorChequesNoDepositados;
+    let ValoresADepositar_Depositados = await ChequeTercero.TraerTodosXEstado(1);
+    let ValoresADepositar_Recibidos = await ChequeTercero.TraerTodosXEstado(0);
+    console.log(ValoresADepositar_Depositados);
+    console.log(ValoresADepositar_Recibidos);
     let control = "";
     ($("#Modal-PopUpConsumosAfiliado").remove());
     control += '<div id="Modal-PopUpConsumosAfiliado" class="modal" tabindex="-1" role="dialog" >';
@@ -224,12 +227,40 @@ async function ArmarPopRecaudacion(Tipo) {
     control += '                        </div>';
     control += '                        </div>';
     control += '                    </div>';
-    //if (valorCheque == 0) {
+    //if (ValoresADepositar_Recibidos.length > 0) {
     //control += '                        <div class="row" style="margin-top: 15px">';
-    //control += '                            <div class="col-md-8 text-primary text-right"> Cheques No Depositados: </div>';
+    //control += '                            <div class="col-md-8 text-primary text-right"> Valores Recibidos: </div>';
     //control += '                            <div class="col-md-4 text-primary"> ' + MonedaDecimales2(valorCheque) + '</div>';
     //control += '                        </div>';
     //}   
+    if (ValoresADepositar_Recibidos.length > 0) {
+        let importeTotal = 0;
+        let cont = 0;
+        while (cont <= ValoresADepositar_Recibidos.length - 1) {
+            console.log(ValoresADepositar_Recibidos[cont].Importe);
+            importeTotal += ValoresADepositar_Recibidos[cont].Importe;
+            cont++;
+        }
+        control += '                        <div class="row" style="margin-top: 15px">';
+        control += '                            <div class="col-md-7 text-primary text-right"> Valores Recibidos: </div>';
+        control += '                            <div class="col-md-1 text-primary text-right">(' + ValoresADepositar_Recibidos.length + ')</div>';
+        control += '                            <div class="col-md-3 text-primary text-right"> ' + MonedaDecimales2(importeTotal) + '</div>';
+        control += '                        </div>';
+    }   
+    if (ValoresADepositar_Depositados.length > 0) {
+        let importeTotal = 0;
+        let cont = 0;
+        while (cont <= ValoresADepositar_Depositados.length - 1) {
+            console.log(ValoresADepositar_Depositados[cont].Importe);
+            importeTotal += ValoresADepositar_Depositados[cont].Importe;
+            cont++;
+        }
+        control += '                        <div class="row" style="margin-top: 15px">';
+        control += '                            <div class="col-md-7 text-primary text-right"> Valores Depositados: </div>';
+        control += '                            <div class="col-md-1 text-primary text-right">(' + ValoresADepositar_Depositados.length + ')</div>';
+        control += '                            <div class="col-md-3 text-primary text-right"> ' + MonedaDecimales2(importeTotal) + '</div>';
+        control += '                        </div>';
+    }   
     control += '                </div>';
     control += '            </div>';
     control += '            <div class="modal-footer">';
