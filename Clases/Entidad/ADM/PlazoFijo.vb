@@ -134,7 +134,29 @@ Namespace Entidad
             Return result
         End Function
         Public Shared Function TraerTodosXEstado(IdEstado As Enumeradores.EstadoFlazoFijo) As List(Of PlazoFijo)
-            Dim result As List(Of PlazoFijo) = DAL_PlazoFijo.TraerTodosXEstado(IdEstado)
+            Dim listaTodos As List(Of PlazoFijo) = DAL_PlazoFijo.TraerTodos
+            Dim result As New List(Of PlazoFijo)
+            If listaTodos IsNot Nothing Then
+                For Each item As PlazoFijo In listaTodos
+                    Select Case IdEstado
+                        Case Enumeradores.EstadoFlazoFijo.NoVigente
+                            If item.FechaVencimiento.Value < Now Then
+                                result.Add(item)
+                            End If
+                        Case Enumeradores.EstadoFlazoFijo.ProximoVencer
+                            If DateDiff(DateInterval.Day, item.FechaVencimiento.Value, Now) >= 7 Then
+                                result.Add(item)
+                            End If
+                        Case Enumeradores.EstadoFlazoFijo.Vigente
+                            If item.FechaVencimiento.Value >= Now Then
+                                result.Add(item)
+                            End If
+                        Case Else
+
+                    End Select
+
+                Next
+            End If
             If result.Count = 0 Then
                 Throw New Exception("No existen PlazoFijos para la búsqueda")
             End If
@@ -268,7 +290,7 @@ Namespace DataAccessLibrary
         Const storeModifica As String = "ADM.p_PlazoFijo_Modifica"
         Const storeTraerUnoXId As String = "ADM.p_PlazoFijo_TraerUnoXId"
         Const storeTraerTodos As String = "ADM.p_PlazoFijo_TraerTodos"
-        Const storeTraerTodosXEstado As String = "ADM.p_PlazoFijo_TraerTodosXEstado"
+        'Const storeTraerTodosXEstado As String = "ADM.p_PlazoFijo_TraerTodosXEstado"
         Const storeTraerTodosXBanco As String = "ADM.p_PlazoFijo_TraerTodosXBanco"
 
 #End Region

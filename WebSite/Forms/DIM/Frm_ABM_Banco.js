@@ -54,7 +54,7 @@ $('body').on('click', '#LinkBtnGuardar', async function (e) {
             Mensaje = 'modificado';
         }
         await LlenarGrilla_Banco();
-        alertOk('El Centro de Costo se ha ' + Mensaje + ' correctamente.');
+        alertOk('El Banco se ha ' + Mensaje + ' correctamente.');
         Nuevo_Banco();
         spinnerClose();
     } catch (e) {
@@ -82,7 +82,7 @@ document.addEventListener('EliminarBanco', async function (e) {
         let objSeleccionado = e.detail;
         console.log(objSeleccionado);
         if (objSeleccionado.IdEstado === 1) {
-            throw 'El Centro de Costo ya se encuentra eliminado.';
+            throw 'El Banco ya se encuentra eliminado.';
         }
         console.log(objSeleccionado);
         _ObjBanco.IdEntidad = objSeleccionado.IdEntidad;
@@ -92,7 +92,7 @@ document.addEventListener('EliminarBanco', async function (e) {
         PopUpConfirmarConCancelar('warning', _ObjBanco, 'Eliminar', 'Confirma que desea eliminar (Dar de baja) ' + objSeleccionado.Nombre + '?', 'ConfirmacionEventoEliminar', 'Eliminar', 'Cancelar', 'red');
     } catch (e) {
         spinnerClose();
-        alertAlerta('<b>El Centro de Costo no se ha eliminado</b> </br></br> ' + e);
+        alertAlerta('<b>El Banco no se ha eliminado</b> </br></br> ' + e);
     }
 }, false);
 document.addEventListener('ConfirmacionEventoEliminar', async function (e) {
@@ -102,9 +102,9 @@ document.addEventListener('ConfirmacionEventoEliminar', async function (e) {
         await objSeleccionado.Baja();
         await Inicio();
         spinnerClose();
-        alertOk('El Centro de Costo se ha eliminado correctamente.');
+        alertOk('El Banco se ha eliminado correctamente.');
     } catch (e) {
         spinnerClose();
-        alertAlerta('El Centro de Costo no se ha eliminado. \n\n ' + e);
+        alertAlerta('El Banco no se ha eliminado. \n\n ' + e);
     }
 }, false);

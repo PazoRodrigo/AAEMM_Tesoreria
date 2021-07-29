@@ -26,6 +26,7 @@ Namespace Entidad
 #Region " Atributos / Propiedades "
         Public Property IdEntidad() As Integer = 0
         Public Property Nombre() As String = ""
+        Public Property Observaciones() As String = ""
 #End Region
 #Region " Lazy Load "
 
@@ -97,21 +98,21 @@ Namespace Entidad
 #End Region
 #Region " Métodos Públicos"
         ' ABM
-        'Public Sub Alta()
-        '    ValidarAlta()
-        '    DAL_Banco.Alta(Me)
-        '    Refresh()
-        'End Sub
-        'Public Sub Baja()
-        '    ValidarBaja()
-        '    DAL_Banco.Baja(Me)
-        '    Refresh()
-        'End Sub
-        'Public Sub Modifica()
-        '    ValidarModifica()
-        '    DAL_Banco.Modifica(Me)
-        '    Refresh()
-        'End Sub
+        Public Sub Alta()
+            ValidarAlta()
+            DAL_Banco.Alta(Me)
+            Refresh()
+        End Sub
+        Public Sub Baja()
+            ValidarBaja()
+            DAL_Banco.Baja(Me)
+            Refresh()
+        End Sub
+        Public Sub Modifica()
+            ValidarModifica()
+            DAL_Banco.Modifica(Me)
+            Refresh()
+        End Sub
         ' Otros
         Public Function ToDTO() As DTO.DTO_Banco
             Dim result As New DTO.DTO_Banco With {
@@ -216,57 +217,56 @@ Namespace DataAccessLibrary
     Public Class DAL_Banco
 
 #Region " Stored "
-        'Const storeAlta As String = "DIM.p_Banco_Alta"
-        'Const storeBaja As String = "DIM.p_Banco_Baja"
-        'Const storeModifica As String = "DIM.p_Banco_Modifica"
-        'Const storeTraerUnoXId As String = "DIM.p_Banco_TraerUnoXId"
+        Const storeAlta As String = "DIM.p_Banco_Alta"
+        Const storeBaja As String = "DIM.p_Banco_Baja"
+        Const storeModifica As String = "DIM.p_Banco_Modifica"
         Const storeTraerTodos As String = "DIM.p_Banco_TraerTodos"
 #End Region
 #Region " Métodos Públicos "
         ' ABM
-        'Public Shared Sub Alta(ByVal entidad As Banco)
-        '    Dim store As String = storeAlta
-        '    Dim pa As New parametrosArray
-        '    pa.add("@idUsuarioAlta", entidad.IdUsuarioAlta)
-        '    pa.add("@Nombre", entidad.Nombre)
-        '    pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
-        '    Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
-        '        If Not dt Is Nothing Then
-        '            If dt.Rows.Count = 1 Then
-        '                entidad.IdEntidad = CInt(dt.Rows(0)(0))
-        '            End If
-        '        End If
-        '    End Using
-        'End Sub
-        'Public Shared Sub Baja(ByVal entidad As Banco)
-        '    Dim store As String = storeBaja
-        '    Dim pa As New parametrosArray
-        '    pa.add("@idUsuarioBaja", entidad.IdUsuarioBaja)
-        '    pa.add("@id", entidad.IdEntidad)
-        '    pa.add("@IdMotivoBaja", entidad.IdMotivoBaja)
-        '    Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
-        '        If Not dt Is Nothing Then
-        '            If dt.Rows.Count = 1 Then
-        '                entidad.IdEntidad = CInt(dt.Rows(0)(0))
-        '            End If
-        '        End If
-        '    End Using
-        'End Sub
-        'Public Shared Sub Modifica(ByVal entidad As Banco)
-        '    Dim store As String = storeModifica
-        '    Dim pa As New parametrosArray
-        '    pa.add("@idUsuarioModifica", entidad.IdUsuarioModifica)
-        '    pa.add("@id", entidad.IdEntidad)
-        '    pa.add("@Nombre", entidad.Nombre)
-        '    pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
-        '    Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
-        '        If Not dt Is Nothing Then
-        '            If dt.Rows.Count = 1 Then
-        '                entidad.IdEntidad = CInt(dt.Rows(0)(0))
-        '            End If
-        '        End If
-        '    End Using
-        'End Sub
+        Public Shared Sub Alta(ByVal entidad As Banco)
+            Dim store As String = storeAlta
+            Dim pa As New parametrosArray
+            pa.add("@idUsuarioAlta", entidad.IdUsuarioAlta)
+            pa.add("@Nombre", entidad.Nombre)
+            pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
+        End Sub
+        Public Shared Sub Baja(ByVal entidad As Banco)
+            Dim store As String = storeBaja
+            Dim pa As New parametrosArray
+            pa.add("@idUsuarioBaja", entidad.IdUsuarioBaja)
+            pa.add("@id", entidad.IdEntidad)
+            pa.add("@IdMotivoBaja", entidad.IdMotivoBaja)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
+        End Sub
+        Public Shared Sub Modifica(ByVal entidad As Banco)
+            Dim store As String = storeModifica
+            Dim pa As New parametrosArray
+            pa.add("@idUsuarioModifica", entidad.IdUsuarioModifica)
+            pa.add("@id", entidad.IdEntidad)
+            pa.add("@Nombre", entidad.Nombre)
+            pa.add("@Observaciones", entidad.Observaciones.ToString.ToUpper.Trim)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If Not dt Is Nothing Then
+                    If dt.Rows.Count = 1 Then
+                        entidad.IdEntidad = CInt(dt.Rows(0)(0))
+                    End If
+                End If
+            End Using
+        End Sub
         '' Traer
         'Public Shared Function TraerUno(ByVal id As Integer) As Banco
         '    Dim store As String = storeTraerUnoXId
