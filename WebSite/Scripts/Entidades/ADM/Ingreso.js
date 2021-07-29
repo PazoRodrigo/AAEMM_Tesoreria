@@ -394,9 +394,25 @@ class Ingreso extends DBE {
         str += '<table class="table table-sm table-striped table-hover">';
         str += '    <tbody>';
         if (lista.length > 0) {
-            for (let item of lista) {
+            let i = 0;
+            let Anterior = lista[0];
+            while (i <= lista.length - 1) {
+                let item = lista[i];
+                let EsIgual = false;
+                if (i > 0) {
+                    if (item.Importe == Anterior.Importe && item.CUIT == Anterior.CUIT && item.Periodo == Anterior.Periodo) {
+                        EsIgual = true;
+                    }
+                    Anterior = item;
+                }
                 str += '        <tr>';
+                if (!EsIgual) {
+                    //  Tiene Lupa
                 str += '            <td style="width:45px;"><a hfre="#" id="' + item.IdEntidad + '"  data-Evento="' + evento + '" onclick="SeleccionIngreso(this);"> <img src="../../Imagenes/lupa.png" alt=""></a></td>';
+                } else {
+                    //  No tiene Lupa
+                str += '            <td style="width:45px;"><a hfre="#" id="' + item.IdEntidad + '"  data-Evento="' + evento + '"></a></td>';
+                }
                 str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrFechaAcreditacion() + '</small></td>';
                 str += '            <td class="text-center" style="width: 50px;"><small class="text-light">' + await item.StrCodigoEntidad(6) + '</small></td>';
                 let strRazonSocial = '';
@@ -418,7 +434,34 @@ class Ingreso extends DBE {
                 str += '            <td class="text-center" style="width: 40px;"><small class="text-light">' + cheque + '</small></td>';
                 str += '            <td class="text-center" style="width: 30px;"><small class="text-light">' + item.IdEstado + '</small></td>';
                 str += '        </tr>';
+                i++;
+
             }
+            //for (let item of lista) {
+            //    str += '        <tr>';
+            //    str += '            <td style="width:45px;"><a hfre="#" id="' + item.IdEntidad + '"  data-Evento="' + evento + '" onclick="SeleccionIngreso(this);"> <img src="../../Imagenes/lupa.png" alt=""></a></td>';
+            //    str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrFechaAcreditacion() + '</small></td>';
+            //    str += '            <td class="text-center" style="width: 50px;"><small class="text-light">' + await item.StrCodigoEntidad(6) + '</small></td>';
+            //    let strRazonSocial = '';
+            //    if (item.CUIT > 0) {
+            //        strRazonSocial = item.CUIT;
+            //        if (item.RazonSocial.length > 0) {
+            //            strRazonSocial = Left(item.RazonSocial, 25);
+            //        }
+            //    }
+            //    str += '            <td class="text-left" style="width: 220px;"><small class="text-light">' + strRazonSocial + '</small></td>';
+            //    str += '            <td class="text-center" style="width: 80px;"><small class="text-light">' + await item.StrPeriodo() + '</small></td>';
+            //    str += '            <td class="text-right pr-1" style="width: 100px;"><small class="text-light">' + separadorMiles(item.Importe.toFixed(2)) + '</small></td>';
+            //    str += '            <td class="text-center" style="width: 100px;"><small class="text-light">' + item.NombreArchivo + '</small></td>';
+            //    str += '            <td class="text-center" style="width: 40px;"><small class="text-light">' + await item.Origen() + '</small></td>';
+            //    let cheque = '';
+            //    if (parseInt(item.NroCheche) > 0) {
+            //        cheque = 'Si';
+            //    }
+            //    str += '            <td class="text-center" style="width: 40px;"><small class="text-light">' + cheque + '</small></td>';
+            //    str += '            <td class="text-center" style="width: 30px;"><small class="text-light">' + item.IdEstado + '</small></td>';
+            //    str += '        </tr>';
+            //}
         }
         str += '    </tbody>';
         str += '</table >';

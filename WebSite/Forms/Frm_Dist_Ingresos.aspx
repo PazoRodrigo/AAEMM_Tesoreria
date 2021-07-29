@@ -7,7 +7,7 @@
     ContentPlaceHolderID="ContentPlaceHolder1"
     runat="Server">
     <script src='<%= ResolveClientUrl("Eventos_Formularios.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("Frm_Dist_Ingresos.js?version=20210718_")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Dist_Ingresos.js?version=20210721")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = "";

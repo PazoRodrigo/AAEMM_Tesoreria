@@ -351,6 +351,7 @@ document.addEventListener('EventoAgregarExplotacion', async function (e) {
 document.addEventListener('EventoSeleccionarIngreso', async function (e) {
     try {
         let objSeleccionado = e.detail;
+        console.log(e.detail);
         let listaTempIngresos = [];
         listaTempIngresos.push(objSeleccionado);
         await Ingreso.ArmarGrillaDetalle('GrillaDetalle', listaTempIngresos, 'EventoSeleccionarIngreso', '');

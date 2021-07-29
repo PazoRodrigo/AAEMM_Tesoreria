@@ -13,17 +13,14 @@
 
 </script>
     <script src='<%= ResolveClientUrl("Eventos_Formularios.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210718_")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210721")%>'></script>
     <div id="PopUp">
     </div>
-
     <asp:Button
         ID="btnSubirOculto"
         runat="server"
         Style="visibility: hidden; display: none;" />
-
     <div class="container-fluid">
-
         <div class="row mb-2">
             <div class="d-none d-md-block col-12">
                 <div id="DivNombreFormulario100">

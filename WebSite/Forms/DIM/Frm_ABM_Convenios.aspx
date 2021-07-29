@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Convenios" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ABM_Convenios.aspx.vb" Inherits="Forms_Frm_ABM_Convenios" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_ABM_Convenios.js?version=20210718_")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_ABM_Convenios.js?version=20210721")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
