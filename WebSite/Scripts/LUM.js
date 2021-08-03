@@ -212,15 +212,15 @@ function alertConsulta(mensaje) {
 
 function alertConfirmarEliminarLinea(codNomenclador, descripcion) {
     Swal.fire({
-            title: "Confirma que desea eliminar la línea?",
-            text: codNomenclador + " " + descripcion,
-            type: "warning",
-            showCancelButton: true,
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Si, eliminar línea!",
-            closeOnConfirm: true
-        },
+        title: "Confirma que desea eliminar la línea?",
+        text: codNomenclador + " " + descripcion,
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Si, eliminar línea!",
+        closeOnConfirm: true
+    },
         function (isConfirm) {
             if (isConfirm) {
                 Practica.EliminarLinea(codNomenclador);
@@ -287,6 +287,35 @@ function FechaHoyLng() {
     let FechaHoy = new Date();
     let result = FechaHoy.getFullYear() + '' + ("0" + (FechaHoy.getMonth() + 1)).slice(-2) + '' + ("0" + FechaHoy.getDate()).slice(-2);
     return result;
+}
+
+function Meses() {
+    let Result = [
+        { IdEntidad: 1, Nombre: 'Enero' }, { IdEntidad: 2, Nombre: 'Febrero' }, { IdEntidad: 3, Nombre: 'Marzo' }, { IdEntidad: 4, Nombre: 'Abril' },
+        { IdEntidad: 5, Nombre: 'Mayo' }, { IdEntidad: 6, Nombre: 'Junio' }, { IdEntidad: 7, Nombre: 'Julio' }, { IdEntidad: 8, Nombre: 'Agosto' },
+        { IdEntidad: 9, Nombre: 'Septiembre' }, { IdEntidad: 10, Nombre: 'Octubre' }, { IdEntidad: 11, Nombre: 'Noviembre' }, { IdEntidad: 12, Nombre: 'Diciembre' }
+    ];
+    return Result;
+}
+async function ArmarComboMeses(lista, div, selector, evento, ventana, estilo) {
+    let Cbo = '';
+    Cbo += '<select id="_' + div + '" data-Evento="' + evento + '" class="' + estilo + '">';
+    Cbo += '    <option value="0" id="' + selector + '">' + ventana + '</option>';
+    $(lista).each(function () {
+        Cbo += '<option class="mibtn-LUM-seleccionMes" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + this.Nombre + '</option>';
+    });
+    Cbo += '</select>';
+    return $('#' + div + '').html(Cbo);
+}
+async function ArmarComboAños(lista, div, selector, evento, ventana, estilo) {
+    let Cbo = '';
+    Cbo += '<select id="_' + div + '" data-Evento="' + evento + '" class="' + estilo + '">';
+    Cbo += '    <option value="0" id="' + selector + '">' + ventana + '</option>';
+    $(lista).each(function () {
+        Cbo += '<option class="mibtn-LUM-seleccionAño" value="' + this.IdEntidad + '" data-Id="' + this.IdEntidad + '" data-Evento="' + evento + '">' + this.Nombre + '</option>';
+    });
+    Cbo += '</select>';
+    return $('#' + div + '').html(Cbo);
 }
 //function Date_LongToDate(lng) {
 //    console.log(lng);
@@ -459,7 +488,7 @@ function lum_TraerProvincias() {
         contentType: "application/json; charset=utf-8",
         success: function (data) {
             wsTransfer = data.d;
-            if (wsTransfer.todoOk == true) {} else {
+            if (wsTransfer.todoOk == true) { } else {
                 alertAlerta(wsTransfer.mensaje);
             }
         },
@@ -471,7 +500,7 @@ function lum_TraerProvincias() {
     return wsTransfer.data;
 }
 // Para hacer
-function LUM_ArmarPOP(div) {}
+function LUM_ArmarPOP(div) { }
 
 function getUrlParams(urlOrQueryString) {
     if ((i = urlOrQueryString.indexOf('?')) >= 0) {
@@ -546,7 +575,7 @@ function Date_UltimoDiaMes_LngToLng(fecha) {
 function Date_PrimerDiaMes_LngToLng(fecha) {
     var date = fecha;
     var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-                    
+
     let result =
         firstDay.getFullYear() +
         "" +

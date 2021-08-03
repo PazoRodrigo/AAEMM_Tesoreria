@@ -254,17 +254,17 @@ async function ValidarCampos() {
     let ImportePagos = parseFloat($("#EntidadImporteEfectivo").val());
     let iPag = 0
     while (iPag <= _ListaPagos.length - 1) {
-        ImportePagos += parseFloat(_ListaPagos[iPag].Importe);
+        ImportePagos += parseFloat(_ListaPagos[iPag].Importe.toFixed(2));
         iPag++;
     }
     let ImportePeriodos = 0;
     let iPer = 0
     while (iPer <= _ListaPeriodos.length - 1) {
-        ImportePeriodos += parseFloat(_ListaPeriodos[iPer].Importe);
+        ImportePeriodos = ImportePeriodos + parseFloat(_ListaPeriodos[iPer].Importe.toFixed(2));
+
         iPer++;
     }
-    alert('ImportePagos' + parseFloat(ImportePagos))
-    if (parseFloat(ImportePagos) !== parseFloat(ImporteTotal) || parseFloat(ImportePeriodos) !== parseFloat(ImporteTotal)) {
+    if (parseFloat(ImportePagos).toFixed(2) != parseFloat(ImporteTotal).toFixed(2) || parseFloat(ImportePeriodos).toFixed(2) != parseFloat(ImporteTotal).toFixed(2)) {
         let Mensaje = '<b><u>Validar Importes</u></b><br><br>';
         Mensaje += '<div style="text-align: left;">';
         Mensaje += '- <i>Importe Recibo $ ' + separadorMiles(parseFloat(ImporteTotal).toFixed(2)) + '</i><br>';

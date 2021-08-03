@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Rep_IngresosMensualesMenu.aspx.vb" Inherits="Forms_Reportes_Frm_Rep_IngresosMensualesMenu" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <script src='<%= ResolveClientUrl("Frm_Rep_IngresosMensualesMenu.js?version=20210729")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
@@ -28,6 +29,38 @@
             <div class="container-fluid">
                 <div class="row mt-1">
                     <div class="col-lg-4">
+                        <nav>
+                            <ul>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-lg-3">Año :</div>
+                                        <div class="col-lg-9">
+                                            <div class="form-group">
+                                                <div id="CboAño"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-lg-3">Mes :</div>
+                                        <div class="col-lg-9">
+                                            <div class="form-group">
+                                                <div id="CboMes"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="Boton BtnImprimir">
+                                        <a id="LinkBtnImprimir" href="#">Imprimir</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <%-- <div class="col-lg-4">
                         <nav>
                             <ul class="Menu">
                                 <li class="BtnDistribuidor">
@@ -68,7 +101,7 @@
                                 </li>
                             </ul>
                         </nav>
-                    </div>
+                    </div>--%>
                 </div>
             </div>
         </li>

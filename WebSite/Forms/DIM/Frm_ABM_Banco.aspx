@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_ABM_Banco.aspx.vb" Inherits="Forms_DIM_Frm_ABM_Banco" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_ABM_Banco.js?version=20210721")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_ABM_Banco.js?version=20210729")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';
