@@ -41,7 +41,7 @@ async function AlmacenarUsuario() {
         _Us = usuValido;
         spinnerClose();
         sessionStorage.setItem("User", JSON.stringify(usuValido));
-        window.location.href = 'http://localhost:14162/Forms/Frm_Indicadores.aspx';
+        window.location.href = 'http://aplicativosaaemm.dyndns.org/SitioTesoreria/Forms/Frm_Indicadores.aspx';
     } catch (e) {
         spinnerClose();
         alertAlerta(e);

@@ -26,7 +26,7 @@ $('body').on('click', '#LinkBtnImprimir', async function (e) {
         let valorMes = $('#_CboMes').val();
         let Periodo = valorAño +''+ Right('00' + valorMes, 2);
         spinnerClose();
-        let url = 'http://localhost:14162/Forms/Reportes/Frm_Rep_IngresosMensuales.aspx?periodo=' + Periodo
+        let url = 'http://aplicativosaaemm.dyndns.org/SitioTesoreria/Forms/Reportes/Frm_Rep_IngresosMensuales.aspx?periodo=' + Periodo
         window.open(url, '_blank');
     } catch (e) {
         spinnerClose();
