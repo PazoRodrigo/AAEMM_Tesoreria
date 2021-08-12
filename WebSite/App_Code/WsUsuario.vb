@@ -107,5 +107,48 @@ Public Class WsUsuario
         End Try
         Return ws
     End Function
+    <WebMethod()>
+    Public Function TraerTodosXPerfil(IdPerfil As Integer) As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Usuario)
+            Dim lista As List(Of Entidad.Usuario) = Entidad.Usuario.TraerTodosXPerfil(IdPerfil)
+            If Not lista Is Nothing Then
+                For Each item As Entidad.Usuario In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+    <WebMethod()>
+    Public Function TraerTodos() As Transfer
+        Dim ws As New Transfer
+        Try
+            Dim result As New List(Of DTO.DTO_Usuario)
+            Dim lista As List(Of Entidad.Usuario) = Entidad.Usuario.TraerTodos()
+            If Not lista Is Nothing Then
+                For Each item As Entidad.Usuario In lista
+                    result.Add(item.ToDTO)
+                Next
+            End If
+            ws.data = result
+            ws.todoOk = True
+            ws.mensaje = ""
+        Catch ex As Exception
+            ws.todoOk = False
+            ws.mensaje = ex.Message
+            ws.data = Nothing
+        End Try
+        Return ws
+    End Function
+
 
 End Class

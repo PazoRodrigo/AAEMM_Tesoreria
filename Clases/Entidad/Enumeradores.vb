@@ -88,4 +88,8 @@
         D = 1
         H = 2
     End Enum
+    Public Enum TipoDestinatarioMensaje
+        Perfil = 1
+        Usuario = 2
+    End Enum
 End Class

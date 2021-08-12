@@ -52,7 +52,6 @@ $('body').on('click', '#FORM0_INDICADORES_EMPRESAS', async function (e) {
         alertAlerta(e);
     }
 });
-
 $('body').on('click', '#FORM0_INDICADORES_EMPRESAS_SINDEUDA', async function (e) {
     try {
         spinner();
@@ -64,7 +63,6 @@ $('body').on('click', '#FORM0_INDICADORES_EMPRESAS_SINDEUDA', async function (e)
         alertAlerta(e);
     }
 });
-
 $('body').on('click', '#FORM0_INDICADORES_EMPRESAS_DEUDA1', async function (e) {
     try {
         spinner();
@@ -160,8 +158,6 @@ $('body').on('click', '#FORM0_RECAUDACIONBRUTA', async function (e) {
         alertAlerta(e);
     }
 });
-
-
 async function ArmarPopRecaudacion(Tipo) {
     let lista = [];
     let Titulo = '';
@@ -226,13 +222,7 @@ async function ArmarPopRecaudacion(Tipo) {
     control += '                            </table>';
     control += '                        </div>';
     control += '                        </div>';
-    control += '                    </div>';
-    //if (ValoresADepositar_Recibidos.length > 0) {
-    //control += '                        <div class="row" style="margin-top: 15px">';
-    //control += '                            <div class="col-md-8 text-primary text-right"> Valores Recibidos: </div>';
-    //control += '                            <div class="col-md-4 text-primary"> ' + MonedaDecimales2(valorCheque) + '</div>';
-    //control += '                        </div>';
-    //}   
+    control += '                    </div>';  
     if (ValoresADepositar_Recibidos.length > 0) {
         let importeTotal = 0;
         let cont = 0;

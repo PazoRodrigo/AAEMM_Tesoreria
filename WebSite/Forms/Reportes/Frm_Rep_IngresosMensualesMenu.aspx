@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Rep_IngresosMensualesMenu.aspx.vb" Inherits="Forms_Reportes_Frm_Rep_IngresosMensualesMenu" %>
 
 <asp:Content ID="Contenido" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Rep_IngresosMensualesMenu.js?version=20210729")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Rep_IngresosMensualesMenu.js?version=20210811")%>'></script>
     <script>
         document.onkeyup = function (e) {
             let redirect = '';

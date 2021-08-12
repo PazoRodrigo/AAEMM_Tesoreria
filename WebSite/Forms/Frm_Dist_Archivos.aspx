@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="AAEMM. Archivos" Language="VB" MasterPageFile="~/Forms/MP.master" AutoEventWireup="false" CodeFile="Frm_Dist_Archivos.aspx.vb" Inherits="Forms_Frm_Dist_Archivos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <script src='<%= ResolveClientUrl("Frm_Dist_Archivos.js?version=20210729")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Dist_Archivos.js?version=20210811")%>'></script>
 
     <script>
         document.onkeyup = function (e) {

@@ -228,8 +228,10 @@ Namespace Entidad
             End If
             ObjU.IdUsuarioModifica = idUsuario
             DAL_Usuario.ModificaPassword(ObjU)
-            'ObjU.MailCambioPassword()
         End Sub
+        Public Shared Function TraerTodosXPerfil(IdPerfil As Integer) As List(Of Usuario)
+            Return DAL_Usuario.TraerTodosXPerfil(IdPerfil)
+        End Function
 #End Region
 #Region " Métodos Públicos"
         ' ABM
@@ -547,10 +549,10 @@ Namespace DataAccessLibrary
         Const storeModifica As String = "USUARIO.p_Usuario_Modifica"
         Const storeModificaPassword As String = "USUARIO.p_Usuario_ModificaPassword"
         Const storeTraerTodos As String = "USUARIO.p_Usuario_TraerTodos"
+        Const storeTraerTodosXPerfil As String = "USUARIO.p_Usuario_TraerTodosXPerfil"
         ' Otros
         Const storeRegistrarAccesoSistema As String = "USUARIO.p_Usuario_RegistrarAccesoSistema"
         Const storeRegistrarAccesoFormulario As String = "USUARIO.p_Usuario_AccesoFormulario"
-
 #End Region
 #Region " Métodos Públicos "
         ' ABM
@@ -650,6 +652,21 @@ Namespace DataAccessLibrary
             End Using
             Return listaResult
         End Function
+        Public Shared Function TraerTodosXPerfil(IdPerfil As Integer) As List(Of Usuario)
+            Dim store As String = storeTraerTodosXPerfil
+            Dim pa As New parametrosArray
+            pa.add("@IdPerfil", IdPerfil)
+            Dim listaResult As New List(Of Usuario)
+            Using dt As DataTable = Connection.Connection.TraerDt(store, pa)
+                If dt.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt.Rows
+                        listaResult.Add(LlenarEntidad(dr))
+                    Next
+                End If
+            End Using
+            Return listaResult
+        End Function
+
         ' Otros
         Public Shared Sub RegistrarAccesoSistema(IdUsuario As Integer)
             Dim store As String = storeRegistrarAccesoSistema

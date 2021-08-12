@@ -13,7 +13,7 @@
 
 </script>
     <script src='<%= ResolveClientUrl("Eventos_Formularios.js")%>' type="text/javascript"></script>
-    <script src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210729")%>'></script>
+    <script src='<%= ResolveClientUrl("Frm_Indicadores.js?version=20210811")%>'></script>
     <div id="PopUp">
     </div>
     <asp:Button
@@ -26,6 +26,12 @@
                 <div id="DivNombreFormulario100">
                     <span id="NombreFormulario"></span>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="d-none d-lg-block col-10"></div>
+            <div class="d-none d-lg-block col-2">
+                <a href="#" id="BtnMensajero" class="btn btn-block btn-warning text-dark">Mensajero<span id="LblCantMensajes"></span></a>
             </div>
         </div>
         <div class="row">

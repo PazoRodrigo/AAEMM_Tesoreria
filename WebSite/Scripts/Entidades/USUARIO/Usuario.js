@@ -1,4 +1,4 @@
-﻿
+﻿var _Lista_Usuarios;
 class Usuario extends DBE {
     constructor() {
         super();
@@ -14,6 +14,14 @@ class Usuario extends DBE {
 
         this.ListaPerfiles;
         this.ListaPermisos;
+    }
+
+    // Todos
+    static async Todos() {
+        if (_Lista_Usuarios === undefined) {
+            _Lista_Usuarios = await Usuario.TraerTodos();
+        }
+        return _Lista_Usuarios;
     }
 
     async Alta() {
@@ -74,6 +82,10 @@ class Usuario extends DBE {
             throw e;
         }
     }
+    static async UsuarioLogueado() {
+        let ObjU = JSON.parse(sessionStorage.getItem("User"));
+        return ObjU;
+    }
     static async AccederAlSistema(user, pass) {
         let data = {
             "User": user,
@@ -85,7 +97,7 @@ class Usuario extends DBE {
             $.each(lista, function (key, value) {
                 result.push(LlenarEntidadUsuario(value));
             });
-        } 
+        }
         return result[0];
     }
     static async EnviarPassword(Identificador) {
@@ -93,6 +105,49 @@ class Usuario extends DBE {
             'Identificador': Identificador
         };
         await ejecutarAsync(urlWsUsuario + "/EnviarPassword", data);
+    }
+
+    static async TraerTodos() {
+        let lista = await ejecutarAsync(urlWsUsuario + "/TraerTodos");
+        _Lista_Usuarios = [];
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadUsuario(value));
+            });
+        }
+        _Lista_Usuarios = result;
+        return result;
+    }
+    static async TraerUno(IdUsuario) {
+        let buscado = $.grep(await Usuario.Todos(), function (entidad, index) {
+            return entidad.IdEntidad == IdUsuario;
+        });
+        return buscado[0];
+    }
+    static async TraerTodosXPerfil(IdPerfil) {
+        let data = {
+            'IdPerfil': IdPerfil
+        };
+        let lista = await ejecutarAsync(urlWsUsuario + "/TraerTodosXPerfil", data);
+        _Lista_Usuarios = [];
+        let result = [];
+        if (lista.length > 0) {
+            $.each(lista, function (key, value) {
+                result.push(LlenarEntidadUsuario(value));
+            });
+        }
+        return result;
+    }
+    static async ArmarCombo(lista, div, IdSelect, selector, evento, estilo) {
+        let Cbo = '';
+        Cbo += '<select id="_CboUsuario"  class="' + estilo + '" onchange="SeleccionUsuario(this);" data-Evento="' + evento + '">';
+        Cbo += '    <option value="0" >' + selector + '</option>';
+        for (let item of lista) {
+            Cbo += '<option value="' + item.IdEntidad + '" >' + item.Nombre + '</option>';
+        };
+        Cbo += '</select>';
+        return $('#' + div + '').html(Cbo);
     }
 }
 function LlenarEntidadUsuario(entidad) {
@@ -108,4 +163,18 @@ function LlenarEntidadUsuario(entidad) {
 
     res.ListaPerfiles = entidad.ListaPerfiles;
     return res;
+}
+async function SeleccionUsuario() {
+    try {
+        let elemento = document.getElementById("_CboUsuario");
+        let buscado = $.grep(_Lista_Usuarios, function (entidad, index) {
+            return entidad.IdEntidad == elemento.options[elemento.selectedIndex].value;
+        });
+        let Seleccionado = buscado[0];
+        let evento = elemento.getAttribute('data-Evento');
+        let event = new CustomEvent(evento, { detail: Seleccionado });
+        document.dispatchEvent(event);
+    } catch (e) {
+        alertAlerta(e);
+    }
 }

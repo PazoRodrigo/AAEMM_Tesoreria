@@ -92,6 +92,7 @@
     <Compile Include="Entidad\Archivos\LineaArchivoMC.vb" />
     <Compile Include="Entidad\Archivos\LineaArchivoPF.vb" />
     <Compile Include="Entidad\ADM\Cta Cte\TipoMovimientoCtaCte.vb" />
+    <Compile Include="Entidad\Complementarias\Mensaje.vb" />
     <Compile Include="Entidad\Complementarias\TipoPagoManual.vb" />
     <Compile Include="Entidad\Ingresos\Ingreso.vb" />
     <Compile Include="Entidad\Archivos\Archivo.vb" />

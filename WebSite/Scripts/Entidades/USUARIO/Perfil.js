@@ -1,79 +1,78 @@
-var _Lista_Banco;
+﻿var _Lista_Perfiles;
 
-class Banco extends DBE {
+class Perfil extends DBE {
     constructor() {
         super();
         this.IdEntidad = 0;
         this.Nombre = '';
-        this.Observaciones = '';
     }
 
     // ABM
-    async Alta() {
-        try {
-            await this.ValidarCamposBanco();
-            this.Nombre = this.Nombre.toUpperCase();
-            this.Observaciones = this.Observaciones.toUpperCase();
-            let ObjU = JSON.parse(sessionStorage.getItem("User"));
-            this.IdUsuarioAlta = ObjU.IdEntidad;
-            let data = {
-                'entidad': this
-            };
-            let id = await ejecutarAsync(urlWsBanco + "/Alta", data);
-            if (id !== undefined)
-                this.IdEntidad = id;
-            _Lista_Banco.push(this);
-            return;
-        } catch (e) {
-            throw e;
-        }
-    }
-    async Modifica() {
-        await this.ValidarCamposBanco();
-        this.Nombre = this.Nombre.toUpperCase();
-        this.Observaciones = this.Observaciones.toUpperCase();
-        try {
-            let ObjU = JSON.parse(sessionStorage.getItem("User"));
-            this.IdUsuarioModifica = ObjU.IdEntidad;
-            let data = {
-                'entidad': this
-            };
-            let id = await ejecutarAsync(urlWsBanco + "/Modifica", data);
-            if (id !== undefined)
-                this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Banco, function (entidad, index) {
-                return entidad.IdEntidad !== id;
-            });
-            _Lista_Banco = buscados;
-            this.IdEstado = 0;
-            _Lista_Banco.push(this);
-            return;
-        } catch (e) {
-            throw e;
-        }
-    }
-    async Baja() {
-        try {
-            let ObjU = JSON.parse(sessionStorage.getItem("User"));
-            this.IdUsuarioBaja = ObjU.IdEntidad;
-            let data = {
-                'entidad': this
-            };
-            let id = await ejecutarAsync(urlWsBanco + "/Baja", data);
-            if (id !== undefined)
-                this.IdEntidad = id;
-            let buscados = $.grep(_Lista_Banco, function (entidad, index) {
-                return entidad.IdEntidad !== id;
-            });
-            _Lista_Banco = buscados;
-            this.IdEstado = 1;
-            _Lista_Banco.push(this);
-            return;
-        } catch (e) {
-            throw e;
-        }
-    }
-    async ValidarCamposBanco() {
+    //async Alta() {
+    //    try {
+    //        await this.ValidarCamposPerfil();
+    //        this.Nombre = this.Nombre.toUpperCase();
+    //        this.Observaciones = this.Observaciones.toUpperCase();
+    //        let ObjU = JSON.parse(sessionStorage.getItem("User"));
+    //        this.IdUsuarioAlta = ObjU.IdEntidad;
+    //        let data = {
+    //            'entidad': this
+    //        };
+    //        let id = await ejecutarAsync(urlWsPerfil + "/Alta", data);
+    //        if (id !== undefined)
+    //            this.IdEntidad = id;
+    //        _Lista_Perfiles.push(this);
+    //        return;
+    //    } catch (e) {
+    //        throw e;
+    //    }
+    //}
+    //async Modifica() {
+    //    await this.ValidarCamposPerfil();
+    //    this.Nombre = this.Nombre.toUpperCase();
+    //    this.Observaciones = this.Observaciones.toUpperCase();
+    //    try {
+    //        let ObjU = JSON.parse(sessionStorage.getItem("User"));
+    //        this.IdUsuarioModifica = ObjU.IdEntidad;
+    //        let data = {
+    //            'entidad': this
+    //        };
+    //        let id = await ejecutarAsync(urlWsPerfil + "/Modifica", data);
+    //        if (id !== undefined)
+    //            this.IdEntidad = id;
+    //        let buscados = $.grep(_Lista_Perfiles, function (entidad, index) {
+    //            return entidad.IdEntidad !== id;
+    //        });
+    //        _Lista_Perfiles = buscados;
+    //        this.IdEstado = 0;
+    //        _Lista_Perfiles.push(this);
+    //        return;
+    //    } catch (e) {
+    //        throw e;
+    //    }
+    //}
+    //async Baja() {
+    //    try {
+    //        let ObjU = JSON.parse(sessionStorage.getItem("User"));
+    //        this.IdUsuarioBaja = ObjU.IdEntidad;
+    //        let data = {
+    //            'entidad': this
+    //        };
+    //        let id = await ejecutarAsync(urlWsPerfil + "/Baja", data);
+    //        if (id !== undefined)
+    //            this.IdEntidad = id;
+    //        let buscados = $.grep(_Lista_Perfiles, function (entidad, index) {
+    //            return entidad.IdEntidad !== id;
+    //        });
+    //        _Lista_Perfiles = buscados;
+    //        this.IdEstado = 1;
+    //        _Lista_Perfiles.push(this);
+    //        return;
+    //    } catch (e) {
+    //        throw e;
+    //    }
+    //}
+    async ValidarCamposPerfil() {
         let sError = '';
         if (this.Nombre.length === 0) {
             sError += 'Debe ingresar el Nombre';
@@ -84,51 +83,52 @@ class Banco extends DBE {
     }
     // Todos
     static async Todos() {
-        if (_Lista_Banco === undefined) {
-            _Lista_Banco = await Banco.TraerTodas();
+        if (_Lista_Perfiles === undefined) {
+            _Lista_Perfiles = await Perfil.TraerTodas();
         }
-        return _Lista_Banco;
+        return _Lista_Perfiles;
     }
 
     // Traer
     static async TraerUno(IdEntidad) {
-        _Lista_Banco = await Banco.TraerTodos();
-        let buscado = $.grep(_Lista_Banco, function (entidad, index) {
+        _Lista_Perfiles = await Perfil.TraerTodos();
+        let buscado = $.grep(_Lista_Perfiles, function (entidad, index) {
             return entidad.IdEntidad === IdEntidad;
         });
         let Encontrado = buscado[0];
         return Encontrado;
     }
     static async TraerTodos() {
-        return await Banco.Todos();
+        return await Perfil.Todos();
     }
     static async TraerTodosActivos() {
-        _Lista_Banco = await Banco.TraerTodos();
-        let buscado = $.grep(_Lista_Banco, function (entidad, index) {
+        _Lista_Perfiles = await Perfil.TraerTodos();
+        let buscado = $.grep(_Lista_Perfiles, function (entidad, index) {
             return entidad.IdEstado === 0;
         });
         return buscado;
     }
     static async TraerTodas() {
-        let lista = await ejecutarAsync(urlWsBanco + "/TraerTodos");
-        _Lista_Banco = [];
+        let lista = await ejecutarAsync(urlWsPerfil + "/TraerTodos");
+        _Lista_Perfiles = [];
         let result = [];
         if (lista.length > 0) {
             $.each(lista, function (key, value) {
-                result.push(LlenarEntidadBanco(value));
+                result.push(LlenarEntidadPerfil(value));
             });
         }
+        _Lista_Perfiles = result;
         return result;
     }
     // Otros
     static async Refresh() {
-        _Lista_Banco = await Banco.TraerTodas();
-        let lista = await ejecutarAsync(urlWsBanco + "/Refresh");
-        _Lista_Banco = [];
+        _Lista_Perfiles = await Perfil.TraerTodas();
+        let lista = await ejecutarAsync(urlWsPerfil + "/Refresh");
+        _Lista_Perfiles = [];
         let result = [];
         if (lista.length > 0) {
             $.each(lista, function (key, value) {
-                result.push(LlenarEntidadBanco(value));
+                result.push(LlenarEntidadPerfil(value));
             });
         }
         return result;
@@ -147,8 +147,8 @@ class Banco extends DBE {
                 if (item.IdEstado === 1) {
                     estiloItem = 'LinkListaGrillaObjetoEliminado';
                 }
-                let aItem = '<a href="#" class="mibtn-seleccionBanco" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.Nombre + '</a>';
-                let aEliminar = '<a href="#" class="mibtn-EliminarBanco" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
+                let aItem = '<a href="#" class="mibtn-seleccionPerfil" data-Evento="' + eventoSeleccion + '" data-Id="' + item.IdEntidad + '">' + item.Nombre + '</a>';
+                let aEliminar = '<a href="#" class="mibtn-EliminarPerfil" data-Evento="' + eventoEliminar + '" data-Id="' + item.IdEntidad + '"><span class="icon-bin"></span></a>';
                 str += String.format('<li><div class="LinkListaGrilla ' + estiloItem + '">{0}</div><div class="LinkListaGrilla LinkListaGrillaElimina">{1}</div></li>', aItem, aEliminar);
             }
             str += '    </ul>';
@@ -194,7 +194,7 @@ class Banco extends DBE {
     }
     static async ArmarCombo(lista, div, IdSelect, selector, evento, estilo) {
         let Cbo = '';
-        Cbo += '<select id="' + IdSelect + '"  class="' + estilo + '" onchange="SeleccionEntidaBancoCombo(this);" data-Evento="' + evento + '">';
+        Cbo += '<select id="_CboPerfil"  class="' + estilo + '" onchange="SeleccionPerfil(this);" data-Evento="' + evento + '">';
         Cbo += '    <option value="0" >' + selector + '</option>';
         for (let item of lista) {
             Cbo += '<option value="' + item.IdEntidad + '" >' + item.Nombre + '</option>';
@@ -204,8 +204,8 @@ class Banco extends DBE {
     }
 }
 
-function LlenarEntidadBanco(entidad) {
-    let Res = new Banco;
+function LlenarEntidadPerfil(entidad) {
+    let Res = new Perfil;
     Res.IdUsuarioAlta = entidad.IdUsuarioAlta;
     Res.IdUsuarioBaja = entidad.IdUsuarioBaja;
     Res.IdUsuarioModifica = entidad.IdUsuarioModifica;
@@ -217,10 +217,10 @@ function LlenarEntidadBanco(entidad) {
     Res.Observaciones = entidad.Observaciones;
     return Res;
 }
-$('body').on('click', ".mibtn-seleccionBanco", async function () {
+$('body').on('click', ".mibtn-seleccionPerfil", async function () {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Banco, function (entidad, index) {
+        let buscado = $.grep(_Lista_Perfiles, function (entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -231,10 +231,10 @@ $('body').on('click', ".mibtn-seleccionBanco", async function () {
         alertAlerta(e);
     }
 });
-$('body').on('click', ".mibtn-EliminarBanco", async function () {
+$('body').on('click', ".mibtn-EliminarPerfil", async function () {
     try {
         $this = $(this);
-        let buscado = $.grep(_Lista_Banco, function (entidad, index) {
+        let buscado = $.grep(_Lista_Perfiles, function (entidad, index) {
             return entidad.IdEntidad === parseInt($this.attr("data-Id"));
         });
         let Seleccionado = buscado[0];
@@ -245,10 +245,10 @@ $('body').on('click', ".mibtn-EliminarBanco", async function () {
         alertAlerta(e);
     }
 });
-async function SeleccionBanco() {
+async function SeleccionPerfil() {
     try {
-        let elemento = document.getElementById("_CboBanco");
-        let buscado = $.grep(_Lista_Banco, function (entidad, index) {
+        let elemento = document.getElementById("_CboPerfil");
+        let buscado = $.grep(_Lista_Perfiles, function (entidad, index) {
             return entidad.IdEntidad == elemento.options[elemento.selectedIndex].value;
         });
         let Seleccionado = buscado[0];
@@ -262,7 +262,7 @@ async function SeleccionBanco() {
 async function SeleccionEntidadFamiliaCombo(MiElemento) {
     try {
         let elemento = document.getElementById(MiElemento.id);
-        let buscado = $.grep(_Lista_Banco, function (entidad, index) {
+        let buscado = $.grep(_Lista_Perfiles, function (entidad, index) {
             return entidad.IdEntidad == elemento.options[elemento.selectedIndex].value;
         });
         let Seleccionado = [];

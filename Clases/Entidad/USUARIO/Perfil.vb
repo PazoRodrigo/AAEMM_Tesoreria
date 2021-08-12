@@ -13,7 +13,9 @@ Namespace Entidad
         Private Shared _Todos As List(Of Perfil)
         Public Shared Property Todos() As List(Of Perfil)
             Get
-                Return DAL_Perfil.TraerTodos
+                Dim Result As List(Of Perfil) = DAL_Perfil.TraerTodos
+                Result = Result.FindAll(Function(x) x.IdEntidad > 1)
+                Return Result
                 'If _Todos Is Nothing Then
                 '    _Todos = DAL_Perfil.TraerTodos
                 'End If
@@ -98,6 +100,10 @@ Namespace Entidad
         Public Shared Function TraerTodos() As List(Of Perfil)
             Return Todos
         End Function
+        Public Shared Function TraerTodos_DTO() As List(Of DTO.DTO_Perfil)
+            Return ToListDTO(Todos)
+        End Function
+
         'Public Shared Function TraerUno(ByVal Id As Integer) As Perfil
         '    Dim result As Perfil= DAL_Perfil.TraerUno(Id)
         '    If result Is Nothing Then
@@ -282,6 +288,15 @@ Namespace Entidad
                 End If
             End If
         End Sub
+        Private Shared Function ToListDTO(lista As List(Of Perfil)) As List(Of DTO.DTO_Perfil)
+            Dim Result As New List(Of DTO.DTO_Perfil)
+            If lista IsNot Nothing AndAlso lista.Count > 0 Then
+                For Each item As Perfil In lista
+                    Result.Add(item.ToDTO)
+                Next
+            End If
+            Return Result
+        End Function
 #End Region
     End Class ' Perfil
 End Namespace ' Entidad
